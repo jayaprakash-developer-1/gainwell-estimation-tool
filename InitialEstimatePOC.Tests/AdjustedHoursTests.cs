@@ -235,7 +235,7 @@ public class AdjustedHoursTests
     public void CollaborationAdjusted_Positive_IncreasesTotal()
     {
         var vm = CreateVm();
-        // Use per-type adjusted hours (CollaborationAdjustedHours is legacy)
+        // Per-type adjusted hours affect the per-type totals
         vm.WprsAdjustedHours = 10m;
         Assert.Equal(10m, vm.WprsTotalHours);
     }
@@ -614,6 +614,85 @@ public class AdjustedHoursTests
 
         vm.SystemTestingAdjustedHours = 7m;
         Assert.Equal(Math.Ceiling(vm.SubtotalHours), vm.GrandTotalHours);
+    }
+
+    #endregion
+
+    #region Per-Type Collaboration Adjusted → CollaborationTotalHours
+
+    [Fact]
+    public void WprsAdjusted_UpdatesCollaborationTotalHours()
+    {
+        var vm = CreateVm();
+        vm.WprsAdjustedHours = 15m;
+        Assert.Equal(15m, vm.WprsTotalHours);
+        Assert.Equal(15m, vm.CollaborationTotalHours);
+    }
+
+    [Fact]
+    public void ClientMeetingsAdjusted_UpdatesCollaborationTotalHours()
+    {
+        var vm = CreateVm();
+        vm.ClientMeetingsAdjustedHours = 8m;
+        Assert.Equal(8m, vm.ClientMeetingsTotalHours);
+        Assert.Equal(8m, vm.CollaborationTotalHours);
+    }
+
+    [Fact]
+    public void InternalMeetingsAdjusted_UpdatesCollaborationTotalHours()
+    {
+        var vm = CreateVm();
+        vm.InternalMeetingsAdjustedHours = 5m;
+        Assert.Equal(5m, vm.InternalMeetingsTotalHours);
+        Assert.Equal(5m, vm.CollaborationTotalHours);
+    }
+
+    [Fact]
+    public void AutomationTestCollabAdjusted_UpdatesCollaborationTotalHours()
+    {
+        var vm = CreateVm();
+        vm.AutomationTestCollabAdjustedHours = 12m;
+        Assert.Equal(12m, vm.AutomationTestCollabTotalHours);
+        Assert.Equal(12m, vm.CollaborationTotalHours);
+    }
+
+    [Fact]
+    public void ConsultantMentorAdjusted_UpdatesCollaborationTotalHours()
+    {
+        var vm = CreateVm();
+        vm.ConsultantMentorAdjustedHours = 20m;
+        Assert.Equal(20m, vm.ConsultantMentorTotalHours);
+        Assert.Equal(20m, vm.CollaborationTotalHours);
+    }
+
+    [Fact]
+    public void MultipleCollabAdjusted_SumInCollaborationTotalHours()
+    {
+        var vm = CreateVm();
+        vm.WprsAdjustedHours = 10m;
+        vm.ClientMeetingsAdjustedHours = 5m;
+        vm.InternalMeetingsAdjustedHours = 3m;
+        vm.AutomationTestCollabAdjustedHours = 2m;
+        vm.ConsultantMentorAdjustedHours = 7m;
+        Assert.Equal(27m, vm.CollaborationTotalHours);
+    }
+
+    [Fact]
+    public void CollabAdjusted_WithCalculated_SumsCorrectly()
+    {
+        var vm = CreateVm();
+        // Set WPRs with meeting data
+        var wprs = vm.CollaborationItems.First(c => c.CollabType == CollaborationType.WPRs);
+        wprs.NumberOfMeetings = 2;
+        wprs.MeetingDurationMinutes = 60;
+        wprs.NumberOfParticipants = 2;
+        wprs.ParticipantPrepTimeMinutes = 0;
+        // Calculated WPRs = 2 * (60/60 + 0) * 2 = 4
+        Assert.Equal(4m, vm.WprsHours);
+
+        vm.WprsAdjustedHours = 6m;
+        Assert.Equal(10m, vm.WprsTotalHours); // 4 + 6
+        Assert.Equal(10m, vm.CollaborationTotalHours);
     }
 
     #endregion

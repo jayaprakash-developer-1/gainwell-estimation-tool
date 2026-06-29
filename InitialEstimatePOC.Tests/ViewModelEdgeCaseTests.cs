@@ -193,7 +193,7 @@ public class ViewModelEdgeCaseTests
         vm.Components[0].Count = 1;
 
         var pmBefore = vm.ProjectManagementHours;
-        vm.PmEffortPercentage = 30m;
+        vm.PmEffortPercentage = 20m;
         var pmAfter = vm.ProjectManagementHours;
 
         Assert.True(pmAfter > pmBefore);
@@ -434,19 +434,19 @@ public class ViewModelEdgeCaseTests
     #region Enum Coverage
 
     [Fact]
-    public void ComponentType_Has11Values()
+    public void ComponentType_Has12Values()
     {
         Assert.Equal(12, Enum.GetValues<ComponentType>().Length);
     }
 
     [Fact]
-    public void ChangeType_Has2Values()
+    public void ChangeType_Has3Values()
     {
         Assert.Equal(3, Enum.GetValues<ChangeType>().Length);
     }
 
     [Fact]
-    public void ComponentSize_Has3Values()
+    public void ComponentSize_Has4Values()
     {
         Assert.Equal(4, Enum.GetValues<ComponentSize>().Length);
     }

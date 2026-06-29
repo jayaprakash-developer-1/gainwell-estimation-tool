@@ -266,16 +266,22 @@ public class WeightedValuesTests
     public void TotalWeightedValues_Count_Is66()
     {
         // Verify we have all 66 combinations (11 types × 3 sizes × 2 change types)
+        // Skip None enum values which are placeholder selections
         int count = 0;
         foreach (ComponentType ct in Enum.GetValues<ComponentType>())
-        foreach (ComponentSize sz in Enum.GetValues<ComponentSize>())
-        foreach (ChangeType ch in Enum.GetValues<ChangeType>())
         {
-            if (ct == ComponentType.None || sz == ComponentSize.None || ch == ChangeType.None)
-                continue;
-            if (WeightedValues.GetBaseHours(ct, sz, ch) > 0 || 
-                (ct == ComponentType.TestAutomationUFT)) // UFT has valid values
-                count++;
+            if (ct == ComponentType.None) continue;
+            foreach (ComponentSize sz in Enum.GetValues<ComponentSize>())
+            {
+                if (sz == ComponentSize.None) continue;
+                foreach (ChangeType ch in Enum.GetValues<ChangeType>())
+                {
+                    if (ch == ChangeType.None) continue;
+                    if (WeightedValues.GetBaseHours(ct, sz, ch) > 0 || 
+                        (ct == ComponentType.TestAutomationUFT)) // UFT has valid values
+                        count++;
+                }
+            }
         }
         Assert.Equal(66, count);
     }

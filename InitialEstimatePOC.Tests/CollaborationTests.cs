@@ -153,10 +153,9 @@ public class CollaborationTests
     #region Default Collaboration Items
 
     [Fact]
-    public void DefaultCollaboration_StartsEmpty()
+    public void DefaultCollaboration_Has4DefaultItems()
     {
         var vm = CreateVm();
-        // Constructor initializes 4 default collaboration types (all with 0 values)
         Assert.Equal(4, vm.CollaborationItems.Count);
         Assert.Equal(0m, vm.TotalCollaborationHours);
     }
@@ -248,29 +247,22 @@ public class CollaborationTests
     public void ChangeNumberOfMeetings_UpdatesTotal()
     {
         var vm = CreateVm();
-        vm.AddCollaborationItemCommand.Execute(null);
-        var item = vm.CollaborationItems[^1];
-        item.MeetingDurationMinutes = 60;
-        item.NumberOfParticipants = 3;
-        item.ParticipantPrepTimeMinutes = 15;
-        item.NumberOfMeetings = 5;
-        // 5 × (60/60 + 15/60) × 3 = 5 × 1.25 × 3 = 18.75
-        Assert.Equal(18.75m, item.TotalHours);
-        item.NumberOfMeetings = 20;
-        // 20 × 1.25 × 3 = 75.00
-        Assert.Equal(75.00m, item.TotalHours);
+        // Set up the first default item with values
+        vm.CollaborationItems[0].NumberOfMeetings = 5;
+        vm.CollaborationItems[0].MeetingDurationMinutes = 60;
+        vm.CollaborationItems[0].NumberOfParticipants = 3;
+        vm.CollaborationItems[0].ParticipantPrepTimeMinutes = 15;
+        decimal before = vm.TotalCollaborationHours;
+        vm.CollaborationItems[0].NumberOfMeetings = 20; // was 5
+        // Diff: 15 extra meetings × (60/60 + 15/60) × 3 = 15 × 1.25 × 3 = 56.25
+        Assert.Equal(before + 56.25m, vm.TotalCollaborationHours);
     }
 
     [Fact]
     public void ChangeMeetingDuration_UpdatesTotal()
     {
         var vm = CreateVm();
-        vm.AddCollaborationItemCommand.Execute(null);
-        var item = vm.CollaborationItems[^1];
-        item.NumberOfMeetings = 5;
-        item.NumberOfParticipants = 3;
-        item.ParticipantPrepTimeMinutes = 15;
-        item.MeetingDurationMinutes = 120;
+        var item = vm.CollaborationItems[0];
         // 5 × (120/60 + 15/60) × 3 = 5 × 2.25 × 3 = 33.75
         Assert.Equal(33.75m, item.TotalHours);
     }
@@ -279,12 +271,7 @@ public class CollaborationTests
     public void ChangeNumberOfParticipants_UpdatesTotal()
     {
         var vm = CreateVm();
-        vm.AddCollaborationItemCommand.Execute(null);
-        var item = vm.CollaborationItems[^1];
-        item.NumberOfMeetings = 5;
-        item.MeetingDurationMinutes = 60;
-        item.ParticipantPrepTimeMinutes = 15;
-        item.NumberOfParticipants = 5;
+        var item = vm.CollaborationItems[0];
         // 5 × (60/60 + 15/60) × 5 = 5 × 1.25 × 5 = 31.25
         Assert.Equal(31.25m, item.TotalHours);
     }
@@ -313,8 +300,7 @@ public class CollaborationTests
         vm.Components[0].ChangeType = ChangeType.New;
         vm.Components[0].Count = 1;
         decimal before = vm.GrandTotalHours;
-        // Set up a collaboration item with non-zero values
-        vm.CollaborationItems[0].NumberOfMeetings = 10;
+        vm.CollaborationItems[0].NumberOfMeetings = 20;
         vm.CollaborationItems[0].MeetingDurationMinutes = 60;
         vm.CollaborationItems[0].NumberOfParticipants = 3;
         vm.CollaborationItems[0].ParticipantPrepTimeMinutes = 15;

@@ -13,6 +13,7 @@ public class DisplayNameAndEnumTests
     #region ComponentType Display Names
 
     [Theory]
+    [InlineData(ComponentType.None, "— Select —")]
     [InlineData(ComponentType.PowerBuilderWindows, "PowerBuilder Windows")]
     [InlineData(ComponentType.Reports, "Reports")]
     [InlineData(ComponentType.ProgramsDBStoredProcs, "Programs/DB Stored Procedures")]
@@ -34,28 +35,25 @@ public class DisplayNameAndEnumTests
     #region Enum Completeness
 
     [Fact]
-    public void ComponentType_Has11Values()
+    public void ComponentType_Has12Values()
     {
-        // 11 real types + None = 12 enum values, but None is excluded from business logic
         Assert.Equal(12, Enum.GetValues<ComponentType>().Length);
     }
 
     [Fact]
-    public void ComponentSize_Has3Values()
+    public void ComponentSize_Has4Values()
     {
-        // 3 real sizes + None = 4 enum values
         Assert.Equal(4, Enum.GetValues<ComponentSize>().Length);
     }
 
     [Fact]
-    public void ChangeType_Has2Values()
+    public void ChangeType_Has3Values()
     {
-        // 2 real change types + None = 3 enum values
         Assert.Equal(3, Enum.GetValues<ChangeType>().Length);
     }
 
     [Fact]
-    public void CollaborationType_Has5Values()
+    public void CollaborationType_Has4Values()
     {
         Assert.Equal(4, Enum.GetValues<CollaborationType>().Length);
     }
@@ -65,42 +63,39 @@ public class DisplayNameAndEnumTests
     #region ViewModel Enum Arrays
 
     [Fact]
-    public void MainViewModel_ComponentTypes_ContainsAll11()
+    public void MainViewModel_ComponentTypes_ContainsAll12()
     {
         var vm = new MainViewModel();
-        // 11 real types + None = 12
         Assert.Equal(12, vm.ComponentTypes.Length);
     }
 
     [Fact]
-    public void MainViewModel_ChangeTypes_ContainsAll2()
+    public void MainViewModel_ChangeTypes_ContainsAll3()
     {
         var vm = new MainViewModel();
-        // 2 real types + None = 3
         Assert.Equal(3, vm.ChangeTypes.Length);
     }
 
     [Fact]
-    public void MainViewModel_Sizes_ContainsAll3()
+    public void MainViewModel_Sizes_ContainsAll4()
     {
         var vm = new MainViewModel();
-        // 3 real sizes + None = 4
         Assert.Equal(4, vm.Sizes.Length);
     }
 
     [Fact]
-    public void MainViewModel_CollaborationTypes_ContainsAll5()
+    public void MainViewModel_CollaborationTypes_ContainsAll4()
     {
         var vm = new MainViewModel();
         Assert.Equal(4, vm.CollaborationTypes.Length);
     }
 
     [Fact]
-    public void MainViewModel_PmEffortOptions_Has5Values()
+    public void MainViewModel_PmEffortOptions_Has20Values()
     {
         var vm = new MainViewModel();
-        // Range 1-20
         Assert.Equal(20, vm.PmEffortOptions.Length);
+        Assert.Contains(1m, vm.PmEffortOptions);
         Assert.Contains(5m, vm.PmEffortOptions);
         Assert.Contains(10m, vm.PmEffortOptions);
         Assert.Contains(15m, vm.PmEffortOptions);

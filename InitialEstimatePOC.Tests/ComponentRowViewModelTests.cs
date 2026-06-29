@@ -16,8 +16,9 @@ public class ComponentRowViewModelTests
     public void SetComponentType_UpdatesBaseHours()
     {
         var row = new ComponentRowViewModel();
-        row.ChangeType = ChangeType.New;
+        // Defaults are None — set Size and ChangeType first, then ComponentType
         row.Size = ComponentSize.Small;
+        row.ChangeType = ChangeType.New;
         row.ComponentType = ComponentType.Reports;
         // Reports Small New = 17.00
         Assert.Equal(17.00m, row.BaseHoursPerUnit);
@@ -123,16 +124,15 @@ public class ComponentRowViewModelTests
     [Fact]
     public void ChangeComponentType_RaisesPropertyChanged()
     {
-        var row = new ComponentRowViewModel
-        {
-            ComponentType = ComponentType.Reports,
-            Size = ComponentSize.Small,
-            ChangeType = ChangeType.New
-        };
+        var row = new ComponentRowViewModel();
+        // Set to valid values first so the change from Reports to MISC triggers events
+        row.Size = ComponentSize.Small;
+        row.ChangeType = ChangeType.New;
+        row.ComponentType = ComponentType.Reports;
         var raised = new List<string>();
         row.PropertyChanged += (_, e) => raised.Add(e.PropertyName!);
 
-        row.ComponentType = ComponentType.Webpage;
+        row.ComponentType = ComponentType.MISC;
 
         Assert.Contains(nameof(ComponentRowViewModel.ComponentType), raised);
         Assert.Contains(nameof(ComponentRowViewModel.BaseHoursPerUnit), raised);
@@ -142,12 +142,10 @@ public class ComponentRowViewModelTests
     [Fact]
     public void ChangeSize_RaisesPropertyChanged()
     {
-        var row = new ComponentRowViewModel
-        {
-            ComponentType = ComponentType.Reports,
-            Size = ComponentSize.Small,
-            ChangeType = ChangeType.New
-        };
+        var row = new ComponentRowViewModel();
+        row.ComponentType = ComponentType.Reports;
+        row.ChangeType = ChangeType.New;
+        row.Size = ComponentSize.Small;
         var raised = new List<string>();
         row.PropertyChanged += (_, e) => raised.Add(e.PropertyName!);
 
