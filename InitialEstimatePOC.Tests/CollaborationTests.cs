@@ -263,6 +263,10 @@ public class CollaborationTests
     {
         var vm = CreateVm();
         var item = vm.CollaborationItems[0];
+        item.NumberOfMeetings = 5;
+        item.NumberOfParticipants = 3;
+        item.ParticipantPrepTimeMinutes = 15;
+        item.MeetingDurationMinutes = 120;
         // 5 × (120/60 + 15/60) × 3 = 5 × 2.25 × 3 = 33.75
         Assert.Equal(33.75m, item.TotalHours);
     }
@@ -272,6 +276,10 @@ public class CollaborationTests
     {
         var vm = CreateVm();
         var item = vm.CollaborationItems[0];
+        item.NumberOfMeetings = 5;
+        item.MeetingDurationMinutes = 60;
+        item.ParticipantPrepTimeMinutes = 15;
+        item.NumberOfParticipants = 5;
         // 5 × (60/60 + 15/60) × 5 = 5 × 1.25 × 5 = 31.25
         Assert.Equal(31.25m, item.TotalHours);
     }

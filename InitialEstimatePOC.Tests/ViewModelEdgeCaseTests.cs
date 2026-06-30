@@ -36,7 +36,8 @@ public class ViewModelEdgeCaseTests
             Count = -1
         };
 
-        Assert.True(row.TotalHours < 0);
+        // Count <= 0 means BaseHoursPerUnit = 0, so TotalHours = 0
+        Assert.Equal(0m, row.TotalHours);
     }
 
     [Fact]
@@ -74,7 +75,8 @@ public class ViewModelEdgeCaseTests
         {
             ComponentType = ComponentType.K2Workflow,
             Size = ComponentSize.Large,
-            ChangeType = ChangeType.New
+            ChangeType = ChangeType.New,
+            Count = 1
         };
         row.UpdateBaseHours();
 
@@ -88,7 +90,8 @@ public class ViewModelEdgeCaseTests
         {
             ComponentType = ComponentType.MISC,
             Size = ComponentSize.Large,
-            ChangeType = ChangeType.New
+            ChangeType = ChangeType.New,
+            Count = 1
         };
         Assert.Equal(100m, row.BaseHoursPerUnit);
 
@@ -103,7 +106,8 @@ public class ViewModelEdgeCaseTests
         {
             ComponentType = ComponentType.MISC,
             Size = ComponentSize.Small,
-            ChangeType = ChangeType.New
+            ChangeType = ChangeType.New,
+            Count = 1
         };
         Assert.Equal(20m, row.BaseHoursPerUnit);
 
@@ -118,7 +122,8 @@ public class ViewModelEdgeCaseTests
         {
             ComponentType = ComponentType.MISC,
             Size = ComponentSize.Small,
-            ChangeType = ChangeType.New
+            ChangeType = ChangeType.New,
+            Count = 1
         };
         Assert.Equal(20m, row.BaseHoursPerUnit);
 
