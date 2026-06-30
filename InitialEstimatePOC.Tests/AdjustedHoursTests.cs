@@ -244,6 +244,7 @@ public class AdjustedHoursTests
     public void CollaborationAdjusted_AffectsSubtotal()
     {
         var vm = CreateVm();
+        AddMiscLarge(vm);
         decimal before = vm.SubtotalHours;
         vm.WprsAdjustedHours = 20m;
         Assert.True(vm.SubtotalHours > before);

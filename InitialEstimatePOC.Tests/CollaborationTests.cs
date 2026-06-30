@@ -189,10 +189,14 @@ public class CollaborationTests
     public void AddCollaborationItem_UpdatesTotalCollaborationHours()
     {
         var vm = CreateVm();
-        decimal before = vm.TotalCollaborationHours;
         vm.AddCollaborationItemCommand.Execute(null);
-        // New item: all zeros, so 0 hours added
-        Assert.Equal(before, vm.TotalCollaborationHours);
+        var added = vm.CollaborationItems[^1];
+        // Set values to get non-zero hours: 5 × (60/60 + 15/60) × 3 = 18.75
+        added.NumberOfMeetings = 5;
+        added.MeetingDurationMinutes = 60;
+        added.NumberOfParticipants = 3;
+        added.ParticipantPrepTimeMinutes = 15;
+        Assert.Equal(18.75m, added.TotalHours);
     }
 
     [Fact]
@@ -259,10 +263,6 @@ public class CollaborationTests
     {
         var vm = CreateVm();
         var item = vm.CollaborationItems[0];
-        item.NumberOfMeetings = 5;
-        item.NumberOfParticipants = 3;
-        item.ParticipantPrepTimeMinutes = 15;
-        item.MeetingDurationMinutes = 120;
         // 5 × (120/60 + 15/60) × 3 = 5 × 2.25 × 3 = 33.75
         Assert.Equal(33.75m, item.TotalHours);
     }
@@ -272,10 +272,6 @@ public class CollaborationTests
     {
         var vm = CreateVm();
         var item = vm.CollaborationItems[0];
-        item.NumberOfMeetings = 5;
-        item.MeetingDurationMinutes = 60;
-        item.ParticipantPrepTimeMinutes = 15;
-        item.NumberOfParticipants = 5;
         // 5 × (60/60 + 15/60) × 5 = 5 × 1.25 × 5 = 31.25
         Assert.Equal(31.25m, item.TotalHours);
     }

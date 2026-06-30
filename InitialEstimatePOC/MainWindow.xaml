@@ -429,7 +429,7 @@
                                 <TextBlock Style="{StaticResource HelpIcon}" VerticalAlignment="Center" Margin="0,0,16,0"
                                            ToolTip="List every software component that needs to be built or changed. Each row represents one type of work. The system looks up base hours from the weighted values table and multiplies by count.&#x0a;&#x0a;• Component Type: What kind of artifact (window, report, program, etc.)&#x0a;• Size: Complexity level (Small=simple, Medium=moderate, Large=complex)&#x0a;• New/Change: Building from scratch vs. modifying existing&#x0a;• Count: How many of this exact type/size/change combination" />
                                 <Button Content="＋ Add Component" Style="{StaticResource PrimaryButton}" 
-                                        Command="{Binding AddComponentCommand}" Margin="0,0,8,0" 
+                                        Click="OnAddComponentClick" Margin="0,0,8,0" 
                                         ToolTip="Add a new component row (Ctrl+N)" />
                                 <Button Content="💾 Save" Style="{StaticResource PrimaryButton}" 
                                         Click="OnSaveClick" Margin="0,0,8,0"
@@ -858,7 +858,8 @@
                 </TabItem>
 
                 <!-- ══ TAB 3: Adjusted Hours & Assumptions ══ -->
-                <TabItem Header="📝 Adjustments &amp; Assumptions">
+                <TabItem Header="📝 Adjustments &amp; Assumptions" IsEnabled="{Binding HasValidComponents}"
+                         ToolTip="Add at least one component in the Components tab to enable Adjustments.">
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <StackPanel>
                             <!-- Adjusted Hours Breakdown Card -->
@@ -1315,7 +1316,7 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="Development" Foreground="#374151" FontSize="12" ToolTip="Sum of all component hours (Base Hrs × Count for each row)" />
-                                <TextBlock Grid.Column="1" Text="{Binding TotalDevelopmentHours, StringFormat={}{0:N2} Hrs}" 
+                                <TextBlock Grid.Column="1" Text="{Binding DevelopmentTotalHours, StringFormat={}{0:N2} Hrs}" 
                                            Style="{StaticResource KpiValue}" FontSize="13" />
                             </Grid>
 
