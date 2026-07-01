@@ -182,10 +182,10 @@ public class NewFeaturesTests
     }
 
     [Fact]
-    public void UseTestCases_DefaultIterationsIsOne()
+    public void UseTestCases_DefaultIterationsIsZero()
     {
         var vm = CreateVm();
-        Assert.Equal(1m, vm.TestCaseIterations);
+        Assert.Equal(0m, vm.TestCaseIterations);
     }
 
     #endregion
