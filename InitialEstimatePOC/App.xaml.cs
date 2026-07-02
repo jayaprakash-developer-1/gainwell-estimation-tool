@@ -22,6 +22,10 @@ public partial class App : Application
         InitialEstimatePOC.Data.DatabaseSeeder.Initialize(db);
         WeightedValues.LoadFromDatabase(db);
 
+        // Initialize detailed estimate weighted values
+        DetailedDatabaseSeeder.Initialize(db);
+        DetailedWeightedValues.LoadFromDatabase(db);
+
         // Seed demo projects for presentation
         DemoDataSeeder.SeedDemoProjects(db);
     }

@@ -302,6 +302,7 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.Column="0" VerticalAlignment="Center" Orientation="Horizontal">
@@ -332,6 +333,20 @@
                     </StackPanel>
                 </Border>
 
+                <Button Grid.Column="4" Content="🏠 Home" Click="OnHomeClick" Margin="8,0,0,0"
+                        VerticalAlignment="Center" Cursor="Hand" Padding="12,6"
+                        Background="Transparent" Foreground="White" BorderThickness="1" BorderBrush="#4DB6AC">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" 
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="6" Padding="{TemplateBinding Padding}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
 
             </Grid>
         </Border>
@@ -1273,7 +1288,7 @@
                             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                        <TextBlock Text="Adjusted Hours Comments" Style="{StaticResource SectionHeader}" />
+                                        <TextBlock Text="Adjusted Hours Assumption" Style="{StaticResource SectionHeader}" />
                                         <TextBlock Style="{StaticResource HelpIcon}"
                                                    ToolTip="Explain any adjustments made above. This provides audit trail and reviewer context.&#x0a;&#x0a;Example: 'Added 20 hrs to Development because the legacy codebase has no documentation and will require additional reverse-engineering time.'" />
                                     </StackPanel>
