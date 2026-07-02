@@ -7,6 +7,9 @@ namespace InitialEstimatePOC.Data;
 public class EstimateDbContext : DbContext
 {
     public DbSet<WeightedValueEntity> WeightedValues { get; set; } = null!;
+    public DbSet<DetailedSeWeightedValueEntity> DetailedSeWeightedValues { get; set; } = null!;
+    public DbSet<DetailedBaWeightedValueEntity> DetailedBaWeightedValues { get; set; } = null!;
+    public DbSet<ExperienceLevelEntity> ExperienceLevels { get; set; } = null!;
     public DbSet<ProjectEntity> Projects { get; set; } = null!;
     public DbSet<ComponentEntryEntity> ComponentEntries { get; set; } = null!;
     public DbSet<CollaborationItemEntity> CollaborationItems { get; set; } = null!;
@@ -126,6 +129,31 @@ public class EstimateDbContext : DbContext
             entity.Property(e => e.ParticipantPrepTimeMinutes).HasColumnName("PARTICIPANT_PREP_TIME_MINUTES");
             entity.Property(e => e.TotalHours).HasColumnName("TOTAL_HOURS").HasColumnType("REAL");
             entity.Property(e => e.Notes).HasColumnName("NOTES").HasMaxLength(1000);
+        });
+
+        modelBuilder.Entity<DetailedSeWeightedValueEntity>(entity =>
+        {
+            entity.ToTable("DETAILED_SE_WEIGHTED_VALUES");
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => new { e.ComponentType, e.TaskPhase, e.ComponentStatus, e.Complexity }).IsUnique();
+            entity.Property(e => e.Hours).HasColumnType("REAL");
+        });
+
+        modelBuilder.Entity<DetailedBaWeightedValueEntity>(entity =>
+        {
+            entity.ToTable("DETAILED_BA_WEIGHTED_VALUES");
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => new { e.Category, e.TaskType, e.Complexity }).IsUnique();
+            entity.Property(e => e.TaskType).HasMaxLength(100).IsRequired();
+            entity.Property(e => e.Hours).HasColumnType("REAL");
+        });
+
+        modelBuilder.Entity<ExperienceLevelEntity>(entity =>
+        {
+            entity.ToTable("EXPERIENCE_LEVELS");
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => new { e.Role, e.Level }).IsUnique();
+            entity.Property(e => e.Multiplier).HasColumnType("REAL");
         });
     }
 }

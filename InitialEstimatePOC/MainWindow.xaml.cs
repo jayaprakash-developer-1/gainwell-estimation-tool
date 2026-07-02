@@ -302,6 +302,19 @@ public partial class MainWindow : Window
 
     // ═══════════ SAVE ═══════════
 
+    private void OnHomeClick(object sender, RoutedEventArgs e)
+    {
+        var welcome = new WelcomeWindow();
+        welcome.WindowStartupLocation = WindowStartupLocation.Manual;
+        welcome.Left = Left;
+        welcome.Top = Top;
+        welcome.Width = Width;
+        welcome.Height = Height;
+        welcome.WindowState = WindowState;
+        welcome.Show();
+        Close();
+    }
+
     private void OnSettingsClick(object sender, RoutedEventArgs e)
     {
         var settingsWindow = new SettingsWindow { Owner = this };
