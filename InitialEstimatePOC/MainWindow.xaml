@@ -4,7 +4,7 @@
         xmlns:vm="clr-namespace:InitialEstimatePOC.ViewModels"
         xmlns:models="clr-namespace:InitialEstimatePOC.Models"
         xmlns:conv="clr-namespace:InitialEstimatePOC.Converters"
-        Title="Initial Estimate — POC" 
+        Title="Initial Estimate" 
         Height="1000" Width="1500"
         WindowStartupLocation="CenterScreen"
         Background="#F5F7FA"
@@ -244,12 +244,13 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!-- ═══════════ TOAST NOTIFICATION ═══════════ -->
-        <Border x:Name="ToastPanel" Grid.Row="0" Grid.RowSpan="4" 
+        <Border x:Name="ToastPanel" Grid.Row="0" Grid.RowSpan="5" 
                 Panel.ZIndex="100" Visibility="Collapsed" Opacity="0"
                 HorizontalAlignment="Right" VerticalAlignment="Top" 
                 Margin="0,16,24,0" Padding="14,10" CornerRadius="8"
@@ -267,7 +268,7 @@
         </Border>
 
         <!-- ═══════════ CONFIRMATION OVERLAY ═══════════ -->
-        <Grid x:Name="ConfirmOverlay" Grid.Row="0" Grid.RowSpan="4" Panel.ZIndex="99" 
+        <Grid x:Name="ConfirmOverlay" Grid.Row="0" Grid.RowSpan="5" Panel.ZIndex="99" 
               Visibility="Collapsed" Background="#40000000">
             <Border Background="White" CornerRadius="12" Padding="32,24" 
                     HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -291,7 +292,7 @@
         </Grid>
 
         <!-- ═══════════ HEADER BANNER ═══════════ -->
-        <Border Grid.Row="0" Padding="24,16" Margin="8,8,8,0" CornerRadius="8">
+        <Border Grid.Row="0" Padding="24,16" Margin="8,8,8,0" CornerRadius="8,8,0,0">
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
                     <GradientStop Color="#00857C" Offset="0" />
@@ -309,10 +310,7 @@
 
                 <StackPanel Grid.Column="0" VerticalAlignment="Center" Orientation="Horizontal">
                     <Image Source="Assets/logo.png" Height="36" Margin="0,0,12,0" VerticalAlignment="Center" />
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock Text="Initial Estimate" FontSize="20" FontWeight="Bold" Foreground="White" />
-                        <TextBlock Text="Component-Based Estimation Tool" FontSize="12" Foreground="#C7D2FE" Margin="0,4,0,0" />
-                    </StackPanel>
+                    <TextBlock Text="Initial Estimate" FontSize="20" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" />
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Margin="24,0" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -353,8 +351,28 @@
             </Grid>
         </Border>
 
+        <!-- ═══════════ ESTIMATE TAB NAVIGATION ═══════════ -->
+        <Border Grid.Row="1" Margin="8,0,8,0" Padding="4,4" Background="#F0F0F5" CornerRadius="0,0,8,8">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <!-- Initial Estimate Tab (Active) -->
+                <Border Background="#6C63FF" CornerRadius="6" Padding="16,8" Margin="4,0">
+                    <TextBlock Text="Initial Estimate" FontSize="12" FontWeight="SemiBold" Foreground="White" />
+                </Border>
+                <!-- Detailed Estimate Tab -->
+                <Border x:Name="DetailedTab" Background="Transparent" CornerRadius="6" Padding="16,8" Margin="4,0" 
+                        Cursor="Hand" MouseLeftButtonDown="OnDetailedTabClick">
+                    <TextBlock Text="Detailed Estimate" FontSize="12" FontWeight="SemiBold" Foreground="#6B7280" />
+                </Border>
+                <!-- Final Estimate Tab -->
+                <Border Background="Transparent" CornerRadius="6" Padding="16,8" Margin="4,0"
+                        Cursor="Hand" MouseLeftButtonDown="OnFinalTabClick">
+                    <TextBlock Text="Final Estimate" FontSize="12" FontWeight="SemiBold" Foreground="#9CA3AF" />
+                </Border>
+            </StackPanel>
+        </Border>
+
         <!-- ═══════════ PROJECT HEADER FIELDS ═══════════ -->
-        <Border Grid.Row="1" Style="{StaticResource CardBorder}">
+        <Border Grid.Row="2" Style="{StaticResource CardBorder}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -420,7 +438,7 @@
         </Border>
 
         <!-- ═══════════ MAIN CONTENT: Tabs (Components + Collaboration + Assumptions) + Sidebar ═══════════ -->
-        <Grid Grid.Row="2" Margin="0,0,0,0">
+        <Grid Grid.Row="3" Margin="0,0,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -1730,7 +1748,7 @@
         </Grid>
 
         <!-- ═══════════ FOOTER ═══════════ -->
-        <Border Grid.Row="3" Background="#F9FAFB" Padding="16,8" Margin="8,0,8,8" CornerRadius="0,0,8,8" BorderBrush="#E5E7EB" BorderThickness="0,1,0,0">
+        <Border Grid.Row="4" Background="#F9FAFB" Padding="16,8" Margin="8,0,8,8" CornerRadius="0,0,8,8" BorderBrush="#E5E7EB" BorderThickness="0,1,0,0">
             <Grid>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <TextBlock Text="Ctrl+S Save" FontSize="10" Foreground="#9CA3AF" Margin="0,0,12,0" />

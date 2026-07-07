@@ -111,11 +111,12 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!-- Header Banner -->
-        <Border Grid.Row="0" Padding="24,16" Margin="8,8,8,0" CornerRadius="8">
+        <Border Grid.Row="0" Padding="24,16" Margin="8,8,8,0" CornerRadius="8,8,0,0">
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
                     <GradientStop Color="#00857C" Offset="0" />
@@ -132,10 +133,7 @@
 
                 <StackPanel Grid.Column="0" VerticalAlignment="Center" Orientation="Horizontal">
                     <Image Source="Assets/logo.png" Height="36" Margin="0,0,12,0" VerticalAlignment="Center" />
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock Text="Detailed Estimate" FontSize="20" FontWeight="Bold" Foreground="White" />
-                        <TextBlock x:Name="ProjectSubtitleText" Text="SE + BA + Collaboration Breakdown" FontSize="12" Foreground="#C7D2FE" Margin="0,4,0,0" />
-                    </StackPanel>
+                    <TextBlock Text="Detailed Estimate" FontSize="20" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" />
                 </StackPanel>
 
                 <Border Grid.Column="1" Background="White" CornerRadius="6" Padding="16,8" Margin="8,0" VerticalAlignment="Center">
@@ -159,8 +157,28 @@
             </Grid>
         </Border>
 
+        <!-- ═══════════ ESTIMATE TAB NAVIGATION ═══════════ -->
+        <Border Grid.Row="1" Margin="8,0,8,0" Padding="4,4" Background="#F0F0F5" CornerRadius="0,0,8,8">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <!-- Initial Estimate Tab -->
+                <Border x:Name="InitialTab" Background="Transparent" CornerRadius="6" Padding="16,8" Margin="4,0"
+                        Cursor="Hand" MouseLeftButtonDown="OnInitialTabClick">
+                    <TextBlock Text="Initial Estimate" FontSize="12" FontWeight="SemiBold" Foreground="#6B7280" />
+                </Border>
+                <!-- Detailed Estimate Tab (Active) -->
+                <Border Background="#6C63FF" CornerRadius="6" Padding="16,8" Margin="4,0">
+                    <TextBlock Text="Detailed Estimate" FontSize="12" FontWeight="SemiBold" Foreground="White" />
+                </Border>
+                <!-- Final Estimate Tab -->
+                <Border Background="Transparent" CornerRadius="6" Padding="16,8" Margin="4,0"
+                        Cursor="Hand" MouseLeftButtonDown="OnFinalTabClick">
+                    <TextBlock Text="Final Estimate" FontSize="12" FontWeight="SemiBold" Foreground="#9CA3AF" />
+                </Border>
+            </StackPanel>
+        </Border>
+
         <!-- Tab Control for 4 Sub-Pages -->
-        <TabControl Grid.Row="1" Margin="8,8,8,8" BorderThickness="0" Background="Transparent"
+        <TabControl Grid.Row="2" Margin="8,8,8,8" BorderThickness="0" Background="Transparent"
                    SelectionChanged="OnTabSelectionChanged">
             <TabControl.Resources>
                 <Style TargetType="TabItem">

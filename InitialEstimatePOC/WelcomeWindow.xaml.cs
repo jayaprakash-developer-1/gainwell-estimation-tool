@@ -12,7 +12,19 @@ public partial class WelcomeWindow : Window
     public WelcomeWindow()
     {
         InitializeComponent();
+        Closed += OnWelcomeClosed;
         LoadRecentProjects();
+    }
+
+    private void OnWelcomeClosed(object? sender, EventArgs e)
+    {
+        // If no other windows are open, shut down the app
+        foreach (Window w in Application.Current.Windows)
+        {
+            if (w != this && w.IsVisible)
+                return;
+        }
+        Application.Current.Shutdown();
     }
 
     private void LoadRecentProjects()
@@ -36,74 +48,65 @@ public partial class WelcomeWindow : Window
         }
     }
 
-    private void CopyWindowPosition(Window target)
+    private void OnCreateClick(object sender, RoutedEventArgs e)
     {
-        target.WindowStartupLocation = WindowStartupLocation.Manual;
-        target.Left = Left;
-        target.Top = Top;
-        target.Width = Width;
-        target.Height = Height;
-        target.WindowState = WindowState;
-    }
+        var projectName = ProjectNameTextBox.Text.Trim();
+        var changeOrder = ChangeOrderTextBox.Text.Trim();
+        var description = DescriptionTextBox.Text.Trim();
 
-    private void OnInitialEstimateClick(object sender, RoutedEventArgs e)
-    {
+        if (string.IsNullOrWhiteSpace(projectName))
+        {
+            MessageBox.Show("Please enter a Project Name.", "Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
+            ProjectNameTextBox.Focus();
+            return;
+        }
+
         var mainWindow = new MainWindow();
-        CopyWindowPosition(mainWindow);
+        mainWindow.Width = EstimateNavigator.WindowWidth;
+        mainWindow.Height = EstimateNavigator.WindowHeight;
+        mainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+        EstimateNavigator.RegisterWindow(mainWindow);
         mainWindow.Show();
         if (mainWindow.DataContext is ViewModels.MainViewModel vm)
         {
-            if (_selectedProject != null)
-            {
-                vm.LoadProject(_selectedProject);
-            }
-            else
-            {
-                vm.ProjectName = ProjectNameTextBox.Text.Trim();
-                vm.ChangeOrderId = ChangeOrderTextBox.Text.Trim();
-            }
+            vm.ProjectName = projectName;
+            vm.ChangeOrderId = changeOrder;
+            vm.ProjectDescription = description;
         }
         Close();
     }
 
-    private void OnDetailedEstimateClick(object sender, RoutedEventArgs e)
+    private void OnOpenClick(object sender, RoutedEventArgs e)
     {
-        var project = _selectedProject ?? new ProjectEntity
+        if (_selectedProject == null)
         {
-            ProjectName = ProjectNameTextBox.Text.Trim(),
-            ChangeOrderId = ChangeOrderTextBox.Text.Trim()
-        };
-        var detailedWindow = new DetailedEstimateWindow(project);
-        CopyWindowPosition(detailedWindow);
-        detailedWindow.Show();
-        Close();
-    }
-
-    private void OnFinalEstimateClick(object sender, RoutedEventArgs e)
-    {
-        MessageBox.Show("Final Estimate is coming soon.", "Not Yet Available", MessageBoxButton.OK, MessageBoxImage.Information);
-    }
-
-    private void OnHistoryClick(object sender, RoutedEventArgs e)
-    {
-        var historyWindow = new HistoryWindow { Owner = this };
-        if (historyWindow.ShowDialog() == true && historyWindow.SelectedProject != null)
-        {
-            var mainWindow = new MainWindow();
-            CopyWindowPosition(mainWindow);
-            mainWindow.Show();
-            if (mainWindow.DataContext is ViewModels.MainViewModel vm)
+            var historyWindow = new HistoryWindow { Owner = this };
+            if (historyWindow.ShowDialog() == true && historyWindow.SelectedProject != null)
             {
-                vm.LoadProject(historyWindow.SelectedProject);
+                _selectedProject = historyWindow.SelectedProject;
+                OpenSelectedProject();
             }
-            Close();
+            return;
         }
+
+        OpenSelectedProject();
     }
 
-    private void OnSettingsClick(object sender, RoutedEventArgs e)
+    private void OpenSelectedProject()
     {
-        var settingsWindow = new SettingsWindow { Owner = this };
-        settingsWindow.ShowDialog();
+        if (_selectedProject == null) return;
+
+        var mainWindow = new MainWindow();
+        mainWindow.Width = EstimateNavigator.WindowWidth;
+        mainWindow.Height = EstimateNavigator.WindowHeight;
+        mainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+        EstimateNavigator.RegisterWindow(mainWindow);
+        mainWindow.Show();
+        if (mainWindow.DataContext is ViewModels.MainViewModel vm)
+        {
+            vm.LoadProject(_selectedProject);
+        }
+        Close();
     }
 
     private void OnRecentProjectSelected(object sender, SelectionChangedEventArgs e)
@@ -113,6 +116,7 @@ public partial class WelcomeWindow : Window
             _selectedProject = project;
             ProjectNameTextBox.Text = project.ProjectName;
             ChangeOrderTextBox.Text = project.ChangeOrderId;
+            DescriptionTextBox.Text = project.ProjectDescription ?? string.Empty;
         }
     }
 }

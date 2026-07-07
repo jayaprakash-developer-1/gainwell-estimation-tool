@@ -42,16 +42,23 @@ public partial class DetailedEstimateWindow : Window
             ChangeOrderTextBox.Text = _currentProject.ChangeOrderId ?? string.Empty;
             ProjectNameTextBox.Text = _currentProject.ProjectName ?? string.Empty;
             EstimatedByTextBox.Text = _currentProject.EstimatedBy ?? Environment.UserName;
-            if (!string.IsNullOrWhiteSpace(_currentProject.ProjectName))
-            {
-                Title = $"Detailed Estimate — {_currentProject.ProjectName}";
-                ProjectSubtitleText.Text = $"{_currentProject.ProjectName} | CO: {_currentProject.ChangeOrderId}";
-            }
+            UpdateTabContext();
         }
         else
         {
             EstimatedByTextBox.Text = Environment.UserName;
         }
+    }
+
+    private void UpdateTabContext()
+    {
+        var co = ChangeOrderTextBox.Text.Trim();
+        var name = ProjectNameTextBox.Text.Trim();
+        var parts = new System.Collections.Generic.List<string>();
+        if (!string.IsNullOrWhiteSpace(co)) parts.Add(co);
+        if (!string.IsNullOrWhiteSpace(name)) parts.Add(name);
+        parts.Add("Detailed Estimate");
+        Title = string.Join(" - ", parts);
     }
 
     private void OnOpenHistoryClick(object sender, RoutedEventArgs e)
@@ -62,8 +69,7 @@ public partial class DetailedEstimateWindow : Window
             _currentProject = historyWindow.SelectedProject;
             ChangeOrderTextBox.Text = _currentProject.ChangeOrderId ?? string.Empty;
             ProjectNameTextBox.Text = _currentProject.ProjectName ?? string.Empty;
-            Title = $"Detailed Estimate — {_currentProject.ProjectName}";
-            ProjectSubtitleText.Text = $"{_currentProject.ProjectName} | CO: {_currentProject.ChangeOrderId}";
+            UpdateTabContext();
         }
     }
 
@@ -209,15 +215,32 @@ public partial class DetailedEstimateWindow : Window
 
     private void OnHomeClick(object sender, RoutedEventArgs e)
     {
-        var welcome = new WelcomeWindow();
-        welcome.WindowStartupLocation = WindowStartupLocation.Manual;
-        welcome.Left = Left;
-        welcome.Top = Top;
-        welcome.Width = Width;
-        welcome.Height = Height;
-        welcome.WindowState = WindowState;
-        welcome.Show();
-        Close();
+        EstimateNavigator.GoHome(this);
+    }
+
+    private void OnInitialTabClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        EstimateNavigator.SwitchToInitialEstimate(this);
+    }
+
+    private void OnFinalTabClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        MessageBox.Show("Final Estimate is coming soon.", "Not Yet Available", MessageBoxButton.OK, MessageBoxImage.Information);
+    }
+
+    public ProjectEntity? GetCurrentProject()
+    {
+        return _currentProject ?? new ProjectEntity
+        {
+            ProjectName = ProjectNameTextBox.Text.Trim(),
+            ChangeOrderId = ChangeOrderTextBox.Text.Trim()
+        };
+    }
+
+    public void UpdateProjectInfo(ProjectEntity project)
+    {
+        _currentProject = project;
+        LoadProjectInfo();
     }
 
     private void OnSaveClick(object sender, RoutedEventArgs e)

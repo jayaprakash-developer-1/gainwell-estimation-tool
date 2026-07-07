@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -20,6 +21,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        Loaded += (_, _) => UpdateTabContext();
 
         // When weighted values are changed in Settings, refresh all component base hours
         WeightedValues.ValuesChanged += () =>
@@ -96,6 +98,27 @@ public partial class MainWindow : Window
             // Subscribe existing items (e.g., default collaboration rows)
             foreach (var row in mainVm.CollaborationItems)
                 SubscribeCollaborationForUndo(row);
+
+            // Update tab context and window title when project info changes
+            mainVm.PropertyChanged += (_, args) =>
+            {
+                if (args.PropertyName is nameof(MainViewModel.ProjectName) or nameof(MainViewModel.ChangeOrderId))
+                    UpdateTabContext();
+            };
+        }
+    }
+
+    private void UpdateTabContext()
+    {
+        if (DataContext is MainViewModel vm)
+        {
+            var co = string.IsNullOrWhiteSpace(vm.ChangeOrderId) ? "" : vm.ChangeOrderId;
+            var name = string.IsNullOrWhiteSpace(vm.ProjectName) ? "" : vm.ProjectName;
+            var parts = new List<string>();
+            if (!string.IsNullOrWhiteSpace(co)) parts.Add(co);
+            if (!string.IsNullOrWhiteSpace(name)) parts.Add(name);
+            parts.Add("Initial Estimate");
+            Title = string.Join(" - ", parts);
         }
     }
 
@@ -304,15 +327,17 @@ public partial class MainWindow : Window
 
     private void OnHomeClick(object sender, RoutedEventArgs e)
     {
-        var welcome = new WelcomeWindow();
-        welcome.WindowStartupLocation = WindowStartupLocation.Manual;
-        welcome.Left = Left;
-        welcome.Top = Top;
-        welcome.Width = Width;
-        welcome.Height = Height;
-        welcome.WindowState = WindowState;
-        welcome.Show();
-        Close();
+        EstimateNavigator.GoHome(this);
+    }
+
+    private void OnDetailedTabClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        EstimateNavigator.SwitchToDetailedEstimate(this);
+    }
+
+    private void OnFinalTabClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        MessageBox.Show("Final Estimate is coming soon.", "Not Yet Available", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
     private void OnSettingsClick(object sender, RoutedEventArgs e)
