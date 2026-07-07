@@ -1,0 +1,82 @@
+﻿=== DTL COLLABORATION_QUALITY - FULL DUMP (Rows 1-50, Cols A-O) ===
+Row 1 : [1]:Template Version:	[2]:2.9	
+Row 2 : [1]:Collaboration - Quality	
+Row 4 : [1]:Change Order	[2]:CO 23327 002	
+Row 5 : [1]:Instructions:	[2]:All fields highlighted in yellow are input fields.  If you have any questions concerning what should be considered when updating those fields, check to see if there is an associated comment for that cell (indicated by a red triangle in the upper right corner).	
+Row 7 : [1]:Estimate By:	[2]: BA Virginia Innerst 	
+Row 10 : [1]:Task	[2]:Count	[3]:Hours	[5]:# of Attendees	[7]:Hour
+Total	[8]:Adjusted 
+Hrs	[9]:Grand Total	
+Row 12 : [1]:Total Summary	[7]:2240.00	[8]:0.00	[9]:2240.00	
+Row 14 : [1]:Meeting Walkthrough/Work Product Reviews
+Insert the number of Gainwell walkthroughs and/or work product reviews expected over the remainder of the work item.  This should include meetings like TDD, Code Reviews, etc.
+	[2]:            25 	[4]:Avg # of Attendees	[5]:              6 	[7]:      150.00 	[8]:             -   	[9]:      150.00 	
+Row 15 : [1]:Walkthrough/Work Product Review Preparation per person
+Enter the number of preparation hours required for each person.	[3]:         0.50 	[7]:        75.00 	[8]:             -   	[9]:        75.00 	
+Row 17 : [1]:Client Meetings
+Insert the number of client meetings expected over the remainder of the work item.  The work should include joint review meetings (like requirements clarification, BDD reviews, educational meetings, etc).	[2]:              5 	[4]:Avg # of Attendees	[5]:              4 	[7]:        20.00 	[8]:             -   	[9]:        20.00 	
+Row 18 : [1]:Client Meeting Preparation per person
+Enter the number of preparation hours required for each person.	[3]:         0.25 	[7]:          5.00 	[8]:             -   	[9]:          5.00 	
+Row 20 : [1]:Internal Meetings
+Insert the number of internal Gainwell meetings (i.e., team/status meetings, issue resolution, consultant meetings, etc.)  expected over the remainder of the work item. 	[2]:            24 	[4]:Avg # of Attendees	[5]:              6 	[7]:      144.00 	[8]:             -   	[9]:      144.00 	
+Row 21 : [1]:Internal Meeting Preparation per person
+Enter the number of preparation hours required for each person.	[3]:         0.25 	[7]:        36.00 	[8]:             -   	[9]:        36.00 	
+Row 23 : [1]:Consultant/Mentor Effort
+Insert Consultant names below and associated hours.	[4]:375.00	
+Row 24 : [1]:Person 1 Mario Castillon	[4]:                       100.00 	
+Row 25 : [1]:Person 2 Tracey Elias	[4]:                       100.00 	
+Row 26 : [1]:Person 3 Virginia Innerst	[4]:                       100.00 	
+Row 27 : [1]:Person 4 Madeline Woodward	[4]:                         75.00 	
+Row 28 : [1]:Person 5	[4]:                              -   	
+Row 31 : [1]:Create Detailed and Final Estimates	[4]:35.00	
+Row 32 : [1]:Create Detail Estimate (hr)
+Insert the number of hours to create the Detailed Estimate.	[4]:                         25.00 	
+Row 33 : [1]:Create Final Estimate (hr)
+Insert the number of hours to create the Final Estimate.	[4]:                         10.00 	
+Row 35 : [1]:Project Manager Effort
+Insert the number of PM hours required.	[4]:                    1,400.00 	
+Row 39 : [1]:Assumptions:
+Add assumptions that led to the numbers in the estimate. 	[3]:Meeting Walkthrough/Work Product Reviews: WPR for Test Plans, Test Results, Detailed Estimate, TDDs, Codes, and Prod Vals for T-MSIS CIP, CLT, COT, CRX, FTX files. 
+Client Meetings: Review Test Results for T-MSIS CIP, CLT, COT, CRX, FTX files. 
+Internal Meetings: Testing Status Meetings and any issue resolution discussions.
+Consultant/Mentor Effort: Testing support 
+
+Increase in collaboration from the Initial Estimate to the Detailed Estimate is the addition of consultants (field not available in estimate template when Initial Estimate was done) and increased PM hours due to the increase in overall scope of work.	
+Row 47 : [1]:*Additional Hours Notes (i.e. BRD revisions and approvals):
+Add justification for adjusted hours.	
+
+=== CELL FORMULAS (Key Calculated Cells) ===
+G12 | Formula: =SUM(G14:G21,D23,D31,D35) | Value: 2240
+H12 | Formula: =SUM(H14:H21) | Value: 0
+I12 | Formula: =SUM(I14:I21,D23,D31,D35) | Value: 2240
+G14 | Formula: =B14*1*E14 | Value: 150
+G15 | Formula: =C15*E14*B14 | Value: 75
+G17 | Formula: =B17*1*E17 | Value: 20
+G18 | Formula: =C18*E17*B17 | Value: 5
+G20 | Formula: =B20*1*E20 | Value: 144
+G21 | Formula: =C21*E20*B20 | Value: 36
+I14 | Formula: =G14+H14 | Value: 150
+I15 | Formula: =G15+H15 | Value: 75
+I17 | Formula: =G17+H17 | Value: 20
+I18 | Formula: =G18+H18 | Value: 5
+I20 | Formula: =G20+H20 | Value: 144
+I21 | Formula: =G21+H21 | Value: 36
+D23 | Formula: =SUM(D24:D28) | Value: 375
+D31 | Formula: =SUM(D32:D33) | Value: 35
+D35 | Formula: 1400 | Value: 1400
+
+=== CELL COMMENTS/NOTES ===
+$A$32 : Insert the amount of time it takes to develop the detailed estimate (reviewing the design and doing detailed analysis). The detailed estimate will be populated on the EstimateSummary worksheet based on the data entered by the SE and BA on the respective worksheets in this workbook. Team review of the estimate should be included on the Collaboration tab.
+$A$33 : Insert the amount of time it takes to develop the final estimate (reviewing the design and doing detailed analysis). The final estimate will be populated on the EstimateSummary worksheet based on the data entered by the SE and BA on the respective worksheets in this workbook. Team review of the estimate should be included on the Collaboration tab.
+
+=== NUMBER FORMATS ===
+G12 | Format: 0.00
+G14 | Format: _(* #,##0.00_);_(* (#,##0.00);_(* "-"??_);_(@_)
+G15 | Format: _(* #,##0.00_);_(* (#,##0.00);_(* "-"??_);_(@_)
+D23 | Format: 0.00
+D24 | Format: _(* #,##0.00_);_(* (#,##0.00);_(* "-"??_);_(@_)
+D31 | Format: 0.00
+D32 | Format: _(* #,##0.00_);_(* (#,##0.00);_(* "-"??_);_(@_)
+D35 | Format: _(* #,##0.00_);_(* (#,##0.00);_(* "-"??_);_(@_)
+H12 | Format: 0.00
+I12 | Format: 0.00
