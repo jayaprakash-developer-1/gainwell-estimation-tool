@@ -72,18 +72,24 @@
             <Setter Property="Margin" Value="0,4,0,0" />
         </Style>
 
-        <!-- Help Icon Style - universal info icon -->
+        <!-- Help Icon Style - universal info icon (round) -->
         <Style x:Key="HelpIcon" TargetType="TextBlock">
             <Setter Property="Text" Value="?" />
-            <Setter Property="FontSize" Value="10" />
+            <Setter Property="FontSize" Value="9" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="Foreground" Value="White" />
             <Setter Property="Background" Value="#8C5CED" />
-            <Setter Property="Width" Value="15" />
-            <Setter Property="Height" Value="15" />
+            <Setter Property="Width" Value="14" />
+            <Setter Property="Height" Value="14" />
             <Setter Property="TextAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Margin" Value="5,0,0,0" />
+            <Setter Property="Padding" Value="0,1,0,0" />
+            <Setter Property="Clip">
+                <Setter.Value>
+                    <EllipseGeometry Center="7,7" RadiusX="7" RadiusY="7" />
+                </Setter.Value>
+            </Setter>
             <Setter Property="Cursor" Value="Help" />
             <Setter Property="ToolTipService.Placement" Value="Right" />
             <Setter Property="ToolTipService.HorizontalOffset" Value="6" />
