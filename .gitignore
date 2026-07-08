@@ -33,4 +33,12 @@ llm-bridge/
 TestResults/
 **/TestResults/
 
+## Excel tools and files (local only)
+ExcelReader/
+*.xlsm
+*.xlsx
+
+## Crash logs
+crash.log
+
 .for_my_referance/
