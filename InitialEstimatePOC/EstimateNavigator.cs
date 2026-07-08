@@ -31,10 +31,9 @@ public static class EstimateNavigator
         }
 
         // Transfer project info from detailed to initial
-        if (source is DetailedEstimateWindow detailed)
+        if (source is DetailedEstimateWindow detailed && detailed.GetCurrentProjectEntity() is ProjectEntity project)
         {
-            var project = detailed.GetCurrentProject();
-            if (_initialWindow.DataContext is MainViewModel vm && project != null)
+            if (_initialWindow.DataContext is MainViewModel vm)
             {
                 vm.ProjectName = project.ProjectName;
                 vm.ChangeOrderId = project.ChangeOrderId;
@@ -73,7 +72,7 @@ public static class EstimateNavigator
         {
             SyncPosition(source, _detailedWindow);
             if (project != null)
-                _detailedWindow.UpdateProjectInfo(project);
+                _detailedWindow.LoadFromProject(project);
         }
 
         _detailedWindow.Show();

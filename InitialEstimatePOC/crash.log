@@ -1,0 +1,5 @@
+System.InvalidOperationException: 'Refresh' is not allowed during an AddNew or EditItem transaction.
+   at System.Windows.Data.CollectionView.Refresh()
+   at InitialEstimatePOC.SeComponentDetailDialog.<OnCellEditEnding>b__12_0() in C:\Users\gt114789\OneDrive - Gainwell Technologies\Projects\PROMISe Estimating Tool Migration\Promise-Estimating-Tool-POC\InitialEstimatePOC\SeComponentDetailDialog.xaml.cs:line 75
+   at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   at System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
