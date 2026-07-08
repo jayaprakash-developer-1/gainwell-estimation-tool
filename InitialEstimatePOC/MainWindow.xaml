@@ -1,10 +1,10 @@
-<Window x:Class="InitialEstimatePOC.MainWindow"
+﻿<Window x:Class="InitialEstimatePOC.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:InitialEstimatePOC.ViewModels"
         xmlns:models="clr-namespace:InitialEstimatePOC.Models"
         xmlns:conv="clr-namespace:InitialEstimatePOC.Converters"
-        Title="Initial Estimate — POC" 
+        Title="Initial Estimate - POC" 
         Height="1000" Width="1500"
         WindowStartupLocation="CenterScreen"
         Background="#F5F6FA"
@@ -72,12 +72,16 @@
             <Setter Property="Margin" Value="0,4,0,0" />
         </Style>
 
-        <!-- Help Icon Style — clean circle info icon -->
+        <!-- Help Icon Style - universal info icon -->
         <Style x:Key="HelpIcon" TargetType="TextBlock">
-            <Setter Property="Text" Value="&#xE946;" />
-            <Setter Property="FontFamily" Value="Segoe Fluent Icons, Segoe MDL2 Assets" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="Foreground" Value="#8C5CED" />
+            <Setter Property="Text" Value="?" />
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Background" Value="#8C5CED" />
+            <Setter Property="Width" Value="15" />
+            <Setter Property="Height" Value="15" />
+            <Setter Property="TextAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Margin" Value="5,0,0,0" />
             <Setter Property="Cursor" Value="Help" />
@@ -176,7 +180,7 @@
             </Style.Triggers>
         </Style>
 
-        <!-- Tooltip Style — Stripe/Vercel inspired -->
+        <!-- Tooltip Style - Stripe/Vercel inspired -->
         <Style TargetType="ToolTip">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="HasDropShadow" Value="True" />
@@ -255,7 +259,7 @@
                 <DropShadowEffect BlurRadius="12" Opacity="0.15" ShadowDepth="4" Direction="270" />
             </Border.Effect>
             <StackPanel Orientation="Horizontal">
-                <TextBlock x:Name="ToastIcon" Text="✓" FontSize="14" FontWeight="Bold" 
+                <TextBlock x:Name="ToastIcon" Text="OK" FontSize="14" FontWeight="Bold" 
                            Foreground="#019681" VerticalAlignment="Center" Margin="0,0,8,0" />
                 <TextBlock x:Name="ToastText" Text="" FontSize="12" Foreground="#5A6978" 
                            VerticalAlignment="Center" MaxWidth="300" TextWrapping="Wrap" />
@@ -414,13 +418,13 @@
 
             <!-- Global toolbar above all tabs -->
             <StackPanel Grid.Row="0" Grid.ColumnSpan="3" Orientation="Horizontal" Margin="8,8,8,4">
-                <Button Content="📋 History" Style="{StaticResource GhostButton}" 
+                <Button Content="History" Style="{StaticResource GhostButton}" 
                         Click="OnHistoryClick" Margin="0,0,8,0"
                         ToolTip="Browse and load previously saved estimates" />
                 <Button Content="Clear All" Style="{StaticResource GhostButton}" 
                         Click="OnClearAllClick" Margin="0,0,8,0"
                         ToolTip="Remove all components and collaboration items" />
-                <Button Content="⚙ Settings" Style="{StaticResource GhostButton}" 
+                <Button Content="Settings" Style="{StaticResource GhostButton}" 
                         Click="OnSettingsClick"
                         ToolTip="Edit weighted values (base hours per component type)" />
             </StackPanel>
@@ -442,14 +446,14 @@
                             <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,12">
                                 <TextBlock Text="Component Grid" Style="{StaticResource SectionHeader}" VerticalAlignment="Center" Margin="0,0,8,0" />
                                 <TextBlock Style="{StaticResource HelpIcon}" VerticalAlignment="Center" Margin="0,0,16,0"
-                                           ToolTip="List every software component that needs to be built or changed. Each row represents one type of work. The system looks up base hours from the weighted values table and multiplies by count.&#x0a;&#x0a;• Component Type: What kind of artifact (window, report, program, etc.)&#x0a;• Size: Complexity level (Small=simple, Medium=moderate, Large=complex)&#x0a;• New/Change: Building from scratch vs. modifying existing&#x0a;• Count: How many of this exact type/size/change combination" />
-                                <Button Content="＋ Add Component" Style="{StaticResource PrimaryButton}" 
+                                           ToolTip="List every software component that needs to be built or changed. Each row represents one type of work. The system looks up base hours from the weighted values table and multiplies by count.&#x0a;&#x0a;- Component Type: What kind of artifact (window, report, program, etc.)&#x0a;- Size: Complexity level (Small=simple, Medium=moderate, Large=complex)&#x0a;- New/Change: Building from scratch vs. modifying existing&#x0a;- Count: How many of this exact type/size/change combination" />
+                                <Button Content="+ Add Component" Style="{StaticResource PrimaryButton}" 
                                         Click="OnAddComponentClick" Margin="0,0,8,0" 
                                         ToolTip="Add a new component row (Ctrl+N)" />
-                                <Button Content="💾 Save" Style="{StaticResource PrimaryButton}" 
+                                <Button Content="Save" Style="{StaticResource PrimaryButton}" 
                                         Click="OnSaveClick" Margin="0,0,8,0"
                                         ToolTip="Save this estimate (Ctrl+S)" />
-                                <Button Content="↶ Undo" Style="{StaticResource GhostButton}" 
+                                <Button Content="Undo" Style="{StaticResource GhostButton}" 
                                         Click="OnUndoClick"
                                         ToolTip="Undo last delete (Ctrl+Z)" />
                             </StackPanel>
@@ -460,10 +464,10 @@
                                         HorizontalAlignment="Center" VerticalAlignment="Center"
                                         Visibility="{Binding ComponentCount, Converter={StaticResource ZeroToVisibility}}">
                                     <StackPanel HorizontalAlignment="Center">
-                                        <TextBlock Text="📋" FontSize="40" HorizontalAlignment="Center" Margin="0,0,0,12" />
+                                        <TextBlock Text="" FontSize="40" HorizontalAlignment="Center" Margin="0,0,0,12" />
                                         <TextBlock Text="No components yet" FontSize="16" FontWeight="SemiBold" 
                                                    Foreground="#5A6978" HorizontalAlignment="Center" />
-                                        <TextBlock Text="Click '＋ Add Component' or press Ctrl+N to start estimating" 
+                                        <TextBlock Text="Click '+ Add Component' or press Ctrl+N to start estimating" 
                                                    FontSize="12" Foreground="#8E99A8" HorizontalAlignment="Center" Margin="0,6,0,0" />
                                     </StackPanel>
                                 </Border>
@@ -537,7 +541,7 @@
                                     <DataGridTextColumn Header="Req#" Binding="{Binding RequirementId, UpdateSourceTrigger=PropertyChanged}" Width="70">
                                         <DataGridTextColumn.HeaderStyle>
                                             <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
-                                                <Setter Property="ToolTip" Value="Requirement ID — links this component to a specific requirement in your requirements document or tracking system" />
+                                                <Setter Property="ToolTip" Value="Requirement ID - links this component to a specific requirement in your requirements document or tracking system" />
                                             </Style>
                                         </DataGridTextColumn.HeaderStyle>
                                     </DataGridTextColumn>
@@ -545,7 +549,7 @@
                                     <DataGridTemplateColumn Header="Component Type" Width="220">
                                         <DataGridTemplateColumn.HeaderStyle>
                                             <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
-                                                <Setter Property="ToolTip" Value="What kind of software artifact:&#x0a;• PowerBuilder Windows — PowerBuilder desktop screens&#x0a;• Reports — Crystal/SSRS reports&#x0a;• Programs/DB Stored Procedures — Backend logic, batch jobs&#x0a;• Support Modules/JOB/JIL — Utility/shared libraries&#x0a;• DB Manipulation (SQL, PL/SQL, etc.) — Data migration scripts&#x0a;• Database Review — Schema analysis (fixed hours)&#x0a;• Webpage (Includes UI, Portal &amp; Intranet) — Web UI pages&#x0a;• K2 Workflow — K2 process definitions&#x0a;• K2 Smart Form — K2 electronic forms&#x0a;• Test Automation Suites (UFT) — Automated test scripts&#x0a;• MISC (Server Setup, Webserver Setup, Software Installation, etc.) — Anything not covered above" />
+                                                <Setter Property="ToolTip" Value="What kind of software artifact:&#x0a;- PowerBuilder Windows - PowerBuilder desktop screens&#x0a;- Reports - Crystal/SSRS reports&#x0a;- Programs/DB Stored Procedures - Backend logic, batch jobs&#x0a;- Support Modules/JOB/JIL - Utility/shared libraries&#x0a;- DB Manipulation (SQL, PL/SQL, etc.) - Data migration scripts&#x0a;- Database Review - Schema analysis (fixed hours)&#x0a;- Webpage (Includes UI, Portal &amp; Intranet) - Web UI pages&#x0a;- K2 Workflow - K2 process definitions&#x0a;- K2 Smart Form - K2 electronic forms&#x0a;- Test Automation Suites (UFT) - Automated test scripts&#x0a;- MISC (Server Setup, Webserver Setup, Software Installation, etc.) - Anything not covered above" />
                                             </Style>
                                         </DataGridTemplateColumn.HeaderStyle>
                                         <DataGridTemplateColumn.CellTemplate>
@@ -605,7 +609,7 @@
                                     <DataGridTemplateColumn Header="Size" Width="75">
                                         <DataGridTemplateColumn.HeaderStyle>
                                             <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
-                                                <Setter Property="ToolTip" Value="Complexity of this component:&#x0a;• Small — Simple, few fields, straightforward (1-3 days)&#x0a;• Medium — Moderate complexity, business rules (3-10 days)&#x0a;• Large — Complex logic, many integrations (10+ days)&#x0a;&#x0a;Note: This is inherent complexity, not project size." />
+                                                <Setter Property="ToolTip" Value="Complexity of this component:&#x0a;- Small - Simple, few fields, straightforward (1-3 days)&#x0a;- Medium - Moderate complexity, business rules (3-10 days)&#x0a;- Large - Complex logic, many integrations (10+ days)&#x0a;&#x0a;Note: This is inherent complexity, not project size." />
                                             </Style>
                                         </DataGridTemplateColumn.HeaderStyle>
                                         <DataGridTemplateColumn.CellTemplate>
@@ -674,7 +678,7 @@
                                     <DataGridTemplateColumn Header="" Width="35">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <Button Content="✕" FontSize="12" Foreground="#CC1AC7" Background="Transparent" BorderThickness="0" Cursor="Hand"
+                                                <Button Content="X" FontSize="12" Foreground="#CC1AC7" Background="Transparent" BorderThickness="0" Cursor="Hand"
                                                         Click="OnDeleteComponentClick"
                                                         VerticalAlignment="Center" HorizontalAlignment="Center"
                                                         ToolTip="Remove this component row (can undo with Ctrl+Z)" />
@@ -850,7 +854,7 @@
                                     <DataGridTemplateColumn Header="Participant Prep Time (In Mins)" Width="95">
                                         <DataGridTemplateColumn.HeaderStyle>
                                             <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
-                                                <Setter Property="ToolTip" Value="Participant Prep Time (In Minutes) — time each participant spends preparing before the meeting" />
+                                                <Setter Property="ToolTip" Value="Participant Prep Time (In Minutes) - time each participant spends preparing before the meeting" />
                                             </Style>
                                         </DataGridTemplateColumn.HeaderStyle>
                                         <DataGridTemplateColumn.CellTemplate>
@@ -916,7 +920,7 @@
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
                                         <TextBlock Text="Adjusted Hours (Mid-Project Re-estimation)" Style="{StaticResource SectionHeader}" />
                                         <TextBlock Style="{StaticResource HelpIcon}"
-                                                   ToolTip="Use these fields when re-estimating mid-project. Each row shows: Calculated Hours (auto from engine), Adjusted Hours (+/- manual override), and Total (sum of both).&#x0a;&#x0a;• Positive = additional hours needed&#x0a;• Negative = hours recovered/saved&#x0a;• Leave at 0 for initial estimates" />
+                                                   ToolTip="Use these fields when re-estimating mid-project. Each row shows: Calculated Hours (auto from engine), Adjusted Hours (+/- manual override), and Total (sum of both).&#x0a;&#x0a;- Positive = additional hours needed&#x0a;- Negative = hours recovered/saved&#x0a;- Leave at 0 for initial estimates" />
                                     </StackPanel>
 
                                     <!-- Grid Header -->
@@ -1135,7 +1139,7 @@
                                         </Grid>
                                     </Border>
 
-                                    <!-- Row: Collaboration — WPRs -->
+                                    <!-- Row: Collaboration - WPRs -->
                                     <Border BorderBrush="#EBEDF5" BorderThickness="0,0,0,1" Padding="0,4">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
@@ -1147,7 +1151,7 @@
                                             </Grid.ColumnDefinitions>
                                             <DockPanel Grid.Column="0" VerticalAlignment="Center" LastChildFill="True">
                                                 <TextBlock DockPanel.Dock="Right" Style="{StaticResource HelpIcon}" FontSize="11"
-                                                           ToolTip="10 WPRs — BRD (if applicable), Initial Estimate, BDD, Detailed Estimate, TDD, Code, Test Plan, Test Results, System Documentation and Production Validation.&#x0a;&#x0a;To make a Change → Select Number of WPRs, Meeting Duration, Number of Participants and Prep Time per Participant in the Collaboration tab." />
+                                                           ToolTip="10 WPRs - BRD (if applicable), Initial Estimate, BDD, Detailed Estimate, TDD, Code, Test Plan, Test Results, System Documentation and Production Validation.&#x0a;&#x0a;To make a Change → Select Number of WPRs, Meeting Duration, Number of Participants and Prep Time per Participant in the Collaboration tab." />
                                                 <TextBlock Text="WPRs" FontSize="12" FontWeight="Medium" Foreground="#2B3A44" Padding="8,4" TextWrapping="Wrap" />
                                             </DockPanel>
                                             <TextBlock Grid.Column="1" Text="{Binding WprsHours, StringFormat=N2}" FontSize="12" Foreground="#8E99A8" Padding="8,4" TextAlignment="Right" VerticalAlignment="Center" />
@@ -1160,7 +1164,7 @@
                                         </Grid>
                                     </Border>
 
-                                    <!-- Row: Collaboration — Client Meetings -->
+                                    <!-- Row: Collaboration - Client Meetings -->
                                     <Border BorderBrush="#EBEDF5" BorderThickness="0,0,0,1" Padding="0,4">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
@@ -1185,7 +1189,7 @@
                                         </Grid>
                                     </Border>
 
-                                    <!-- Row: Collaboration — Internal Meetings -->
+                                    <!-- Row: Collaboration - Internal Meetings -->
                                     <Border BorderBrush="#EBEDF5" BorderThickness="0,0,0,1" Padding="0,4">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
@@ -1210,7 +1214,7 @@
                                         </Grid>
                                     </Border>
 
-                                    <!-- Row: Collaboration — Automation Test Collaboration -->
+                                    <!-- Row: Collaboration - Automation Test Collaboration -->
                                     <Border BorderBrush="#EBEDF5" BorderThickness="0,0,0,1" Padding="0,4">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
@@ -1260,7 +1264,7 @@
                                         </Grid>
                                     </Border>
 
-                                    <!-- Row: Collaboration & Quality — Grand Total -->
+                                    <!-- Row: Collaboration & Quality - Grand Total -->
                                     <Border BorderBrush="#E8EAF0" BorderThickness="0,0,0,2" Padding="0,4" Background="#EBEDF5">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
@@ -1272,11 +1276,11 @@
                                             </Grid.ColumnDefinitions>
                                             <DockPanel Grid.Column="0" VerticalAlignment="Center" LastChildFill="True">
                                                 <TextBlock DockPanel.Dock="Right" Style="{StaticResource HelpIcon}" FontSize="11"
-                                                           ToolTip="Sum of all collaboration type totals (Calculated + Adjusted):&#x0a;• WPRs&#x0a;• Client Meetings&#x0a;• Internal Meetings&#x0a;• Automation Test Collaboration&#x0a;• Consultant / Mentor Effort" />
+                                                           ToolTip="Sum of all collaboration type totals (Calculated + Adjusted):&#x0a;- WPRs&#x0a;- Client Meetings&#x0a;- Internal Meetings&#x0a;- Automation Test Collaboration&#x0a;- Consultant / Mentor Effort" />
                                                 <TextBlock Text="Collaboration &amp; Quality (Total)" FontSize="12" FontWeight="Medium" Foreground="#2B3A44" Padding="8,4" TextWrapping="Wrap" />
                                             </DockPanel>
                                             <TextBlock Grid.Column="1" Text="{Binding TotalCollaborationHours, StringFormat=N2}" FontSize="12" Foreground="#8E99A8" Padding="8,4" TextAlignment="Right" VerticalAlignment="Center" />
-                                            <TextBlock Grid.Column="2" FontSize="12" Foreground="#D4D7E0" Padding="8,4" TextAlignment="Right" VerticalAlignment="Center" Text="—" />
+                                            <TextBlock Grid.Column="2" FontSize="12" Foreground="#D4D7E0" Padding="8,4" TextAlignment="Right" VerticalAlignment="Center" Text="-" />
                                             <TextBlock Grid.Column="3" Text="{Binding CollaborationTotalHours, StringFormat=N2}" FontSize="12" FontWeight="SemiBold" Foreground="#2B3A44" Padding="8,4" TextAlignment="Right" VerticalAlignment="Center" />
                                             <TextBlock Grid.Column="4" />
                                         </Grid>
@@ -1292,7 +1296,7 @@
                                                   IsChecked="{Binding UseTestCasesForEstimate}" 
                                                   FontSize="12" FontWeight="SemiBold" Foreground="#5A6978" VerticalContentAlignment="Center" />
                                         <TextBlock Style="{StaticResource HelpIcon}" Margin="8,0,0,0"
-                                                   ToolTip="Toggle ON to calculate System Testing based on test case counts instead of the default 30% of Development.&#x0a;&#x0a;Hours per test case per iteration:&#x0a;• Simple = 0.5 hrs&#x0a;• Medium = 1.0 hrs&#x0a;• Complex = 2.0 hrs&#x0a;• Very Complex = 4.0 hrs&#x0a;&#x0a;Formula: (Simple×0.5 + Medium×1 + Complex×2 + VeryComplex×4) × Iterations" />
+                                                   ToolTip="Toggle ON to calculate System Testing based on test case counts instead of the default 30% of Development.&#x0a;&#x0a;Hours per test case per iteration:&#x0a;- Simple = 0.5 hrs&#x0a;- Medium = 1.0 hrs&#x0a;- Complex = 2.0 hrs&#x0a;- Very Complex = 4.0 hrs&#x0a;&#x0a;Formula: (Simple×0.5 + Medium×1 + Complex×2 + VeryComplex×4) × Iterations" />
                                     </StackPanel>
 
                                     <Grid Visibility="{Binding UseTestCasesForEstimate, Converter={StaticResource BoolToVisibility}}">
@@ -1334,7 +1338,7 @@
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
                                         <TextBlock Text="Actual Hours &amp; Estimate Time" Style="{StaticResource SectionHeader}" />
                                         <TextBlock Style="{StaticResource HelpIcon}"
-                                                   ToolTip="Track hours already spent and time for creating estimates:&#x0a;&#x0a;• Total Actual Hours: Hours already consumed (for mid-project re-estimation)&#x0a;• As of Date: The date these actual hours were recorded&#x0a;• Time for Estimates: Hours spent creating the Detailed and Final estimates themselves" />
+                                                   ToolTip="Track hours already spent and time for creating estimates:&#x0a;&#x0a;- Total Actual Hours: Hours already consumed (for mid-project re-estimation)&#x0a;- As of Date: The date these actual hours were recorded&#x0a;- Time for Estimates: Hours spent creating the Detailed and Final estimates themselves" />
                                     </StackPanel>
 
                                     <Grid>
@@ -1398,7 +1402,7 @@
                         </Border>
                     </ControlTemplate>
                 </Button.Template>
-                <TextBlock x:Name="SidebarToggleText" Text="◀" FontSize="11" Foreground="#8E99A8" />
+                <TextBlock x:Name="SidebarToggleText" Text="&#x25C0;" FontSize="11" Foreground="#8E99A8" />
             </Button>
 
             <!-- ═══════════ RIGHT SIDEBAR ═══════════ -->
@@ -1410,7 +1414,7 @@
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
                                 <TextBlock Text="Derived Tasks" Style="{StaticResource SectionHeader}" Margin="0" />
                                 <TextBlock Style="{StaticResource HelpIcon}"
-                                           ToolTip="These tasks are automatically calculated as percentages of the development effort. They represent standard project activities that scale with complexity.&#x0a;&#x0a;These are NOT editable — they are derived from your component list. To change them, modify the components or the percentages in Settings." />
+                                           ToolTip="These tasks are automatically calculated as percentages of the development effort. They represent standard project activities that scale with complexity.&#x0a;&#x0a;These are NOT editable - they are derived from your component list. To change them, modify the components or the percentages in Settings." />
                             </StackPanel>
 
                             <!-- Development -->
@@ -1429,7 +1433,7 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="System Testing (30%)" Foreground="#5A6978" FontSize="12" ToolTip="ROUNDUP(Development × 30%, 2) — Standard testing effort based on dev complexity" />
+                                <TextBlock Text="System Testing (30%)" Foreground="#5A6978" FontSize="12" ToolTip="ROUNDUP(Development × 30%, 2) - Standard testing effort based on dev complexity" />
                                 <TextBlock Grid.Column="1" Text="{Binding SystemTestingTotalHours, StringFormat={}{0:N2} Hrs}" FontFamily="Cascadia Mono, Consolas" FontSize="13" Foreground="#019681" />
                             </Grid>
 
@@ -1438,7 +1442,7 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="Analysis (5%)" Foreground="#5A6978" FontSize="12" ToolTip="ROUNDUP((Development + System Testing) × 5%, 2) — Requirements analysis effort" />
+                                <TextBlock Text="Analysis (5%)" Foreground="#5A6978" FontSize="12" ToolTip="ROUNDUP((Development + System Testing) × 5%, 2) - Requirements analysis effort" />
                                 <TextBlock Grid.Column="1" Text="{Binding AnalysisTotalHours, StringFormat={}{0:N2} Hrs}" FontFamily="Cascadia Mono, Consolas" FontSize="13" Foreground="#019681" />
                             </Grid>
 
@@ -1447,7 +1451,7 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="Business Design (15%)" Foreground="#5A6978" FontSize="12" ToolTip="ROUNDUP((Development + System Testing) × 15%, 2) — Business requirements and design documentation" />
+                                <TextBlock Text="Business Design (15%)" Foreground="#5A6978" FontSize="12" ToolTip="ROUNDUP((Development + System Testing) × 15%, 2) - Business requirements and design documentation" />
                                 <TextBlock Grid.Column="1" Text="{Binding BusinessDesignTotalHours, StringFormat={}{0:N2} Hrs}" FontFamily="Cascadia Mono, Consolas" FontSize="13" Foreground="#019681" />
                             </Grid>
 
@@ -1456,7 +1460,7 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="Promotion (5%)" Foreground="#5A6978" FontSize="12" ToolTip="ROUNDUP(Development × 5%, 2) — Code promotion/deployment to environments" />
+                                <TextBlock Text="Promotion (5%)" Foreground="#5A6978" FontSize="12" ToolTip="ROUNDUP(Development × 5%, 2) - Code promotion/deployment to environments" />
                                 <TextBlock Grid.Column="1" Text="{Binding PromotionTotalHours, StringFormat={}{0:N2} Hrs}" FontFamily="Cascadia Mono, Consolas" FontSize="13" Foreground="#019681" />
                             </Grid>
 
@@ -1465,7 +1469,7 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="BA System Documentation (5%)" Foreground="#5A6978" FontSize="12" ToolTip="ROUNDUP(Development × 5%, 2) — BA system documentation effort" />
+                                <TextBlock Text="BA System Documentation (5%)" Foreground="#5A6978" FontSize="12" ToolTip="ROUNDUP(Development × 5%, 2) - BA system documentation effort" />
                                 <TextBlock Grid.Column="1" Text="{Binding BaSystemDocTotalHours, StringFormat={}{0:N2} Hrs}" FontFamily="Cascadia Mono, Consolas" FontSize="13" Foreground="#019681" />
                             </Grid>
 
@@ -1474,7 +1478,7 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="Production Validation (20%)" Foreground="#5A6978" FontSize="12" ToolTip="ROUNDUP(System Testing × 20%, 2) — Production validation/verification after deployment" />
+                                <TextBlock Text="Production Validation (20%)" Foreground="#5A6978" FontSize="12" ToolTip="ROUNDUP(System Testing × 20%, 2) - Production validation/verification after deployment" />
                                 <TextBlock Grid.Column="1" Text="{Binding ProductionValidationTotalHours, StringFormat={}{0:N2} Hrs}" FontFamily="Cascadia Mono, Consolas" FontSize="13" Foreground="#019681" />
                             </Grid>
 
@@ -1549,7 +1553,7 @@
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
                                 <TextBlock Text="Role Breakout" Style="{StaticResource SectionHeader}" Margin="0" />
                                 <TextBlock Style="{StaticResource HelpIcon}"
-                                           ToolTip="Shows how Grand Total hours are distributed across roles:&#x0a;&#x0a;• BA = Analysis/2 + Business Design + BA Doc + Prod Validation + PM/2&#x0a;• SE = Development + Analysis/2 + Promotion + PM/2&#x0a;• Tester = System Testing&#x0a;• PM = PM Effort (15% default)&#x0a;• Collaboration = All collaboration items&#x0a;&#x0a;Note: Analysis and PM hours are split 50/50 between BA and SE." />
+                                           ToolTip="Shows how Grand Total hours are distributed across roles:&#x0a;&#x0a;- BA = Analysis/2 + Business Design + BA Doc + Prod Validation + PM/2&#x0a;- SE = Development + Analysis/2 + Promotion + PM/2&#x0a;- Tester = System Testing&#x0a;- PM = PM Effort (15% default)&#x0a;- Collaboration = All collaboration items&#x0a;&#x0a;Note: Analysis and PM hours are split 50/50 between BA and SE." />
                             </StackPanel>
 
                             <Grid Margin="0,4">
@@ -1661,7 +1665,7 @@
                     <!-- Quick Help Card -->
                     <Border Style="{StaticResource CardBorder}">
                         <StackPanel>
-                            <TextBlock Text="💡 Quick Help" Style="{StaticResource SectionHeader}" />
+                            <TextBlock Text="Quick Help" Style="{StaticResource SectionHeader}" />
                             <TextBlock TextWrapping="Wrap" FontSize="11" Foreground="#8E99A8" Margin="0,0,0,6"
                                        Text="1. Add components in the grid (Type + Size + New/Change + Count)" />
                             <TextBlock TextWrapping="Wrap" FontSize="11" Foreground="#8E99A8" Margin="0,0,0,6"
