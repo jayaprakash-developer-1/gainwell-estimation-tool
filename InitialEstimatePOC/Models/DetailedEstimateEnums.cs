@@ -129,9 +129,11 @@ public enum BaSystemTestTask
 {
     UnderstandingRequirements,
     WriteSystemTestCases,
+    Iteration,
     DataPreparation,
     AlmTasks,
     TestExecution,
+    PreReleaseDefects,
     RegressionTesting
 }
 

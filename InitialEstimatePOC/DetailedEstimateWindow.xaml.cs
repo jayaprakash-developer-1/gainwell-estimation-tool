@@ -15,11 +15,28 @@ public partial class DetailedEstimateWindow : Window
 {
     public ObservableCollection<ComponentTypeRow> ComponentRows { get; } = new();
     public ObservableCollection<BaTestCaseRow> BaTestCases { get; } = new();
+    public ObservableCollection<BaTestCaseRow> BaRegressionRows { get; } = new();
     public ObservableCollection<BaValidationRow> BaValidationItems { get; } = new();
     public ObservableCollection<ConsultantRow> Consultants { get; } = new();
     public ObservableCollection<SummaryRow> SeSummaryRows { get; } = new();
     public ObservableCollection<SummaryRow> BaSummaryRows { get; } = new();
     public ObservableCollection<SummaryRow> CollabSummaryRows { get; } = new();
+
+    /// <summary>Available experience level options for the BA grid dropdowns (includes "Select" placeholder).</summary>
+    public string[] ExpLevelOptions { get; } = new[] { "Select", "New to Area", "Proficient", "Expert" };
+
+    /// <summary>Available task names for the Write System Test Cases Task dropdown (includes "Select" placeholder).</summary>
+    public string[] BaTaskNameOptions { get; } = new[]
+    {
+        "Select",
+        "Understanding Requirements",
+        "Write System Test Cases (# cases)",
+        "Iteration",
+        "Data Preparation",
+        "ALM Upload, Linking and Generating Reports",
+        "Sys Test Execution",
+        "Pre Release Defects Creation and Retest"
+    };
 
     private ProjectEntity? _currentProject;
 
@@ -40,6 +57,7 @@ public partial class DetailedEstimateWindow : Window
         if (_currentProject != null)
         {
             ChangeOrderTextBox.Text = _currentProject.ChangeOrderId ?? string.Empty;
+            BaChangeOrderTextBox.Text = _currentProject.ChangeOrderId ?? string.Empty;
             ProjectNameTextBox.Text = _currentProject.ProjectName ?? string.Empty;
             EstimatedByTextBox.Text = _currentProject.EstimatedBy ?? Environment.UserName;
             if (!string.IsNullOrWhiteSpace(_currentProject.ProjectName))
@@ -61,6 +79,7 @@ public partial class DetailedEstimateWindow : Window
         {
             _currentProject = historyWindow.SelectedProject;
             ChangeOrderTextBox.Text = _currentProject.ChangeOrderId ?? string.Empty;
+            BaChangeOrderTextBox.Text = _currentProject.ChangeOrderId ?? string.Empty;
             ProjectNameTextBox.Text = _currentProject.ProjectName ?? string.Empty;
             Title = $"Detailed Estimate — {_currentProject.ProjectName}";
             ProjectSubtitleText.Text = $"{_currentProject.ProjectName} | CO: {_currentProject.ChangeOrderId}";
@@ -157,20 +176,65 @@ public partial class DetailedEstimateWindow : Window
 
     private void InitializeGrids()
     {
-        // Setup BA Test Cases Grid with default rows
-        BaTestCases.Add(new BaTestCaseRow { TaskName = "Understanding Requirements", Category = BaCategory.SystemTesting, TaskType = "UnderstandingRequirements" });
-        BaTestCases.Add(new BaTestCaseRow { TaskName = "Write System Test Cases (# cases)", Category = BaCategory.SystemTesting, TaskType = "WriteSystemTestCases" });
-        BaTestCases.Add(new BaTestCaseRow { TaskName = "Data Preparation", Category = BaCategory.SystemTesting, TaskType = "DataPreparation" });
-        BaTestCases.Add(new BaTestCaseRow { TaskName = "ALM Upload, Linking and Reports", Category = BaCategory.SystemTesting, TaskType = "AlmTasks" });
-        BaTestCases.Add(new BaTestCaseRow { TaskName = "Sys Test Execution", Category = BaCategory.SystemTesting, TaskType = "TestExecution" });
-        BaTestCases.Add(new BaTestCaseRow { TaskName = "Regression testing/document", Category = BaCategory.SystemTesting, TaskType = "RegressionTesting" });
+        // Setup BA Test Cases Grid — 21 rows matching Excel Dtl BA_Considerations (rows R15-R37)
+        // New to Area group (R15-R21)
+        BaTestCases.Add(new BaTestCaseRow { TaskName = "Understanding Requirements",                      Category = BaCategory.SystemTesting, TaskType = "UnderstandingRequirements", IsInfoRow = false, ExperienceLevel = ExperienceLevel.NewToArea  });
+        BaTestCases.Add(new BaTestCaseRow { TaskName = "New: Write System Test Cases (# cases)",          Category = BaCategory.SystemTesting, TaskType = "WriteSystemTestCases",       IsInfoRow = false, ExperienceLevel = ExperienceLevel.NewToArea  });
+        BaTestCases.Add(new BaTestCaseRow { TaskName = "New: Iteration",                                  Category = BaCategory.SystemTesting, TaskType = "Iteration",                  IsInfoRow = true,  ExperienceLevel = ExperienceLevel.NewToArea  });
+        BaTestCases.Add(new BaTestCaseRow { TaskName = "New: Data Preparation",                           Category = BaCategory.SystemTesting, TaskType = "DataPreparation",            IsInfoRow = false, ExperienceLevel = ExperienceLevel.NewToArea  });
+        BaTestCases.Add(new BaTestCaseRow { TaskName = "New: ALM Upload, Linking and Generating Reports", Category = BaCategory.SystemTesting, TaskType = "AlmTasks",                   IsInfoRow = false, ExperienceLevel = ExperienceLevel.NewToArea  });
+        BaTestCases.Add(new BaTestCaseRow { TaskName = "New: Sys Test Execution",                         Category = BaCategory.SystemTesting, TaskType = "TestExecution",              IsInfoRow = false, ExperienceLevel = ExperienceLevel.NewToArea  });
+        BaTestCases.Add(new BaTestCaseRow { TaskName = "New: Pre Release Defects Creation and Retest",    Category = BaCategory.SystemTesting, TaskType = "PreReleaseDefects",           IsInfoRow = false, ExperienceLevel = ExperienceLevel.NewToArea  });
+        // Proficient group (R23-R29)
+        BaTestCases.Add(new BaTestCaseRow { TaskName = "Understanding Requirements",                           Category = BaCategory.SystemTesting, TaskType = "UnderstandingRequirements", IsInfoRow = false, ExperienceLevel = ExperienceLevel.Proficient });
+        BaTestCases.Add(new BaTestCaseRow { TaskName = "Proficient: Write System Test Cases (# cases)",        Category = BaCategory.SystemTesting, TaskType = "WriteSystemTestCases",       IsInfoRow = false, ExperienceLevel = ExperienceLevel.Proficient });
+        BaTestCases.Add(new BaTestCaseRow { TaskName = "Proficient: Iteration",                                Category = BaCategory.SystemTesting, TaskType = "Iteration",                  IsInfoRow = true,  ExperienceLevel = ExperienceLevel.Proficient });
+        BaTestCases.Add(new BaTestCaseRow { TaskName = "Proficient: Data Preparation",                         Category = BaCategory.SystemTesting, TaskType = "DataPreparation",            IsInfoRow = false, ExperienceLevel = ExperienceLevel.Proficient });
+        BaTestCases.Add(new BaTestCaseRow { TaskName = "Proficient: ALM Upload, Linking and Generating Reports", Category = BaCategory.SystemTesting, TaskType = "AlmTasks",                IsInfoRow = false, ExperienceLevel = ExperienceLevel.Proficient });
+        BaTestCases.Add(new BaTestCaseRow { TaskName = "Proficient: Sys Test Execution",                       Category = BaCategory.SystemTesting, TaskType = "TestExecution",              IsInfoRow = false, ExperienceLevel = ExperienceLevel.Proficient });
+        BaTestCases.Add(new BaTestCaseRow { TaskName = "Proficient: Pre Release Defects Creation and Retest",  Category = BaCategory.SystemTesting, TaskType = "PreReleaseDefects",           IsInfoRow = false, ExperienceLevel = ExperienceLevel.Proficient });
+        // Expert group (R31-R37)
+        BaTestCases.Add(new BaTestCaseRow { TaskName = "Understanding Requirements",                    Category = BaCategory.SystemTesting, TaskType = "UnderstandingRequirements", IsInfoRow = false, ExperienceLevel = ExperienceLevel.Expert     });
+        BaTestCases.Add(new BaTestCaseRow { TaskName = "Expert: Write System Test Cases (# cases)",     Category = BaCategory.SystemTesting, TaskType = "WriteSystemTestCases",       IsInfoRow = false, ExperienceLevel = ExperienceLevel.Expert     });
+        BaTestCases.Add(new BaTestCaseRow { TaskName = "Expert: Iteration",                             Category = BaCategory.SystemTesting, TaskType = "Iteration",                  IsInfoRow = true,  ExperienceLevel = ExperienceLevel.Expert     });
+        BaTestCases.Add(new BaTestCaseRow { TaskName = "Expert: Data Preparation",                      Category = BaCategory.SystemTesting, TaskType = "DataPreparation",            IsInfoRow = false, ExperienceLevel = ExperienceLevel.Expert     });
+        BaTestCases.Add(new BaTestCaseRow { TaskName = "Expert: ALM Upload, Linking and Generating Reports", Category = BaCategory.SystemTesting, TaskType = "AlmTasks",             IsInfoRow = false, ExperienceLevel = ExperienceLevel.Expert     });
+        BaTestCases.Add(new BaTestCaseRow { TaskName = "Expert: Sys Test Execution",                    Category = BaCategory.SystemTesting, TaskType = "TestExecution",              IsInfoRow = false, ExperienceLevel = ExperienceLevel.Expert     });
+        BaTestCases.Add(new BaTestCaseRow { TaskName = "Expert: Pre Release Defects Creation and Retest", Category = BaCategory.SystemTesting, TaskType = "PreReleaseDefects",         IsInfoRow = false, ExperienceLevel = ExperienceLevel.Expert     });
         BaTestCasesGrid.ItemsSource = BaTestCases;
 
-        // Setup BA Production Validation Grid
-        BaValidationItems.Add(new BaValidationRow { TaskName = "General Validation", TaskType = "GeneralValidation" });
-        BaValidationItems.Add(new BaValidationRow { TaskName = "Pricing Changes", TaskType = "PricingChanges" });
-        BaValidationItems.Add(new BaValidationRow { TaskName = "Reference Changes", TaskType = "ReferenceChanges" });
+        // Setup WTC→Iteration→Derived propagation for each experience-level group
+        SetupWtcGroup(0);   // New to Area (rows 0–6)
+        SetupWtcGroup(7);   // Proficient  (rows 7–13)
+        SetupWtcGroup(14);  // Expert      (rows 14–20)
+
+        // Setup Regression Testing — Proficient hardcoded (matching Excel Row 40)
+        BaRegressionRows.Add(new BaTestCaseRow { TaskName = "Regression testing/document (# cases)", Category = BaCategory.SystemTesting, TaskType = "RegressionTesting", ExperienceLevel = ExperienceLevel.Proficient });
+        BaRegressionGrid.ItemsSource = BaRegressionRows;
+
+        // Setup Production Validation Grid — 9 rows matching Excel labels and order
+        BaValidationItems.Add(new BaValidationRow { TaskName = "General validation",            TaskType = "GeneralValidation", ExperienceLevel = ExperienceLevel.NewToArea  });
+        BaValidationItems.Add(new BaValidationRow { TaskName = "Pricing changes",               TaskType = "PricingChanges",    ExperienceLevel = ExperienceLevel.NewToArea  });
+        BaValidationItems.Add(new BaValidationRow { TaskName = "Reference changes",             TaskType = "ReferenceChanges",  ExperienceLevel = ExperienceLevel.NewToArea  });
+        BaValidationItems.Add(new BaValidationRow { TaskName = "2nd Exp General validation",    TaskType = "GeneralValidation", ExperienceLevel = ExperienceLevel.Proficient });
+        BaValidationItems.Add(new BaValidationRow { TaskName = "2nd Exp Pricing changes",       TaskType = "PricingChanges",    ExperienceLevel = ExperienceLevel.Proficient });
+        BaValidationItems.Add(new BaValidationRow { TaskName = "2nd Exp Reference changes",     TaskType = "ReferenceChanges",  ExperienceLevel = ExperienceLevel.Proficient });
+        BaValidationItems.Add(new BaValidationRow { TaskName = "3rd Exp General validation",    TaskType = "GeneralValidation", ExperienceLevel = ExperienceLevel.Expert     });
+        BaValidationItems.Add(new BaValidationRow { TaskName = "3rd Exp Pricing changes",       TaskType = "PricingChanges",    ExperienceLevel = ExperienceLevel.Expert     });
+        BaValidationItems.Add(new BaValidationRow { TaskName = "3rd Exp Reference changes",     TaskType = "ReferenceChanges",  ExperienceLevel = ExperienceLevel.Expert     });
         BaProductionValidationGrid.ItemsSource = BaValidationItems;
+
+        // Complexity columns are now separate count inputs — no ComboBox ItemsSource needed
+
+        // Subscribe to PropertyChanged on all BA rows so summary strips update live
+        // (equivalent to Excel's SUM formulas auto-recalculating on cell change)
+        void OnBaRowChanged(object? s, System.ComponentModel.PropertyChangedEventArgs _)
+        {
+            if (IsLoaded) UpdateSummaryTab();
+        }
+        foreach (var row in BaTestCases)       row.PropertyChanged += OnBaRowChanged;
+        foreach (var row in BaRegressionRows)  row.PropertyChanged += OnBaRowChanged;
+        foreach (var row in BaValidationItems) row.PropertyChanged += OnBaRowChanged;
 
         // Setup Consultants Grid
         for (int i = 0; i < 5; i++)
@@ -189,10 +253,379 @@ public partial class DetailedEstimateWindow : Window
         }
     }
 
+    private static decimal MRound(decimal value, decimal multiple = 0.25m) =>
+        multiple == 0 ? value : Math.Round(value / multiple, MidpointRounding.AwayFromZero) * multiple;
+
+    private void SetupWtcGroup(int g)
+    {
+        var wtcRow  = BaTestCases[g + 1]; // WTC
+        var iterRow = BaTestCases[g + 2]; // Iteration
+        wtcRow.ApplyIteration = true;
+        BaTestCases[g + 3].UseEffectiveCounts = true; // DataPrep
+        BaTestCases[g + 4].UseEffectiveCounts = true; // ALM
+        BaTestCases[g + 5].UseEffectiveCounts = true; // SysTest
+        BaTestCases[g + 6].UseEffectiveCounts = true; // PreRelease
+        PropagateWtcIteration(g);
+        wtcRow.PropertyChanged  += (_, e) => { if (e.PropertyName is nameof(BaTestCaseRow.SimpleCount) or nameof(BaTestCaseRow.ModerateCount) or nameof(BaTestCaseRow.ComplexCount) or nameof(BaTestCaseRow.VeryComplexCount)) PropagateWtcIteration(g); };
+        iterRow.PropertyChanged += (_, e) => { if (e.PropertyName is nameof(BaTestCaseRow.SimpleCount) or nameof(BaTestCaseRow.ModerateCount) or nameof(BaTestCaseRow.ComplexCount) or nameof(BaTestCaseRow.VeryComplexCount)) PropagateWtcIteration(g); };
+    }
+
+    private void PropagateWtcIteration(int g)
+    {
+        var wtc  = BaTestCases[g + 1];
+        var iter = BaTestCases[g + 2];
+        // Treat iteration count of 0 as 1 (tooltip: "minimum value of 1.00 is required")
+        decimal iS = iter.SimpleCount      == 0 ? 1m : iter.SimpleCount;
+        decimal iM = iter.ModerateCount    == 0 ? 1m : iter.ModerateCount;
+        decimal iC = iter.ComplexCount     == 0 ? 1m : iter.ComplexCount;
+        decimal iV = iter.VeryComplexCount == 0 ? 1m : iter.VeryComplexCount;
+        wtc.SetIterationFactors(iS, iM, iC, iV);
+        decimal es = wtc.SimpleCount     * iS;
+        decimal em = wtc.ModerateCount   * iM;
+        decimal ec = wtc.ComplexCount    * iC;
+        decimal ev = wtc.VeryComplexCount * iV;
+        BaTestCases[g + 3].SetEffectiveCounts(es, em, ec, ev);
+        BaTestCases[g + 4].SetEffectiveCounts(es, em, ec, ev);
+        BaTestCases[g + 5].SetEffectiveCounts(es, em, ec, ev);
+        BaTestCases[g + 6].SetEffectiveCounts(es, em, ec, ev);
+    }
+
+    private void OnBaGridSingleClickEdit(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        if (sender is not DataGrid grid) return;
+        var dep = (DependencyObject)e.OriginalSource;
+        while (dep != null && dep is not DataGridCell)
+            dep = System.Windows.Media.VisualTreeHelper.GetParent(dep);
+        if (dep is DataGridCell cell && !cell.IsEditing && !cell.IsReadOnly)
+        {
+            // Fully exit any active row edit before opening a new cell.
+            // CommitEdit(Row) is more thorough than Cell-level commit; if it fails
+            // (e.g. validation error) CancelEdit ensures the grid is never left stuck.
+            if (!grid.CommitEdit(DataGridEditingUnit.Row, true))
+                grid.CancelEdit(DataGridEditingUnit.Row);
+            grid.Focus();
+            grid.CurrentCell = new DataGridCellInfo(cell);
+            grid.BeginEdit(e);
+        }
+    }
+
+    private void OnBaTestCasesGridBeginningEdit(object sender, DataGridBeginningEditEventArgs e)
+    {
+        if (e.Row.Item is not BaTestCaseRow row) return;
+        var header = e.Column.Header?.ToString();
+        if (row.AreCountsAutoCalculated && header is "Simple" or "Moderate" or "Complex" or "Very Complex")
+        {
+            e.Cancel = true;
+            return;
+        }
+        // Adjusted Hrs is N/A for Iteration rows
+        if (row.IsInfoRow && header == "Adjusted Hrs")
+            e.Cancel = true;
+    }
+
     private void OnSummaryFieldChanged(object sender, TextChangedEventArgs e)
     {
         if (!IsLoaded) return;
         UpdateSummaryTab();
+    }
+
+    private void OnBaAssumptionsTextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (!IsLoaded) return;
+        int len = BaAssumptionsDetailTextBox?.Text.Length ?? 0;
+        if (BaAssumptionsCounter != null)
+        {
+            BaAssumptionsCounter.Text = $"{len} / 4000";
+            BaAssumptionsCounter.Foreground = len >= 3800
+                ? System.Windows.Media.Brushes.Red
+                : System.Windows.Media.Brushes.Gray;
+        }
+    }
+
+    private void OnBaAdjNotesTextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (!IsLoaded) return;
+        int len = BaAdjustedHrsCommentTextBox?.Text.Length ?? 0;
+        if (BaAdjNotesCounter != null)
+        {
+            BaAdjNotesCounter.Text = $"{len} / 4000";
+            BaAdjNotesCounter.Foreground = len >= 3800
+                ? System.Windows.Media.Brushes.Red
+                : System.Windows.Media.Brushes.Gray;
+        }
+    }
+
+    // ===== New Premium UI: Card-based event handlers =====
+
+    private static decimal ParseDecimal(string? text) =>
+        decimal.TryParse(text?.Trim(), out var v) ? v : 0m;
+
+    private void OnBaCardValueChanged(object sender, TextChangedEventArgs e)
+    {
+        if (!IsLoaded) return;
+        SyncCardsToModel();
+        UpdateBaCardDisplays();
+        UpdateSummaryTab();
+    }
+
+    private void OnPvRadioChanged(object sender, RoutedEventArgs e)
+    {
+        if (!IsLoaded) return;
+        SyncPvRadiosToModel();
+        UpdateBaCardDisplays();
+        UpdateSummaryTab();
+    }
+
+    /// <summary>Sync card TextBox values → BaTestCases model rows (preserves all calculation logic).</summary>
+    private void SyncCardsToModel()
+    {
+        // New to Area group (indices 0-6)
+        BaTestCases[0].SimpleCount = ParseDecimal(BaNewUR_Simple?.Text);
+        BaTestCases[0].ModerateCount = ParseDecimal(BaNewUR_Moderate?.Text);
+        BaTestCases[0].ComplexCount = ParseDecimal(BaNewUR_Complex?.Text);
+        BaTestCases[0].VeryComplexCount = ParseDecimal(BaNewUR_VComplex?.Text);
+        BaTestCases[0].ManualAdjHours = ParseDecimal(BaNewUR_AdjHrs?.Text);
+
+        BaTestCases[1].SimpleCount = ParseDecimal(BaNewWTC_Simple?.Text);
+        BaTestCases[1].ModerateCount = ParseDecimal(BaNewWTC_Moderate?.Text);
+        BaTestCases[1].ComplexCount = ParseDecimal(BaNewWTC_Complex?.Text);
+        BaTestCases[1].VeryComplexCount = ParseDecimal(BaNewWTC_VComplex?.Text);
+
+        BaTestCases[2].SimpleCount = ParseDecimal(BaNewIter_Simple?.Text);
+        BaTestCases[2].ModerateCount = ParseDecimal(BaNewIter_Moderate?.Text);
+        BaTestCases[2].ComplexCount = ParseDecimal(BaNewIter_Complex?.Text);
+        BaTestCases[2].VeryComplexCount = ParseDecimal(BaNewIter_VComplex?.Text);
+
+        BaTestCases[3].ManualAdjHours = ParseDecimal(BaNewDP_AdjHrs?.Text);
+        BaTestCases[4].ManualAdjHours = ParseDecimal(BaNewALM_AdjHrs?.Text);
+        BaTestCases[5].ManualAdjHours = ParseDecimal(BaNewSTE_AdjHrs?.Text);
+        BaTestCases[6].ManualAdjHours = ParseDecimal(BaNewPRD_AdjHrs?.Text);
+
+        // Proficient group (indices 7-13)
+        BaTestCases[7].SimpleCount = ParseDecimal(BaProfUR_Simple?.Text);
+        BaTestCases[7].ModerateCount = ParseDecimal(BaProfUR_Moderate?.Text);
+        BaTestCases[7].ComplexCount = ParseDecimal(BaProfUR_Complex?.Text);
+        BaTestCases[7].VeryComplexCount = ParseDecimal(BaProfUR_VComplex?.Text);
+        BaTestCases[7].ManualAdjHours = ParseDecimal(BaProfUR_AdjHrs?.Text);
+
+        BaTestCases[8].SimpleCount = ParseDecimal(BaProfWTC_Simple?.Text);
+        BaTestCases[8].ModerateCount = ParseDecimal(BaProfWTC_Moderate?.Text);
+        BaTestCases[8].ComplexCount = ParseDecimal(BaProfWTC_Complex?.Text);
+        BaTestCases[8].VeryComplexCount = ParseDecimal(BaProfWTC_VComplex?.Text);
+
+        BaTestCases[9].SimpleCount = ParseDecimal(BaProfIter_Simple?.Text);
+        BaTestCases[9].ModerateCount = ParseDecimal(BaProfIter_Moderate?.Text);
+        BaTestCases[9].ComplexCount = ParseDecimal(BaProfIter_Complex?.Text);
+        BaTestCases[9].VeryComplexCount = ParseDecimal(BaProfIter_VComplex?.Text);
+
+        BaTestCases[10].ManualAdjHours = ParseDecimal(BaProfDP_AdjHrs?.Text);
+        BaTestCases[11].ManualAdjHours = ParseDecimal(BaProfALM_AdjHrs?.Text);
+        BaTestCases[12].ManualAdjHours = ParseDecimal(BaProfSTE_AdjHrs?.Text);
+        BaTestCases[13].ManualAdjHours = ParseDecimal(BaProfPRD_AdjHrs?.Text);
+
+        // Expert group (indices 14-20)
+        BaTestCases[14].SimpleCount = ParseDecimal(BaExpUR_Simple?.Text);
+        BaTestCases[14].ModerateCount = ParseDecimal(BaExpUR_Moderate?.Text);
+        BaTestCases[14].ComplexCount = ParseDecimal(BaExpUR_Complex?.Text);
+        BaTestCases[14].VeryComplexCount = ParseDecimal(BaExpUR_VComplex?.Text);
+        BaTestCases[14].ManualAdjHours = ParseDecimal(BaExpUR_AdjHrs?.Text);
+
+        BaTestCases[15].SimpleCount = ParseDecimal(BaExpWTC_Simple?.Text);
+        BaTestCases[15].ModerateCount = ParseDecimal(BaExpWTC_Moderate?.Text);
+        BaTestCases[15].ComplexCount = ParseDecimal(BaExpWTC_Complex?.Text);
+        BaTestCases[15].VeryComplexCount = ParseDecimal(BaExpWTC_VComplex?.Text);
+
+        BaTestCases[16].SimpleCount = ParseDecimal(BaExpIter_Simple?.Text);
+        BaTestCases[16].ModerateCount = ParseDecimal(BaExpIter_Moderate?.Text);
+        BaTestCases[16].ComplexCount = ParseDecimal(BaExpIter_Complex?.Text);
+        BaTestCases[16].VeryComplexCount = ParseDecimal(BaExpIter_VComplex?.Text);
+
+        BaTestCases[17].ManualAdjHours = ParseDecimal(BaExpDP_AdjHrs?.Text);
+        BaTestCases[18].ManualAdjHours = ParseDecimal(BaExpALM_AdjHrs?.Text);
+        BaTestCases[19].ManualAdjHours = ParseDecimal(BaExpSTE_AdjHrs?.Text);
+        BaTestCases[20].ManualAdjHours = ParseDecimal(BaExpPRD_AdjHrs?.Text);
+    }
+
+    /// <summary>Sync PV radio button selections → BaValidationItems model (0=none, 1=selected).</summary>
+    private void SyncPvRadiosToModel()
+    {
+        // Row 0: New GV
+        BaValidationItems[0].SimpleCount = BaPvNewGV_Simple?.IsChecked == true ? 1 : 0;
+        BaValidationItems[0].ModerateCount = BaPvNewGV_Moderate?.IsChecked == true ? 1 : 0;
+        BaValidationItems[0].ComplexCount = BaPvNewGV_Complex?.IsChecked == true ? 1 : 0;
+        BaValidationItems[0].VeryComplexCount = BaPvNewGV_VComplex?.IsChecked == true ? 1 : 0;
+        BaValidationItems[0].ManualAdjHours = ParseDecimal(BaPvNewGV_Adj?.Text);
+        // Row 1: New PC
+        BaValidationItems[1].SimpleCount = BaPvNewPC_Simple?.IsChecked == true ? 1 : 0;
+        BaValidationItems[1].ModerateCount = BaPvNewPC_Moderate?.IsChecked == true ? 1 : 0;
+        BaValidationItems[1].ComplexCount = BaPvNewPC_Complex?.IsChecked == true ? 1 : 0;
+        BaValidationItems[1].VeryComplexCount = BaPvNewPC_VComplex?.IsChecked == true ? 1 : 0;
+        BaValidationItems[1].ManualAdjHours = ParseDecimal(BaPvNewPC_Adj?.Text);
+        // Row 2: New RC
+        BaValidationItems[2].SimpleCount = BaPvNewRC_Simple?.IsChecked == true ? 1 : 0;
+        BaValidationItems[2].ModerateCount = BaPvNewRC_Moderate?.IsChecked == true ? 1 : 0;
+        BaValidationItems[2].ComplexCount = BaPvNewRC_Complex?.IsChecked == true ? 1 : 0;
+        BaValidationItems[2].VeryComplexCount = BaPvNewRC_VComplex?.IsChecked == true ? 1 : 0;
+        BaValidationItems[2].ManualAdjHours = ParseDecimal(BaPvNewRC_Adj?.Text);
+        // Row 3: Prof GV
+        BaValidationItems[3].SimpleCount = BaPvProfGV_Simple?.IsChecked == true ? 1 : 0;
+        BaValidationItems[3].ModerateCount = BaPvProfGV_Moderate?.IsChecked == true ? 1 : 0;
+        BaValidationItems[3].ComplexCount = BaPvProfGV_Complex?.IsChecked == true ? 1 : 0;
+        BaValidationItems[3].VeryComplexCount = BaPvProfGV_VComplex?.IsChecked == true ? 1 : 0;
+        BaValidationItems[3].ManualAdjHours = ParseDecimal(BaPvProfGV_Adj?.Text);
+        // Row 4: Prof PC
+        BaValidationItems[4].SimpleCount = BaPvProfPC_Simple?.IsChecked == true ? 1 : 0;
+        BaValidationItems[4].ModerateCount = BaPvProfPC_Moderate?.IsChecked == true ? 1 : 0;
+        BaValidationItems[4].ComplexCount = BaPvProfPC_Complex?.IsChecked == true ? 1 : 0;
+        BaValidationItems[4].VeryComplexCount = BaPvProfPC_VComplex?.IsChecked == true ? 1 : 0;
+        BaValidationItems[4].ManualAdjHours = ParseDecimal(BaPvProfPC_Adj?.Text);
+        // Row 5: Prof RC
+        BaValidationItems[5].SimpleCount = BaPvProfRC_Simple?.IsChecked == true ? 1 : 0;
+        BaValidationItems[5].ModerateCount = BaPvProfRC_Moderate?.IsChecked == true ? 1 : 0;
+        BaValidationItems[5].ComplexCount = BaPvProfRC_Complex?.IsChecked == true ? 1 : 0;
+        BaValidationItems[5].VeryComplexCount = BaPvProfRC_VComplex?.IsChecked == true ? 1 : 0;
+        BaValidationItems[5].ManualAdjHours = ParseDecimal(BaPvProfRC_Adj?.Text);
+        // Row 6: Exp GV
+        BaValidationItems[6].SimpleCount = BaPvExpGV_Simple?.IsChecked == true ? 1 : 0;
+        BaValidationItems[6].ModerateCount = BaPvExpGV_Moderate?.IsChecked == true ? 1 : 0;
+        BaValidationItems[6].ComplexCount = BaPvExpGV_Complex?.IsChecked == true ? 1 : 0;
+        BaValidationItems[6].VeryComplexCount = BaPvExpGV_VComplex?.IsChecked == true ? 1 : 0;
+        BaValidationItems[6].ManualAdjHours = ParseDecimal(BaPvExpGV_Adj?.Text);
+        // Row 7: Exp PC
+        BaValidationItems[7].SimpleCount = BaPvExpPC_Simple?.IsChecked == true ? 1 : 0;
+        BaValidationItems[7].ModerateCount = BaPvExpPC_Moderate?.IsChecked == true ? 1 : 0;
+        BaValidationItems[7].ComplexCount = BaPvExpPC_Complex?.IsChecked == true ? 1 : 0;
+        BaValidationItems[7].VeryComplexCount = BaPvExpPC_VComplex?.IsChecked == true ? 1 : 0;
+        BaValidationItems[7].ManualAdjHours = ParseDecimal(BaPvExpPC_Adj?.Text);
+        // Row 8: Exp RC
+        BaValidationItems[8].SimpleCount = BaPvExpRC_Simple?.IsChecked == true ? 1 : 0;
+        BaValidationItems[8].ModerateCount = BaPvExpRC_Moderate?.IsChecked == true ? 1 : 0;
+        BaValidationItems[8].ComplexCount = BaPvExpRC_Complex?.IsChecked == true ? 1 : 0;
+        BaValidationItems[8].VeryComplexCount = BaPvExpRC_VComplex?.IsChecked == true ? 1 : 0;
+        BaValidationItems[8].ManualAdjHours = ParseDecimal(BaPvExpRC_Adj?.Text);
+    }
+
+    /// <summary>Update all card display labels from model calculated values.</summary>
+    private void UpdateBaCardDisplays()
+    {
+        // New to Area
+        if (BaNewUR_CT != null) BaNewUR_CT.Text = $"CT: {BaTestCases[0].Total:N2}";
+        if (BaNewUR_AdjExp != null) BaNewUR_AdjExp.Text = $"Adj: {BaTestCases[0].AdjustedExpLevel:N2}";
+        if (BaNewUR_Total != null) BaNewUR_Total.Text = $"Total: {BaTestCases[0].GrandTotal:N2} hrs";
+
+        if (BaNewWTC_CT != null) BaNewWTC_CT.Text = $"CT: {BaTestCases[1].Total:N2}";
+        if (BaNewWTC_AdjExp != null) BaNewWTC_AdjExp.Text = $"Adj: {BaTestCases[1].AdjustedExpLevel:N2}";
+        if (BaNewWTC_Total != null) BaNewWTC_Total.Text = $"Total: {BaTestCases[1].GrandTotal:N2} hrs";
+
+        if (BaNewDP_Calc != null) BaNewDP_Calc.Text = BaTestCases[3].AdjustedExpLevel.ToString("N2");
+        if (BaNewDP_Total != null) BaNewDP_Total.Text = BaTestCases[3].GrandTotal.ToString("N2");
+        if (BaNewALM_Calc != null) BaNewALM_Calc.Text = BaTestCases[4].AdjustedExpLevel.ToString("N2");
+        if (BaNewALM_Total != null) BaNewALM_Total.Text = BaTestCases[4].GrandTotal.ToString("N2");
+        if (BaNewSTE_Calc != null) BaNewSTE_Calc.Text = BaTestCases[5].AdjustedExpLevel.ToString("N2");
+        if (BaNewSTE_Total != null) BaNewSTE_Total.Text = BaTestCases[5].GrandTotal.ToString("N2");
+        if (BaNewPRD_Calc != null) BaNewPRD_Calc.Text = BaTestCases[6].AdjustedExpLevel.ToString("N2");
+        if (BaNewPRD_Total != null) BaNewPRD_Total.Text = BaTestCases[6].GrandTotal.ToString("N2");
+
+        decimal newSubtotal = BaTestCases.Take(7).Where(r => !r.IsInfoRow).Sum(r => r.GrandTotal);
+        if (BaNewToAreaSubtotal != null) BaNewToAreaSubtotal.Text = $"Subtotal: {newSubtotal:N2} hrs";
+
+        // Proficient
+        if (BaProfUR_CT != null) BaProfUR_CT.Text = $"CT: {BaTestCases[7].Total:N2}";
+        if (BaProfUR_AdjExp != null) BaProfUR_AdjExp.Text = $"Adj: {BaTestCases[7].AdjustedExpLevel:N2}";
+        if (BaProfUR_Total != null) BaProfUR_Total.Text = $"Total: {BaTestCases[7].GrandTotal:N2} hrs";
+
+        if (BaProfWTC_CT != null) BaProfWTC_CT.Text = $"CT: {BaTestCases[8].Total:N2}";
+        if (BaProfWTC_AdjExp != null) BaProfWTC_AdjExp.Text = $"Adj: {BaTestCases[8].AdjustedExpLevel:N2}";
+        if (BaProfWTC_Total != null) BaProfWTC_Total.Text = $"Total: {BaTestCases[8].GrandTotal:N2} hrs";
+
+        if (BaProfDP_Calc != null) BaProfDP_Calc.Text = BaTestCases[10].AdjustedExpLevel.ToString("N2");
+        if (BaProfDP_Total != null) BaProfDP_Total.Text = BaTestCases[10].GrandTotal.ToString("N2");
+        if (BaProfALM_Calc != null) BaProfALM_Calc.Text = BaTestCases[11].AdjustedExpLevel.ToString("N2");
+        if (BaProfALM_Total != null) BaProfALM_Total.Text = BaTestCases[11].GrandTotal.ToString("N2");
+        if (BaProfSTE_Calc != null) BaProfSTE_Calc.Text = BaTestCases[12].AdjustedExpLevel.ToString("N2");
+        if (BaProfSTE_Total != null) BaProfSTE_Total.Text = BaTestCases[12].GrandTotal.ToString("N2");
+        if (BaProfPRD_Calc != null) BaProfPRD_Calc.Text = BaTestCases[13].AdjustedExpLevel.ToString("N2");
+        if (BaProfPRD_Total != null) BaProfPRD_Total.Text = BaTestCases[13].GrandTotal.ToString("N2");
+
+        decimal profSubtotal = BaTestCases.Skip(7).Take(7).Where(r => !r.IsInfoRow).Sum(r => r.GrandTotal);
+        if (BaProficientSubtotal != null) BaProficientSubtotal.Text = $"Subtotal: {profSubtotal:N2} hrs";
+
+        // Expert
+        if (BaExpUR_CT != null) BaExpUR_CT.Text = $"CT: {BaTestCases[14].Total:N2}";
+        if (BaExpUR_AdjExp != null) BaExpUR_AdjExp.Text = $"Adj: {BaTestCases[14].AdjustedExpLevel:N2}";
+        if (BaExpUR_Total != null) BaExpUR_Total.Text = $"Total: {BaTestCases[14].GrandTotal:N2} hrs";
+
+        if (BaExpWTC_CT != null) BaExpWTC_CT.Text = $"CT: {BaTestCases[15].Total:N2}";
+        if (BaExpWTC_AdjExp != null) BaExpWTC_AdjExp.Text = $"Adj: {BaTestCases[15].AdjustedExpLevel:N2}";
+        if (BaExpWTC_Total != null) BaExpWTC_Total.Text = $"Total: {BaTestCases[15].GrandTotal:N2} hrs";
+
+        if (BaExpDP_Calc != null) BaExpDP_Calc.Text = BaTestCases[17].AdjustedExpLevel.ToString("N2");
+        if (BaExpDP_Total != null) BaExpDP_Total.Text = BaTestCases[17].GrandTotal.ToString("N2");
+        if (BaExpALM_Calc != null) BaExpALM_Calc.Text = BaTestCases[18].AdjustedExpLevel.ToString("N2");
+        if (BaExpALM_Total != null) BaExpALM_Total.Text = BaTestCases[18].GrandTotal.ToString("N2");
+        if (BaExpSTE_Calc != null) BaExpSTE_Calc.Text = BaTestCases[19].AdjustedExpLevel.ToString("N2");
+        if (BaExpSTE_Total != null) BaExpSTE_Total.Text = BaTestCases[19].GrandTotal.ToString("N2");
+        if (BaExpPRD_Calc != null) BaExpPRD_Calc.Text = BaTestCases[20].AdjustedExpLevel.ToString("N2");
+        if (BaExpPRD_Total != null) BaExpPRD_Total.Text = BaTestCases[20].GrandTotal.ToString("N2");
+
+        decimal expSubtotal = BaTestCases.Skip(14).Take(7).Where(r => !r.IsInfoRow).Sum(r => r.GrandTotal);
+        if (BaExpertSubtotal != null) BaExpertSubtotal.Text = $"Subtotal: {expSubtotal:N2} hrs";
+
+        // PV displays
+        UpdatePvCardDisplay(BaPvNewGV_Result, BaPvNewGV_Total, BaValidationItems[0]);
+        UpdatePvCardDisplay(BaPvNewPC_Result, BaPvNewPC_Total, BaValidationItems[1]);
+        UpdatePvCardDisplay(BaPvNewRC_Result, BaPvNewRC_Total, BaValidationItems[2]);
+        UpdatePvCardDisplay(BaPvProfGV_Result, BaPvProfGV_Total, BaValidationItems[3]);
+        UpdatePvCardDisplay(BaPvProfPC_Result, BaPvProfPC_Total, BaValidationItems[4]);
+        UpdatePvCardDisplay(BaPvProfRC_Result, BaPvProfRC_Total, BaValidationItems[5]);
+        UpdatePvCardDisplay(BaPvExpGV_Result, BaPvExpGV_Total, BaValidationItems[6]);
+        UpdatePvCardDisplay(BaPvExpPC_Result, BaPvExpPC_Total, BaValidationItems[7]);
+        UpdatePvCardDisplay(BaPvExpRC_Result, BaPvExpRC_Total, BaValidationItems[8]);
+
+        // PV subtotals per experience level
+        decimal pvNewSub = BaValidationItems.Take(3).Sum(r => r.GrandTotal);
+        decimal pvProfSub = BaValidationItems.Skip(3).Take(3).Sum(r => r.GrandTotal);
+        decimal pvExpSub = BaValidationItems.Skip(6).Take(3).Sum(r => r.GrandTotal);
+        if (BaPvNewSubtotal != null) BaPvNewSubtotal.Text = $"{pvNewSub:N2} hrs";
+        if (BaPvProfSubtotal != null) BaPvProfSubtotal.Text = $"{pvProfSub:N2} hrs";
+        if (BaPvExpSubtotal != null) BaPvExpSubtotal.Text = $"{pvExpSub:N2} hrs";
+
+        // Sticky summary bar
+        decimal remainingBdd = ParseDecimal(RemainingBddHoursTextBox?.Text);
+        decimal sysDocProdVal = ParseDecimal(SysDocProdValidTextBox?.Text);
+        decimal baSysDoc = ParseDecimal(BaSysDocHoursTextBox?.Text);
+        decimal commPlan = ParseDecimal(CommPlanHoursTextBox?.Text);
+        decimal wtcGT = BaTestCases.Where(r => !r.IsInfoRow).Sum(r => r.GrandTotal) + BaRegressionRows.Sum(r => r.GrandTotal);
+        decimal pvGT = BaValidationItems.Sum(r => r.GrandTotal) + sysDocProdVal;
+
+        if (BaStickyBddText != null) BaStickyBddText.Text = $"{remainingBdd:N2} hrs";
+        if (BaStickyWtcText != null) BaStickyWtcText.Text = $"{wtcGT:N2} hrs";
+        if (BaStickyPvText != null) BaStickyPvText.Text = $"{pvGT:N2} hrs";
+        if (BaStickySysDocText != null) BaStickySysDocText.Text = $"{(baSysDoc + commPlan):N2} hrs";
+    }
+
+    private static void UpdatePvCardDisplay(System.Windows.Controls.TextBlock? resultTb, System.Windows.Controls.TextBlock? totalTb, BaValidationRow row)
+    {
+        if (resultTb != null) resultTb.Text = $"{row.AdjustedExpLevel:N2} hrs";
+        if (totalTb != null) totalTb.Text = $"Total: {row.GrandTotal:N2}";
+    }
+
+    // Stepper button handlers
+    private void OnBddDecrement(object sender, RoutedEventArgs e) { AdjustTextBox(RemainingBddHoursTextBox, -1); }
+    private void OnBddIncrement(object sender, RoutedEventArgs e) { AdjustTextBox(RemainingBddHoursTextBox, 1); }
+    private void OnSysDocPvDecrement(object sender, RoutedEventArgs e) { AdjustTextBox(SysDocProdValidTextBox, -1); }
+    private void OnSysDocPvIncrement(object sender, RoutedEventArgs e) { AdjustTextBox(SysDocProdValidTextBox, 1); }
+    private void OnSysDocDecrement(object sender, RoutedEventArgs e) { AdjustTextBox(BaSysDocHoursTextBox, -1); }
+    private void OnSysDocIncrement(object sender, RoutedEventArgs e) { AdjustTextBox(BaSysDocHoursTextBox, 1); }
+    private void OnCommPlanDecrement(object sender, RoutedEventArgs e) { AdjustTextBox(CommPlanHoursTextBox, -1); }
+    private void OnCommPlanIncrement(object sender, RoutedEventArgs e) { AdjustTextBox(CommPlanHoursTextBox, 1); }
+
+    private static void AdjustTextBox(System.Windows.Controls.TextBox? tb, decimal delta)
+    {
+        if (tb == null) return;
+        decimal current = decimal.TryParse(tb.Text, out var v) ? v : 0;
+        decimal newVal = current + delta;
+        tb.Text = newVal.ToString("0.##");
     }
 
     private void OnCollabFieldChanged(object sender, TextChangedEventArgs e)
@@ -317,6 +750,8 @@ public partial class DetailedEstimateWindow : Window
         ComponentTypeGrid?.CancelEdit();
         BaTestCasesGrid?.CommitEdit(DataGridEditingUnit.Row, true);
         BaTestCasesGrid?.CancelEdit();
+        BaRegressionGrid?.CommitEdit(DataGridEditingUnit.Row, true);
+        BaRegressionGrid?.CancelEdit();
         BaProductionValidationGrid?.CommitEdit(DataGridEditingUnit.Row, true);
         BaProductionValidationGrid?.CancelEdit();
         ConsultantGrid?.CommitEdit(DataGridEditingUnit.Row, true);
@@ -407,7 +842,12 @@ public partial class DetailedEstimateWindow : Window
             existing.AdjustedHoursComments = adjComments.ToString().TrimEnd();
 
             // Persist BA total hours
-            decimal baTotal = BaTestCases.Sum(r => r.AdjustedHours) + BaValidationItems.Sum(r => r.AdjustedHours);
+            decimal remainingBdd = decimal.TryParse(RemainingBddHoursTextBox?.Text, out var rb2) ? rb2 : 0;
+            decimal sysDocProdVal = decimal.TryParse(SysDocProdValidTextBox?.Text, out var sdp2) ? sdp2 : 0;
+            decimal baSysDoc = decimal.TryParse(BaSysDocHoursTextBox?.Text, out var bsd2) ? bsd2 : 0;
+            decimal commPlan = decimal.TryParse(CommPlanHoursTextBox?.Text, out var cp2) ? cp2 : 0;
+            decimal baTotal = BaTestCases.Sum(r => r.AdjustedHours) + BaRegressionRows.Sum(r => r.AdjustedHours)
+                + BaValidationItems.Sum(r => r.AdjustedHours) + remainingBdd + sysDocProdVal + baSysDoc + commPlan;
             existing.BaAdjustedHours = baTotal;
 
             // Persist Collaboration hours (full calculation matching Excel)
@@ -543,12 +983,52 @@ public partial class DetailedEstimateWindow : Window
         SeSummaryGrid?.Items.Refresh();
 
         // Update BA Summary
-        decimal baTotalStraight = BaTestCases.Sum(r => r.Total) + BaValidationItems.Sum(r => r.Hours);
-        decimal baTotalAdj = BaTestCases.Sum(r => r.AdjustedHours) + BaValidationItems.Sum(r => r.AdjustedHours);
+        decimal remainingBdd = decimal.TryParse(RemainingBddHoursTextBox?.Text, out var rbv) ? rbv : 0;
+        decimal sysDocProdVal = decimal.TryParse(SysDocProdValidTextBox?.Text, out var sdv) ? sdv : 0;
+        decimal baSysDoc = decimal.TryParse(BaSysDocHoursTextBox?.Text, out var bsdv) ? bsdv : 0;
+        decimal commPlan = decimal.TryParse(CommPlanHoursTextBox?.Text, out var cpv) ? cpv : 0;
+        if (SysDocCommPlanTotalText != null)
+            SysDocCommPlanTotalText.Text = (baSysDoc + commPlan).ToString("N2");
+        decimal baTotalStraight = BaTestCases.Sum(r => r.Total) + BaRegressionRows.Sum(r => r.Total) + BaValidationItems.Sum(r => r.Hours);
+        decimal baTotalAdj = BaTestCases.Sum(r => r.AdjustedHours) + BaRegressionRows.Sum(r => r.AdjustedHours) + BaValidationItems.Sum(r => r.AdjustedHours) + remainingBdd + sysDocProdVal + baSysDoc + commPlan;
         BaSummaryRows[0].StraightHours = baTotalStraight;
         BaSummaryRows[0].AdjustedExpLevel = baTotalAdj;
         BaSummaryRows[0].GrandTotal = baTotalAdj;
         BaSummaryGrid?.Items.Refresh();
+
+        // WTC Summary: counts from WTC rows only; CT/AdjExp/AdjHrs/GT from all non-Iteration rows
+        var wtcRows = BaTestCases.Where(r => r.TaskType == "WriteSystemTestCases").ToList();
+        var tcRows  = BaTestCases.Where(r => !r.IsInfoRow).Concat(BaRegressionRows).ToList();
+        if (BaTcSummarySimple != null)       BaTcSummarySimple.Text       = wtcRows.Sum(r => r.SimpleCount).ToString("N2");
+        if (BaTcSummaryModerate != null)     BaTcSummaryModerate.Text     = wtcRows.Sum(r => r.ModerateCount).ToString("N2");
+        if (BaTcSummaryComplex != null)      BaTcSummaryComplex.Text      = wtcRows.Sum(r => r.ComplexCount).ToString("N2");
+        if (BaTcSummaryVeryComplex != null)  BaTcSummaryVeryComplex.Text  = wtcRows.Sum(r => r.VeryComplexCount).ToString("N2");
+        if (BaTcSummaryCT != null)           BaTcSummaryCT.Text           = tcRows.Sum(r => r.Total).ToString("N2");
+        if (BaTcSummaryAdjExp != null)       BaTcSummaryAdjExp.Text       = tcRows.Sum(r => r.AdjustedExpLevel).ToString("N2");
+        if (BaTcSummaryAdjHrs != null)       BaTcSummaryAdjHrs.Text       = tcRows.Sum(r => r.ManualAdjHours).ToString("N2");
+        if (BaTcSummaryGrandTotal != null)   BaTcSummaryGrandTotal.Text   = tcRows.Sum(r => r.GrandTotal).ToString("N2");
+
+        // Update Perform Production Validation summary row (Gap 3: include SysDocProdVal in Grand Total)
+        decimal pvGrandWithSysDoc = BaValidationItems.Sum(r => r.GrandTotal) + sysDocProdVal;
+        if (BaPvSummaryCT != null)         BaPvSummaryCT.Text         = BaValidationItems.Sum(r => r.ComplexityTotal).ToString("N2");
+        if (BaPvSummaryAdjExp != null)     BaPvSummaryAdjExp.Text     = BaValidationItems.Sum(r => r.AdjustedExpLevel).ToString("N2");
+        if (BaPvSummaryAdjHrs != null)     BaPvSummaryAdjHrs.Text     = BaValidationItems.Sum(r => r.ManualAdjHours).ToString("N2");
+        if (BaPvSummaryGrandTotal != null) BaPvSummaryGrandTotal.Text = MRound(pvGrandWithSysDoc).ToString("N2");
+
+        // Gap 4: BA Grand Total = MROUND(RemainingBDD + WTCSummary + PVSummary(incl SysDocProdVal) + SysDoc/CommPlan, 0.25)
+        decimal wtcGrandTotal = BaTestCases.Where(r => !r.IsInfoRow).Sum(r => r.GrandTotal) + BaRegressionRows.Sum(r => r.GrandTotal);
+        decimal baGrandTotal = MRound(remainingBdd + wtcGrandTotal + pvGrandWithSysDoc + baSysDoc + commPlan);
+        // BA Grand Total CT = sum of all row Complexity Totals + BDD (matches Excel H10=SUM(C11,H13,H43,C61))
+        decimal baGrandTotalCT = remainingBdd + BaTestCases.Sum(r => r.Total) + BaRegressionRows.Sum(r => r.Total) + BaValidationItems.Sum(r => r.ComplexityTotal);
+        // BA Grand Total Adjusted Exp Level = sum of all AdjustedExpLevel values
+        decimal baGrandTotalAdjExp = BaTestCases.Where(r => !r.IsInfoRow).Sum(r => r.AdjustedExpLevel) + BaRegressionRows.Sum(r => r.AdjustedExpLevel) + BaValidationItems.Sum(r => r.AdjustedExpLevel);
+        // BA Grand Total Adjusted Hrs = manual adj hours from BA rows + SysDoc + CommPlan
+        // Note: sysDocProdVal and remainingBdd flow directly to Grand Total (col 11 only in Excel) — not Adjusted Hrs (col 10)
+        decimal baGrandTotalAdjHrs = BaTestCases.Sum(r => r.ManualAdjHours) + BaRegressionRows.Sum(r => r.ManualAdjHours) + BaValidationItems.Sum(r => r.ManualAdjHours) + baSysDoc + commPlan;
+        if (BaGrandTotalCT != null)     BaGrandTotalCT.Text     = baGrandTotalCT.ToString("N2");
+        if (BaGrandTotalAdjExp != null)  BaGrandTotalAdjExp.Text  = baGrandTotalAdjExp.ToString("N2");
+        if (BaGrandTotalAdjHrs != null)  BaGrandTotalAdjHrs.Text  = baGrandTotalAdjHrs.ToString("N2");
+        if (BaGrandTotalText != null) BaGrandTotalText.Text = baGrandTotal.ToString("N2");
 
         // Update Collaboration Summary - full calculation matching Excel
         decimal wprCount = ParseDecimal(WprCountTextBox);
@@ -593,7 +1073,6 @@ public partial class DetailedEstimateWindow : Window
 
         // Map SE/BA/Collab totals to their respective tab total displays
         SeTotalText.Text = seTotalGrand.ToString("N2");
-        BaTotalText.Text = baTotalAdj.ToString("N2");
         CollabTotalText.Text = collabTotal.ToString("N2");
 
         // Total = Actual Hours + SE + BA + Collab + PM Reserve
@@ -680,39 +1159,152 @@ public class ModuleEntry
 /// </summary>
 public class BaTestCaseRow : INotifyPropertyChanged
 {
-    private ExperienceLevel _experienceLevel = ExperienceLevel.Proficient;
-    private int _simpleCount;
-    private int _moderateCount;
-    private int _complexCount;
-    private int _veryComplexCount;
+    private ExperienceLevel _experienceLevel = ExperienceLevel.SelectALevel;
+    private string _taskName = string.Empty;
+    private decimal _simpleCount;
+    private decimal _moderateCount;
+    private decimal _complexCount;
+    private decimal _veryComplexCount;
+    private decimal _manualAdjHours;
+    // Per-complexity iteration factors (WTC row) and effective WTC×Iteration counts (derived rows)
+    private decimal _iterSimple, _iterModerate, _iterComplex, _iterVeryComplex;
+    private decimal _effSimple, _effModerate, _effComplex, _effVeryComplex;
+    /// <summary>When true (WTC rows): own counts are multiplied by per-complexity Iter* factors.</summary>
+    public bool ApplyIteration { get; set; }
+    /// <summary>When true (derived rows): Complexity Total uses Eff* counts from WTC × Iteration.</summary>
+    public bool UseEffectiveCounts { get; set; }
 
-    public string TaskName { get; set; } = string.Empty;
+    public string TaskName
+    {
+        get => _taskName;
+        set
+        {
+            _taskName = value;
+            (TaskType, IsInfoRow) = value switch
+            {
+                "Understanding Requirements"                 => ("UnderstandingRequirements", false),
+                "Write System Test Cases (# cases)"          => ("WriteSystemTestCases",      false),
+                "Iteration"                                  => ("Iteration",                 true),
+                "Data Preparation"                           => ("DataPreparation",           false),
+                "ALM Upload, Linking and Generating Reports" => ("AlmTasks",                  false),
+                "Sys Test Execution"                         => ("TestExecution",             false),
+                "Pre Release Defects Creation and Retest"    => ("PreReleaseDefects",         false),
+                _                                            => (string.Empty,               false)
+            };
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(HelpText));
+            RecalculateTotals();
+        }
+    }
     public BaCategory Category { get; set; }
     public string TaskType { get; set; } = string.Empty;
+    /// <summary>When true, this row is informational only (e.g. Iteration). It shows counts but contributes 0 hours.</summary>
+    public bool IsInfoRow { get; set; } = false;
+    /// <summary>True for rows where Simple/Moderate/Complex/VeryComplex are auto-calculated from test cases (not user-entered).</summary>
+    public bool AreCountsAutoCalculated => TaskType is "DataPreparation" or "AlmTasks" or "TestExecution" or "PreReleaseDefects";
 
-    public ExperienceLevel ExperienceLevel { get => _experienceLevel; set { _experienceLevel = value; OnPropertyChanged(); RecalculateTotals(); } }
-    public int SimpleCount { get => _simpleCount; set { _simpleCount = value; OnPropertyChanged(); RecalculateTotals(); } }
-    public int ModerateCount { get => _moderateCount; set { _moderateCount = value; OnPropertyChanged(); RecalculateTotals(); } }
-    public int ComplexCount { get => _complexCount; set { _complexCount = value; OnPropertyChanged(); RecalculateTotals(); } }
-    public int VeryComplexCount { get => _veryComplexCount; set { _veryComplexCount = value; OnPropertyChanged(); RecalculateTotals(); } }
+    /// <summary>Tooltip text sourced from the Excel BA_Considerations cell comments.</summary>
+    public string? HelpText => TaskType switch
+    {
+        "UnderstandingRequirements" => "Enter hours needed for the Tester in situations where the Tester is not included in the BDD review, or has additional questions about the CO or supporting material. This should be entered as a single value for all the requirements in the CO. A value of \"1\" in one of Simple/Moderate/Complex/Very Complex.",
+        "WriteSystemTestCases"      => "Enter the number of test cases that are projected based on the complexity of the work item. Ensure that the number of iterations are accurate based on the environment.\n\nSystem Test Cases, data preparation and documentation will be calculated based on the number of test cases, complexity of the test cases, number of iterations and the experience of the BA.\n\nInclude Regression Test cases",
+        "Iteration"                 => "This area allows a BA to identify if multiple iterations are needed to represent multiple passes for things like claim types, EVS methods, TPL, etc. This value is used as a multiplier to calculate total hours for system test cases, data preparation and documentation. A minimum value of 1.00 is required.",
+        "DataPreparation"           => "These hours are automatically calculated based on the number of test cases, iterations, complexity and BA experience level.",
+        "AlmTasks"                  => "These hours are automatically calculated based on the number of test cases, iterations, complexity and BA experience level.",
+        "TestExecution"             => "These hours are automatically calculated based on the number of test cases, iterations, complexity and BA experience level.",
+        "PreReleaseDefects"         => "These hours are automatically calculated based on the number of test cases, iterations, complexity and BA experience level.",
+        "RegressionTesting"         => "This task has been disabled. Add the number of regression test cases to the task \"Write System Test Cases\".",
+        _                           => (string?)null
+    };
 
-    public decimal Total => CalculateTotal();
-    public decimal AdjustedHours => Total * DetailedWeightedValues.GetExperienceMultiplier(EstimateRole.BA, ExperienceLevel);
+    public ExperienceLevel ExperienceLevel { get => _experienceLevel; set { _experienceLevel = value; OnPropertyChanged(); OnPropertyChanged(nameof(ExperienceLevelDisplay)); RecalculateTotals(); } }
+    public decimal SimpleCount     { get => _simpleCount;     set { _simpleCount = value;     OnPropertyChanged(); RecalculateTotals(); } }
+    public decimal ModerateCount   { get => _moderateCount;   set { _moderateCount = value;   OnPropertyChanged(); RecalculateTotals(); } }
+    public decimal ComplexCount    { get => _complexCount;    set { _complexCount = value;    OnPropertyChanged(); RecalculateTotals(); } }
+    public decimal VeryComplexCount { get => _veryComplexCount; set { _veryComplexCount = value; OnPropertyChanged(); RecalculateTotals(); } }
+    public decimal ManualAdjHours { get => _manualAdjHours; set { _manualAdjHours = value; OnPropertyChanged(); RecalculateTotals(); } }
+
+    /// <summary>Display-friendly experience level name (read-only column in grid).</summary>
+    public string ExperienceLevelDisplay => ExperienceLevel switch
+    {
+        ExperienceLevel.NewToArea  => "New to Area",
+        ExperienceLevel.Proficient => "Proficient",
+        ExperienceLevel.Expert     => "Expert",
+        _                          => ExperienceLevel.ToString()
+    };
+
+    /// <summary>Complexity Total — weighted hours from counts (same as before).</summary>
+    public decimal Total => IsInfoRow ? 0m : CalculateTotal();
+    /// <summary>Adjusted Exp Level = Complexity Total × experience multiplier.</summary>
+    public decimal AdjustedExpLevel => Total * DetailedWeightedValues.GetExperienceMultiplier(EstimateRole.BA, ExperienceLevel);
+    /// <summary>Grand Total = Adjusted Exp Level + Manual Adj Hours. Regression row applies MROUND(,0.25) matching Excel K40.</summary>
+    public decimal GrandTotal => TaskType == "RegressionTesting" ? MRound(AdjustedExpLevel + ManualAdjHours) : AdjustedExpLevel + ManualAdjHours;
+    /// <summary>Kept for backward compatibility with summary calculations.</summary>
+    public decimal AdjustedHours => GrandTotal;
+
+    // Display properties — blank for Iteration (IsInfoRow) rows, formatted value otherwise
+    public string TotalDisplay            => IsInfoRow ? "" : Total.ToString("N2");
+    public string AdjustedExpLevelDisplay => IsInfoRow ? "" : AdjustedExpLevel.ToString("N2");
+    public string GrandTotalDisplay       => IsInfoRow ? "" : GrandTotal.ToString("N2");
+    public string ManualAdjHoursDisplay   => IsInfoRow ? "" : ManualAdjHours.ToString("N2");
+
+    /// <summary>Sets iteration factors used by the WTC row. Called by PropagateWtcIteration.</summary>
+    public void SetIterationFactors(decimal s, decimal m, decimal c, decimal vc)
+    {
+        _iterSimple = s; _iterModerate = m; _iterComplex = c; _iterVeryComplex = vc;
+        RecalculateTotals();
+    }
+
+    /// <summary>Sets effective WTC×Iteration counts for derived rows. Called by PropagateWtcIteration.</summary>
+    public void SetEffectiveCounts(decimal s, decimal m, decimal c, decimal vc)
+    {
+        _effSimple = s; _effModerate = m; _effComplex = c; _effVeryComplex = vc;
+        RecalculateTotals();
+    }
 
     private decimal CalculateTotal()
     {
-        var s = DetailedWeightedValues.GetBaHours(Category, TaskType, BaComplexity.Simple) * SimpleCount;
-        var m = DetailedWeightedValues.GetBaHours(Category, TaskType, BaComplexity.Moderate) * ModerateCount;
-        var c = DetailedWeightedValues.GetBaHours(Category, TaskType, BaComplexity.Complex) * ComplexCount;
-        var vc = DetailedWeightedValues.GetBaHours(Category, TaskType, BaComplexity.VeryComplex) * VeryComplexCount;
+        decimal sn, mn, cn, vn;
+        if (UseEffectiveCounts)
+        {
+            // Derived rows (DataPrep, ALM, SysTest, PreRelease):
+            // CT = Σ( WTC_count_i × rate_i × iteration_i ) — WTC×Iteration already pre-computed as Eff* counts
+            sn = _effSimple; mn = _effModerate; cn = _effComplex; vn = _effVeryComplex;
+        }
+        else if (ApplyIteration)
+        {
+            // WTC row: own counts × per-complexity iteration factor
+            sn = SimpleCount * _iterSimple;
+            mn = ModerateCount * _iterModerate;
+            cn = ComplexCount * _iterComplex;
+            vn = VeryComplexCount * _iterVeryComplex;
+        }
+        else
+        {
+            // Understanding Requirements, Regression: own counts, no iteration
+            sn = SimpleCount; mn = ModerateCount; cn = ComplexCount; vn = VeryComplexCount;
+        }
+        var s  = DetailedWeightedValues.GetBaHours(Category, TaskType, BaComplexity.Simple)      * sn;
+        var m  = DetailedWeightedValues.GetBaHours(Category, TaskType, BaComplexity.Moderate)    * mn;
+        var c  = DetailedWeightedValues.GetBaHours(Category, TaskType, BaComplexity.Complex)     * cn;
+        var vc = DetailedWeightedValues.GetBaHours(Category, TaskType, BaComplexity.VeryComplex) * vn;
         return s + m + c + vc;
     }
 
     private void RecalculateTotals()
     {
         OnPropertyChanged(nameof(Total));
+        OnPropertyChanged(nameof(AdjustedExpLevel));
+        OnPropertyChanged(nameof(GrandTotal));
         OnPropertyChanged(nameof(AdjustedHours));
+        OnPropertyChanged(nameof(TotalDisplay));
+        OnPropertyChanged(nameof(AdjustedExpLevelDisplay));
+        OnPropertyChanged(nameof(GrandTotalDisplay));
+        OnPropertyChanged(nameof(ManualAdjHoursDisplay));
     }
+
+    private static decimal MRound(decimal value, decimal multiple = 0.25m) =>
+        multiple == 0 ? value : Math.Round(value / multiple, MidpointRounding.AwayFromZero) * multiple;
 
     public event PropertyChangedEventHandler? PropertyChanged;
     protected void OnPropertyChanged([CallerMemberName] string? name = null)
@@ -721,18 +1313,85 @@ public class BaTestCaseRow : INotifyPropertyChanged
 
 /// <summary>
 /// Row model for the BA Production Validation grid.
+/// Experience level is fixed per row (not user-selectable).
+/// Complexity counts (Simple/Moderate/Complex/VeryComplex) drive the Complexity Total.
 /// </summary>
 public class BaValidationRow : INotifyPropertyChanged
 {
     private ExperienceLevel _experienceLevel = ExperienceLevel.Proficient;
-    private decimal _hours;
+    private int _simpleCount;
+    private int _moderateCount;
+    private int _complexCount;
+    private int _veryComplexCount;
+    private decimal _manualAdjHours;
 
     public string TaskName { get; set; } = string.Empty;
     public string TaskType { get; set; } = string.Empty;
 
-    public ExperienceLevel ExperienceLevel { get => _experienceLevel; set { _experienceLevel = value; OnPropertyChanged(); OnPropertyChanged(nameof(AdjustedHours)); } }
-    public decimal Hours { get => _hours; set { _hours = value; OnPropertyChanged(); OnPropertyChanged(nameof(AdjustedHours)); } }
-    public decimal AdjustedHours => Hours * DetailedWeightedValues.GetExperienceMultiplier(EstimateRole.BA, ExperienceLevel);
+    /// <summary>Fixed experience level for this row (set at initialisation, not user-editable).</summary>
+    public ExperienceLevel ExperienceLevel
+    {
+        get => _experienceLevel;
+        set { _experienceLevel = value; OnPropertyChanged(); OnPropertyChanged(nameof(ExperienceLevelDisplay)); RecalculateTotals(); }
+    }
+
+    /// <summary>Display-friendly name used in the read-only Experience column.</summary>
+    public string ExperienceLevelDisplay => ExperienceLevel switch
+    {
+        ExperienceLevel.NewToArea => "New to Area",
+        ExperienceLevel.Proficient => "Proficient",
+        ExperienceLevel.Expert => "Expert",
+        _ => ExperienceLevel.ToString()
+    };
+
+    /// <summary>Tooltip text sourced from the Excel BA_Considerations cell comments.</summary>
+    public string? HelpText => TaskType switch
+    {
+        "GeneralValidation"  => "Enter an \"x\" in the column that best represents the projected complexity of the validation.",
+        "PricingChanges"     => "Enter an \"x\" in the column that best represents the projected complexity of the pricing change validation.",
+        "ReferenceChanges"   => "Enter an \"x\" in the column that best represents the projected complexity of the reference change validation.",
+        _                    => (string?)null
+    };
+
+    public int SimpleCount      { get => _simpleCount;      set { _simpleCount = value;      OnPropertyChanged(); RecalculateTotals(); } }
+    public int ModerateCount    { get => _moderateCount;    set { _moderateCount = value;    OnPropertyChanged(); RecalculateTotals(); } }
+    public int ComplexCount     { get => _complexCount;     set { _complexCount = value;     OnPropertyChanged(); RecalculateTotals(); } }
+    public int VeryComplexCount { get => _veryComplexCount; set { _veryComplexCount = value; OnPropertyChanged(); RecalculateTotals(); } }
+
+    /// <summary>Manual adjustment hours (additional hours beyond the weighted calculation).</summary>
+    public decimal ManualAdjHours
+    {
+        get => _manualAdjHours;
+        set { _manualAdjHours = value; OnPropertyChanged(); RecalculateTotals(); }
+    }
+
+    /// <summary>Complexity Total = sum of (count × weighted hours) across all complexity levels.</summary>
+    public decimal ComplexityTotal =>
+        DetailedWeightedValues.GetBaHours(BaCategory.ProductionValidation, TaskType, BaComplexity.Simple)      * SimpleCount +
+        DetailedWeightedValues.GetBaHours(BaCategory.ProductionValidation, TaskType, BaComplexity.Moderate)    * ModerateCount +
+        DetailedWeightedValues.GetBaHours(BaCategory.ProductionValidation, TaskType, BaComplexity.Complex)     * ComplexCount +
+        DetailedWeightedValues.GetBaHours(BaCategory.ProductionValidation, TaskType, BaComplexity.VeryComplex) * VeryComplexCount;
+
+    /// <summary>Adjusted Exp Level = Complexity Total × experience multiplier.</summary>
+    public decimal AdjustedExpLevel => ComplexityTotal * DetailedWeightedValues.GetExperienceMultiplier(EstimateRole.BA, ExperienceLevel);
+    /// <summary>Grand Total = Adjusted Exp Level + Manual Adj Hours (straight sum per Excel K45-K55). MROUND applied only at PV summary level.</summary>
+    public decimal GrandTotal => AdjustedExpLevel + ManualAdjHours;
+    /// <summary>Kept for backward compatibility with summary calculations (returns GrandTotal).</summary>
+    public decimal AdjustedHours => GrandTotal;
+    /// <summary>Kept for backward compatibility (returns ComplexityTotal).</summary>
+    public decimal Hours => ComplexityTotal;
+
+    private void RecalculateTotals()
+    {
+        OnPropertyChanged(nameof(ComplexityTotal));
+        OnPropertyChanged(nameof(AdjustedExpLevel));
+        OnPropertyChanged(nameof(GrandTotal));
+        OnPropertyChanged(nameof(AdjustedHours));
+        OnPropertyChanged(nameof(Hours));
+    }
+
+    private static decimal MRound(decimal value, decimal multiple = 0.25m) =>
+        multiple == 0 ? value : Math.Round(value / multiple, MidpointRounding.AwayFromZero) * multiple;
 
     public event PropertyChangedEventHandler? PropertyChanged;
     protected void OnPropertyChanged([CallerMemberName] string? name = null)
