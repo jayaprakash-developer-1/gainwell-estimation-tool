@@ -62,8 +62,11 @@ public partial class DetailedEstimateWindow : Window
             EstimatedByTextBox.Text = _currentProject.EstimatedBy ?? Environment.UserName;
             if (!string.IsNullOrWhiteSpace(_currentProject.ProjectName))
             {
-                Title = $"Detailed Estimate ΓÇö {_currentProject.ProjectName}";
-                ProjectSubtitleText.Text = $"{_currentProject.ProjectName} | CO: {_currentProject.ChangeOrderId}";
+                var co = _currentProject.ChangeOrderId ?? string.Empty;
+                var name = _currentProject.ProjectName;
+                Title = string.IsNullOrWhiteSpace(co)
+                    ? $"{name} - Detailed Estimate"
+                    : $"{co} - {name} - Detailed Estimate";
             }
         }
         else
@@ -81,8 +84,11 @@ public partial class DetailedEstimateWindow : Window
             ChangeOrderTextBox.Text = _currentProject.ChangeOrderId ?? string.Empty;
             BaChangeOrderTextBox.Text = _currentProject.ChangeOrderId ?? string.Empty;
             ProjectNameTextBox.Text = _currentProject.ProjectName ?? string.Empty;
-            Title = $"Detailed Estimate ΓÇö {_currentProject.ProjectName}";
-            ProjectSubtitleText.Text = $"{_currentProject.ProjectName} | CO: {_currentProject.ChangeOrderId}";
+            var co = _currentProject.ChangeOrderId ?? string.Empty;
+            var name = _currentProject.ProjectName ?? string.Empty;
+            Title = string.IsNullOrWhiteSpace(co)
+                ? $"{name} - Detailed Estimate"
+                : $"{co} - {name} - Detailed Estimate";
         }
     }
 
