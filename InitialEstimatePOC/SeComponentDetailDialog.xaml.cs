@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -42,6 +43,7 @@ public partial class SeComponentDetailDialog : Window
                 Entries.Add(new ModuleEntryRow(componentType)
                 {
                     ExperienceLevel = entry.ExperienceLevel,
+                    AssociatedRequirement = entry.AssociatedRequirement,
                     ModuleName = entry.ModuleName,
                     ComponentStatus = entry.ComponentStatus,
                     SimpleCount = entry.SimpleCount,
@@ -92,16 +94,23 @@ public partial class SeComponentDetailDialog : Window
 
     private void OnSave(object sender, RoutedEventArgs e)
     {
-        ResultEntries = new List<ModuleEntry>();
-        foreach (var row in Entries)
+        // Validate: Module Name is required for rows with data
+        var rowsWithData = Entries.Where(r => r.SimpleCount > 0 || r.ModerateCount > 0 || r.ComplexCount > 0 || !string.IsNullOrWhiteSpace(r.ModuleName)).ToList();
+        var missingNames = rowsWithData.Where(r => string.IsNullOrWhiteSpace(r.ModuleName)).ToList();
+        if (missingNames.Count > 0)
         {
-            // Only save rows that have some data
-            if (row.SimpleCount > 0 || row.ModerateCount > 0 || row.ComplexCount > 0 || !string.IsNullOrWhiteSpace(row.ModuleName))
-            {
-                row.Recalculate();
+            MessageBox.Show("Module Name is required for all rows that have data entered.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        ResultEntries = new List<ModuleEntry>();
+        foreach (var row in rowsWithData)
+        {
+            row.Recalculate();
                 ResultEntries.Add(new ModuleEntry
                 {
                     ExperienceLevel = row.ExperienceLevel,
+                    AssociatedRequirement = row.AssociatedRequirement,
                     ModuleName = row.ModuleName,
                     ComponentStatus = row.ComponentStatus,
                     SimpleCount = row.SimpleCount,
@@ -112,7 +121,6 @@ public partial class SeComponentDetailDialog : Window
                     AdjustedHrs = row.AdjustedHrs,
                     GrandTotal = row.GrandTotal
                 });
-            }
         }
         DialogResult = true;
         Close();
@@ -163,6 +171,13 @@ public class ModuleEntryRow : INotifyPropertyChanged
     {
         get => _experienceLevel;
         set { _experienceLevel = value; OnPropertyChanged(); Recalculate(); }
+    }
+
+    private string _associatedRequirement = string.Empty;
+    public string AssociatedRequirement
+    {
+        get => _associatedRequirement;
+        set { _associatedRequirement = value; OnPropertyChanged(); }
     }
 
     public string ModuleName

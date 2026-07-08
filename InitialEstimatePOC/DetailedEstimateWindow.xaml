@@ -4,7 +4,8 @@
         Title="Detailed Estimate" 
         Height="1000" Width="1500"
         WindowStartupLocation="CenterScreen"
-        Background="#EBEDF5"
+        WindowState="Maximized"
+        Background="#F5F7FA"
         Icon="Assets/app.ico"
         KeyboardNavigation.TabNavigation="Cycle">
 
@@ -34,18 +35,18 @@
         <Style x:Key="SectionHeader" TargetType="TextBlock">
             <Setter Property="FontSize" Value="14" />
             <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="Foreground" Value="#2B3A44" />
+            <Setter Property="Foreground" Value="#1A1A2E" />
             <Setter Property="Margin" Value="0,0,0,12" />
         </Style>
 
         <Style x:Key="FieldLabel" TargetType="TextBlock">
             <Setter Property="FontSize" Value="11" />
-            <Setter Property="Foreground" Value="#5A6978" />
+            <Setter Property="Foreground" Value="#6B7280" />
             <Setter Property="Margin" Value="0,0,0,4" />
         </Style>
 
         <Style x:Key="PrimaryButton" TargetType="Button">
-            <Setter Property="Background" Value="#1931E3" />
+            <Setter Property="Background" Value="#6C63FF" />
             <Setter Property="Foreground" Value="White" />
             <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="Padding" Value="16,8" />
@@ -63,17 +64,17 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#2E307A" />
+                    <Setter Property="Background" Value="#5A52E0" />
                 </Trigger>
             </Style.Triggers>
         </Style>
 
         <Style x:Key="GhostButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Foreground" Value="#5A6978" />
+            <Setter Property="Foreground" Value="#6B7280" />
             <Setter Property="Padding" Value="12,6" />
             <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="BorderBrush" Value="#EBEDF5" />
+            <Setter Property="BorderBrush" Value="#E5E7EB" />
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Template">
                 <Setter.Value>
@@ -89,7 +90,7 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#EBEDF5" />
+                    <Setter Property="Background" Value="#F3F4F6" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -97,13 +98,13 @@
         <Style x:Key="KpiValue" TargetType="TextBlock">
             <Setter Property="FontSize" Value="22" />
             <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Foreground" Value="#1931E3" />
-            <Setter Property="FontFamily" Value="Arial" />
+            <Setter Property="Foreground" Value="#6C63FF" />
+            <Setter Property="FontFamily" Value="Cascadia Mono, Consolas" />
         </Style>
 
         <Style x:Key="KpiLabel" TargetType="TextBlock">
             <Setter Property="FontSize" Value="11" />
-            <Setter Property="Foreground" Value="#5A6978" />
+            <Setter Property="Foreground" Value="#6B7280" />
             <Setter Property="Margin" Value="0,4,0,0" />
         </Style>
     </Window.Resources>
@@ -111,16 +112,16 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!-- Header Banner -->
-        <Border Grid.Row="0" Padding="24,16" Margin="8,8,8,0" CornerRadius="8">
+        <Border Grid.Row="0" Padding="24,16" Margin="8,8,8,0" CornerRadius="8,8,0,0">
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                    <GradientStop Color="#019681" Offset="0" />
-                    <GradientStop Color="#1A6478" Offset="0.5" />
-                    <GradientStop Color="#2E307A" Offset="1" />
+                    <GradientStop Color="#00857C" Offset="0" />
+                    <GradientStop Color="#006B64" Offset="1" />
                 </LinearGradientBrush>
             </Border.Background>
             <Grid>
@@ -133,42 +134,70 @@
 
                 <StackPanel Grid.Column="0" VerticalAlignment="Center" Orientation="Horizontal">
                     <Image Source="Assets/logo.png" Height="36" Margin="0,0,12,0" VerticalAlignment="Center" />
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock Text="Detailed Estimate" FontSize="20" FontWeight="Bold" Foreground="White" />
-                        <TextBlock x:Name="ProjectSubtitleText" Text="SE + BA + Collaboration Breakdown" FontSize="12" Foreground="#00EEAE" Margin="0,4,0,0" />
-                    </StackPanel>
+                    <TextBlock Text="Detailed Estimate" FontSize="20" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" />
                 </StackPanel>
 
                 <Border Grid.Column="1" Background="White" CornerRadius="6" Padding="16,8" Margin="8,0" VerticalAlignment="Center">
                     <StackPanel HorizontalAlignment="Center">
-                        <TextBlock x:Name="TotalHoursKpi" Text="0.00 Hrs" FontSize="18" FontWeight="Bold" Foreground="#019681" HorizontalAlignment="Center" />
-                        <TextBlock Text="Total Hours" FontSize="10" Foreground="#2B3A44" HorizontalAlignment="Center" />
+                        <TextBlock x:Name="TotalHoursKpi" Text="0.00 Hrs" FontSize="18" FontWeight="Bold" Foreground="#00857C" HorizontalAlignment="Center" />
+                        <TextBlock Text="Total Hours" FontSize="10" Foreground="#374151" HorizontalAlignment="Center" />
                     </StackPanel>
                 </Border>
 
                 <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Button Content="💾 Save" Style="{StaticResource GhostButton}" 
-                            Click="OnSaveClick" Margin="4,0"
-                            Foreground="White" BorderBrush="#00EEAE" ToolTip="Ctrl+S" />
                     <Button Content="🏠 Home" Style="{StaticResource GhostButton}" 
                             Click="OnHomeClick" Margin="4,0"
-                            Foreground="White" BorderBrush="#00EEAE" />
+                            Foreground="White" BorderBrush="#4DB6AC" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- ═══════════ ESTIMATE TAB NAVIGATION ═══════════ -->
+        <Border Grid.Row="1" Margin="8,0,8,0" Padding="4,4" Background="#F0F0F5" CornerRadius="0,0,8,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Navigation Tabs (Left) -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                    <!-- Initial Estimate Tab -->
+                    <Border x:Name="InitialTab" Background="Transparent" CornerRadius="6" Padding="16,8" Margin="4,0"
+                            Cursor="Hand" MouseLeftButtonDown="OnInitialTabClick">
+                        <TextBlock Text="Initial Estimate" FontSize="12" FontWeight="SemiBold" Foreground="#6B7280" />
+                    </Border>
+                    <!-- Detailed Estimate Tab (Active) -->
+                    <Border Background="#6C63FF" CornerRadius="6" Padding="16,8" Margin="4,0">
+                        <TextBlock Text="Detailed Estimate" FontSize="12" FontWeight="SemiBold" Foreground="White" />
+                    </Border>
+                    <!-- Final Estimate Tab -->
+                    <Border Background="Transparent" CornerRadius="6" Padding="16,8" Margin="4,0"
+                            Cursor="Hand" MouseLeftButtonDown="OnFinalTabClick">
+                        <TextBlock Text="Final Estimate" FontSize="12" FontWeight="SemiBold" Foreground="#9CA3AF" />
+                    </Border>
+                </StackPanel>
+
+                <!-- Save & Settings Buttons (Right) -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="1" Background="#D1D5DB" Margin="8,4" />
+                    <Button Content="💾 Save" Style="{StaticResource GhostButton}" 
+                            Click="OnSaveClick" Margin="4,0" ToolTip="Ctrl+S" />
                     <Button Content="⚙ Settings" Style="{StaticResource GhostButton}" 
-                            Click="OnSettingsClick" Margin="4,0"
-                            Foreground="White" BorderBrush="#00EEAE" />
+                            Click="OnSettingsClick" Margin="4,0" />
                 </StackPanel>
             </Grid>
         </Border>
 
         <!-- Tab Control for 4 Sub-Pages -->
-        <TabControl Grid.Row="1" Margin="8,8,8,8" BorderThickness="0" Background="Transparent"
+        <TabControl Grid.Row="2" Margin="8,8,8,8" BorderThickness="0" Background="Transparent"
                    SelectionChanged="OnTabSelectionChanged">
             <TabControl.Resources>
                 <Style TargetType="TabItem">
                     <Setter Property="Padding" Value="16,10" />
                     <Setter Property="FontSize" Value="13" />
                     <Setter Property="FontWeight" Value="SemiBold" />
-                    <Setter Property="Foreground" Value="#5A6978" />
+                    <Setter Property="Foreground" Value="#6B7280" />
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="TabItem">
@@ -180,11 +209,11 @@
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsSelected" Value="True">
                                         <Setter TargetName="TabBorder" Property="Background" Value="White" />
-                                        <Setter TargetName="TabBorder" Property="BorderBrush" Value="#019681" />
-                                        <Setter Property="Foreground" Value="#019681" />
+                                        <Setter TargetName="TabBorder" Property="BorderBrush" Value="#00857C" />
+                                        <Setter Property="Foreground" Value="#00857C" />
                                     </Trigger>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="TabBorder" Property="Background" Value="#EBEDF5" />
+                                        <Setter TargetName="TabBorder" Property="Background" Value="#F8FAFC" />
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
@@ -197,185 +226,533 @@
             <TabItem Header="📊 Estimate Summary">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="8">
                     <StackPanel Margin="8">
-                        <!-- Project Header -->
-                        <Border Style="{StaticResource CardBorder}">
-                            <StackPanel>
-                                <Grid Margin="0,0,0,12">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <StackPanel Grid.Column="0" Margin="0,0,16,0">
-                                        <TextBlock Text="Project Name:" Style="{StaticResource FieldLabel}" />
-                                        <TextBox x:Name="ProjectNameTextBox" Padding="8,6" FontSize="13" IsReadOnly="True" Background="#EBEDF5" />
-                                    </StackPanel>
-                                    <StackPanel Grid.Column="1" Margin="0,0,16,0">
-                                        <TextBlock Text="Change Order / Defect:" Style="{StaticResource FieldLabel}" />
-                                        <TextBox x:Name="ChangeOrderTextBox" Padding="8,6" FontSize="13" IsReadOnly="True" Background="#EBEDF5" />
-                                    </StackPanel>
-                                    <StackPanel Grid.Column="2" Margin="0,0,16,0">
-                                        <TextBlock Text="Date (mm/dd/yyyy):" Style="{StaticResource FieldLabel}" />
-                                        <TextBox x:Name="ActualHoursDateTextBox" Padding="8,6" FontSize="13" />
-                                    </StackPanel>
-                                    <Button Grid.Column="3" Content="📂 Open" Style="{StaticResource PrimaryButton}"
-                                            Click="OnOpenHistoryClick" VerticalAlignment="Bottom" Margin="0,0,0,0"
-                                            ToolTip="Load from saved Initial Estimate history" />
-                                </Grid>
-                            </StackPanel>
+                        <!-- Project Header Card with gradient accent -->
+                        <Border CornerRadius="12" Margin="8" Padding="0" ClipToBounds="True">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="12" Opacity="0.06" ShadowDepth="3" Direction="270" />
+                            </Border.Effect>
+                            <Grid>
+                                <!-- Top accent bar -->
+                                <Border Height="4" VerticalAlignment="Top" CornerRadius="12,12,0,0">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                            <GradientStop Color="#00857C" Offset="0" />
+                                            <GradientStop Color="#6C63FF" Offset="0.5" />
+                                            <GradientStop Color="#EA580C" Offset="1" />
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                </Border>
+                                <Border Background="White" CornerRadius="12" Padding="24,20" Margin="0,4,0,0">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                                            <TextBlock Text="PROJECT NAME" FontSize="10" FontWeight="SemiBold" Foreground="#9CA3AF" Margin="0,0,0,6" />
+                                            <TextBox x:Name="ProjectNameTextBox" Padding="10,8" FontSize="13" IsReadOnly="True" Background="#F9FAFB" BorderBrush="#E5E7EB" BorderThickness="1"
+                                                     ToolTip="The name of the project being estimated">
+                                                <TextBox.Resources>
+                                                    <Style TargetType="Border"><Setter Property="CornerRadius" Value="6"/></Style>
+                                                </TextBox.Resources>
+                                            </TextBox>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Margin="0,0,16,0">
+                                            <TextBlock Text="CHANGE ORDER / DEFECT" FontSize="10" FontWeight="SemiBold" Foreground="#9CA3AF" Margin="0,0,0,6" />
+                                            <TextBox x:Name="ChangeOrderTextBox" Padding="10,8" FontSize="13" IsReadOnly="True" Background="#F9FAFB" BorderBrush="#E5E7EB" BorderThickness="1"
+                                                     ToolTip="Change Order ID or Defect number associated with this estimate">
+                                                <TextBox.Resources>
+                                                    <Style TargetType="Border"><Setter Property="CornerRadius" Value="6"/></Style>
+                                                </TextBox.Resources>
+                                            </TextBox>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="2" Margin="0,0,16,0">
+                                            <TextBlock Text="DATE (MM/DD/YYYY)" FontSize="10" FontWeight="SemiBold" Foreground="#9CA3AF" Margin="0,0,0,6" />
+                                            <TextBox x:Name="ActualHoursDateTextBox" Padding="10,8" FontSize="13" BorderBrush="#E5E7EB" BorderThickness="1"
+                                                     ToolTip="Date when the actual hours were recorded (format: MM/DD/YYYY)">
+                                                <TextBox.Resources>
+                                                    <Style TargetType="Border"><Setter Property="CornerRadius" Value="6"/></Style>
+                                                </TextBox.Resources>
+                                            </TextBox>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </Grid>
                         </Border>
 
-                        <!-- Summary Totals (matching Excel rows 6-10) -->
-                        <Border Style="{StaticResource CardBorder}">
+                        <!-- ═══════ KPI METRIC CARDS ═══════ -->
+                        <Grid Margin="8,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Actual Hours Card -->
+                            <Border Grid.Column="0" Background="White" CornerRadius="10" Padding="16,14" Margin="4"
+                                    ToolTip="Enter the total actual hours spent on this project">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="10" Opacity="0.06" ShadowDepth="2" Direction="270" />
+                                </Border.Effect>
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,8">
+                                        <Ellipse Width="32" Height="32" Fill="#F3F4F6" HorizontalAlignment="Left" />
+                                        <TextBlock Text="⏱" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8,0,0,0" />
+                                    </Grid>
+                                    <TextBlock Text="ACTUAL HOURS" FontSize="9" FontWeight="Bold" Foreground="#9CA3AF" Margin="0,0,0,4" />
+                                    <TextBox x:Name="ActualHoursTextBox" Text="0" Padding="0" FontSize="20" FontWeight="Bold" Foreground="#374151" 
+                                             BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Left" TextChanged="OnSummaryFieldChanged" />
+                                </StackPanel>
+                            </Border>
+
+                            <!-- SE Hours Card -->
+                            <Border Grid.Column="1" CornerRadius="10" Padding="16,14" Margin="4"
+                                    ToolTip="Total hours estimated by Software Engineering (auto-calculated from SE tab)">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#F0FDF4" Offset="0" />
+                                        <GradientStop Color="#DCFCE7" Offset="1" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="10" Opacity="0.06" ShadowDepth="2" Direction="270" />
+                                </Border.Effect>
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,8">
+                                        <Ellipse Width="32" Height="32" Fill="#BBF7D0" HorizontalAlignment="Left" />
+                                        <TextBlock Text="🔧" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7,0,0,0" />
+                                    </Grid>
+                                    <TextBlock Text="SE HOURS" FontSize="9" FontWeight="Bold" Foreground="#166534" Margin="0,0,0,4" />
+                                    <TextBlock x:Name="SeHoursKpi" Text="0.00" FontSize="20" FontWeight="Bold" Foreground="#16A34A" />
+                                </StackPanel>
+                            </Border>
+
+                            <!-- BA Hours Card -->
+                            <Border Grid.Column="2" CornerRadius="10" Padding="16,14" Margin="4"
+                                    ToolTip="Total hours estimated by Business Analyst (auto-calculated from BA tab)">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#EFF6FF" Offset="0" />
+                                        <GradientStop Color="#DBEAFE" Offset="1" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="10" Opacity="0.06" ShadowDepth="2" Direction="270" />
+                                </Border.Effect>
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,8">
+                                        <Ellipse Width="32" Height="32" Fill="#BFDBFE" HorizontalAlignment="Left" />
+                                        <TextBlock Text="📋" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7,0,0,0" />
+                                    </Grid>
+                                    <TextBlock Text="BA HOURS" FontSize="9" FontWeight="Bold" Foreground="#1E40AF" Margin="0,0,0,4" />
+                                    <TextBlock x:Name="BaHoursKpi" Text="0.00" FontSize="20" FontWeight="Bold" Foreground="#2563EB" />
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Collaboration Hours Card -->
+                            <Border Grid.Column="3" CornerRadius="10" Padding="16,14" Margin="4"
+                                    ToolTip="Total Collaboration/Quality hours including meetings, WPRs, and mentoring">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#FFF7ED" Offset="0" />
+                                        <GradientStop Color="#FFEDD5" Offset="1" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="10" Opacity="0.06" ShadowDepth="2" Direction="270" />
+                                </Border.Effect>
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,8">
+                                        <Ellipse Width="32" Height="32" Fill="#FED7AA" HorizontalAlignment="Left" />
+                                        <TextBlock Text="🤝" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7,0,0,0" />
+                                    </Grid>
+                                    <TextBlock Text="COLLAB HOURS" FontSize="9" FontWeight="Bold" Foreground="#9A3412" Margin="0,0,0,4" />
+                                    <TextBlock x:Name="CollabHoursKpi" Text="0.00" FontSize="20" FontWeight="Bold" Foreground="#EA580C" />
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Total Estimate Card -->
+                            <Border Grid.Column="4" CornerRadius="10" Padding="16,14" Margin="4"
+                                    ToolTip="Grand total of all estimated hours including PM reserve">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#F0FDFA" Offset="0" />
+                                        <GradientStop Color="#CCFBF1" Offset="1" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="12" Opacity="0.08" ShadowDepth="3" Direction="270" />
+                                </Border.Effect>
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,8">
+                                        <Ellipse Width="32" Height="32" Fill="#99F6E4" HorizontalAlignment="Left" />
+                                        <TextBlock Text="✓" FontSize="16" FontWeight="Bold" Foreground="#0D9488" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" />
+                                    </Grid>
+                                    <TextBlock Text="TOTAL ESTIMATE" FontSize="9" FontWeight="Bold" Foreground="#134E4A" Margin="0,0,0,4" />
+                                    <TextBlock x:Name="TotalWithReserveText" Text="0.00" FontSize="20" FontWeight="Bold" Foreground="#00857C" />
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <!-- PM Reserve Row -->
+                        <Border Background="White" CornerRadius="10" Padding="16,12" Margin="12,0,12,8">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="6" Opacity="0.04" ShadowDepth="1" Direction="270" />
+                            </Border.Effect>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Border Background="#EDE9FE" CornerRadius="6" Padding="8,4" Margin="0,0,12,0">
+                                        <TextBlock Text="PM" FontSize="10" FontWeight="Bold" Foreground="#7C3AED" />
+                                    </Border>
+                                    <TextBlock Text="Project Management Reserve" FontSize="13" FontWeight="SemiBold" Foreground="#374151" VerticalAlignment="Center" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBox x:Name="PmReserveTextBox" Text="5" Width="48" Padding="6,4" FontSize="12" TextAlignment="Center" 
+                                             BorderBrush="#D1D5DB" TextChanged="OnSummaryFieldChanged"
+                                             ToolTip="Percentage of total hours to reserve for Project Management (typically 5-10%)">
+                                        <TextBox.Resources>
+                                            <Style TargetType="Border"><Setter Property="CornerRadius" Value="6"/></Style>
+                                        </TextBox.Resources>
+                                    </TextBox>
+                                    <TextBlock Text=" %" FontSize="13" Foreground="#6B7280" VerticalAlignment="Center" Margin="2,0,16,0" />
+                                    <Border Background="#F5F3FF" CornerRadius="6" Padding="10,4">
+                                        <TextBlock x:Name="PmReserveHoursText" Text="0.00 hrs" FontSize="13" FontWeight="Bold" Foreground="#6C63FF" />
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!-- ═══════ TEAM / ESTIMATED BY ═══════ -->
+                        <Border Background="White" CornerRadius="10" Padding="20,16" Margin="12,8">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="8" Opacity="0.05" ShadowDepth="2" Direction="270" />
+                            </Border.Effect>
                             <StackPanel>
-                                <TextBlock Text="Estimate Summary" Style="{StaticResource SectionHeader}" />
+                                <TextBlock Text="TEAM" FontSize="10" FontWeight="Bold" Foreground="#9CA3AF" Margin="0,0,0,12" />
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="120" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" Text="Total Actual Hours:" FontSize="13" VerticalAlignment="Center" Margin="0,4" />
-                                    <TextBox x:Name="ActualHoursTextBox" Grid.Row="0" Grid.Column="1" Text="0" Padding="4,2" FontSize="13" HorizontalContentAlignment="Right" Margin="0,4" TextChanged="OnSummaryFieldChanged" />
-                                    <TextBlock Grid.Row="1" Text="Total SE Estimated Hours:" FontSize="13" VerticalAlignment="Center" Margin="0,4" />
-                                    <TextBlock x:Name="SeHoursKpi" Grid.Row="1" Grid.Column="1" Text="0.00" FontSize="14" FontWeight="Bold" Foreground="#019681" HorizontalAlignment="Right" Margin="0,4" />
-                                    <TextBlock Grid.Row="2" Text="Total BA Estimated Hours:" FontSize="13" VerticalAlignment="Center" Margin="0,4" />
-                                    <TextBlock x:Name="BaHoursKpi" Grid.Row="2" Grid.Column="1" Text="0.00" FontSize="14" FontWeight="Bold" Foreground="#2E307A" HorizontalAlignment="Right" Margin="0,4" />
-                                    <TextBlock Grid.Row="3" Text="Total Collaboration/Quality Hours:" FontSize="13" VerticalAlignment="Center" Margin="0,4" />
-                                    <TextBlock x:Name="CollabHoursKpi" Grid.Row="3" Grid.Column="1" Text="0.00" FontSize="14" FontWeight="Bold" Foreground="#2199B0" HorizontalAlignment="Right" Margin="0,4" />
-                                    <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,4">
-                                        <TextBlock Text="Project Management Reserve:" FontSize="13" VerticalAlignment="Center" />
-                                        <TextBox x:Name="PmReserveTextBox" Text="5" Width="50" Padding="4,2" FontSize="12" Margin="8,0" TextChanged="OnSummaryFieldChanged" />
-                                        <TextBlock Text="%" FontSize="13" VerticalAlignment="Center" />
-                                    </StackPanel>
-                                    <TextBlock x:Name="PmReserveHoursText" Grid.Row="4" Grid.Column="1" Text="0.00" FontSize="14" FontWeight="Bold" Foreground="#1931E3" HorizontalAlignment="Right" Margin="0,4" />
-                                    <Border Grid.Row="5" Grid.ColumnSpan="2" BorderThickness="0,1,0,0" BorderBrush="#D4D7E0" Margin="0,8,0,0" Padding="0,8,0,0">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="120" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="Total Hours Estimate:" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center" />
-                                            <TextBlock x:Name="TotalWithReserveText" Grid.Column="1" Text="0.00" FontSize="18" FontWeight="Bold" Foreground="#019681" HorizontalAlignment="Right" />
-                                        </Grid>
+                                    <Border Grid.Column="0" Background="#F9FAFB" CornerRadius="8" Padding="12,10" Margin="0,0,6,0">
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                                <Ellipse Width="8" Height="8" Fill="#16A34A" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                                <TextBlock Text="SE ESTIMATE BY" FontSize="9" FontWeight="Bold" Foreground="#6B7280" />
+                                            </StackPanel>
+                                            <TextBox x:Name="EstimatedByTextBox" Padding="8,6" FontSize="12" IsReadOnly="True" Background="White" BorderBrush="#E5E7EB" BorderThickness="1">
+                                                <TextBox.Resources>
+                                                    <Style TargetType="Border"><Setter Property="CornerRadius" Value="4"/></Style>
+                                                </TextBox.Resources>
+                                            </TextBox>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Grid.Column="1" Background="#F9FAFB" CornerRadius="8" Padding="12,10" Margin="3,0">
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                                <Ellipse Width="8" Height="8" Fill="#2563EB" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                                <TextBlock Text="BA ESTIMATE BY" FontSize="9" FontWeight="Bold" Foreground="#6B7280" />
+                                            </StackPanel>
+                                            <TextBox x:Name="BaEstimatedByTextBox" Padding="8,6" FontSize="12" IsReadOnly="True" Background="White" BorderBrush="#E5E7EB" BorderThickness="1">
+                                                <TextBox.Resources>
+                                                    <Style TargetType="Border"><Setter Property="CornerRadius" Value="4"/></Style>
+                                                </TextBox.Resources>
+                                            </TextBox>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Grid.Column="2" Background="#F9FAFB" CornerRadius="8" Padding="12,10" Margin="6,0,0,0">
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                                <Ellipse Width="8" Height="8" Fill="#EA580C" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                                <TextBlock Text="COLLAB ESTIMATE BY" FontSize="9" FontWeight="Bold" Foreground="#6B7280" />
+                                            </StackPanel>
+                                            <TextBox x:Name="CollabEstimatedByTextBox" Padding="8,6" FontSize="12" IsReadOnly="True" Background="White" BorderBrush="#E5E7EB" BorderThickness="1">
+                                                <TextBox.Resources>
+                                                    <Style TargetType="Border"><Setter Property="CornerRadius" Value="4"/></Style>
+                                                </TextBox.Resources>
+                                            </TextBox>
+                                        </StackPanel>
                                     </Border>
                                 </Grid>
                             </StackPanel>
                         </Border>
 
-                        <!-- Estimated By -->
-                        <Border Style="{StaticResource CardBorder}">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Grid.Column="0" Margin="0,0,8,0">
-                                    <TextBlock Text="SE Estimate By:" Style="{StaticResource FieldLabel}" />
-                                    <TextBox x:Name="EstimatedByTextBox" Padding="8,6" FontSize="13" IsReadOnly="True" Background="#EBEDF5" />
-                                </StackPanel>
-                                <StackPanel Grid.Column="1" Margin="0,0,8,0">
-                                    <TextBlock Text="BA Estimate By:" Style="{StaticResource FieldLabel}" />
-                                    <TextBox x:Name="BaEstimatedByTextBox" Padding="8,6" FontSize="13" IsReadOnly="True" Background="#EBEDF5" />
-                                </StackPanel>
-                                <StackPanel Grid.Column="2">
-                                    <TextBlock Text="Collaboration Estimate By:" Style="{StaticResource FieldLabel}" />
-                                    <TextBox x:Name="CollabEstimatedByTextBox" Padding="8,6" FontSize="13" IsReadOnly="True" Background="#EBEDF5" />
-                                </StackPanel>
-                            </Grid>
-                        </Border>
-
-                        <!-- Assumptions (aggregated from each tab) -->
-                        <Border Style="{StaticResource CardBorder}">
+                        <!-- ═══════ ASSUMPTIONS ═══════ -->
+                        <Border Background="White" CornerRadius="10" Padding="20,16" Margin="12,8">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="8" Opacity="0.05" ShadowDepth="2" Direction="270" />
+                            </Border.Effect>
                             <StackPanel>
-                                <TextBlock Text="Assumptions" Style="{StaticResource SectionHeader}" />
-                                <TextBlock Text="SE Assumption:" FontSize="11" FontWeight="SemiBold" Foreground="#019681" Margin="0,0,0,2" />
-                                <TextBlock x:Name="SummarySeAssumptionText" TextWrapping="Wrap" FontSize="12" Foreground="#2B3A44" Margin="0,0,0,8" />
-                                <TextBlock Text="BA Assumption:" FontSize="11" FontWeight="SemiBold" Foreground="#2E307A" Margin="0,0,0,2" />
-                                <TextBlock x:Name="SummaryBaAssumptionText" TextWrapping="Wrap" FontSize="12" Foreground="#2B3A44" Margin="0,0,0,8" />
-                                <TextBlock Text="Collaboration and Quality Assumption:" FontSize="11" FontWeight="SemiBold" Foreground="#2199B0" Margin="0,0,0,2" />
-                                <TextBlock x:Name="SummaryCollabAssumptionText" TextWrapping="Wrap" FontSize="12" Foreground="#2B3A44" Margin="0,0,0,0" />
+                                <TextBlock Text="ASSUMPTIONS" FontSize="10" FontWeight="Bold" Foreground="#9CA3AF" Margin="0,0,0,14" />
+                                <!-- SE Assumption -->
+                                <Border Background="#F0FDF4" CornerRadius="8" Padding="14,10" Margin="0,0,0,10" BorderBrush="#BBF7D0" BorderThickness="1,1,1,1">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                            <Ellipse Width="8" Height="8" Fill="#16A34A" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                            <TextBlock Text="SE Assumption" FontSize="11" FontWeight="SemiBold" Foreground="#166534" />
+                                        </StackPanel>
+                                        <TextBlock x:Name="SummarySeAssumptionText" TextWrapping="Wrap" FontSize="12" Foreground="#374151" FontStyle="Italic" />
+                                    </StackPanel>
+                                </Border>
+                                <!-- BA Assumption -->
+                                <Border Background="#EFF6FF" CornerRadius="8" Padding="14,10" Margin="0,0,0,10" BorderBrush="#BFDBFE" BorderThickness="1,1,1,1">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                            <Ellipse Width="8" Height="8" Fill="#2563EB" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                            <TextBlock Text="BA Assumption" FontSize="11" FontWeight="SemiBold" Foreground="#1E40AF" />
+                                        </StackPanel>
+                                        <TextBlock x:Name="SummaryBaAssumptionText" TextWrapping="Wrap" FontSize="12" Foreground="#374151" FontStyle="Italic" />
+                                    </StackPanel>
+                                </Border>
+                                <!-- Collab Assumption -->
+                                <Border Background="#FFF7ED" CornerRadius="8" Padding="14,10" BorderBrush="#FED7AA" BorderThickness="1,1,1,1">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                            <Ellipse Width="8" Height="8" Fill="#EA580C" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                            <TextBlock Text="Collaboration and Quality Assumption" FontSize="11" FontWeight="SemiBold" Foreground="#9A3412" />
+                                        </StackPanel>
+                                        <TextBlock x:Name="SummaryCollabAssumptionText" TextWrapping="Wrap" FontSize="12" Foreground="#374151" FontStyle="Italic" />
+                                    </StackPanel>
+                                </Border>
                             </StackPanel>
                         </Border>
 
-                        <!-- Adjusted Hours Assumptions (aggregated from each tab) -->
-                        <Border Style="{StaticResource CardBorder}">
+                        <!-- ═══════ ADJUSTED HOURS ASSUMPTIONS ═══════ -->
+                        <Border Background="White" CornerRadius="10" Padding="20,16" Margin="12,8">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="8" Opacity="0.05" ShadowDepth="2" Direction="270" />
+                            </Border.Effect>
                             <StackPanel>
-                                <TextBlock Text="Adjusted Hours Assumptions" Style="{StaticResource SectionHeader}" />
-                                <TextBlock Text="SE Adjusted Hours Assumption:" FontSize="11" FontWeight="SemiBold" Foreground="#019681" Margin="0,0,0,2" />
-                                <TextBlock x:Name="SummarySeAdjustedText" TextWrapping="Wrap" FontSize="12" Foreground="#2B3A44" Margin="0,0,0,8" />
-                                <TextBlock Text="BA Adjusted Hours Assumption:" FontSize="11" FontWeight="SemiBold" Foreground="#2E307A" Margin="0,0,0,2" />
-                                <TextBlock x:Name="SummaryBaAdjustedText" TextWrapping="Wrap" FontSize="12" Foreground="#2B3A44" Margin="0,0,0,8" />
-                                <TextBlock Text="Collaboration and Quality Adjusted Hours Assumption:" FontSize="11" FontWeight="SemiBold" Foreground="#2199B0" Margin="0,0,0,2" />
-                                <TextBlock x:Name="SummaryCollabAdjustedText" TextWrapping="Wrap" FontSize="12" Foreground="#2B3A44" Margin="0,0,0,0" />
+                                <TextBlock Text="ADJUSTED HOURS ASSUMPTIONS" FontSize="10" FontWeight="Bold" Foreground="#9CA3AF" Margin="0,0,0,14" />
+                                <Border Background="#F0FDF4" CornerRadius="8" Padding="14,10" Margin="0,0,0,10" BorderBrush="#BBF7D0" BorderThickness="1">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                            <Ellipse Width="8" Height="8" Fill="#16A34A" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                            <TextBlock Text="SE Adjusted Hours" FontSize="11" FontWeight="SemiBold" Foreground="#166534" />
+                                        </StackPanel>
+                                        <TextBlock x:Name="SummarySeAdjustedText" TextWrapping="Wrap" FontSize="12" Foreground="#374151" FontStyle="Italic" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Background="#EFF6FF" CornerRadius="8" Padding="14,10" Margin="0,0,0,10" BorderBrush="#BFDBFE" BorderThickness="1">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                            <Ellipse Width="8" Height="8" Fill="#2563EB" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                            <TextBlock Text="BA Adjusted Hours" FontSize="11" FontWeight="SemiBold" Foreground="#1E40AF" />
+                                        </StackPanel>
+                                        <TextBlock x:Name="SummaryBaAdjustedText" TextWrapping="Wrap" FontSize="12" Foreground="#374151" FontStyle="Italic" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Background="#FFF7ED" CornerRadius="8" Padding="14,10" BorderBrush="#FED7AA" BorderThickness="1">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                            <Ellipse Width="8" Height="8" Fill="#EA580C" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                            <TextBlock Text="Collaboration Adjusted Hours" FontSize="11" FontWeight="SemiBold" Foreground="#9A3412" />
+                                        </StackPanel>
+                                        <TextBlock x:Name="SummaryCollabAdjustedText" TextWrapping="Wrap" FontSize="12" Foreground="#374151" FontStyle="Italic" />
+                                    </StackPanel>
+                                </Border>
                             </StackPanel>
                         </Border>
 
-                        <!-- SE_ModuleDoco Summary -->
-                        <Border Style="{StaticResource CardBorder}">
+                        <!-- ═══════ SE BREAKDOWN TABLE ═══════ -->
+                        <Border Background="White" CornerRadius="10" Padding="20,16" Margin="12,8" ClipToBounds="True">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="8" Opacity="0.05" ShadowDepth="2" Direction="270" />
+                            </Border.Effect>
                             <StackPanel>
-                                <TextBlock Text="SE_ModuleDoco Summary" Style="{StaticResource SectionHeader}" />
+                                <Grid Margin="0,0,0,14">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Background="#DCFCE7" CornerRadius="4" Padding="6,3" Margin="0,0,10,0" VerticalAlignment="Center">
+                                            <TextBlock Text="SE" FontSize="10" FontWeight="Bold" Foreground="#16A34A" />
+                                        </Border>
+                                        <TextBlock Text="SE Module/Documentation Breakdown" FontSize="13" FontWeight="SemiBold" Foreground="#1F2937" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </Grid>
                                 <DataGrid x:Name="SeSummaryGrid" AutoGenerateColumns="False"
                                           CanUserAddRows="False" CanUserDeleteRows="False"
-                                          HeadersVisibility="Column" GridLinesVisibility="Horizontal"
-                                          BorderThickness="1" BorderBrush="#D4D7E0"
-                                          RowHeight="30" IsReadOnly="True"
-                                          VerticalScrollBarVisibility="Auto" MaxHeight="400">
+                                          HeadersVisibility="Column" GridLinesVisibility="None"
+                                          BorderThickness="0"
+                                          RowHeight="36" IsReadOnly="True"
+                                          VerticalScrollBarVisibility="Auto" MaxHeight="400"
+                                          Background="Transparent">
+                                    <DataGrid.ColumnHeaderStyle>
+                                        <Style TargetType="DataGridColumnHeader">
+                                            <Setter Property="Background" Value="#F9FAFB" />
+                                            <Setter Property="Foreground" Value="#6B7280" />
+                                            <Setter Property="FontSize" Value="11" />
+                                            <Setter Property="FontWeight" Value="SemiBold" />
+                                            <Setter Property="Padding" Value="12,8" />
+                                            <Setter Property="BorderBrush" Value="#F3F4F6" />
+                                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                                        </Style>
+                                    </DataGrid.ColumnHeaderStyle>
+                                    <DataGrid.RowStyle>
+                                        <Style TargetType="DataGridRow">
+                                            <Setter Property="BorderBrush" Value="#F3F4F6" />
+                                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#F0FDF4" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGrid.RowStyle>
+                                    <DataGrid.CellStyle>
+                                        <Style TargetType="DataGridCell">
+                                            <Setter Property="Padding" Value="12,6" />
+                                            <Setter Property="BorderThickness" Value="0" />
+                                            <Setter Property="FontSize" Value="12" />
+                                        </Style>
+                                    </DataGrid.CellStyle>
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Task" Binding="{Binding TaskName}" Width="220" />
+                                        <DataGridTextColumn Header="Task" Binding="{Binding TaskName}" Width="*" />
                                         <DataGridTextColumn Header="Straight Hours" Binding="{Binding StraightHours, StringFormat='{}{0:N2}'}" Width="110" />
-                                        <DataGridTextColumn Header="Adjusted Exp Level" Binding="{Binding AdjustedExpLevel, StringFormat='{}{0:N2}'}" Width="130" />
-                                        <DataGridTextColumn Header="Adjusted Misc" Binding="{Binding AdjustedMisc, StringFormat='{}{0:N2}'}" Width="110" />
+                                        <DataGridTextColumn Header="Adj. Exp Level" Binding="{Binding AdjustedExpLevel, StringFormat='{}{0:N2}'}" Width="110" />
+                                        <DataGridTextColumn Header="Adj. Misc" Binding="{Binding AdjustedMisc, StringFormat='{}{0:N2}'}" Width="100" />
                                         <DataGridTextColumn Header="Grand Total" Binding="{Binding GrandTotal, StringFormat='{}{0:N2}'}" Width="100" />
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </StackPanel>
                         </Border>
 
-                        <!-- BA Considerations Summary -->
-                        <Border Style="{StaticResource CardBorder}">
+                        <!-- ═══════ BA BREAKDOWN TABLE ═══════ -->
+                        <Border Background="White" CornerRadius="10" Padding="20,16" Margin="12,8" ClipToBounds="True">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="8" Opacity="0.05" ShadowDepth="2" Direction="270" />
+                            </Border.Effect>
                             <StackPanel>
-                                <TextBlock Text="BA Considerations Summary" Style="{StaticResource SectionHeader}" />
+                                <Grid Margin="0,0,0,14">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Background="#DBEAFE" CornerRadius="4" Padding="6,3" Margin="0,0,10,0" VerticalAlignment="Center">
+                                            <TextBlock Text="BA" FontSize="10" FontWeight="Bold" Foreground="#2563EB" />
+                                        </Border>
+                                        <TextBlock Text="BA Considerations Breakdown" FontSize="13" FontWeight="SemiBold" Foreground="#1F2937" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </Grid>
                                 <DataGrid x:Name="BaSummaryGrid" AutoGenerateColumns="False"
                                           CanUserAddRows="False" CanUserDeleteRows="False"
-                                          HeadersVisibility="Column" GridLinesVisibility="Horizontal"
-                                          BorderThickness="1" BorderBrush="#D4D7E0"
-                                          RowHeight="30" IsReadOnly="True"
-                                          VerticalScrollBarVisibility="Auto" MaxHeight="300">
+                                          HeadersVisibility="Column" GridLinesVisibility="None"
+                                          BorderThickness="0"
+                                          RowHeight="36" IsReadOnly="True"
+                                          VerticalScrollBarVisibility="Auto" MaxHeight="300"
+                                          Background="Transparent">
+                                    <DataGrid.ColumnHeaderStyle>
+                                        <Style TargetType="DataGridColumnHeader">
+                                            <Setter Property="Background" Value="#F9FAFB" />
+                                            <Setter Property="Foreground" Value="#6B7280" />
+                                            <Setter Property="FontSize" Value="11" />
+                                            <Setter Property="FontWeight" Value="SemiBold" />
+                                            <Setter Property="Padding" Value="12,8" />
+                                            <Setter Property="BorderBrush" Value="#F3F4F6" />
+                                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                                        </Style>
+                                    </DataGrid.ColumnHeaderStyle>
+                                    <DataGrid.RowStyle>
+                                        <Style TargetType="DataGridRow">
+                                            <Setter Property="BorderBrush" Value="#F3F4F6" />
+                                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#EFF6FF" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGrid.RowStyle>
+                                    <DataGrid.CellStyle>
+                                        <Style TargetType="DataGridCell">
+                                            <Setter Property="Padding" Value="12,6" />
+                                            <Setter Property="BorderThickness" Value="0" />
+                                            <Setter Property="FontSize" Value="12" />
+                                        </Style>
+                                    </DataGrid.CellStyle>
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Task" Binding="{Binding TaskName}" Width="250" />
+                                        <DataGridTextColumn Header="Task" Binding="{Binding TaskName}" Width="*" />
                                         <DataGridTextColumn Header="Straight Hours" Binding="{Binding StraightHours, StringFormat='{}{0:N2}'}" Width="110" />
-                                        <DataGridTextColumn Header="Adjusted Exp Level" Binding="{Binding AdjustedExpLevel, StringFormat='{}{0:N2}'}" Width="130" />
-                                        <DataGridTextColumn Header="Adjusted Misc" Binding="{Binding AdjustedMisc, StringFormat='{}{0:N2}'}" Width="110" />
+                                        <DataGridTextColumn Header="Adj. Exp Level" Binding="{Binding AdjustedExpLevel, StringFormat='{}{0:N2}'}" Width="110" />
+                                        <DataGridTextColumn Header="Adj. Misc" Binding="{Binding AdjustedMisc, StringFormat='{}{0:N2}'}" Width="100" />
                                         <DataGridTextColumn Header="Grand Total" Binding="{Binding GrandTotal, StringFormat='{}{0:N2}'}" Width="100" />
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </StackPanel>
                         </Border>
 
-                        <!-- Collaboration/Quality Summary -->
-                        <Border Style="{StaticResource CardBorder}">
+                        <!-- ═══════ COLLABORATION BREAKDOWN TABLE ═══════ -->
+                        <Border Background="White" CornerRadius="10" Padding="20,16" Margin="12,8" ClipToBounds="True">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="8" Opacity="0.05" ShadowDepth="2" Direction="270" />
+                            </Border.Effect>
                             <StackPanel>
-                                <TextBlock Text="Collaboration_Quality Summary" Style="{StaticResource SectionHeader}" />
+                                <Grid Margin="0,0,0,14">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Background="#FFEDD5" CornerRadius="4" Padding="6,3" Margin="0,0,10,0" VerticalAlignment="Center">
+                                            <TextBlock Text="CQ" FontSize="10" FontWeight="Bold" Foreground="#EA580C" />
+                                        </Border>
+                                        <TextBlock Text="Collaboration/Quality Breakdown" FontSize="13" FontWeight="SemiBold" Foreground="#1F2937" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </Grid>
                                 <DataGrid x:Name="CollabSummaryGrid" AutoGenerateColumns="False"
                                           CanUserAddRows="False" CanUserDeleteRows="False"
-                                          HeadersVisibility="Column" GridLinesVisibility="Horizontal"
-                                          BorderThickness="1" BorderBrush="#D4D7E0"
-                                          RowHeight="30" IsReadOnly="True"
-                                          VerticalScrollBarVisibility="Auto" MaxHeight="200">
+                                          HeadersVisibility="Column" GridLinesVisibility="None"
+                                          BorderThickness="0"
+                                          RowHeight="36" IsReadOnly="True"
+                                          VerticalScrollBarVisibility="Auto" MaxHeight="200"
+                                          Background="Transparent">
+                                    <DataGrid.ColumnHeaderStyle>
+                                        <Style TargetType="DataGridColumnHeader">
+                                            <Setter Property="Background" Value="#F9FAFB" />
+                                            <Setter Property="Foreground" Value="#6B7280" />
+                                            <Setter Property="FontSize" Value="11" />
+                                            <Setter Property="FontWeight" Value="SemiBold" />
+                                            <Setter Property="Padding" Value="12,8" />
+                                            <Setter Property="BorderBrush" Value="#F3F4F6" />
+                                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                                        </Style>
+                                    </DataGrid.ColumnHeaderStyle>
+                                    <DataGrid.RowStyle>
+                                        <Style TargetType="DataGridRow">
+                                            <Setter Property="BorderBrush" Value="#F3F4F6" />
+                                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#FFF7ED" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGrid.RowStyle>
+                                    <DataGrid.CellStyle>
+                                        <Style TargetType="DataGridCell">
+                                            <Setter Property="Padding" Value="12,6" />
+                                            <Setter Property="BorderThickness" Value="0" />
+                                            <Setter Property="FontSize" Value="12" />
+                                        </Style>
+                                    </DataGrid.CellStyle>
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Task" Binding="{Binding TaskName}" Width="250" />
+                                        <DataGridTextColumn Header="Task" Binding="{Binding TaskName}" Width="*" />
                                         <DataGridTextColumn Header="Straight Hours" Binding="{Binding StraightHours, StringFormat='{}{0:N2}'}" Width="110" />
-                                        <DataGridTextColumn Header="Adjusted Misc" Binding="{Binding AdjustedMisc, StringFormat='{}{0:N2}'}" Width="110" />
+                                        <DataGridTextColumn Header="Adj. Misc" Binding="{Binding AdjustedMisc, StringFormat='{}{0:N2}'}" Width="100" />
                                         <DataGridTextColumn Header="Grand Total" Binding="{Binding GrandTotal, StringFormat='{}{0:N2}'}" Width="100" />
                                     </DataGrid.Columns>
                                 </DataGrid>
@@ -390,185 +767,381 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="220" />
+                        <ColumnDefinition Width="260" />
                     </Grid.ColumnDefinitions>
 
                     <!-- Left: Development Section -->
                     <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" Padding="8">
                         <StackPanel Margin="8">
-                            <Border Style="{StaticResource CardBorder}">
+                            <!-- Development Card - Premium -->
+                            <Border Background="White" CornerRadius="12" Padding="0" Margin="0,0,0,12" ClipToBounds="True">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="12" Opacity="0.06" ShadowDepth="3" Direction="270" />
+                                </Border.Effect>
                                 <StackPanel>
-                                    <!-- Development heading with Estimate By on the right -->
-                                    <Grid Margin="0,0,0,12">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Development" Style="{StaticResource SectionHeader}" VerticalAlignment="Center" Margin="0" />
-                                        <TextBlock Grid.Column="2" Text="Estimate By:" Style="{StaticResource FieldLabel}" VerticalAlignment="Center" Margin="0,0,8,0" />
-                                        <TextBox x:Name="SeEstimateByTextBox" Grid.Column="3" Padding="8,6" FontSize="13" Width="200" />
-                                    </Grid>
+                                    <!-- Card Header with accent -->
+                                    <Border Padding="20,14" CornerRadius="12,12,0,0">
+                                        <Border.Background>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                <GradientStop Color="#F0FDF4" Offset="0" />
+                                                <GradientStop Color="#ECFDF5" Offset="1" />
+                                            </LinearGradientBrush>
+                                        </Border.Background>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <Border Background="#16A34A" CornerRadius="6" Padding="8,4" Margin="0,0,12,0">
+                                                    <TextBlock Text="DEV" FontSize="10" FontWeight="Bold" Foreground="White" />
+                                                </Border>
+                                                <TextBlock Text="Development Components" FontSize="14" FontWeight="SemiBold" Foreground="#1F2937" VerticalAlignment="Center" />
+                                            </StackPanel>
+                                            <TextBlock Grid.Column="2" Text="ESTIMATE BY" FontSize="9" FontWeight="Bold" Foreground="#9CA3AF" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                            <TextBox x:Name="SeEstimateByTextBox" Grid.Column="3" Padding="10,6" FontSize="12" Width="180" BorderBrush="#D1D5DB" Background="White"
+                                                     ToolTip="Name of the person responsible for the SE estimate">
+                                                <TextBox.Resources>
+                                                    <Style TargetType="Border"><Setter Property="CornerRadius" Value="6"/></Style>
+                                                </TextBox.Resources>
+                                            </TextBox>
+                                        </Grid>
+                                    </Border>
 
-                                    <TextBlock Text="Double-click a component row to enter module details:" FontSize="11" Foreground="#5A6978" Margin="0,0,0,8" />
+                                    <!-- Hint text -->
+                                    <Border Background="#FAFAFA" Padding="20,10">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="💡" FontSize="12" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                            <TextBlock Text="Double-click a component row to enter module details" FontSize="11" Foreground="#6B7280" VerticalAlignment="Center" FontStyle="Italic" />
+                                        </StackPanel>
+                                    </Border>
 
-                                    <!-- Component Type Grid -->
-                                    <DataGrid x:Name="ComponentTypeGrid" AutoGenerateColumns="False"
+                                    <!-- Component Type Grid - Premium styling -->
+                                    <Border Padding="12,8">
+                                        <DataGrid x:Name="ComponentTypeGrid" AutoGenerateColumns="False"
                                               CanUserAddRows="False" CanUserDeleteRows="False"
-                                              HeadersVisibility="Column" GridLinesVisibility="Horizontal"
-                                              BorderThickness="1" BorderBrush="#D4D7E0"
-                                              RowHeight="34" IsReadOnly="True"
+                                              HeadersVisibility="Column" GridLinesVisibility="None"
+                                              BorderThickness="0"
+                                              RowHeight="40" IsReadOnly="True"
                                               SelectionMode="Single"
                                               MouseDoubleClick="OnComponentRowDoubleClick"
-                                              VerticalScrollBarVisibility="Auto">
-                                        <DataGrid.RowStyle>
-                                            <Style TargetType="DataGridRow">
-                                                <Setter Property="Cursor" Value="Hand" />
-                                                <Style.Triggers>
-                                                    <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter Property="Background" Value="#EBEDF5" />
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </DataGrid.RowStyle>
-                                        <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Component Type" Binding="{Binding ComponentTypeName}" Width="200" />
-                                            <DataGridTextColumn Header="Simple" Binding="{Binding SimpleTotal}" Width="60" />
-                                            <DataGridTextColumn Header="Moderate" Binding="{Binding ModerateTotal}" Width="70" />
-                                            <DataGridTextColumn Header="Complex" Binding="{Binding ComplexTotal}" Width="70" />
-                                            <DataGridTextColumn Header="Complexity Total" Binding="{Binding HoursTotal, StringFormat='{}{0:N2}'}" Width="105" />
-                                            <DataGridTextColumn Header="Adj Exp Level" Binding="{Binding AdjustedExpLevel, StringFormat='{}{0:N2}'}" Width="95" />
-                                            <DataGridTextColumn Header="Adjusted Hrs" Binding="{Binding AdjustedHrs, StringFormat='{}{0:N2}'}" Width="90" />
-                                            <DataGridTextColumn Header="Grand Total" Binding="{Binding GrandTotal, StringFormat='{}{0:N2}'}" Width="90" />
-                                        </DataGrid.Columns>
-                                    </DataGrid>
+                                              VerticalScrollBarVisibility="Auto"
+                                              Background="Transparent">
+                                            <DataGrid.ColumnHeaderStyle>
+                                                <Style TargetType="DataGridColumnHeader">
+                                                    <Setter Property="Background" Value="#F9FAFB" />
+                                                    <Setter Property="Foreground" Value="#6B7280" />
+                                                    <Setter Property="FontSize" Value="10" />
+                                                    <Setter Property="FontWeight" Value="Bold" />
+                                                    <Setter Property="Padding" Value="12,10" />
+                                                    <Setter Property="BorderBrush" Value="#F3F4F6" />
+                                                    <Setter Property="BorderThickness" Value="0,0,0,1" />
+                                                </Style>
+                                            </DataGrid.ColumnHeaderStyle>
+                                            <DataGrid.RowStyle>
+                                                <Style TargetType="DataGridRow">
+                                                    <Setter Property="Cursor" Value="Hand" />
+                                                    <Setter Property="BorderBrush" Value="#F3F4F6" />
+                                                    <Setter Property="BorderThickness" Value="0,0,0,1" />
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="#F0FDF4" />
+                                                        </Trigger>
+                                                        <Trigger Property="IsSelected" Value="True">
+                                                            <Setter Property="Background" Value="#DCFCE7" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </DataGrid.RowStyle>
+                                            <DataGrid.CellStyle>
+                                                <Style TargetType="DataGridCell">
+                                                    <Setter Property="Padding" Value="12,8" />
+                                                    <Setter Property="BorderThickness" Value="0" />
+                                                    <Setter Property="FontSize" Value="12" />
+                                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                                </Style>
+                                            </DataGrid.CellStyle>
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="COMPONENT TYPE" Binding="{Binding ComponentTypeName}" Width="*" />
+                                                <DataGridTextColumn Header="SIMPLE" Binding="{Binding SimpleTotal}" Width="65" />
+                                                <DataGridTextColumn Header="MODERATE" Binding="{Binding ModerateTotal}" Width="80" />
+                                                <DataGridTextColumn Header="COMPLEX" Binding="{Binding ComplexTotal}" Width="75" />
+                                                <DataGridTextColumn Header="TOTAL" Binding="{Binding HoursTotal, StringFormat='{}{0:N2}'}" Width="80" />
+                                                <DataGridTextColumn Header="ADJ. EXP" Binding="{Binding AdjustedExpLevel, StringFormat='{}{0:N2}'}" Width="80" />
+                                                <DataGridTextColumn Header="ADJ. HRS" Binding="{Binding AdjustedHrs, StringFormat='{}{0:N2}'}" Width="80" />
+                                                <DataGridTextColumn Header="GRAND TOTAL" Binding="{Binding GrandTotal, StringFormat='{}{0:N2}'}" Width="95" />
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </Border>
                                 </StackPanel>
                             </Border>
 
-                            <!-- Promotion and System Documentation -->
-                            <Border Style="{StaticResource CardBorder}">
+                            <!-- Promotion and System Documentation - Premium -->
+                            <Border Background="White" CornerRadius="12" Padding="0" Margin="0,0,0,12" ClipToBounds="True">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="10" Opacity="0.05" ShadowDepth="2" Direction="270" />
+                                </Border.Effect>
                                 <StackPanel>
-                                    <!-- Section heading with total on the right -->
-                                    <Grid Margin="0,0,0,12">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel>
-                                            <TextBlock Text="Promotion and System Documentation" Style="{StaticResource SectionHeader}" Margin="0" />
-                                            <TextBlock Text="Time is added to the Total in Estimate Summary" FontSize="10" Foreground="#8E99A8" Margin="0,2,0,0" />
-                                        </StackPanel>
-                                        <Border Grid.Column="1" Background="#E6F5F2" CornerRadius="6" Padding="12,6">
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="Total: " FontSize="12" Foreground="#5A6978" VerticalAlignment="Center" />
-                                                <TextBlock x:Name="SePromoDocTotalText" Text="0.00" FontSize="16" FontWeight="Bold" Foreground="#019681" VerticalAlignment="Center" />
-                                            </StackPanel>
-                                        </Border>
-                                    </Grid>
-
-                                    <!-- Promotion row -->
-                                    <Border Background="#F5F6FA" CornerRadius="4" Padding="12,8" Margin="0,0,0,8">
+                                    <!-- Section Header -->
+                                    <Border Padding="20,14">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Border Background="#DBEAFE" CornerRadius="4" Padding="6,3" Margin="0,0,10,0" VerticalAlignment="Center">
+                                                        <TextBlock Text="DOC" FontSize="9" FontWeight="Bold" Foreground="#2563EB" />
+                                                    </Border>
+                                                    <TextBlock Text="Promotion &amp; System Documentation" FontSize="13" FontWeight="SemiBold" Foreground="#1F2937" VerticalAlignment="Center" />
+                                                </StackPanel>
+                                                <TextBlock Text="Time is added to the Total in Estimate Summary" FontSize="10" Foreground="#9CA3AF" Margin="46,4,0,0" />
+                                            </StackPanel>
+                                            <Border Grid.Column="1" CornerRadius="8" Padding="14,8">
+                                                <Border.Background>
+                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                        <GradientStop Color="#F0FDF4" Offset="0" />
+                                                        <GradientStop Color="#DCFCE7" Offset="1" />
+                                                    </LinearGradientBrush>
+                                                </Border.Background>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Total " FontSize="11" Foreground="#6B7280" VerticalAlignment="Center" />
+                                                    <TextBlock x:Name="SePromoDocTotalText" Text="0.00" FontSize="18" FontWeight="Bold" Foreground="#16A34A" VerticalAlignment="Center" />
+                                                    <TextBlock Text=" hrs" FontSize="11" Foreground="#6B7280" VerticalAlignment="Center" />
+                                                </StackPanel>
+                                            </Border>
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- Promotion row -->
+                                    <Border Margin="16,0,16,10" CornerRadius="8" Padding="16,12" BorderBrush="#E5E7EB" BorderThickness="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
                                                 <ColumnDefinition Width="100" />
                                             </Grid.ColumnDefinitions>
-                                            <StackPanel VerticalAlignment="Center">
-                                                <TextBlock Text="Promotion" FontSize="13" FontWeight="SemiBold" Foreground="#2B3A44" />
-                                                <TextBlock Text="(Includes Dev, Model, E2E, UAT, Prod &amp; Training Environment)" FontSize="10" Foreground="#5A6978" Margin="0,2,0,0" />
+                                            <Border Background="#E0F2FE" CornerRadius="20" Width="36" Height="36" Margin="0,0,14,0" VerticalAlignment="Center">
+                                                <TextBlock Text="🚀" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            </Border>
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                <TextBlock Text="Promotion" FontSize="13" FontWeight="SemiBold" Foreground="#1F2937" />
+                                                <TextBlock Text="Dev, Model, E2E, UAT, Prod &amp; Training" FontSize="10" Foreground="#9CA3AF" Margin="0,2,0,0" />
                                             </StackPanel>
-                                            <TextBox x:Name="PromotionHoursTextBox" Grid.Column="1" Text="0" Padding="8,6" FontSize="13" TextAlignment="Right" />
+                                            <TextBox x:Name="PromotionHoursTextBox" Grid.Column="2" Text="0" Padding="10,8" FontSize="13" TextAlignment="Center" BorderBrush="#D1D5DB"
+                                                     ToolTip="Hours for promoting code through Dev, Model, E2E, UAT, Prod and Training environments">
+                                                <TextBox.Resources>
+                                                    <Style TargetType="Border"><Setter Property="CornerRadius" Value="6"/></Style>
+                                                </TextBox.Resources>
+                                            </TextBox>
                                         </Grid>
                                     </Border>
 
                                     <!-- System Documentation row -->
-                                    <Border Background="#F5F6FA" CornerRadius="4" Padding="12,8">
+                                    <Border Margin="16,0,16,16" CornerRadius="8" Padding="16,12" BorderBrush="#E5E7EB" BorderThickness="1">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
                                                 <ColumnDefinition Width="100" />
                                             </Grid.ColumnDefinitions>
-                                            <StackPanel VerticalAlignment="Center">
-                                                <TextBlock Text="System Documentation" FontSize="13" FontWeight="SemiBold" Foreground="#2B3A44" />
-                                                <TextBlock Text="(Includes but not limited to documenting for Production Validation, Erwin, System Objects)" FontSize="10" Foreground="#5A6978" Margin="0,2,0,0" TextWrapping="Wrap" />
+                                            <Border Background="#FEF3C7" CornerRadius="20" Width="36" Height="36" Margin="0,0,14,0" VerticalAlignment="Center">
+                                                <TextBlock Text="📄" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            </Border>
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                <TextBlock Text="System Documentation" FontSize="13" FontWeight="SemiBold" Foreground="#1F2937" />
+                                                <TextBlock Text="Production Validation, Erwin, System Objects" FontSize="10" Foreground="#9CA3AF" Margin="0,2,0,0" />
                                             </StackPanel>
-                                            <TextBox x:Name="SystemDocHoursTextBox" Grid.Column="1" Text="0" Padding="8,6" FontSize="13" TextAlignment="Right" />
+                                            <TextBox x:Name="SystemDocHoursTextBox" Grid.Column="2" Text="0" Padding="10,8" FontSize="13" TextAlignment="Center" BorderBrush="#D1D5DB"
+                                                     ToolTip="Hours for system documentation including Production Validation, Erwin, and System Objects">
+                                                <TextBox.Resources>
+                                                    <Style TargetType="Border"><Setter Property="CornerRadius" Value="6"/></Style>
+                                                </TextBox.Resources>
+                                            </TextBox>
                                         </Grid>
                                     </Border>
                                 </StackPanel>
                             </Border>
 
-                            <!-- Assumptions -->
-                            <Border Style="{StaticResource CardBorder}">
+                            <!-- Assumptions - Premium -->
+                            <Border Background="White" CornerRadius="12" Padding="20,16" Margin="0,0,0,12">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="8" Opacity="0.04" ShadowDepth="2" Direction="270" />
+                                </Border.Effect>
                                 <StackPanel>
-                                    <TextBlock Text="Assumptions" Style="{StaticResource SectionHeader}" />
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                        <Border Background="#FEF3C7" CornerRadius="4" Padding="6,3" Margin="0,0,10,0" VerticalAlignment="Center">
+                                            <TextBlock Text="📝" FontSize="10" />
+                                        </Border>
+                                        <TextBlock Text="Assumptions" FontSize="13" FontWeight="SemiBold" Foreground="#1F2937" VerticalAlignment="Center" />
+                                    </StackPanel>
                                     <TextBox x:Name="SeModuleAssumptionsTextBox" AcceptsReturn="True" TextWrapping="Wrap" 
-                                             Height="80" Padding="8,6" FontSize="12" />
+                                             Height="80" Padding="12,10" FontSize="12" BorderBrush="#E5E7EB" Background="#FAFAFA"
+                                             MaxLength="1000" TextChanged="OnSeAssumptionTextChanged"
+                                             ToolTip="Enter any SE assumptions for this estimate (max 1000 characters)">
+                                        <TextBox.Resources>
+                                            <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
+                                        </TextBox.Resources>
+                                    </TextBox>
+                                    <TextBlock x:Name="SeAssumptionCharCount" Text="0/1000" FontSize="10" Foreground="#9CA3AF" 
+                                               HorizontalAlignment="Right" Margin="0,4,4,0" />
                                 </StackPanel>
                             </Border>
 
-                            <!-- Adjusted Hours Assumption -->
-                            <Border Style="{StaticResource CardBorder}">
+                            <!-- Adjusted Hours Assumption - Premium -->
+                            <Border Background="White" CornerRadius="12" Padding="20,16" Margin="0,0,0,12">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="8" Opacity="0.04" ShadowDepth="2" Direction="270" />
+                                </Border.Effect>
                                 <StackPanel>
-                                    <TextBlock Text="Adjusted Hours Assumption" Style="{StaticResource SectionHeader}" />
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                        <Border Background="#E0E7FF" CornerRadius="4" Padding="6,3" Margin="0,0,10,0" VerticalAlignment="Center">
+                                            <TextBlock Text="⚡" FontSize="10" />
+                                        </Border>
+                                        <TextBlock Text="Adjusted Hours Assumption" FontSize="13" FontWeight="SemiBold" Foreground="#1F2937" VerticalAlignment="Center" />
+                                    </StackPanel>
                                     <TextBox x:Name="SeAdjustedHrsCommentTextBox" AcceptsReturn="True" TextWrapping="Wrap" 
-                                             Height="80" Padding="8,6" FontSize="12" />
+                                             Height="80" Padding="12,10" FontSize="12" BorderBrush="#E5E7EB" Background="#FAFAFA"
+                                             MaxLength="1000" TextChanged="OnSeAdjustedTextChanged"
+                                             ToolTip="Explain any adjustments made to the estimated hours (max 1000 characters)">
+                                        <TextBox.Resources>
+                                            <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
+                                        </TextBox.Resources>
+                                    </TextBox>
+                                    <TextBlock x:Name="SeAdjustedCharCount" Text="0/1000" FontSize="10" Foreground="#9CA3AF" 
+                                               HorizontalAlignment="Right" Margin="0,4,4,0" />
                                 </StackPanel>
                             </Border>
                         </StackPanel>
                     </ScrollViewer>
 
-                    <!-- Right: Total Panel -->
-                    <Border Grid.Column="1" Background="#EBEDF5" BorderBrush="#D4D7E0" BorderThickness="1,0,0,0" Padding="12">
-                        <StackPanel>
-                            <TextBlock Text="SE Total" FontSize="14" FontWeight="Bold" Foreground="#2B3A44" Margin="0,0,0,12" />
+                    <!-- Right: Total Panel - Premium Sidebar -->
+                    <Border Grid.Column="1" CornerRadius="0" Padding="0">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#FAFBFC" Offset="0" />
+                                <GradientStop Color="#F3F4F6" Offset="1" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel Margin="16,16">
+                                <!-- Grand Total Hero -->
+                                <Border CornerRadius="12" Padding="18,16" Margin="0,0,0,16"
+                                        ToolTip="Sum of Development + Promotion + Documentation hours">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                            <GradientStop Color="#059669" Offset="0" />
+                                            <GradientStop Color="#047857" Offset="1" />
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="12" Opacity="0.15" ShadowDepth="4" Direction="270" Color="#059669" />
+                                    </Border.Effect>
+                                    <StackPanel>
+                                        <TextBlock Text="SE GRAND TOTAL" FontSize="10" FontWeight="Bold" Foreground="#A7F3D0" Margin="0,0,0,6" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock x:Name="SeTotalText" Text="0.00" 
+                                                       FontSize="28" FontWeight="Bold" Foreground="White" />
+                                            <TextBlock Text=" hrs" FontSize="12" Foreground="#A7F3D0" VerticalAlignment="Bottom" Margin="0,0,0,5" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
 
-                            <Border Background="#E6F5F2" CornerRadius="8" Padding="12" Margin="0,0,0,12">
-                                <StackPanel>
-                                    <TextBlock Text="Grand Total" FontSize="11" Foreground="#5A6978" />
-                                    <TextBlock x:Name="SeTotalText" Text="0.00" 
-                                               FontSize="22" FontWeight="Bold" Foreground="#019681" Margin="0,4,0,0" />
-                                    <TextBlock Text="hours" FontSize="10" Foreground="#8E99A8" />
-                                </StackPanel>
-                            </Border>
+                                <!-- Breakdown Items -->
+                                <TextBlock Text="BREAKDOWN" FontSize="9" FontWeight="Bold" Foreground="#9CA3AF" Margin="4,0,0,10" />
 
-                            <Border Background="White" CornerRadius="6" Padding="10" Margin="0,0,0,8" 
-                                    BorderBrush="#D4D7E0" BorderThickness="1">
-                                <StackPanel>
-                                    <TextBlock Text="Development" FontSize="11" Foreground="#5A6978" />
-                                    <TextBlock x:Name="SeDevTotalText" Text="0.00" 
-                                               FontSize="15" FontWeight="SemiBold" Foreground="#019681" />
-                                </StackPanel>
-                            </Border>
+                                <Border Background="White" CornerRadius="10" Padding="14,12" Margin="0,0,0,8"
+                                        ToolTip="Total development hours from all component types">
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="4" Opacity="0.04" ShadowDepth="1" Direction="270" />
+                                    </Border.Effect>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border Background="#DCFCE7" CornerRadius="6" Width="32" Height="32" VerticalAlignment="Center">
+                                            <TextBlock Text="⚙" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+                                        <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                                            <TextBlock Text="Development" FontSize="11" Foreground="#6B7280" />
+                                            <TextBlock x:Name="SeDevTotalText" Text="0.00" 
+                                                       FontSize="16" FontWeight="Bold" Foreground="#059669" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
 
-                            <Border Background="White" CornerRadius="6" Padding="10" Margin="0,0,0,8" 
-                                    BorderBrush="#D4D7E0" BorderThickness="1">
-                                <StackPanel>
-                                    <TextBlock Text="Promotion" FontSize="11" Foreground="#5A6978" />
-                                    <TextBlock x:Name="SePromotionTotalText" Text="0.00" 
-                                               FontSize="15" FontWeight="SemiBold" Foreground="#019681" />
-                                </StackPanel>
-                            </Border>
+                                <Border Background="White" CornerRadius="10" Padding="14,12" Margin="0,0,0,8"
+                                        ToolTip="Hours for code promotion through environments">
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="4" Opacity="0.04" ShadowDepth="1" Direction="270" />
+                                    </Border.Effect>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border Background="#E0F2FE" CornerRadius="6" Width="32" Height="32" VerticalAlignment="Center">
+                                            <TextBlock Text="🚀" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+                                        <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                                            <TextBlock Text="Promotion" FontSize="11" Foreground="#6B7280" />
+                                            <TextBlock x:Name="SePromotionTotalText" Text="0.00" 
+                                                       FontSize="16" FontWeight="Bold" Foreground="#059669" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
 
-                            <Border Background="White" CornerRadius="6" Padding="10" Margin="0,0,0,8" 
-                                    BorderBrush="#D4D7E0" BorderThickness="1">
-                                <StackPanel>
-                                    <TextBlock Text="Documentation" FontSize="11" Foreground="#5A6978" />
-                                    <TextBlock x:Name="SeDocTotalText" Text="0.00" 
-                                               FontSize="15" FontWeight="SemiBold" Foreground="#019681" />
-                                </StackPanel>
-                            </Border>
+                                <Border Background="White" CornerRadius="10" Padding="14,12" Margin="0,0,0,8"
+                                        ToolTip="Hours for system documentation effort">
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="4" Opacity="0.04" ShadowDepth="1" Direction="270" />
+                                    </Border.Effect>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border Background="#FEF3C7" CornerRadius="6" Width="32" Height="32" VerticalAlignment="Center">
+                                            <TextBlock Text="📄" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+                                        <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                                            <TextBlock Text="Documentation" FontSize="11" Foreground="#6B7280" />
+                                            <TextBlock x:Name="SeDocTotalText" Text="0.00" 
+                                                       FontSize="16" FontWeight="Bold" Foreground="#059669" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
 
-                            <Border Background="White" CornerRadius="6" Padding="10" Margin="0,0,0,0" 
-                                    BorderBrush="#D4D7E0" BorderThickness="1">
-                                <StackPanel>
-                                    <TextBlock Text="Components Entered" FontSize="11" Foreground="#5A6978" />
-                                    <TextBlock x:Name="SeComponentCountText" Text="0" 
-                                               FontSize="15" FontWeight="SemiBold" Foreground="#019681" />
-                                </StackPanel>
-                            </Border>
-                        </StackPanel>
+                                <Border Background="White" CornerRadius="10" Padding="14,12" Margin="0,0,0,8"
+                                        ToolTip="Number of component types with hours entered">
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="4" Opacity="0.04" ShadowDepth="1" Direction="270" />
+                                    </Border.Effect>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border Background="#F3E8FF" CornerRadius="6" Width="32" Height="32" VerticalAlignment="Center">
+                                            <TextBlock Text="🧩" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+                                        <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                                            <TextBlock Text="Components" FontSize="11" Foreground="#6B7280" />
+                                            <TextBlock x:Name="SeComponentCountText" Text="0" 
+                                                       FontSize="16" FontWeight="Bold" Foreground="#7C3AED" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </StackPanel>
+                        </ScrollViewer>
                     </Border>
                 </Grid>
             </TabItem>
@@ -598,7 +1171,7 @@
                                 <DataGrid x:Name="BaTestCasesGrid" AutoGenerateColumns="False"
                                           CanUserAddRows="False" CanUserDeleteRows="False"
                                           HeadersVisibility="Column" GridLinesVisibility="Horizontal"
-                                          BorderThickness="1" BorderBrush="#D4D7E0"
+                                          BorderThickness="1" BorderBrush="#E5E7EB"
                                           RowHeight="36" MinHeight="150" MaxHeight="400"
                                           VerticalScrollBarVisibility="Auto">
                                     <DataGrid.Columns>
@@ -623,7 +1196,7 @@
                                 <DataGrid x:Name="BaProductionValidationGrid" AutoGenerateColumns="False"
                                           CanUserAddRows="False" CanUserDeleteRows="False"
                                           HeadersVisibility="Column" GridLinesVisibility="Horizontal"
-                                          BorderThickness="1" BorderBrush="#D4D7E0"
+                                          BorderThickness="1" BorderBrush="#E5E7EB"
                                           RowHeight="36" MinHeight="100" MaxHeight="300"
                                           VerticalScrollBarVisibility="Auto">
                                     <DataGrid.Columns>
@@ -639,7 +1212,7 @@
 
                         <!-- BA Totals -->
                         <Border Style="{StaticResource CardBorder}">
-                            <Border Background="#EDF0F8" CornerRadius="6" Padding="12">
+                            <Border Background="#EFF6FF" CornerRadius="6" Padding="12">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -647,7 +1220,7 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Text="Total BA Hours:" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center" />
                                     <TextBlock x:Name="BaTotalText" Grid.Column="1" Text="0.00" 
-                                               FontSize="16" FontWeight="Bold" Foreground="#2E307A" />
+                                               FontSize="16" FontWeight="Bold" Foreground="#2563EB" />
                                 </Grid>
                             </Border>
                         </Border>
@@ -680,7 +1253,7 @@
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <!-- Collaboration heading with Estimate By on the right -->
-                                <Grid Margin="0,0,0,8">
+                                <Grid Margin="0,0,0,12">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
@@ -692,94 +1265,44 @@
                                     <TextBox x:Name="CollabEstimateByTextBox" Grid.Column="3" Padding="8,6" FontSize="13" Width="200" />
                                 </Grid>
 
-                                <!-- Instructions (Excel R5) -->
-                                <TextBlock Text="All fields highlighted below are input fields. Adjust values to match your project's collaboration and quality requirements." 
-                                           FontSize="11" Foreground="#5A6978" TextWrapping="Wrap" Margin="0,0,0,12" />
-
-                                <!-- Total Summary at TOP (Excel R12) -->
-                                <Border Background="#FDF8EF" CornerRadius="6" Padding="10" Margin="0,0,0,12">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="100" />
-                                            <ColumnDefinition Width="90" />
-                                            <ColumnDefinition Width="100" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Total Summary" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center" />
-                                        <StackPanel Grid.Column="1" HorizontalAlignment="Center">
-                                            <TextBlock Text="Hour Total" FontSize="9" Foreground="#5A6978" HorizontalAlignment="Center" />
-                                            <TextBlock x:Name="CollabHourTotalTopText" Text="0.00" FontSize="13" FontWeight="Bold" Foreground="#2B3A44" HorizontalAlignment="Center" />
-                                        </StackPanel>
-                                        <StackPanel Grid.Column="2" HorizontalAlignment="Center">
-                                            <TextBlock Text="Adjusted" FontSize="9" Foreground="#5A6978" HorizontalAlignment="Center" />
-                                            <TextBlock x:Name="CollabAdjTotalTopText" Text="0.00" FontSize="13" FontWeight="Bold" Foreground="#2B3A44" HorizontalAlignment="Center" />
-                                        </StackPanel>
-                                        <StackPanel Grid.Column="3" HorizontalAlignment="Center">
-                                            <TextBlock Text="Grand Total" FontSize="9" Foreground="#5A6978" HorizontalAlignment="Center" />
-                                            <TextBlock x:Name="CollabGrandTotalTopText" Text="0.00" FontSize="14" FontWeight="Bold" Foreground="#2199B0" HorizontalAlignment="Center" />
-                                        </StackPanel>
-                                    </Grid>
-                                </Border>
-
-                                <!-- Column Headers for Meeting Sections -->
-                                <Grid Margin="0,0,0,4">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="80" />
-                                        <ColumnDefinition Width="80" />
-                                        <ColumnDefinition Width="80" />
-                                        <ColumnDefinition Width="100" />
-                                        <ColumnDefinition Width="90" />
-                                        <ColumnDefinition Width="100" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="Task" FontSize="11" FontWeight="SemiBold" Foreground="#5A6978" />
-                                    <TextBlock Grid.Column="1" Text="Count" FontSize="11" FontWeight="SemiBold" Foreground="#5A6978" HorizontalAlignment="Center" />
-                                    <TextBlock Grid.Column="2" Text="Hours" FontSize="11" FontWeight="SemiBold" Foreground="#5A6978" HorizontalAlignment="Center" />
-                                    <TextBlock Grid.Column="3" Text="# Attendees" FontSize="11" FontWeight="SemiBold" Foreground="#5A6978" HorizontalAlignment="Center" />
-                                    <TextBlock Grid.Column="4" Text="Hour Total" FontSize="11" FontWeight="SemiBold" Foreground="#5A6978" HorizontalAlignment="Center" />
-                                    <TextBlock Grid.Column="5" Text="Adjusted Hrs" FontSize="11" FontWeight="SemiBold" Foreground="#5A6978" HorizontalAlignment="Center" />
-                                    <TextBlock Grid.Column="6" Text="Grand Total" FontSize="11" FontWeight="SemiBold" Foreground="#5A6978" HorizontalAlignment="Center" />
-                                </Grid>
-
                                 <!-- WPRs -->
-                                <Border Background="#EBEDF5" CornerRadius="6" Padding="12" Margin="0,0,0,8">
+                                <Border Background="#F8FAFC" CornerRadius="6" Padding="12" Margin="0,0,0,12">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="80" />
                                             <ColumnDefinition Width="80" />
                                             <ColumnDefinition Width="80" />
-                                            <ColumnDefinition Width="100" />
-                                            <ColumnDefinition Width="90" />
                                             <ColumnDefinition Width="100" />
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
 
-                                        <!-- WPR Meetings: G14 = B14 * 1 * E14 (Count × MtgHrs × Attendees) -->
-                                        <TextBlock Grid.Row="0" Text="Walkthrough/Work Product Reviews" FontSize="13" VerticalAlignment="Center"
-                                                   ToolTip="Insert the number of Gainwell walkthroughs and/or work product reviews expected over the remainder of the work item. This should include meetings like TDD, Code Reviews, etc." />
-                                        <TextBox x:Name="WprCountTextBox" Grid.Row="0" Grid.Column="1" Text="0" Padding="6,4" FontSize="12" Margin="4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBox x:Name="WprHoursTextBox" Grid.Row="0" Grid.Column="2" Text="1" Padding="6,4" FontSize="12" Margin="4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBox x:Name="WprAttendeesTextBox" Grid.Row="0" Grid.Column="3" Text="0" Padding="6,4" FontSize="12" Margin="4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBlock x:Name="WprTotalText" Grid.Row="0" Grid.Column="4" Text="0.00" FontSize="13" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                        <TextBox x:Name="WprAdjustedTextBox" Grid.Row="0" Grid.Column="5" Text="0" Padding="6,4" FontSize="12" Margin="4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBlock x:Name="WprGrandTotalText" Grid.Row="0" Grid.Column="6" Text="0.00" FontSize="13" FontWeight="Bold" Foreground="#2199B0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        <!-- Headers -->
+                                        <TextBlock Grid.Column="1" Text="Count" FontSize="11" FontWeight="SemiBold" Foreground="#6B7280" HorizontalAlignment="Center" />
+                                        <TextBlock Grid.Column="2" Text="Hours" FontSize="11" FontWeight="SemiBold" Foreground="#6B7280" HorizontalAlignment="Center" />
+                                        <TextBlock Grid.Column="3" Text="Attendees" FontSize="11" FontWeight="SemiBold" Foreground="#6B7280" HorizontalAlignment="Center" />
+                                        <TextBlock Grid.Column="4" Text="Total" FontSize="11" FontWeight="SemiBold" Foreground="#6B7280" HorizontalAlignment="Center" />
 
-                                        <!-- WPR Prep: G15 = C15 * E14 * B14 (PrepHrs × Attendees × Count) -->
-                                        <TextBlock Grid.Row="1" Text="  WPR Preparation per person" FontSize="12" Foreground="#5A6978" VerticalAlignment="Center" Margin="0,6,0,0"
-                                                   ToolTip="Enter the number of preparation hours required for each person." />
-                                        <TextBox x:Name="WprPrepHoursTextBox" Grid.Row="1" Grid.Column="2" Text="0" Padding="6,4" FontSize="12" Margin="4,6,4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBlock x:Name="WprPrepTotalText" Grid.Row="1" Grid.Column="4" Text="0.00" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,6,0,0" />
-                                        <TextBox x:Name="WprPrepAdjustedTextBox" Grid.Row="1" Grid.Column="5" Text="0" Padding="6,4" FontSize="12" Margin="4,6,4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBlock x:Name="WprPrepGrandTotalText" Grid.Row="1" Grid.Column="6" Text="0.00" FontSize="13" FontWeight="Bold" Foreground="#2199B0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,6,0,0" />
+                                        <!-- WPR Meetings -->
+                                        <TextBlock Grid.Row="1" Text="Walkthrough/Work Product Reviews" FontSize="13" VerticalAlignment="Center" Margin="0,8,0,0" />
+                                        <TextBox x:Name="WprCountTextBox" Grid.Row="1" Grid.Column="1" Text="0" Padding="6,4" FontSize="12" Margin="4,8,4,0" />
+                                        <TextBox x:Name="WprHoursTextBox" Grid.Row="1" Grid.Column="2" Text="1" Padding="6,4" FontSize="12" Margin="4,8,4,0" />
+                                        <TextBox x:Name="WprAttendeesTextBox" Grid.Row="1" Grid.Column="3" Text="0" Padding="6,4" FontSize="12" Margin="4,8,4,0" />
+                                        <TextBlock x:Name="WprTotalText" Grid.Row="1" Grid.Column="4" Text="0.00" FontSize="13" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,8,0,0" />
+
+                                        <!-- WPR Prep -->
+                                        <TextBlock Grid.Row="2" Text="  WPR Preparation per person" FontSize="12" Foreground="#6B7280" VerticalAlignment="Center" Margin="0,6,0,0" />
+                                        <TextBox x:Name="WprPrepHoursTextBox" Grid.Row="2" Grid.Column="2" Text="0" Padding="6,4" FontSize="12" Margin="4,6,4,0" />
+                                        <TextBlock x:Name="WprPrepTotalText" Grid.Row="2" Grid.Column="4" Text="0.00" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,6,0,0" />
                                     </Grid>
                                 </Border>
 
                                 <!-- Client Meetings -->
-                                <Border Background="#EBEDF5" CornerRadius="6" Padding="12" Margin="0,0,0,8">
+                                <Border Background="#F8FAFC" CornerRadius="6" Padding="12" Margin="0,0,0,12">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
@@ -787,36 +1310,25 @@
                                             <ColumnDefinition Width="80" />
                                             <ColumnDefinition Width="80" />
                                             <ColumnDefinition Width="100" />
-                                            <ColumnDefinition Width="90" />
-                                            <ColumnDefinition Width="100" />
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
+                                        <TextBlock Text="Client Meetings" FontSize="13" VerticalAlignment="Center" />
+                                        <TextBox x:Name="ClientMtgCountTextBox" Grid.Column="1" Text="0" Padding="6,4" FontSize="12" Margin="4,0" />
+                                        <TextBox x:Name="ClientMtgHoursTextBox" Grid.Column="2" Text="1" Padding="6,4" FontSize="12" Margin="4,0" />
+                                        <TextBox x:Name="ClientMtgAttendeesTextBox" Grid.Column="3" Text="0" Padding="6,4" FontSize="12" Margin="4,0" />
+                                        <TextBlock x:Name="ClientMtgTotalText" Grid.Column="4" Text="0.00" FontSize="13" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
-                                        <!-- Client: G17 = B17 * 1 * E17 -->
-                                        <TextBlock Grid.Row="0" Text="Client Meetings" FontSize="13" VerticalAlignment="Center"
-                                                   ToolTip="Insert the number of client meetings expected over the remainder of the work item. This should include joint review meetings (requirements clarification, BDD reviews, educational meetings, etc)." />
-                                        <TextBox x:Name="ClientMtgCountTextBox" Grid.Row="0" Grid.Column="1" Text="0" Padding="6,4" FontSize="12" Margin="4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBox x:Name="ClientMtgHoursTextBox" Grid.Row="0" Grid.Column="2" Text="1" Padding="6,4" FontSize="12" Margin="4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBox x:Name="ClientMtgAttendeesTextBox" Grid.Row="0" Grid.Column="3" Text="0" Padding="6,4" FontSize="12" Margin="4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBlock x:Name="ClientMtgTotalText" Grid.Row="0" Grid.Column="4" Text="0.00" FontSize="13" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                        <TextBox x:Name="ClientMtgAdjustedTextBox" Grid.Row="0" Grid.Column="5" Text="0" Padding="6,4" FontSize="12" Margin="4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBlock x:Name="ClientMtgGrandTotalText" Grid.Row="0" Grid.Column="6" Text="0.00" FontSize="13" FontWeight="Bold" Foreground="#2199B0" HorizontalAlignment="Center" VerticalAlignment="Center" />
-
-                                        <!-- Client Prep: G18 = C18 * E17 * B17 -->
-                                        <TextBlock Grid.Row="1" Text="  Client Meeting Prep per person" FontSize="12" Foreground="#5A6978" VerticalAlignment="Center" Margin="0,6,0,0"
-                                                   ToolTip="Enter the number of preparation hours required for each person." />
-                                        <TextBox x:Name="ClientMtgPrepHoursTextBox" Grid.Row="1" Grid.Column="2" Text="0" Padding="6,4" FontSize="12" Margin="4,6,4,0" TextChanged="OnCollabFieldChanged" />
+                                        <TextBlock Grid.Row="1" Text="  Client Meeting Prep per person" FontSize="12" Foreground="#6B7280" VerticalAlignment="Center" Margin="0,6,0,0" />
+                                        <TextBox x:Name="ClientMtgPrepHoursTextBox" Grid.Row="1" Grid.Column="2" Text="0" Padding="6,4" FontSize="12" Margin="4,6,4,0" />
                                         <TextBlock x:Name="ClientMtgPrepTotalText" Grid.Row="1" Grid.Column="4" Text="0.00" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,6,0,0" />
-                                        <TextBox x:Name="ClientMtgPrepAdjustedTextBox" Grid.Row="1" Grid.Column="5" Text="0" Padding="6,4" FontSize="12" Margin="4,6,4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBlock x:Name="ClientMtgPrepGrandTotalText" Grid.Row="1" Grid.Column="6" Text="0.00" FontSize="13" FontWeight="Bold" Foreground="#2199B0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,6,0,0" />
                                     </Grid>
                                 </Border>
 
                                 <!-- Internal Meetings -->
-                                <Border Background="#EBEDF5" CornerRadius="6" Padding="12" Margin="0,0,0,8">
+                                <Border Background="#F8FAFC" CornerRadius="6" Padding="12" Margin="0,0,0,12">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
@@ -824,52 +1336,32 @@
                                             <ColumnDefinition Width="80" />
                                             <ColumnDefinition Width="80" />
                                             <ColumnDefinition Width="100" />
-                                            <ColumnDefinition Width="90" />
-                                            <ColumnDefinition Width="100" />
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
+                                        <TextBlock Text="Internal Meetings" FontSize="13" VerticalAlignment="Center" />
+                                        <TextBox x:Name="InternalMtgCountTextBox" Grid.Column="1" Text="0" Padding="6,4" FontSize="12" Margin="4,0" />
+                                        <TextBox x:Name="InternalMtgHoursTextBox" Grid.Column="2" Text="1" Padding="6,4" FontSize="12" Margin="4,0" />
+                                        <TextBox x:Name="InternalMtgAttendeesTextBox" Grid.Column="3" Text="0" Padding="6,4" FontSize="12" Margin="4,0" />
+                                        <TextBlock x:Name="InternalMtgTotalText" Grid.Column="4" Text="0.00" FontSize="13" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
-                                        <!-- Internal: G20 = B20 * 1 * E20 -->
-                                        <TextBlock Grid.Row="0" Text="Internal Meetings" FontSize="13" VerticalAlignment="Center"
-                                                   ToolTip="Insert the number of internal Gainwell meetings (team/status meetings, issue resolution, consultant meetings, etc.) expected over the remainder of the work item." />
-                                        <TextBox x:Name="InternalMtgCountTextBox" Grid.Row="0" Grid.Column="1" Text="0" Padding="6,4" FontSize="12" Margin="4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBox x:Name="InternalMtgHoursTextBox" Grid.Row="0" Grid.Column="2" Text="1" Padding="6,4" FontSize="12" Margin="4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBox x:Name="InternalMtgAttendeesTextBox" Grid.Row="0" Grid.Column="3" Text="0" Padding="6,4" FontSize="12" Margin="4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBlock x:Name="InternalMtgTotalText" Grid.Row="0" Grid.Column="4" Text="0.00" FontSize="13" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                        <TextBox x:Name="InternalMtgAdjustedTextBox" Grid.Row="0" Grid.Column="5" Text="0" Padding="6,4" FontSize="12" Margin="4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBlock x:Name="InternalMtgGrandTotalText" Grid.Row="0" Grid.Column="6" Text="0.00" FontSize="13" FontWeight="Bold" Foreground="#2199B0" HorizontalAlignment="Center" VerticalAlignment="Center" />
-
-                                        <!-- Internal Prep: G21 = C21 * E20 * B20 -->
-                                        <TextBlock Grid.Row="1" Text="  Internal Meeting Prep per person" FontSize="12" Foreground="#5A6978" VerticalAlignment="Center" Margin="0,6,0,0"
-                                                   ToolTip="Enter the number of preparation hours required for each person." />
-                                        <TextBox x:Name="InternalMtgPrepHoursTextBox" Grid.Row="1" Grid.Column="2" Text="0" Padding="6,4" FontSize="12" Margin="4,6,4,0" TextChanged="OnCollabFieldChanged" />
+                                        <TextBlock Grid.Row="1" Text="  Internal Meeting Prep per person" FontSize="12" Foreground="#6B7280" VerticalAlignment="Center" Margin="0,6,0,0" />
+                                        <TextBox x:Name="InternalMtgPrepHoursTextBox" Grid.Row="1" Grid.Column="2" Text="0" Padding="6,4" FontSize="12" Margin="4,6,4,0" />
                                         <TextBlock x:Name="InternalMtgPrepTotalText" Grid.Row="1" Grid.Column="4" Text="0.00" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,6,0,0" />
-                                        <TextBox x:Name="InternalMtgPrepAdjustedTextBox" Grid.Row="1" Grid.Column="5" Text="0" Padding="6,4" FontSize="12" Margin="4,6,4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBlock x:Name="InternalMtgPrepGrandTotalText" Grid.Row="1" Grid.Column="6" Text="0.00" FontSize="13" FontWeight="Bold" Foreground="#2199B0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,6,0,0" />
                                     </Grid>
                                 </Border>
 
                                 <!-- Consultant/Mentor -->
-                                <Border Background="#EBEDF5" CornerRadius="6" Padding="12" Margin="0,0,0,8">
+                                <Border Background="#F8FAFC" CornerRadius="6" Padding="12" Margin="0,0,0,12">
                                     <StackPanel>
-                                        <Grid Margin="0,0,0,4">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="Auto" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="Consultant/Mentor Effort" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center" />
-                                            <TextBlock x:Name="ConsultantTotalText" Grid.Column="1" Text="0.00" FontSize="13" FontWeight="Bold" Foreground="#2199B0" />
-                                        </Grid>
-                                        <TextBlock Text="Insert Consultant names below and associated hours." FontSize="11" Foreground="#5A6978" Margin="0,0,0,8" />
+                                        <TextBlock Text="Consultant/Mentor Effort" FontSize="13" FontWeight="SemiBold" Margin="0,0,0,8" />
                                         <DataGrid x:Name="ConsultantGrid" AutoGenerateColumns="False"
                                                   CanUserAddRows="True" CanUserDeleteRows="True"
                                                   HeadersVisibility="Column" GridLinesVisibility="Horizontal"
-                                                  BorderThickness="1" BorderBrush="#D4D7E0"
-                                                  RowHeight="32" MinHeight="80" MaxHeight="200"
-                                                  CellEditEnding="OnConsultantCellEditEnding">
+                                                  BorderThickness="1" BorderBrush="#E5E7EB"
+                                                  RowHeight="32" MinHeight="80" MaxHeight="200">
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn Header="Person Name" Binding="{Binding Name}" Width="200" />
                                                 <DataGridTextColumn Header="Hours" Binding="{Binding Hours}" Width="100" />
@@ -879,52 +1371,38 @@
                                 </Border>
 
                                 <!-- Create Estimates & PM -->
-                                <Border Background="#EBEDF5" CornerRadius="6" Padding="12" Margin="0,0,0,8">
+                                <Border Background="#F8FAFC" CornerRadius="6" Padding="12" Margin="0,0,0,12">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="120" />
-                                            <ColumnDefinition Width="100" />
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
+                                        <TextBlock Text="Create Detailed Estimate (hrs):" FontSize="13" VerticalAlignment="Center" />
+                                        <TextBox x:Name="CreateDetailEstHoursTextBox" Grid.Column="1" Text="0" Padding="6,4" FontSize="12" Margin="4,0" />
 
-                                        <TextBlock Grid.Row="0" Text="Create Detailed and Final Estimates" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center" />
-                                        <TextBlock x:Name="EstimatesTotalText" Grid.Row="0" Grid.Column="2" Text="0.00" FontSize="13" FontWeight="Bold" Foreground="#2199B0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        <TextBlock Grid.Row="1" Text="Create Final Estimate (hrs):" FontSize="13" VerticalAlignment="Center" Margin="0,8,0,0" />
+                                        <TextBox x:Name="CreateFinalEstHoursTextBox" Grid.Row="1" Grid.Column="1" Text="0" Padding="6,4" FontSize="12" Margin="4,8,4,0" />
 
-                                        <TextBlock Grid.Row="1" Text="  Create Detailed Estimate (hrs):" FontSize="12" Foreground="#5A6978" VerticalAlignment="Center" Margin="0,6,0,0"
-                                                   ToolTip="Insert the number of hours to create the Detailed Estimate." />
-                                        <TextBox x:Name="CreateDetailEstHoursTextBox" Grid.Row="1" Grid.Column="1" Text="0" Padding="6,4" FontSize="12" Margin="4,6,4,0" TextChanged="OnCollabFieldChanged" />
-
-                                        <TextBlock Grid.Row="2" Text="  Create Final Estimate (hrs):" FontSize="12" Foreground="#5A6978" VerticalAlignment="Center" Margin="0,6,0,0"
-                                                   ToolTip="Insert the number of hours to create the Final Estimate." />
-                                        <TextBox x:Name="CreateFinalEstHoursTextBox" Grid.Row="2" Grid.Column="1" Text="0" Padding="6,4" FontSize="12" Margin="4,6,4,0" TextChanged="OnCollabFieldChanged" />
-
-                                        <TextBlock Grid.Row="3" Text="Project Manager Effort (hrs):" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,10,0,0"
-                                                   ToolTip="Insert the number of PM hours required." />
-                                        <TextBox x:Name="PmEffortHoursTextBox" Grid.Row="3" Grid.Column="1" Text="0" Padding="6,4" FontSize="12" Margin="4,10,4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBlock x:Name="PmEffortTotalText" Grid.Row="3" Grid.Column="2" Text="0.00" FontSize="13" FontWeight="Bold" Foreground="#2199B0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,0" />
+                                        <TextBlock Grid.Row="2" Text="Project Manager Effort (hrs):" FontSize="13" VerticalAlignment="Center" Margin="0,8,0,0" />
+                                        <TextBox x:Name="PmEffortHoursTextBox" Grid.Row="2" Grid.Column="1" Text="0" Padding="6,4" FontSize="12" Margin="4,8,4,0" />
                                     </Grid>
                                 </Border>
 
-                                <!-- Collaboration Total Summary -->
-                                <Border Background="#EDF0F8" CornerRadius="6" Padding="12">
+                                <!-- Collaboration Total -->
+                                <Border Background="#FFF7ED" CornerRadius="6" Padding="12">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="100" />
-                                            <ColumnDefinition Width="90" />
-                                            <ColumnDefinition Width="100" />
+                                            <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Total Collaboration/Quality:" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center" />
-                                        <TextBlock x:Name="CollabHourTotalText" Grid.Column="1" Text="0.00" FontSize="14" FontWeight="Bold" Foreground="#2B3A44" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                        <TextBlock x:Name="CollabAdjTotalText" Grid.Column="2" Text="0.00" FontSize="14" FontWeight="Bold" Foreground="#2B3A44" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                        <TextBlock x:Name="CollabTotalText" Grid.Column="3" Text="0.00" 
-                                                   FontSize="16" FontWeight="Bold" Foreground="#2199B0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        <TextBlock Text="Total Collaboration/Quality Hours:" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center" />
+                                        <TextBlock x:Name="CollabTotalText" Grid.Column="1" Text="0.00" 
+                                                   FontSize="16" FontWeight="Bold" Foreground="#EA580C" />
                                     </Grid>
                                 </Border>
                             </StackPanel>
@@ -934,19 +1412,17 @@
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <TextBlock Text="Assumptions" Style="{StaticResource SectionHeader}" />
-                                <TextBlock Text="Add assumptions that led to the numbers in the estimate." FontSize="11" Foreground="#5A6978" Margin="0,0,0,6" />
                                 <TextBox x:Name="CollabAssumptionsDetailTextBox" AcceptsReturn="True" TextWrapping="Wrap" 
-                                         Height="100" Padding="8,6" FontSize="12" />
+                                         Height="80" Padding="8,6" FontSize="12" />
                             </StackPanel>
                         </Border>
 
                         <!-- Adjusted Hours Assumption -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>
-                                <TextBlock Text="*Additional Hours Notes" Style="{StaticResource SectionHeader}" />
-                                <TextBlock Text="Add justification for adjusted hours (i.e. BRD revisions and approvals)." FontSize="11" Foreground="#5A6978" Margin="0,0,0,6" />
+                                <TextBlock Text="Adjusted Hours Assumption" Style="{StaticResource SectionHeader}" />
                                 <TextBox x:Name="CollabAdjustedHrsCommentTextBox" AcceptsReturn="True" TextWrapping="Wrap" 
-                                         Height="100" Padding="8,6" FontSize="12" />
+                                         Height="80" Padding="8,6" FontSize="12" />
                             </StackPanel>
                         </Border>
                     </StackPanel>

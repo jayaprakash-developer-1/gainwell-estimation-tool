@@ -201,120 +201,16 @@ public partial class DetailedEstimateWindow : Window
         UpdateSummaryTab();
     }
 
-    private void OnCollabFieldChanged(object sender, TextChangedEventArgs e)
+    private void OnSeAssumptionTextChanged(object sender, TextChangedEventArgs e)
     {
         if (!IsLoaded) return;
-        RecalculateCollaboration();
+        SeAssumptionCharCount.Text = $"{SeModuleAssumptionsTextBox.Text.Length}/1000";
     }
 
-    private void OnConsultantCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+    private void OnSeAdjustedTextChanged(object sender, TextChangedEventArgs e)
     {
-        // Defer recalculation to after the cell edit is committed
-        Dispatcher.BeginInvoke(new Action(() =>
-        {
-            if (IsLoaded) RecalculateCollaboration();
-        }), System.Windows.Threading.DispatcherPriority.Background);
-    }
-
-    /// <summary>
-    /// Recalculates ALL Collaboration/Quality totals matching Excel formulas exactly.
-    /// Excel: G14=B14*MtgHrs*E14, G15=C15*E14*B14, I(row)=G(row)+H(row)
-    /// G12=SUM(G14:G21,D23,D31,D35), H12=SUM(H14:H21), I12=SUM(I14:I21,D23,D31,D35)
-    /// </summary>
-    private void RecalculateCollaboration()
-    {
-        // Parse all inputs
-        decimal wprCount = ParseDecimal(WprCountTextBox);
-        decimal wprHrs = ParseDecimal(WprHoursTextBox);
-        decimal wprAtt = ParseDecimal(WprAttendeesTextBox);
-        decimal wprPrepHrs = ParseDecimal(WprPrepHoursTextBox);
-        decimal wprAdj = ParseDecimal(WprAdjustedTextBox);
-        decimal wprPrepAdj = ParseDecimal(WprPrepAdjustedTextBox);
-
-        decimal clientCount = ParseDecimal(ClientMtgCountTextBox);
-        decimal clientHrs = ParseDecimal(ClientMtgHoursTextBox);
-        decimal clientAtt = ParseDecimal(ClientMtgAttendeesTextBox);
-        decimal clientPrepHrs = ParseDecimal(ClientMtgPrepHoursTextBox);
-        decimal clientAdj = ParseDecimal(ClientMtgAdjustedTextBox);
-        decimal clientPrepAdj = ParseDecimal(ClientMtgPrepAdjustedTextBox);
-
-        decimal intCount = ParseDecimal(InternalMtgCountTextBox);
-        decimal intHrs = ParseDecimal(InternalMtgHoursTextBox);
-        decimal intAtt = ParseDecimal(InternalMtgAttendeesTextBox);
-        decimal intPrepHrs = ParseDecimal(InternalMtgPrepHoursTextBox);
-        decimal intAdj = ParseDecimal(InternalMtgAdjustedTextBox);
-        decimal intPrepAdj = ParseDecimal(InternalMtgPrepAdjustedTextBox);
-
-        decimal detailEst = ParseDecimal(CreateDetailEstHoursTextBox);
-        decimal finalEst = ParseDecimal(CreateFinalEstHoursTextBox);
-        decimal pmEffort = ParseDecimal(PmEffortHoursTextBox);
-
-        // Meeting Hour Totals (Excel: Count × MtgHrs × Attendees)
-        decimal wprMtgTotal = wprCount * wprHrs * wprAtt;
-        decimal wprPrepTotal = wprPrepHrs * wprAtt * wprCount;
-        decimal clientMtgTotal = clientCount * clientHrs * clientAtt;
-        decimal clientPrepTotal = clientPrepHrs * clientAtt * clientCount;
-        decimal intMtgTotal = intCount * intHrs * intAtt;
-        decimal intPrepTotal = intPrepHrs * intAtt * intCount;
-
-        // Grand Totals per line (Excel: I = G + H)
-        decimal wprMtgGrand = wprMtgTotal + wprAdj;
-        decimal wprPrepGrand = wprPrepTotal + wprPrepAdj;
-        decimal clientMtgGrand = clientMtgTotal + clientAdj;
-        decimal clientPrepGrand = clientPrepTotal + clientPrepAdj;
-        decimal intMtgGrand = intMtgTotal + intAdj;
-        decimal intPrepGrand = intPrepTotal + intPrepAdj;
-
-        // Consultant total
-        decimal consultantTotal = Consultants.Sum(c => c.Hours);
-
-        // Estimates total (D31 = D32 + D33)
-        decimal estimatesTotal = detailEst + finalEst;
-
-        // Update UI - Hour Totals (G column)
-        WprTotalText.Text = wprMtgTotal.ToString("N2");
-        WprPrepTotalText.Text = wprPrepTotal.ToString("N2");
-        ClientMtgTotalText.Text = clientMtgTotal.ToString("N2");
-        ClientMtgPrepTotalText.Text = clientPrepTotal.ToString("N2");
-        InternalMtgTotalText.Text = intMtgTotal.ToString("N2");
-        InternalMtgPrepTotalText.Text = intPrepTotal.ToString("N2");
-
-        // Update UI - Grand Totals per line (I column)
-        WprGrandTotalText.Text = wprMtgGrand.ToString("N2");
-        WprPrepGrandTotalText.Text = wprPrepGrand.ToString("N2");
-        ClientMtgGrandTotalText.Text = clientMtgGrand.ToString("N2");
-        ClientMtgPrepGrandTotalText.Text = clientPrepGrand.ToString("N2");
-        InternalMtgGrandTotalText.Text = intMtgGrand.ToString("N2");
-        InternalMtgPrepGrandTotalText.Text = intPrepGrand.ToString("N2");
-
-        // Subtotals
-        ConsultantTotalText.Text = consultantTotal.ToString("N2");
-        EstimatesTotalText.Text = estimatesTotal.ToString("N2");
-        PmEffortTotalText.Text = pmEffort.ToString("N2");
-
-        // Overall totals (Excel row 12)
-        // G12 = SUM(G14:G21) + D23 + D31 + D35
-        decimal hourTotal = wprMtgTotal + wprPrepTotal + clientMtgTotal + clientPrepTotal
-                          + intMtgTotal + intPrepTotal + consultantTotal + estimatesTotal + pmEffort;
-        // H12 = SUM(H14:H21) - only meeting adjusted hours
-        decimal adjTotal = wprAdj + wprPrepAdj + clientAdj + clientPrepAdj + intAdj + intPrepAdj;
-        // I12 = SUM(I14:I21) + D23 + D31 + D35
-        decimal grandTotal = hourTotal + adjTotal;
-
-        CollabHourTotalText.Text = hourTotal.ToString("N2");
-        CollabAdjTotalText.Text = adjTotal.ToString("N2");
-        CollabTotalText.Text = grandTotal.ToString("N2");
-
-        // Also update TOP summary (Excel R12 - appears before detail rows)
-        CollabHourTotalTopText.Text = hourTotal.ToString("N2");
-        CollabAdjTotalTopText.Text = adjTotal.ToString("N2");
-        CollabGrandTotalTopText.Text = grandTotal.ToString("N2");
-    }
-
-    private static decimal ParseDecimal(TextBox? tb)
-    {
-        if (tb == null) return 0m;
-        return decimal.TryParse(tb.Text, out var v) ? v : 0m;
+        if (!IsLoaded) return;
+        SeAdjustedCharCount.Text = $"{SeAdjustedHrsCommentTextBox.Text.Length}/1000";
     }
 
     private void CommitAllDataGridEdits()
@@ -383,11 +279,12 @@ public partial class DetailedEstimateWindow : Window
     {
         CommitAllDataGridEdits();
 
-        // Validation: must have a project loaded from Initial Estimate history
-        if (_currentProject == null || string.IsNullOrWhiteSpace(_currentProject.ProjectName))
+        // Validation: must have a project name
+        var projectName = ProjectNameTextBox.Text.Trim();
+        if (string.IsNullOrWhiteSpace(projectName))
         {
-            MessageBox.Show("Please load a project from Initial Estimate history using the \"📂 Open\" button before saving.",
-                "No Project Selected", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show("Please enter a Project Name before saving.",
+                "Project Name Required", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
 
@@ -396,12 +293,28 @@ public partial class DetailedEstimateWindow : Window
             using var db = new EstimateDbContext();
             db.Database.EnsureCreated();
 
-            var existing = db.Projects.FirstOrDefault(p => p.ProjectId == _currentProject.ProjectId);
-            if (existing == null)
+            ProjectEntity existing;
+            if (_currentProject != null && !string.IsNullOrWhiteSpace(_currentProject.ProjectId))
             {
-                MessageBox.Show("The selected project could not be found in the database.",
-                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                existing = db.Projects.FirstOrDefault(p => p.ProjectId == _currentProject.ProjectId)!;
+                if (existing == null)
+                {
+                    // Project was deleted from DB — re-create it
+                    existing = new ProjectEntity { ProjectName = projectName };
+                    db.Projects.Add(existing);
+                    _currentProject = existing;
+                }
+            }
+            else
+            {
+                // No project loaded — check if one with this name exists, otherwise create new
+                existing = db.Projects.FirstOrDefault(p => p.ProjectName == projectName)!;
+                if (existing == null)
+                {
+                    existing = new ProjectEntity { ProjectName = projectName };
+                    db.Projects.Add(existing);
+                }
+                _currentProject = existing;
             }
 
             // Persist SE data
@@ -433,35 +346,19 @@ public partial class DetailedEstimateWindow : Window
             decimal baTotal = BaTestCases.Sum(r => r.AdjustedHours) + BaValidationItems.Sum(r => r.AdjustedHours);
             existing.BaAdjustedHours = baTotal;
 
-            // Persist Collaboration hours (full calculation matching Excel)
-            decimal wprCount = ParseDecimal(WprCountTextBox);
-            decimal wprHrs = ParseDecimal(WprHoursTextBox);
-            decimal wprAtt = ParseDecimal(WprAttendeesTextBox);
-            decimal wprPrepHrs = ParseDecimal(WprPrepHoursTextBox);
-            decimal wprAdj = ParseDecimal(WprAdjustedTextBox);
-            decimal wprPrepAdj = ParseDecimal(WprPrepAdjustedTextBox);
-            decimal clientCount = ParseDecimal(ClientMtgCountTextBox);
-            decimal clientHrs = ParseDecimal(ClientMtgHoursTextBox);
-            decimal clientAtt = ParseDecimal(ClientMtgAttendeesTextBox);
-            decimal clientPrepHrs = ParseDecimal(ClientMtgPrepHoursTextBox);
-            decimal clientAdj = ParseDecimal(ClientMtgAdjustedTextBox);
-            decimal clientPrepAdj = ParseDecimal(ClientMtgPrepAdjustedTextBox);
-            decimal intCount = ParseDecimal(InternalMtgCountTextBox);
-            decimal intHrs = ParseDecimal(InternalMtgHoursTextBox);
-            decimal intAtt = ParseDecimal(InternalMtgAttendeesTextBox);
-            decimal intPrepHrs = ParseDecimal(InternalMtgPrepHoursTextBox);
-            decimal intAdj = ParseDecimal(InternalMtgAdjustedTextBox);
-            decimal intPrepAdj = ParseDecimal(InternalMtgPrepAdjustedTextBox);
-            decimal detailEst = ParseDecimal(CreateDetailEstHoursTextBox);
-            decimal finalEst = ParseDecimal(CreateFinalEstHoursTextBox);
-            decimal pmEffort = ParseDecimal(PmEffortHoursTextBox);
+            // Persist Collaboration hours
+            decimal wprCount = decimal.TryParse(WprCountTextBox?.Text, out var wc) ? wc : 0;
+            decimal wprHrs = decimal.TryParse(WprHoursTextBox?.Text, out var wh) ? wh : 0;
+            decimal wprAtt = decimal.TryParse(WprAttendeesTextBox?.Text, out var wa) ? wa : 0;
+            decimal clientCount = decimal.TryParse(ClientMtgCountTextBox?.Text, out var cc) ? cc : 0;
+            decimal clientHrs = decimal.TryParse(ClientMtgHoursTextBox?.Text, out var ch) ? ch : 0;
+            decimal clientAtt = decimal.TryParse(ClientMtgAttendeesTextBox?.Text, out var ca) ? ca : 0;
+            decimal intCount = decimal.TryParse(InternalMtgCountTextBox?.Text, out var ic) ? ic : 0;
+            decimal intHrs = decimal.TryParse(InternalMtgHoursTextBox?.Text, out var ih) ? ih : 0;
+            decimal intAtt = decimal.TryParse(InternalMtgAttendeesTextBox?.Text, out var ia) ? ia : 0;
             decimal consultantTotal = Consultants.Sum(c => c.Hours);
-
-            decimal meetingHours = (wprCount * wprHrs * wprAtt) + (wprPrepHrs * wprAtt * wprCount)
-                                 + (clientCount * clientHrs * clientAtt) + (clientPrepHrs * clientAtt * clientCount)
-                                 + (intCount * intHrs * intAtt) + (intPrepHrs * intAtt * intCount);
-            decimal meetingAdj = wprAdj + wprPrepAdj + clientAdj + clientPrepAdj + intAdj + intPrepAdj;
-            decimal collabTotal = meetingHours + consultantTotal + (detailEst + finalEst) + pmEffort + meetingAdj;
+            decimal collabTotal = (wprCount * wprHrs * wprAtt) + (clientCount * clientHrs * clientAtt)
+                                + (intCount * intHrs * intAtt) + consultantTotal;
             existing.CollaborationHours = collabTotal;
 
             // Persist total hours with PM reserve
@@ -573,39 +470,9 @@ public partial class DetailedEstimateWindow : Window
         BaSummaryRows[0].GrandTotal = baTotalAdj;
         BaSummaryGrid?.Items.Refresh();
 
-        // Update Collaboration Summary - full calculation matching Excel
-        decimal wprCount = ParseDecimal(WprCountTextBox);
-        decimal wprHrs = ParseDecimal(WprHoursTextBox);
-        decimal wprAtt = ParseDecimal(WprAttendeesTextBox);
-        decimal wprPrepHrs = ParseDecimal(WprPrepHoursTextBox);
-        decimal wprAdj = ParseDecimal(WprAdjustedTextBox);
-        decimal wprPrepAdj = ParseDecimal(WprPrepAdjustedTextBox);
-        decimal clientCount = ParseDecimal(ClientMtgCountTextBox);
-        decimal clientHrs = ParseDecimal(ClientMtgHoursTextBox);
-        decimal clientAtt = ParseDecimal(ClientMtgAttendeesTextBox);
-        decimal clientPrepHrs = ParseDecimal(ClientMtgPrepHoursTextBox);
-        decimal clientAdj = ParseDecimal(ClientMtgAdjustedTextBox);
-        decimal clientPrepAdj = ParseDecimal(ClientMtgPrepAdjustedTextBox);
-        decimal intCount = ParseDecimal(InternalMtgCountTextBox);
-        decimal intHrs = ParseDecimal(InternalMtgHoursTextBox);
-        decimal intAtt = ParseDecimal(InternalMtgAttendeesTextBox);
-        decimal intPrepHrs = ParseDecimal(InternalMtgPrepHoursTextBox);
-        decimal intAdj = ParseDecimal(InternalMtgAdjustedTextBox);
-        decimal intPrepAdj = ParseDecimal(InternalMtgPrepAdjustedTextBox);
-        decimal detailEst = ParseDecimal(CreateDetailEstHoursTextBox);
-        decimal finalEst = ParseDecimal(CreateFinalEstHoursTextBox);
-        decimal pmEffort = ParseDecimal(PmEffortHoursTextBox);
-        decimal consultantTotal = Consultants.Sum(r => r.Hours);
-
-        decimal meetingHours = (wprCount * wprHrs * wprAtt) + (wprPrepHrs * wprAtt * wprCount)
-                             + (clientCount * clientHrs * clientAtt) + (clientPrepHrs * clientAtt * clientCount)
-                             + (intCount * intHrs * intAtt) + (intPrepHrs * intAtt * intCount);
-        decimal meetingAdj = wprAdj + wprPrepAdj + clientAdj + clientPrepAdj + intAdj + intPrepAdj;
-        decimal collabHourTotal = meetingHours + consultantTotal + (detailEst + finalEst) + pmEffort;
-        decimal collabTotal = collabHourTotal + meetingAdj;
-
-        CollabSummaryRows[0].StraightHours = collabHourTotal;
-        CollabSummaryRows[0].AdjustedMisc = meetingAdj;
+        // Update Collaboration Summary
+        decimal collabTotal = Consultants.Sum(r => r.Hours);
+        CollabSummaryRows[0].StraightHours = collabTotal;
         CollabSummaryRows[0].GrandTotal = collabTotal;
         CollabSummaryGrid?.Items.Refresh();
 
@@ -687,6 +554,7 @@ public class ComponentTypeRow
 public class ModuleEntry
 {
     public ExperienceLevel ExperienceLevel { get; set; } = ExperienceLevel.Proficient;
+    public string AssociatedRequirement { get; set; } = string.Empty;
     public string ModuleName { get; set; } = string.Empty;
     public ComponentStatus ComponentStatus { get; set; } = ComponentStatus.New;
     public int SimpleCount { get; set; }

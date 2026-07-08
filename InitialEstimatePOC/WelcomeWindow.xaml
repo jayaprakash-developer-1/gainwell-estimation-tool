@@ -160,6 +160,10 @@
                                 <TextBox x:Name="ChangeOrderTextBox" Padding="8,6" FontSize="13" />
                             </StackPanel>
                         </Grid>
+                        <StackPanel Margin="0,12,0,0">
+                            <TextBlock Text="Description (optional):" FontSize="11" Foreground="#5A6978" Margin="0,0,0,4" />
+                            <TextBox x:Name="DescriptionTextBox" Padding="8,6" FontSize="13" AcceptsReturn="True" Height="50" TextWrapping="Wrap" />
+                        </StackPanel>
                     </StackPanel>
                 </Border>
 

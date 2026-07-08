@@ -64,6 +64,7 @@
                 <DataGridTextColumn Header="Adj Exp Level" Binding="{Binding AdjustedExpLevel, StringFormat='{}{0:N2}'}" Width="95" IsReadOnly="True" />
                 <DataGridTextColumn Header="Adjusted Hrs" Binding="{Binding AdjustedHrs, StringFormat='{}{0:N2}', UpdateSourceTrigger=PropertyChanged}" Width="90" />
                 <DataGridTextColumn Header="Grand Total" Binding="{Binding GrandTotal, StringFormat='{}{0:N2}'}" Width="90" IsReadOnly="True" />
+                <DataGridTextColumn Header="Associated Requirement" Binding="{Binding AssociatedRequirement, UpdateSourceTrigger=PropertyChanged}" Width="150" />
             </DataGrid.Columns>
         </DataGrid>
 
