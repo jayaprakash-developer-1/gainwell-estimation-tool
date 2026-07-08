@@ -26,7 +26,13 @@ Thumbs.db
 Desktop.ini
 .DS_Store
 
-## LLM bridge (local tooling)
+## Python
+.venv/
+
+## Test Results
+TestResults/
+
+## Local tooling
 llm-bridge/
 
 ## Test Results (generated)

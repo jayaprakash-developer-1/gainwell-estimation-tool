@@ -98,16 +98,17 @@ These are NOT in the brand guide but are derived at ~5-8% opacity for section ba
 
 ### Testing Requirements
 - All calculation changes MUST have corresponding unit tests verifying against Excel values
-- Reference file: `CO 23327 002 Final Estimate V1.0.xlsm`
+- Reference file: `docs/reference/CO 23327 002 Final Estimate V1.0.xlsm`
 - Current test count: 930 (must not decrease)
 
 ### File Structure
 ```
-InitialEstimatePOC/
+src/Gainwell.EstimationTool/
 ├── App.xaml              # Global styles (Arial font)
-├── MainWindow.xaml       # Initial Estimate UI
-├── DetailedEstimateWindow.xaml  # Detailed Estimate UI
-├── WelcomeWindow.xaml    # Landing/navigation page
+├── Views/                # All WPF Windows and Dialogs
+│   ├── MainWindow.xaml       # Initial Estimate UI
+│   ├── DetailedEstimateWindow.xaml  # Detailed Estimate UI
+│   └── WelcomeWindow.xaml    # Landing/navigation page
 ├── ViewModels/           # MVVM ViewModels
 ├── Models/               # Data models and enums
 ├── Data/                 # EF Core context, seeders, weighted values
