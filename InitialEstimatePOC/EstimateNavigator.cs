@@ -31,10 +31,9 @@ public static class EstimateNavigator
         }
 
         // Transfer project info from detailed to initial
-        if (source is DetailedEstimateWindow detailed)
+        if (source is DetailedEstimateWindow detailed && detailed.GetCurrentProjectEntity() is ProjectEntity project)
         {
-            var project = detailed.GetCurrentProject();
-            if (_initialWindow.DataContext is MainViewModel vm && project != null)
+            if (_initialWindow.DataContext is MainViewModel vm)
             {
                 vm.ProjectName = project.ProjectName;
                 vm.ChangeOrderId = project.ChangeOrderId;
@@ -73,7 +72,7 @@ public static class EstimateNavigator
         {
             SyncPosition(source, _detailedWindow);
             if (project != null)
-                _detailedWindow.UpdateProjectInfo(project);
+                _detailedWindow.LoadFromProject(project);
         }
 
         _detailedWindow.Show();
@@ -94,7 +93,9 @@ public static class EstimateNavigator
     public static void GoHome(Window source)
     {
         var welcome = new WelcomeWindow();
-        welcome.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+        welcome.WindowStartupLocation = WindowStartupLocation.Manual;
+        welcome.Left = source.RestoreBounds.Left + (source.RestoreBounds.Width - 900) / 2;
+        welcome.Top = source.RestoreBounds.Top + (source.RestoreBounds.Height - 700) / 2;
         welcome.Show();
 
         // Close all estimate windows
@@ -137,22 +138,23 @@ public static class EstimateNavigator
     private static void ApplyDimensions(Window target, Window source)
     {
         target.WindowStartupLocation = WindowStartupLocation.Manual;
-        target.Left = source.Left;
-        target.Top = source.Top;
-        target.Width = source.Width;
-        target.Height = source.Height;
+        // Use RestoreBounds to get the position on the correct monitor even when maximized
+        var bounds = source.RestoreBounds;
+        target.Left = bounds.Left;
+        target.Top = bounds.Top;
+        target.Width = bounds.Width;
+        target.Height = bounds.Height;
         target.WindowState = source.WindowState;
     }
 
     private static void SyncPosition(Window source, Window target)
     {
+        // Always sync restore bounds so the window lands on the correct monitor
+        var bounds = source.RestoreBounds;
+        target.Left = bounds.Left;
+        target.Top = bounds.Top;
+        target.Width = bounds.Width;
+        target.Height = bounds.Height;
         target.WindowState = source.WindowState;
-        if (source.WindowState == WindowState.Normal)
-        {
-            target.Left = source.Left;
-            target.Top = source.Top;
-            target.Width = source.Width;
-            target.Height = source.Height;
-        }
     }
 }

@@ -2,56 +2,68 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Estimation Tool" 
-        Height="700" Width="900"
+        Height="1000" Width="1500"
         WindowStartupLocation="CenterScreen"
-        Background="#F5F7FA"
+        Background="#EBEDF5"
         Icon="Assets/app.ico">
 
     <Window.Resources>
         <Style x:Key="CardBorder" TargetType="Border">
             <Setter Property="Background" Value="White" />
             <Setter Property="CornerRadius" Value="12" />
-            <Setter Property="Padding" Value="32" />
+            <Setter Property="Padding" Value="24" />
+            <Setter Property="Margin" Value="12" />
             <Setter Property="Effect">
                 <Setter.Value>
-                    <DropShadowEffect BlurRadius="16" Opacity="0.08" ShadowDepth="4" Direction="270" />
+                    <DropShadowEffect BlurRadius="12" Opacity="0.08" ShadowDepth="3" Direction="270" />
                 </Setter.Value>
             </Setter>
         </Style>
 
-        <Style x:Key="FieldLabel" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="Foreground" Value="#374151" />
-            <Setter Property="Margin" Value="0,0,0,6" />
-        </Style>
-
-        <Style x:Key="FieldTextBox" TargetType="TextBox">
-            <Setter Property="Padding" Value="12,10" />
+        <Style x:Key="NavButton" TargetType="Button">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Foreground" Value="#2B3A44" />
             <Setter Property="FontSize" Value="14" />
-            <Setter Property="BorderBrush" Value="#D1D5DB" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Padding" Value="24,20" />
             <Setter Property="BorderThickness" Value="1" />
-            <Style.Triggers>
-                <Trigger Property="IsFocused" Value="True">
-                    <Setter Property="BorderBrush" Value="#6C63FF" />
-                    <Setter Property="BorderThickness" Value="2" />
-                </Trigger>
-            </Style.Triggers>
+            <Setter Property="BorderBrush" Value="#EBEDF5" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                              VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#EBEDF5" />
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#1931E3" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <Style x:Key="PrimaryButton" TargetType="Button">
-            <Setter Property="Background" Value="#6C63FF" />
+            <Setter Property="Background" Value="#1931E3" />
             <Setter Property="Foreground" Value="White" />
             <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="Padding" Value="28,12" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Padding" Value="16,10" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}" 
-                                CornerRadius="8" Padding="{TemplateBinding Padding}">
+                                CornerRadius="6" Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                     </ControlTemplate>
@@ -59,19 +71,18 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#5A52E0" />
+                    <Setter Property="Background" Value="#2E307A" />
                 </Trigger>
             </Style.Triggers>
         </Style>
 
         <Style x:Key="GhostButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Foreground" Value="#374151" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="Padding" Value="28,12" />
+            <Setter Property="Foreground" Value="#5A6978" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Padding" Value="16,10" />
             <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="BorderBrush" Value="#D1D5DB" />
+            <Setter Property="BorderBrush" Value="#EBEDF5" />
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Template">
                 <Setter.Value>
@@ -79,7 +90,7 @@
                         <Border Background="{TemplateBinding Background}" 
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="8" Padding="{TemplateBinding Padding}">
+                                CornerRadius="6" Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                     </ControlTemplate>
@@ -87,7 +98,7 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#F3F4F6" />
+                    <Setter Property="Background" Value="#EBEDF5" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -100,92 +111,161 @@
         </Grid.RowDefinitions>
 
         <!-- Header Banner -->
-        <Border Grid.Row="0" Padding="32,24" Margin="24,24,24,0" CornerRadius="12">
+        <Border Grid.Row="0" Padding="32,24" Margin="12,12,12,0" CornerRadius="12">
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                    <GradientStop Color="#00857C" Offset="0" />
-                    <GradientStop Color="#006B64" Offset="1" />
+                    <GradientStop Color="#019681" Offset="0" />
+                    <GradientStop Color="#1A6478" Offset="0.5" />
+                    <GradientStop Color="#2E307A" Offset="1" />
                 </LinearGradientBrush>
             </Border.Background>
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <Image Source="Assets/logo.png" Height="40" Margin="0,0,16,0" VerticalAlignment="Center" />
-                <StackPanel VerticalAlignment="Center">
-                    <TextBlock Text="Estimation Tool" FontSize="24" FontWeight="Bold" Foreground="White" />
-                    <TextBlock Text="Component-Based Project Estimation" FontSize="13" Foreground="#C7D2FE" Margin="0,4,0,0" />
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Source="Assets/logo.png" Height="40" Margin="0,0,16,0" VerticalAlignment="Center" />
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Estimation Tool" FontSize="24" FontWeight="Bold" Foreground="White" />
+                        <TextBlock Text="Component-Based Project Estimation" FontSize="13" Foreground="#00EEAE" Margin="0,4,0,0" />
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
         </Border>
 
         <!-- Main Content -->
-        <Grid Grid.Row="1" Margin="24,20,24,24">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="20" />
-                <ColumnDefinition Width="300" />
-            </Grid.ColumnDefinitions>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="20,8">
+            <Grid Margin="0,8,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-            <!-- Left: Project Form -->
-            <Border Grid.Column="0" Style="{StaticResource CardBorder}">
-                <StackPanel>
-                    <TextBlock Text="Project Information" FontSize="18" FontWeight="Bold" 
-                               Foreground="#1A1A2E" Margin="0,0,0,24" />
-
-                    <!-- Project Name -->
-                    <StackPanel Margin="0,0,0,16">
-                        <TextBlock Text="Project Name" Style="{StaticResource FieldLabel}" />
-                        <TextBox x:Name="ProjectNameTextBox" Style="{StaticResource FieldTextBox}" />
+                <!-- Project Info (CO + Project Name) -->
+                <Border Grid.Row="0" Style="{StaticResource CardBorder}" Margin="12,0,12,8">
+                    <StackPanel>
+                        <TextBlock Text="Project Information" FontSize="14" FontWeight="SemiBold" 
+                                   Foreground="#2B3A44" Margin="0,0,0,12" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="16" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Project Name:" FontSize="11" Foreground="#5A6978" Margin="0,0,0,4" />
+                                <TextBox x:Name="ProjectNameTextBox" Padding="8,6" FontSize="13" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Change Order / Defect:" FontSize="11" Foreground="#5A6978" Margin="0,0,0,4" />
+                                <TextBox x:Name="ChangeOrderTextBox" Padding="8,6" FontSize="13" />
+                            </StackPanel>
+                        </Grid>
+                        <StackPanel Margin="0,12,0,0">
+                            <TextBlock Text="Description (optional):" FontSize="11" Foreground="#5A6978" Margin="0,0,0,4" />
+                            <TextBox x:Name="DescriptionTextBox" Padding="8,6" FontSize="13" AcceptsReturn="True" Height="50" TextWrapping="Wrap" />
+                        </StackPanel>
                     </StackPanel>
+                </Border>
 
-                    <!-- Change Order -->
-                    <StackPanel Margin="0,0,0,16">
-                        <TextBlock Text="Change Order / Defect #" Style="{StaticResource FieldLabel}" />
-                        <TextBox x:Name="ChangeOrderTextBox" Style="{StaticResource FieldTextBox}" />
-                    </StackPanel>
-
-                    <!-- Description -->
-                    <StackPanel Margin="0,0,0,24">
-                        <TextBlock Text="Description" Style="{StaticResource FieldLabel}" />
-                        <TextBox x:Name="DescriptionTextBox" Style="{StaticResource FieldTextBox}" 
-                                 Height="80" TextWrapping="Wrap" AcceptsReturn="True"
-                                 VerticalContentAlignment="Top" />
-                    </StackPanel>
-
-                    <!-- Buttons -->
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <Button Content="Create New" Style="{StaticResource PrimaryButton}" 
-                                Click="OnCreateClick" Margin="0,0,12,0" />
-                        <Button Content="Open Existing" Style="{StaticResource GhostButton}" 
-                                Click="OnOpenClick" />
-                    </StackPanel>
-                </StackPanel>
-            </Border>
-
-            <!-- Right: Recent Projects -->
-            <Border Grid.Column="2" Style="{StaticResource CardBorder}">
-                <StackPanel>
-                    <TextBlock Text="Recent Projects" FontSize="14" FontWeight="SemiBold" 
-                               Foreground="#1A1A2E" Margin="0,0,0,12" />
-                    <ListBox x:Name="RecentProjectsList" BorderThickness="0" 
-                             SelectionChanged="OnRecentProjectSelected"
-                             MaxHeight="350">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Margin="4,6">
-                                    <TextBlock Text="{Binding ProjectName}" FontWeight="SemiBold" FontSize="13" />
-                                    <TextBlock FontSize="11" Foreground="#6B7280">
-                                        <Run Text="{Binding ChangeOrderId}" />
-                                        <Run Text=" • " />
-                                        <Run Text="{Binding LastModifiedDate, StringFormat='{}{0:MMM dd, yyyy}'}" />
-                                    </TextBlock>
+                <!-- Estimate Type Navigation -->
+                <StackPanel Grid.Row="1" Margin="12,0">
+                    <TextBlock Text="Create or Open Estimate" FontSize="16" FontWeight="SemiBold" 
+                               Foreground="#2B3A44" Margin="0,0,0,16" />
+                    
+                    <UniformGrid Columns="3" Margin="0,0,0,8">
+                        <!-- Initial Estimate -->
+                        <Button Style="{StaticResource NavButton}" Click="OnInitialEstimateClick" Margin="0,0,8,0">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE9F5;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" 
+                                               FontSize="24" Foreground="#1931E3" VerticalAlignment="Center" Margin="0,0,12,0" />
+                                    <TextBlock Text="Initial Estimate" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center" />
                                 </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                    <TextBlock x:Name="NoProjectsText" Text="No saved projects yet."
-                               FontSize="12" Foreground="#9CA3AF" Margin="0,8,0,0"
-                               Visibility="Collapsed" />
+                                <TextBlock Text="Quick component-based estimate using weighted values. Best for early-stage sizing." 
+                                           FontSize="12" Foreground="#5A6978" TextWrapping="Wrap" />
+                                <TextBlock Text="T-Shirt sizing • PM Reserve • Collaboration" 
+                                           FontSize="11" Foreground="#8E99A8" Margin="0,8,0,0" />
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Detailed Estimate -->
+                        <Button Style="{StaticResource NavButton}" Click="OnDetailedEstimateClick" Margin="4,0,4,0">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE9D5;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" 
+                                               FontSize="24" Foreground="#019681" VerticalAlignment="Center" Margin="0,0,12,0" />
+                                    <TextBlock Text="Detailed Estimate" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center" />
+                                </StackPanel>
+                                <TextBlock Text="Full breakdown by task phase, experience level, and complexity. SE + BA + Collaboration." 
+                                           FontSize="12" Foreground="#5A6978" TextWrapping="Wrap" />
+                                <TextBlock Text="SE Modules • BA Testing • Collaboration • Quality" 
+                                           FontSize="11" Foreground="#8E99A8" Margin="0,8,0,0" />
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Final Estimate -->
+                        <Button Style="{StaticResource NavButton}" Click="OnFinalEstimateClick" Margin="8,0,0,0" IsEnabled="False">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE8FB;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" 
+                                               FontSize="24" Foreground="#8E99A8" VerticalAlignment="Center" Margin="0,0,12,0" />
+                                    <TextBlock Text="Final Estimate" FontSize="16" FontWeight="SemiBold" 
+                                               Foreground="#8E99A8" VerticalAlignment="Center" />
+                                </StackPanel>
+                                <TextBlock Text="Consolidated final estimate combining all inputs. Coming soon." 
+                                           FontSize="12" Foreground="#8E99A8" TextWrapping="Wrap" />
+                                <TextBlock Text="Coming Soon" FontSize="11" Foreground="#C2C6D2" Margin="0,8,0,0" />
+                            </StackPanel>
+                        </Button>
+                    </UniformGrid>
                 </StackPanel>
-            </Border>
-        </Grid>
+
+                <!-- Quick Actions -->
+                <Border Grid.Row="2" Style="{StaticResource CardBorder}" Margin="12,8">
+                    <StackPanel>
+                        <TextBlock Text="Quick Actions" FontSize="14" FontWeight="SemiBold" 
+                                   Foreground="#2B3A44" Margin="0,0,0,12" />
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="📂 Open Saved Estimate" Style="{StaticResource GhostButton}" 
+                                    Click="OnHistoryClick" Margin="0,0,8,0" />
+                            <Button Content="⚙ Settings" Style="{StaticResource GhostButton}" 
+                                    Click="OnSettingsClick" Margin="0,0,8,0" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Recent Projects -->
+                <Border Grid.Row="3" Style="{StaticResource CardBorder}" Margin="12,0">
+                    <StackPanel>
+                        <TextBlock Text="Recent Projects" FontSize="14" FontWeight="SemiBold" 
+                                   Foreground="#2B3A44" Margin="0,0,0,12" />
+                        <ListBox x:Name="RecentProjectsList" BorderThickness="0" 
+                                 SelectionChanged="OnRecentProjectSelected"
+                                 MaxHeight="200">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Margin="4">
+                                        <TextBlock Text="📋" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding ProjectName}" FontWeight="SemiBold" FontSize="13" />
+                                            <TextBlock FontSize="11" Foreground="#5A6978">
+                                                <Run Text="{Binding GrandTotalHours, StringFormat='{}{0:N0} hrs'}" />
+                                                <Run Text=" • " />
+                                                <Run Text="{Binding TShirtSize}" />
+                                                <Run Text=" • " />
+                                                <Run Text="{Binding LastModifiedDate, StringFormat='{}{0:MMM dd, yyyy}'}" />
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <TextBlock x:Name="NoProjectsText" Text="No saved projects yet. Create an estimate to get started."
+                                   FontSize="12" Foreground="#8E99A8" Margin="0,8,0,0"
+                                   Visibility="Collapsed" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </Window>

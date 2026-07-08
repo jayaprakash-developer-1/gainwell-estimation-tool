@@ -85,6 +85,56 @@ public class ZeroToVisibilityConverter : IValueConverter
 }
 
 /// <summary>
+/// Converts ExperienceLevel enum ↔ friendly display string for the BA Considerations dropdowns.
+/// </summary>
+public class ExperienceLevelConverter : IValueConverter
+{
+    private static readonly Dictionary<ExperienceLevel, string> _toDisplay = new()
+    {
+        [ExperienceLevel.SelectALevel] = "Select",
+        [ExperienceLevel.NewToArea]    = "New to Area",
+        [ExperienceLevel.Proficient]   = "Proficient",
+        [ExperienceLevel.Expert]       = "Expert",
+    };
+
+    private static readonly Dictionary<string, ExperienceLevel> _fromDisplay =
+        _toDisplay.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
+
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        => value is ExperienceLevel el && _toDisplay.TryGetValue(el, out var s) ? s : value?.ToString() ?? string.Empty;
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        => value is string s && _fromDisplay.TryGetValue(s, out var el) ? el : (object)ExperienceLevel.SelectALevel;
+}
+
+/// <summary>
+/// Two-way converter for Production Validation complexity columns.
+/// int 0 → blank string; int > 0 → "X".
+/// "X" (case-insensitive) → 1; blank/other → 0.
+/// </summary>
+public class XMarkConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        => value is int i && i > 0 ? "X" : string.Empty;
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        => value is string s && s.Trim().Equals("X", StringComparison.OrdinalIgnoreCase) ? 1 : 0;
+}
+
+/// <summary>
+/// null or empty string → Collapsed; any non-empty string → Visible.
+/// Used to show/hide the ! help icon when no tooltip text is available.
+/// </summary>
+public class NullToCollapsedConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        => value is string s && !string.IsNullOrEmpty(s) ? Visibility.Visible : Visibility.Collapsed;
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        => throw new NotImplementedException();
+}
+
+/// <summary>
 /// Converts enum values to display-friendly strings with spaces.
 /// Works for ComponentType, CollaborationType, ChangeType, ComponentSize.
 /// </summary>
@@ -162,4 +212,50 @@ public class NotesCharCountColorConverter : IValueConverter
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         => throw new NotImplementedException();
+}
+
+/// <summary>
+/// Converts a boolean to Visibility. True → Visible, False → Collapsed.
+/// </summary>
+public class BoolToVisibilityConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        => value is true ? Visibility.Visible : Visibility.Collapsed;
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        => value is Visibility.Visible;
+}
+
+/// <summary>
+/// Converts a boolean to Visibility (inverted). True → Collapsed, False → Visible.
+/// </summary>
+public class InverseBoolToVisibilityConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        => value is true ? Visibility.Collapsed : Visibility.Visible;
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        => value is Visibility.Collapsed;
+}
+
+/// <summary>
+/// Multi-value converter: checks if int value equals the converter parameter (as string).
+/// Used for radio-button-style selection in Production Validation.
+/// Parameter format: "complexity_index" (0=None, 1=Simple, 2=Moderate, 3=Complex, 4=VeryComplex)
+/// </summary>
+public class IntEqualityConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value is int intVal && parameter is string paramStr && int.TryParse(paramStr, out int target))
+            return intVal == target;
+        return false;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value is true && parameter is string paramStr && int.TryParse(paramStr, out int target))
+            return target;
+        return Binding.DoNothing;
+    }
 }

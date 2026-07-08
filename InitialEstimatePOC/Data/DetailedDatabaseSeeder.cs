@@ -659,6 +659,16 @@ public static class DetailedDatabaseSeeder
         A(BaCategory.SystemTesting, "RegressionTesting", BaComplexity.Moderate, 1.25m);
         A(BaCategory.SystemTesting, "RegressionTesting", BaComplexity.Complex, 2m);
         A(BaCategory.SystemTesting, "RegressionTesting", BaComplexity.VeryComplex, 2.5m);
+        // Iteration — count-tracking sub-row (0 hours, informational only)
+        A(BaCategory.SystemTesting, "Iteration", BaComplexity.Simple, 0m);
+        A(BaCategory.SystemTesting, "Iteration", BaComplexity.Moderate, 0m);
+        A(BaCategory.SystemTesting, "Iteration", BaComplexity.Complex, 0m);
+        A(BaCategory.SystemTesting, "Iteration", BaComplexity.VeryComplex, 0m);
+        // Pre Release Defects Creation and Retest
+        A(BaCategory.SystemTesting, "PreReleaseDefects", BaComplexity.Simple, 0.5m);
+        A(BaCategory.SystemTesting, "PreReleaseDefects", BaComplexity.Moderate, 0.275m);  // Excel-verified
+        A(BaCategory.SystemTesting, "PreReleaseDefects", BaComplexity.Complex, 0.600m);   // Excel-verified
+        A(BaCategory.SystemTesting, "PreReleaseDefects", BaComplexity.VeryComplex, 4.0m);
 
         // Production Validation
         A(BaCategory.ProductionValidation, "GeneralValidation", BaComplexity.Simple, 5m);

@@ -590,6 +590,17 @@ public static class DetailedWeightedValues
         { (BaCategory.SystemTesting, "RegressionTesting", BaComplexity.Moderate), 1.25m },
         { (BaCategory.SystemTesting, "RegressionTesting", BaComplexity.Complex), 2m },
         { (BaCategory.SystemTesting, "RegressionTesting", BaComplexity.VeryComplex), 2.5m },
+        // Iteration — count-tracking sub-row (0 hours, informational only)
+        { (BaCategory.SystemTesting, "Iteration", BaComplexity.Simple), 0m },
+        { (BaCategory.SystemTesting, "Iteration", BaComplexity.Moderate), 0m },
+        { (BaCategory.SystemTesting, "Iteration", BaComplexity.Complex), 0m },
+        { (BaCategory.SystemTesting, "Iteration", BaComplexity.VeryComplex), 0m },
+        // Pre Release Defects Creation and Retest
+        // Excel formula: H21 = SUM(H16, H19:H20) * 0.1 → rates = (WTC+ALM+SysTest) * 0.1 per complexity
+        { (BaCategory.SystemTesting, "PreReleaseDefects", BaComplexity.Simple), 0.125m },     // (0.5+0.25+0.5)*0.1
+        { (BaCategory.SystemTesting, "PreReleaseDefects", BaComplexity.Moderate), 0.275m },   // (1.0+0.25+1.5)*0.1
+        { (BaCategory.SystemTesting, "PreReleaseDefects", BaComplexity.Complex), 0.600m },    // (2.5+0.5+3.0)*0.1
+        { (BaCategory.SystemTesting, "PreReleaseDefects", BaComplexity.VeryComplex), 1.05m }, // (4.0+0.5+6.0)*0.1
 
         // Production Validation
         { (BaCategory.ProductionValidation, "GeneralValidation", BaComplexity.Simple), 5m },
@@ -707,6 +718,11 @@ public static class DetailedWeightedValues
             var newBaMatrix = new Dictionary<(BaCategory, string, BaComplexity), decimal>();
             foreach (var v in baValues)
                 newBaMatrix[(v.Category, v.TaskType, v.Complexity)] = v.Hours;
+            // Merge hardcoded defaults for any task types not yet in the DB
+            // (handles the case where a new task type was added to defaults after the DB was first seeded)
+            foreach (var kvp in _baDefaults)
+                if (!newBaMatrix.ContainsKey(kvp.Key))
+                    newBaMatrix[kvp.Key] = kvp.Value;
             _baMatrix = newBaMatrix;
         }
 

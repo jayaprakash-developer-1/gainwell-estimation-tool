@@ -7,6 +7,7 @@
         Title="Initial Estimate" 
         Height="1000" Width="1500"
         WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
         Background="#F5F7FA"
         Icon="Assets/app.ico">
 
@@ -353,22 +354,39 @@
 
         <!-- ═══════════ ESTIMATE TAB NAVIGATION ═══════════ -->
         <Border Grid.Row="1" Margin="8,0,8,0" Padding="4,4" Background="#F0F0F5" CornerRadius="0,0,8,8">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                <!-- Initial Estimate Tab (Active) -->
-                <Border Background="#6C63FF" CornerRadius="6" Padding="16,8" Margin="4,0">
-                    <TextBlock Text="Initial Estimate" FontSize="12" FontWeight="SemiBold" Foreground="White" />
-                </Border>
-                <!-- Detailed Estimate Tab -->
-                <Border x:Name="DetailedTab" Background="Transparent" CornerRadius="6" Padding="16,8" Margin="4,0" 
-                        Cursor="Hand" MouseLeftButtonDown="OnDetailedTabClick">
-                    <TextBlock Text="Detailed Estimate" FontSize="12" FontWeight="SemiBold" Foreground="#6B7280" />
-                </Border>
-                <!-- Final Estimate Tab -->
-                <Border Background="Transparent" CornerRadius="6" Padding="16,8" Margin="4,0"
-                        Cursor="Hand" MouseLeftButtonDown="OnFinalTabClick">
-                    <TextBlock Text="Final Estimate" FontSize="12" FontWeight="SemiBold" Foreground="#9CA3AF" />
-                </Border>
-            </StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Navigation Tabs (Left) -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                    <!-- Initial Estimate Tab (Active) -->
+                    <Border Background="#6C63FF" CornerRadius="6" Padding="16,8" Margin="4,0">
+                        <TextBlock Text="Initial Estimate" FontSize="12" FontWeight="SemiBold" Foreground="White" />
+                    </Border>
+                    <!-- Detailed Estimate Tab -->
+                    <Border x:Name="DetailedTab" Background="Transparent" CornerRadius="6" Padding="16,8" Margin="4,0" 
+                            Cursor="Hand" MouseLeftButtonDown="OnDetailedTabClick">
+                        <TextBlock Text="Detailed Estimate" FontSize="12" FontWeight="SemiBold" Foreground="#6B7280" />
+                    </Border>
+                    <!-- Final Estimate Tab -->
+                    <Border Background="Transparent" CornerRadius="6" Padding="16,8" Margin="4,0"
+                            Cursor="Hand" MouseLeftButtonDown="OnFinalTabClick">
+                        <TextBlock Text="Final Estimate" FontSize="12" FontWeight="SemiBold" Foreground="#9CA3AF" />
+                    </Border>
+                </StackPanel>
+
+                <!-- Save & Settings Buttons (Right) -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="1" Background="#D1D5DB" Margin="8,4" />
+                    <Button Content="💾 Save" Style="{StaticResource GhostButton}" 
+                            Click="OnSaveClick" Margin="4,0" ToolTip="Ctrl+S" />
+                    <Button Content="⚙ Settings" Style="{StaticResource GhostButton}" 
+                            Click="OnSettingsClick" Margin="4,0" />
+                </StackPanel>
+            </Grid>
         </Border>
 
         <!-- ═══════════ PROJECT HEADER FIELDS ═══════════ -->
@@ -483,9 +501,7 @@
                                 <Button Content="＋ Add Component" Style="{StaticResource PrimaryButton}" 
                                         Click="OnAddComponentClick" Margin="0,0,8,0" 
                                         ToolTip="Add a new component row (Ctrl+N)" />
-                                <Button Content="💾 Save" Style="{StaticResource PrimaryButton}" 
-                                        Click="OnSaveClick" Margin="0,0,8,0"
-                                        ToolTip="Save this estimate (Ctrl+S)" />
+
                                 <Button Content="↶ Undo" Style="{StaticResource GhostButton}" 
                                         Click="OnUndoClick"
                                         ToolTip="Undo last delete (Ctrl+Z)" />

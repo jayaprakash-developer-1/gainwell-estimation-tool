@@ -29,4 +29,16 @@ Desktop.ini
 ## LLM bridge (local tooling)
 llm-bridge/
 
+## Test Results (generated)
+TestResults/
+**/TestResults/
+
+## Excel tools and files (local only)
+ExcelReader/
+*.xlsm
+*.xlsx
+
+## Crash logs
+crash.log
+
 .for_my_referance/
