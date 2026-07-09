@@ -99,7 +99,7 @@ These are NOT in the brand guide but are derived at ~5-8% opacity for section ba
 ### Testing Requirements
 - All calculation changes MUST have corresponding unit tests verifying against Excel values
 - Reference file: `docs/reference/CO 23327 002 Final Estimate V1.0.xlsm`
-- Current test count: 930 (must not decrease)
+- Current test count: 1653 (must not decrease)
 
 ### File Structure
 ```
@@ -108,6 +108,7 @@ src/Gainwell.EstimationTool/
 ├── Views/                # All WPF Windows and Dialogs
 │   ├── MainWindow.xaml       # Initial Estimate UI
 │   ├── DetailedEstimateWindow.xaml  # Detailed Estimate UI
+│   ├── FinalEstimateWindow.xaml     # Final Estimate UI (read-only summary)
 │   └── WelcomeWindow.xaml    # Landing/navigation page
 ├── ViewModels/           # MVVM ViewModels
 ├── Models/               # Data models and enums
