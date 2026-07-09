@@ -145,7 +145,7 @@
                 </Border>
 
                 <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Button Content="?? Home" Style="{StaticResource GhostButton}" 
+                    <Button Content="🏠 Home" Style="{StaticResource GhostButton}" 
                             Click="OnHomeClick" Margin="4,0"
                             Foreground="White" BorderBrush="#4DB6AC" />
                 </StackPanel>
@@ -181,9 +181,9 @@
                 <!-- Save & Settings Buttons (Right) -->
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                     <Border Width="1" Background="#D1D5DB" Margin="8,4" />
-                    <Button Content="?? Save" Style="{StaticResource GhostButton}" 
+                    <Button Content="💾 Save" Style="{StaticResource GhostButton}" 
                             Click="OnSaveClick" Margin="4,0" ToolTip="Ctrl+S" />
-                    <Button Content="? Settings" Style="{StaticResource GhostButton}" 
+                    <Button Content="⚙ Settings" Style="{StaticResource GhostButton}" 
                             Click="OnSettingsClick" Margin="4,0" />
                 </StackPanel>
             </Grid>
@@ -223,7 +223,7 @@
             </TabControl.Resources>
 
             <!-- Tab 1: Summary -->
-            <TabItem Header="?? Estimate Summary">
+            <TabItem Header="📊 Estimate Summary">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="8">
                     <StackPanel Margin="8">
                         <!-- Project Header Card with gradient accent -->
@@ -301,7 +301,7 @@
                                 <StackPanel>
                                     <Grid Margin="0,0,0,8">
                                         <Ellipse Width="32" Height="32" Fill="#F3F4F6" HorizontalAlignment="Left" />
-                                        <TextBlock Text="?" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8,0,0,0" />
+                                        <TextBlock Text="⏱" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8,0,0,0" />
                                     </Grid>
                                     <TextBlock Text="ACTUAL HOURS" FontSize="9" FontWeight="Bold" Foreground="#9CA3AF" Margin="0,0,0,4" />
                                     <TextBox x:Name="ActualHoursTextBox" Text="0" Padding="0" FontSize="20" FontWeight="Bold" Foreground="#374151" 
@@ -324,7 +324,7 @@
                                 <StackPanel>
                                     <Grid Margin="0,0,0,8">
                                         <Ellipse Width="32" Height="32" Fill="#BBF7D0" HorizontalAlignment="Left" />
-                                        <TextBlock Text="??" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7,0,0,0" />
+                                        <TextBlock Text="💻" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7,0,0,0" />
                                     </Grid>
                                     <TextBlock Text="SE HOURS" FontSize="9" FontWeight="Bold" Foreground="#166534" Margin="0,0,0,4" />
                                     <TextBlock x:Name="SeHoursKpi" Text="0.00" FontSize="20" FontWeight="Bold" Foreground="#16A34A" />
@@ -346,7 +346,7 @@
                                 <StackPanel>
                                     <Grid Margin="0,0,0,8">
                                         <Ellipse Width="32" Height="32" Fill="#BFDBFE" HorizontalAlignment="Left" />
-                                        <TextBlock Text="??" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7,0,0,0" />
+                                        <TextBlock Text="📝" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7,0,0,0" />
                                     </Grid>
                                     <TextBlock Text="BA HOURS" FontSize="9" FontWeight="Bold" Foreground="#1E40AF" Margin="0,0,0,4" />
                                     <TextBlock x:Name="BaHoursKpi" Text="0.00" FontSize="20" FontWeight="Bold" Foreground="#2563EB" />
@@ -368,7 +368,7 @@
                                 <StackPanel>
                                     <Grid Margin="0,0,0,8">
                                         <Ellipse Width="32" Height="32" Fill="#FED7AA" HorizontalAlignment="Left" />
-                                        <TextBlock Text="??" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7,0,0,0" />
+                                        <TextBlock Text="🤝" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7,0,0,0" />
                                     </Grid>
                                     <TextBlock Text="COLLAB HOURS" FontSize="9" FontWeight="Bold" Foreground="#9A3412" Margin="0,0,0,4" />
                                     <TextBlock x:Name="CollabHoursKpi" Text="0.00" FontSize="20" FontWeight="Bold" Foreground="#EA580C" />
@@ -390,7 +390,7 @@
                                 <StackPanel>
                                     <Grid Margin="0,0,0,8">
                                         <Ellipse Width="32" Height="32" Fill="#99F6E4" HorizontalAlignment="Left" />
-                                        <TextBlock Text="?" FontSize="16" FontWeight="Bold" Foreground="#0D9488" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" />
+                                        <TextBlock Text="Σ" FontSize="16" FontWeight="Bold" Foreground="#0D9488" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" />
                                     </Grid>
                                     <TextBlock Text="TOTAL ESTIMATE" FontSize="9" FontWeight="Bold" Foreground="#134E4A" Margin="0,0,0,4" />
                                     <TextBlock x:Name="TotalWithReserveText" Text="0.00" FontSize="20" FontWeight="Bold" Foreground="#00857C" />
@@ -763,7 +763,7 @@
             </TabItem>
 
             <!-- Tab 2: SE Module/Documentation -->
-            <TabItem Header="?? SE Module/Doco">
+            <TabItem Header="🔧 SE Module/Doco">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -813,7 +813,7 @@
                                     <!-- Hint text -->
                                     <Border Background="#FAFAFA" Padding="20,10">
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="??" FontSize="12" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                            <TextBlock Text="💡" FontSize="12" Margin="0,0,8,0" VerticalAlignment="Center" />
                                             <TextBlock Text="Double-click a component row to enter module details" FontSize="11" Foreground="#6B7280" VerticalAlignment="Center" FontStyle="Italic" />
                                         </StackPanel>
                                     </Border>
@@ -925,7 +925,7 @@
                                                 <ColumnDefinition Width="100" />
                                             </Grid.ColumnDefinitions>
                                             <Border Background="#E0F2FE" CornerRadius="20" Width="36" Height="36" Margin="0,0,14,0" VerticalAlignment="Center">
-                                                <TextBlock Text="??" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                <TextBlock Text="🚀" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                             </Border>
                                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                                 <TextBlock Text="Promotion" FontSize="13" FontWeight="SemiBold" Foreground="#1F2937" />
@@ -949,7 +949,7 @@
                                                 <ColumnDefinition Width="100" />
                                             </Grid.ColumnDefinitions>
                                             <Border Background="#FEF3C7" CornerRadius="20" Width="36" Height="36" Margin="0,0,14,0" VerticalAlignment="Center">
-                                                <TextBlock Text="??" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                <TextBlock Text="📄" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                             </Border>
                                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                                 <TextBlock Text="System Documentation" FontSize="13" FontWeight="SemiBold" Foreground="#1F2937" />
@@ -974,7 +974,7 @@
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                                         <Border Background="#FEF3C7" CornerRadius="4" Padding="6,3" Margin="0,0,10,0" VerticalAlignment="Center">
-                                            <TextBlock Text="??" FontSize="10" />
+                                            <TextBlock Text="📝" FontSize="10" />
                                         </Border>
                                         <TextBlock Text="Assumptions" FontSize="13" FontWeight="SemiBold" Foreground="#1F2937" VerticalAlignment="Center" />
                                     </StackPanel>
@@ -999,7 +999,7 @@
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                                         <Border Background="#E0E7FF" CornerRadius="4" Padding="6,3" Margin="0,0,10,0" VerticalAlignment="Center">
-                                            <TextBlock Text="?" FontSize="10" />
+                                            <TextBlock Text="⚡" FontSize="10" />
                                         </Border>
                                         <TextBlock Text="Adjusted Hours Assumption" FontSize="13" FontWeight="SemiBold" Foreground="#1F2937" VerticalAlignment="Center" />
                                     </StackPanel>
@@ -1065,7 +1065,7 @@
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
                                         <Border Background="#DCFCE7" CornerRadius="6" Width="32" Height="32" VerticalAlignment="Center">
-                                            <TextBlock Text="?" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            <TextBlock Text="💻" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                         </Border>
                                         <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
                                             <TextBlock Text="Development" FontSize="11" Foreground="#6B7280" />
@@ -1087,7 +1087,7 @@
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
                                         <Border Background="#E0F2FE" CornerRadius="6" Width="32" Height="32" VerticalAlignment="Center">
-                                            <TextBlock Text="??" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            <TextBlock Text="🚀" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                         </Border>
                                         <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
                                             <TextBlock Text="Promotion" FontSize="11" Foreground="#6B7280" />
@@ -1109,7 +1109,7 @@
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
                                         <Border Background="#FEF3C7" CornerRadius="6" Width="32" Height="32" VerticalAlignment="Center">
-                                            <TextBlock Text="??" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            <TextBlock Text="📄" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                         </Border>
                                         <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
                                             <TextBlock Text="Documentation" FontSize="11" Foreground="#6B7280" />
@@ -1131,7 +1131,7 @@
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
                                         <Border Background="#F3E8FF" CornerRadius="6" Width="32" Height="32" VerticalAlignment="Center">
-                                            <TextBlock Text="??" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            <TextBlock Text="🧩" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                         </Border>
                                         <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
                                             <TextBlock Text="Components" FontSize="11" Foreground="#6B7280" />
@@ -1147,7 +1147,7 @@
             </TabItem>
 
             <!-- Tab 3: BA Considerations -->
-            <TabItem Header="?? BA Considerations">
+            <TabItem Header="📋 BA Considerations">
                 <DockPanel>
                     <!-- STICKY SUMMARY BAR � always visible at top -->
                     <Border DockPanel.Dock="Top" Margin="8,8,8,0" CornerRadius="8" Padding="16,12"
@@ -1478,7 +1478,7 @@
                                                             <ColumnDefinition Width="Auto" />
                                                             <ColumnDefinition Width="*" />
                                                         </Grid.ColumnDefinitions>
-                                                        <TextBlock Text="??" FontSize="14" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                                        <TextBlock Text="🔄" FontSize="14" VerticalAlignment="Center" Margin="0,0,8,0" />
                                                         <StackPanel Grid.Column="1">
                                                             <TextBlock Text="Iteration Factors (multipliers for auto-calculated tasks)" FontSize="11" FontWeight="Medium" Foreground="#2E307A" Margin="0,0,0,4" />
                                                             <StackPanel Orientation="Horizontal">
@@ -2159,7 +2159,7 @@
             </TabItem>
 
             <!-- Tab 4: Collaboration/Quality -->
-            <TabItem Header="?? Collaboration/Quality">
+            <TabItem Header="🤝 Collaboration/Quality">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="8">
                     <StackPanel Margin="8">
                         <Border Style="{StaticResource CardBorder}">
