@@ -2159,216 +2159,401 @@
             </TabItem>
 
             <!-- Tab 4: Collaboration/Quality -->
-            <TabItem Header="?? Collaboration/Quality">
+            <TabItem Header="Collaboration/Quality">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="8">
                     <StackPanel Margin="8">
-                        <Border Style="{StaticResource CardBorder}">
-                            <StackPanel>
-                                <!-- Collaboration heading with Estimate By on the right -->
-                                <Grid Margin="0,0,0,8">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="Collaboration � Quality" Style="{StaticResource SectionHeader}" VerticalAlignment="Center" Margin="0" />
-                                    <TextBlock Grid.Column="2" Text="Estimate By:" Style="{StaticResource FieldLabel}" VerticalAlignment="Center" Margin="0,0,8,0" />
-                                    <TextBox x:Name="CollabEstimateByTextBox" Grid.Column="3" Padding="8,6" FontSize="13" Width="200" />
-                                </Grid>
 
-                                <!-- Instructions (Excel R5) -->
-                                <TextBlock Text="All fields highlighted below are input fields. Adjust values to match your project's collaboration and quality requirements." 
-                                           FontSize="11" Foreground="#5A6978" TextWrapping="Wrap" Margin="0,0,0,12" />
+                        <!-- ═══════ STICKY TOTAL SUMMARY BAR ═══════ -->
+                        <Border CornerRadius="8" Padding="16,12" Margin="0,0,0,16">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <GradientStop Color="#019681" Offset="0" />
+                                    <GradientStop Color="#1A6478" Offset="0.5" />
+                                    <GradientStop Color="#2E307A" Offset="1" />
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="12" Opacity="0.12" ShadowDepth="4" Direction="270" />
+                            </Border.Effect>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
 
-                                <!-- Total Summary at TOP (Excel R12) -->
-                                <Border Background="#FDF8EF" CornerRadius="6" Padding="10" Margin="0,0,0,12">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="100" />
-                                            <ColumnDefinition Width="90" />
-                                            <ColumnDefinition Width="100" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Total Summary" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center" />
-                                        <StackPanel Grid.Column="1" HorizontalAlignment="Center">
-                                            <TextBlock Text="Hour Total" FontSize="9" Foreground="#5A6978" HorizontalAlignment="Center" />
-                                            <TextBlock x:Name="CollabHourTotalTopText" Text="0.00" FontSize="13" FontWeight="Bold" Foreground="#2B3A44" HorizontalAlignment="Center" />
-                                        </StackPanel>
-                                        <StackPanel Grid.Column="2" HorizontalAlignment="Center">
-                                            <TextBlock Text="Adjusted" FontSize="9" Foreground="#5A6978" HorizontalAlignment="Center" />
-                                            <TextBlock x:Name="CollabAdjTotalTopText" Text="0.00" FontSize="13" FontWeight="Bold" Foreground="#2B3A44" HorizontalAlignment="Center" />
-                                        </StackPanel>
-                                        <StackPanel Grid.Column="3" HorizontalAlignment="Center">
-                                            <TextBlock Text="Grand Total" FontSize="9" Foreground="#5A6978" HorizontalAlignment="Center" />
-                                            <TextBlock x:Name="CollabGrandTotalTopText" Text="0.00" FontSize="14" FontWeight="Bold" Foreground="#2199B0" HorizontalAlignment="Center" />
-                                        </StackPanel>
-                                    </Grid>
-                                </Border>
+                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                    <TextBlock Text="Collaboration - Quality" FontFamily="Arial" FontSize="16" FontWeight="Bold" Foreground="White" />
+                                    <TextBlock Text="Meetings, Consultants, Estimates &amp; PM Effort" FontFamily="Arial" FontSize="10" Foreground="#00EEAE" Margin="0,2,0,0" />
+                                </StackPanel>
 
-                                <!-- Column Headers for Meeting Sections -->
-                                <Grid Margin="0,0,0,4">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="80" />
-                                        <ColumnDefinition Width="80" />
-                                        <ColumnDefinition Width="80" />
-                                        <ColumnDefinition Width="100" />
-                                        <ColumnDefinition Width="90" />
-                                        <ColumnDefinition Width="100" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="Task" FontSize="11" FontWeight="SemiBold" Foreground="#5A6978" />
-                                    <TextBlock Grid.Column="1" Text="Count" FontSize="11" FontWeight="SemiBold" Foreground="#5A6978" HorizontalAlignment="Center" />
-                                    <TextBlock Grid.Column="2" Text="Hours" FontSize="11" FontWeight="SemiBold" Foreground="#5A6978" HorizontalAlignment="Center" />
-                                    <TextBlock Grid.Column="3" Text="# Attendees" FontSize="11" FontWeight="SemiBold" Foreground="#5A6978" HorizontalAlignment="Center" />
-                                    <TextBlock Grid.Column="4" Text="Hour Total" FontSize="11" FontWeight="SemiBold" Foreground="#5A6978" HorizontalAlignment="Center" />
-                                    <TextBlock Grid.Column="5" Text="Adjusted Hrs" FontSize="11" FontWeight="SemiBold" Foreground="#5A6978" HorizontalAlignment="Center" />
-                                    <TextBlock Grid.Column="6" Text="Grand Total" FontSize="11" FontWeight="SemiBold" Foreground="#5A6978" HorizontalAlignment="Center" />
-                                </Grid>
-
-                                <!-- WPRs -->
-                                <Border Background="#EBEDF5" CornerRadius="6" Padding="12" Margin="0,0,0,8">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="80" />
-                                            <ColumnDefinition Width="80" />
-                                            <ColumnDefinition Width="80" />
-                                            <ColumnDefinition Width="100" />
-                                            <ColumnDefinition Width="90" />
-                                            <ColumnDefinition Width="100" />
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-
-                                        <!-- WPR Meetings: G14 = B14 * 1 * E14 (Count +� MtgHrs +� Attendees) -->
-                                        <TextBlock Grid.Row="0" Text="Walkthrough/Work Product Reviews" FontSize="13" VerticalAlignment="Center"
-                                                   ToolTip="Insert the number of Gainwell walkthroughs and/or work product reviews expected over the remainder of the work item. This should include meetings like TDD, Code Reviews, etc." />
-                                        <TextBox x:Name="WprCountTextBox" Grid.Row="0" Grid.Column="1" Text="0" Padding="6,4" FontSize="12" Margin="4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBox x:Name="WprHoursTextBox" Grid.Row="0" Grid.Column="2" Text="1" Padding="6,4" FontSize="12" Margin="4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBox x:Name="WprAttendeesTextBox" Grid.Row="0" Grid.Column="3" Text="0" Padding="6,4" FontSize="12" Margin="4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBlock x:Name="WprTotalText" Grid.Row="0" Grid.Column="4" Text="0.00" FontSize="13" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                        <TextBox x:Name="WprAdjustedTextBox" Grid.Row="0" Grid.Column="5" Text="0" Padding="6,4" FontSize="12" Margin="4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBlock x:Name="WprGrandTotalText" Grid.Row="0" Grid.Column="6" Text="0.00" FontSize="13" FontWeight="Bold" Foreground="#2199B0" HorizontalAlignment="Center" VerticalAlignment="Center" />
-
-                                        <!-- WPR Prep: G15 = C15 * E14 * B14 (PrepHrs +� Attendees +� Count) -->
-                                        <TextBlock Grid.Row="1" Text="  WPR Preparation per person" FontSize="12" Foreground="#5A6978" VerticalAlignment="Center" Margin="0,6,0,0"
-                                                   ToolTip="Enter the number of preparation hours required for each person." />
-                                        <TextBox x:Name="WprPrepHoursTextBox" Grid.Row="1" Grid.Column="2" Text="0" Padding="6,4" FontSize="12" Margin="4,6,4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBlock x:Name="WprPrepTotalText" Grid.Row="1" Grid.Column="4" Text="0.00" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,6,0,0" />
-                                        <TextBox x:Name="WprPrepAdjustedTextBox" Grid.Row="1" Grid.Column="5" Text="0" Padding="6,4" FontSize="12" Margin="4,6,4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBlock x:Name="WprPrepGrandTotalText" Grid.Row="1" Grid.Column="6" Text="0.00" FontSize="13" FontWeight="Bold" Foreground="#2199B0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,6,0,0" />
-                                    </Grid>
-                                </Border>
-
-                                <!-- Client Meetings -->
-                                <Border Background="#EBEDF5" CornerRadius="6" Padding="12" Margin="0,0,0,8">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="80" />
-                                            <ColumnDefinition Width="80" />
-                                            <ColumnDefinition Width="80" />
-                                            <ColumnDefinition Width="100" />
-                                            <ColumnDefinition Width="90" />
-                                            <ColumnDefinition Width="100" />
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-
-                                        <!-- Client: G17 = B17 * 1 * E17 -->
-                                        <TextBlock Grid.Row="0" Text="Client Meetings" FontSize="13" VerticalAlignment="Center"
-                                                   ToolTip="Insert the number of client meetings expected over the remainder of the work item. This should include joint review meetings (requirements clarification, BDD reviews, educational meetings, etc)." />
-                                        <TextBox x:Name="ClientMtgCountTextBox" Grid.Row="0" Grid.Column="1" Text="0" Padding="6,4" FontSize="12" Margin="4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBox x:Name="ClientMtgHoursTextBox" Grid.Row="0" Grid.Column="2" Text="1" Padding="6,4" FontSize="12" Margin="4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBox x:Name="ClientMtgAttendeesTextBox" Grid.Row="0" Grid.Column="3" Text="0" Padding="6,4" FontSize="12" Margin="4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBlock x:Name="ClientMtgTotalText" Grid.Row="0" Grid.Column="4" Text="0.00" FontSize="13" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                        <TextBox x:Name="ClientMtgAdjustedTextBox" Grid.Row="0" Grid.Column="5" Text="0" Padding="6,4" FontSize="12" Margin="4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBlock x:Name="ClientMtgGrandTotalText" Grid.Row="0" Grid.Column="6" Text="0.00" FontSize="13" FontWeight="Bold" Foreground="#2199B0" HorizontalAlignment="Center" VerticalAlignment="Center" />
-
-                                        <!-- Client Prep: G18 = C18 * E17 * B17 -->
-                                        <TextBlock Grid.Row="1" Text="  Client Meeting Prep per person" FontSize="12" Foreground="#5A6978" VerticalAlignment="Center" Margin="0,6,0,0"
-                                                   ToolTip="Enter the number of preparation hours required for each person." />
-                                        <TextBox x:Name="ClientMtgPrepHoursTextBox" Grid.Row="1" Grid.Column="2" Text="0" Padding="6,4" FontSize="12" Margin="4,6,4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBlock x:Name="ClientMtgPrepTotalText" Grid.Row="1" Grid.Column="4" Text="0.00" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,6,0,0" />
-                                        <TextBox x:Name="ClientMtgPrepAdjustedTextBox" Grid.Row="1" Grid.Column="5" Text="0" Padding="6,4" FontSize="12" Margin="4,6,4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBlock x:Name="ClientMtgPrepGrandTotalText" Grid.Row="1" Grid.Column="6" Text="0.00" FontSize="13" FontWeight="Bold" Foreground="#2199B0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,6,0,0" />
-                                    </Grid>
-                                </Border>
-
-                                <!-- Internal Meetings -->
-                                <Border Background="#EBEDF5" CornerRadius="6" Padding="12" Margin="0,0,0,8">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="80" />
-                                            <ColumnDefinition Width="80" />
-                                            <ColumnDefinition Width="80" />
-                                            <ColumnDefinition Width="100" />
-                                            <ColumnDefinition Width="90" />
-                                            <ColumnDefinition Width="100" />
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-
-                                        <!-- Internal: G20 = B20 * 1 * E20 -->
-                                        <TextBlock Grid.Row="0" Text="Internal Meetings" FontSize="13" VerticalAlignment="Center"
-                                                   ToolTip="Insert the number of internal Gainwell meetings (team/status meetings, issue resolution, consultant meetings, etc.) expected over the remainder of the work item." />
-                                        <TextBox x:Name="InternalMtgCountTextBox" Grid.Row="0" Grid.Column="1" Text="0" Padding="6,4" FontSize="12" Margin="4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBox x:Name="InternalMtgHoursTextBox" Grid.Row="0" Grid.Column="2" Text="1" Padding="6,4" FontSize="12" Margin="4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBox x:Name="InternalMtgAttendeesTextBox" Grid.Row="0" Grid.Column="3" Text="0" Padding="6,4" FontSize="12" Margin="4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBlock x:Name="InternalMtgTotalText" Grid.Row="0" Grid.Column="4" Text="0.00" FontSize="13" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                        <TextBox x:Name="InternalMtgAdjustedTextBox" Grid.Row="0" Grid.Column="5" Text="0" Padding="6,4" FontSize="12" Margin="4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBlock x:Name="InternalMtgGrandTotalText" Grid.Row="0" Grid.Column="6" Text="0.00" FontSize="13" FontWeight="Bold" Foreground="#2199B0" HorizontalAlignment="Center" VerticalAlignment="Center" />
-
-                                        <!-- Internal Prep: G21 = C21 * E20 * B20 -->
-                                        <TextBlock Grid.Row="1" Text="  Internal Meeting Prep per person" FontSize="12" Foreground="#5A6978" VerticalAlignment="Center" Margin="0,6,0,0"
-                                                   ToolTip="Enter the number of preparation hours required for each person." />
-                                        <TextBox x:Name="InternalMtgPrepHoursTextBox" Grid.Row="1" Grid.Column="2" Text="0" Padding="6,4" FontSize="12" Margin="4,6,4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBlock x:Name="InternalMtgPrepTotalText" Grid.Row="1" Grid.Column="4" Text="0.00" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,6,0,0" />
-                                        <TextBox x:Name="InternalMtgPrepAdjustedTextBox" Grid.Row="1" Grid.Column="5" Text="0" Padding="6,4" FontSize="12" Margin="4,6,4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBlock x:Name="InternalMtgPrepGrandTotalText" Grid.Row="1" Grid.Column="6" Text="0.00" FontSize="13" FontWeight="Bold" Foreground="#2199B0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,6,0,0" />
-                                    </Grid>
-                                </Border>
-
-                                <!-- Consultant/Mentor -->
-                                <Border Background="#EBEDF5" CornerRadius="6" Padding="12" Margin="0,0,0,8">
-                                    <StackPanel>
-                                        <Grid Margin="0,0,0,4">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="Auto" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="Consultant/Mentor Effort" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center" />
-                                            <TextBlock x:Name="ConsultantTotalText" Grid.Column="1" Text="0.00" FontSize="13" FontWeight="Bold" Foreground="#2199B0" />
-                                        </Grid>
-                                        <TextBlock Text="Insert Consultant names below and associated hours." FontSize="11" Foreground="#5A6978" Margin="0,0,0,8" />
-                                        <DataGrid x:Name="ConsultantGrid" AutoGenerateColumns="False"
-                                                  CanUserAddRows="True" CanUserDeleteRows="True"
-                                                  HeadersVisibility="Column" GridLinesVisibility="Horizontal"
-                                                  BorderThickness="1" BorderBrush="#D4D7E0"
-                                                  RowHeight="32" MinHeight="80" MaxHeight="200"
-                                                  CellEditEnding="OnConsultantCellEditEnding">
-                                            <DataGrid.Columns>
-                                                <DataGridTextColumn Header="Person Name" Binding="{Binding Name}" Width="200" />
-                                                <DataGridTextColumn Header="Hours" Binding="{Binding Hours}" Width="100" />
-                                            </DataGrid.Columns>
-                                        </DataGrid>
+                                <Border Grid.Column="1" Background="#FFFFFF" CornerRadius="6" Padding="14,8" Margin="8,0" Opacity="0.95">
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <TextBlock x:Name="CollabHourTotalTopText" Text="0.00" FontFamily="Arial" FontSize="16" FontWeight="Bold" Foreground="#019681" HorizontalAlignment="Center" />
+                                        <TextBlock Text="Hour Total" FontFamily="Arial" FontSize="9" Foreground="#5A6978" HorizontalAlignment="Center" />
                                     </StackPanel>
                                 </Border>
+                                <Border Grid.Column="2" Background="#FFFFFF" CornerRadius="6" Padding="14,8" Margin="8,0" Opacity="0.95">
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <TextBlock x:Name="CollabAdjTotalTopText" Text="0.00" FontFamily="Arial" FontSize="16" FontWeight="Bold" Foreground="#CC1AC7" HorizontalAlignment="Center" />
+                                        <TextBlock Text="Adjusted" FontFamily="Arial" FontSize="9" Foreground="#5A6978" HorizontalAlignment="Center" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Grid.Column="3" Background="#FFFFFF" CornerRadius="6" Padding="14,8" Margin="8,0,0,0" Opacity="0.95">
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <TextBlock x:Name="CollabGrandTotalTopText" Text="0.00" FontFamily="Arial" FontSize="16" FontWeight="Bold" Foreground="#1931E3" HorizontalAlignment="Center" />
+                                        <TextBlock Text="Grand Total" FontFamily="Arial" FontSize="9" Foreground="#5A6978" HorizontalAlignment="Center" />
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </Border>
 
-                                <!-- Create Estimates & PM -->
-                                <Border Background="#EBEDF5" CornerRadius="6" Padding="12" Margin="0,0,0,8">
+                        <!-- Header Row: Estimate By -->
+                        <Border Background="White" CornerRadius="8" Padding="16,10" Margin="0,0,0,12">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="6" Opacity="0.04" ShadowDepth="2" Direction="270" />
+                            </Border.Effect>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="220" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="All fields highlighted below are input fields. Adjust values to match your project's collaboration and quality requirements."
+                                           FontFamily="Arial" FontSize="11" Foreground="#5A6978" TextWrapping="Wrap" VerticalAlignment="Center" />
+                                <TextBlock Grid.Column="1" Text="Estimate By:" FontFamily="Arial" FontSize="11" Foreground="#5A6978" VerticalAlignment="Center" Margin="12,0,8,0" />
+                                <TextBox x:Name="CollabEstimateByTextBox" Grid.Column="2" Padding="8,6" FontFamily="Arial" FontSize="12" />
+                            </Grid>
+                        </Border>
+
+                        <!-- ═══════ SECTION 1: WPR (Dark Green accent) ═══════ -->
+                        <Border Background="White" CornerRadius="8" Padding="0" Margin="0,0,0,12" ClipToBounds="True">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="6" Opacity="0.04" ShadowDepth="2" Direction="270" />
+                            </Border.Effect>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <!-- Color accent bar -->
+                                <Border Grid.Column="0" Background="#019681" CornerRadius="8,0,0,8" />
+                                <StackPanel Grid.Column="1" Margin="16,14">
+                                    <!-- Section title -->
+                                    <Grid Margin="0,0,0,10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="&#xE8D4;" FontFamily="Segoe Fluent Icons" FontSize="14" Foreground="#019681" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                            <TextBlock Text="Walkthrough / Work Product Reviews" FontFamily="Arial" FontSize="13" FontWeight="Bold" Foreground="#2B3A44" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                        <Border Grid.Column="1" Background="#E6F5F2" CornerRadius="10" Padding="8,3">
+                                            <TextBlock x:Name="WprSectionPctText" Text="0%" FontFamily="Arial" FontSize="10" FontWeight="SemiBold" Foreground="#019681" />
+                                        </Border>
+                                    </Grid>
+
+                                    <!-- Column Headers -->
+                                    <Grid Margin="0,0,0,6">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="75" />
+                                            <ColumnDefinition Width="75" />
+                                            <ColumnDefinition Width="75" />
+                                            <ColumnDefinition Width="95" />
+                                            <ColumnDefinition Width="85" />
+                                            <ColumnDefinition Width="95" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="Task" FontFamily="Arial" FontSize="10" FontWeight="SemiBold" Foreground="#8E99A8" />
+                                        <TextBlock Grid.Column="1" Text="Count" FontFamily="Arial" FontSize="10" FontWeight="SemiBold" Foreground="#8E99A8" HorizontalAlignment="Center" />
+                                        <TextBlock Grid.Column="2" Text="Hrs/Mtg" FontFamily="Arial" FontSize="10" FontWeight="SemiBold" Foreground="#8E99A8" HorizontalAlignment="Center" />
+                                        <TextBlock Grid.Column="3" Text="Attendees" FontFamily="Arial" FontSize="10" FontWeight="SemiBold" Foreground="#8E99A8" HorizontalAlignment="Center" />
+                                        <TextBlock Grid.Column="4" Text="Hour Total" FontFamily="Arial" FontSize="10" FontWeight="SemiBold" Foreground="#8E99A8" HorizontalAlignment="Center" />
+                                        <TextBlock Grid.Column="5" Text="Adjusted" FontFamily="Arial" FontSize="10" FontWeight="SemiBold" Foreground="#8E99A8" HorizontalAlignment="Center" />
+                                        <TextBlock Grid.Column="6" Text="Grand Total" FontFamily="Arial" FontSize="10" FontWeight="SemiBold" Foreground="#8E99A8" HorizontalAlignment="Center" />
+                                    </Grid>
+
+                                    <!-- WPR Meeting Row -->
+                                    <Border Background="#F5F6FA" CornerRadius="6" Padding="10,8" Margin="0,0,0,4">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="75" />
+                                                <ColumnDefinition Width="75" />
+                                                <ColumnDefinition Width="75" />
+                                                <ColumnDefinition Width="95" />
+                                                <ColumnDefinition Width="85" />
+                                                <ColumnDefinition Width="95" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="WPR Meetings" FontFamily="Arial" FontSize="12" VerticalAlignment="Center"
+                                                       ToolTip="Insert the number of Gainwell walkthroughs and/or work product reviews expected. Includes TDD, Code Reviews, etc." />
+                                            <TextBox x:Name="WprCountTextBox" Grid.Column="1" Text="0" Padding="6,4" FontFamily="Arial" FontSize="12" Margin="4,0" HorizontalContentAlignment="Center" TextChanged="OnCollabFieldChanged" />
+                                            <TextBox x:Name="WprHoursTextBox" Grid.Column="2" Text="1" Padding="6,4" FontFamily="Arial" FontSize="12" Margin="4,0" HorizontalContentAlignment="Center" TextChanged="OnCollabFieldChanged" />
+                                            <TextBox x:Name="WprAttendeesTextBox" Grid.Column="3" Text="0" Padding="6,4" FontFamily="Arial" FontSize="12" Margin="4,0" HorizontalContentAlignment="Center" TextChanged="OnCollabFieldChanged" />
+                                            <TextBlock x:Name="WprTotalText" Grid.Column="4" Text="0.00" FontFamily="Arial" FontSize="12" FontWeight="SemiBold" Foreground="#019681" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            <TextBox x:Name="WprAdjustedTextBox" Grid.Column="5" Text="0" Padding="6,4" FontFamily="Arial" FontSize="12" Margin="4,0" HorizontalContentAlignment="Center" TextChanged="OnCollabFieldChanged" />
+                                            <TextBlock x:Name="WprGrandTotalText" Grid.Column="6" Text="0.00" FontFamily="Arial" FontSize="12" FontWeight="Bold" Foreground="#019681" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- WPR Prep Row -->
+                                    <Border Background="White" CornerRadius="6" Padding="10,8" BorderBrush="#E8EAF0" BorderThickness="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="75" />
+                                                <ColumnDefinition Width="75" />
+                                                <ColumnDefinition Width="75" />
+                                                <ColumnDefinition Width="95" />
+                                                <ColumnDefinition Width="85" />
+                                                <ColumnDefinition Width="95" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Border Background="#E6F5F2" CornerRadius="3" Padding="4,1" Margin="0,0,6,0" VerticalAlignment="Center">
+                                                    <TextBlock Text="PREP" FontFamily="Arial" FontSize="8" FontWeight="Bold" Foreground="#019681" />
+                                                </Border>
+                                                <TextBlock Text="Preparation per person" FontFamily="Arial" FontSize="11" Foreground="#5A6978" VerticalAlignment="Center"
+                                                           ToolTip="Enter the number of preparation hours required for each person per meeting." />
+                                            </StackPanel>
+                                            <TextBox x:Name="WprPrepHoursTextBox" Grid.Column="2" Text="0" Padding="6,4" FontFamily="Arial" FontSize="12" Margin="4,0" HorizontalContentAlignment="Center" TextChanged="OnCollabFieldChanged" />
+                                            <TextBlock x:Name="WprPrepTotalText" Grid.Column="4" Text="0.00" FontFamily="Arial" FontSize="12" Foreground="#5A6978" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            <TextBox x:Name="WprPrepAdjustedTextBox" Grid.Column="5" Text="0" Padding="6,4" FontFamily="Arial" FontSize="12" Margin="4,0" HorizontalContentAlignment="Center" TextChanged="OnCollabFieldChanged" />
+                                            <TextBlock x:Name="WprPrepGrandTotalText" Grid.Column="6" Text="0.00" FontFamily="Arial" FontSize="12" FontWeight="SemiBold" Foreground="#5A6978" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!-- ═══════ SECTION 2: CLIENT MEETINGS (Navy accent) ═══════ -->
+                        <Border Background="White" CornerRadius="8" Padding="0" Margin="0,0,0,12" ClipToBounds="True">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="6" Opacity="0.04" ShadowDepth="2" Direction="270" />
+                            </Border.Effect>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Background="#2E307A" CornerRadius="8,0,0,8" />
+                                <StackPanel Grid.Column="1" Margin="16,14">
+                                    <Grid Margin="0,0,0,10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="&#xE779;" FontFamily="Segoe Fluent Icons" FontSize="14" Foreground="#2E307A" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                            <TextBlock Text="Client Meetings" FontFamily="Arial" FontSize="13" FontWeight="Bold" Foreground="#2B3A44" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                        <Border Grid.Column="1" Background="#EDF0F8" CornerRadius="10" Padding="8,3">
+                                            <TextBlock x:Name="ClientSectionPctText" Text="0%" FontFamily="Arial" FontSize="10" FontWeight="SemiBold" Foreground="#2E307A" />
+                                        </Border>
+                                    </Grid>
+
+                                    <!-- Client Meeting Row -->
+                                    <Border Background="#F5F6FA" CornerRadius="6" Padding="10,8" Margin="0,0,0,4">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="75" />
+                                                <ColumnDefinition Width="75" />
+                                                <ColumnDefinition Width="75" />
+                                                <ColumnDefinition Width="95" />
+                                                <ColumnDefinition Width="85" />
+                                                <ColumnDefinition Width="95" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Client Meetings" FontFamily="Arial" FontSize="12" VerticalAlignment="Center"
+                                                       ToolTip="Insert the number of client meetings expected. Includes requirements clarification, BDD reviews, educational meetings, etc." />
+                                            <TextBox x:Name="ClientMtgCountTextBox" Grid.Column="1" Text="0" Padding="6,4" FontFamily="Arial" FontSize="12" Margin="4,0" HorizontalContentAlignment="Center" TextChanged="OnCollabFieldChanged" />
+                                            <TextBox x:Name="ClientMtgHoursTextBox" Grid.Column="2" Text="1" Padding="6,4" FontFamily="Arial" FontSize="12" Margin="4,0" HorizontalContentAlignment="Center" TextChanged="OnCollabFieldChanged" />
+                                            <TextBox x:Name="ClientMtgAttendeesTextBox" Grid.Column="3" Text="0" Padding="6,4" FontFamily="Arial" FontSize="12" Margin="4,0" HorizontalContentAlignment="Center" TextChanged="OnCollabFieldChanged" />
+                                            <TextBlock x:Name="ClientMtgTotalText" Grid.Column="4" Text="0.00" FontFamily="Arial" FontSize="12" FontWeight="SemiBold" Foreground="#2E307A" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            <TextBox x:Name="ClientMtgAdjustedTextBox" Grid.Column="5" Text="0" Padding="6,4" FontFamily="Arial" FontSize="12" Margin="4,0" HorizontalContentAlignment="Center" TextChanged="OnCollabFieldChanged" />
+                                            <TextBlock x:Name="ClientMtgGrandTotalText" Grid.Column="6" Text="0.00" FontFamily="Arial" FontSize="12" FontWeight="Bold" Foreground="#2E307A" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- Client Prep Row -->
+                                    <Border Background="White" CornerRadius="6" Padding="10,8" BorderBrush="#E8EAF0" BorderThickness="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="75" />
+                                                <ColumnDefinition Width="75" />
+                                                <ColumnDefinition Width="75" />
+                                                <ColumnDefinition Width="95" />
+                                                <ColumnDefinition Width="85" />
+                                                <ColumnDefinition Width="95" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Border Background="#EDF0F8" CornerRadius="3" Padding="4,1" Margin="0,0,6,0" VerticalAlignment="Center">
+                                                    <TextBlock Text="PREP" FontFamily="Arial" FontSize="8" FontWeight="Bold" Foreground="#2E307A" />
+                                                </Border>
+                                                <TextBlock Text="Client Meeting Prep per person" FontFamily="Arial" FontSize="11" Foreground="#5A6978" VerticalAlignment="Center"
+                                                           ToolTip="Enter the number of preparation hours required for each person per meeting." />
+                                            </StackPanel>
+                                            <TextBox x:Name="ClientMtgPrepHoursTextBox" Grid.Column="2" Text="0" Padding="6,4" FontFamily="Arial" FontSize="12" Margin="4,0" HorizontalContentAlignment="Center" TextChanged="OnCollabFieldChanged" />
+                                            <TextBlock x:Name="ClientMtgPrepTotalText" Grid.Column="4" Text="0.00" FontFamily="Arial" FontSize="12" Foreground="#5A6978" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            <TextBox x:Name="ClientMtgPrepAdjustedTextBox" Grid.Column="5" Text="0" Padding="6,4" FontFamily="Arial" FontSize="12" Margin="4,0" HorizontalContentAlignment="Center" TextChanged="OnCollabFieldChanged" />
+                                            <TextBlock x:Name="ClientMtgPrepGrandTotalText" Grid.Column="6" Text="0.00" FontFamily="Arial" FontSize="12" FontWeight="SemiBold" Foreground="#5A6978" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!-- ═══════ SECTION 3: INTERNAL MEETINGS (Teal accent) ═══════ -->
+                        <Border Background="White" CornerRadius="8" Padding="0" Margin="0,0,0,12" ClipToBounds="True">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="6" Opacity="0.04" ShadowDepth="2" Direction="270" />
+                            </Border.Effect>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Background="#2199B0" CornerRadius="8,0,0,8" />
+                                <StackPanel Grid.Column="1" Margin="16,14">
+                                    <Grid Margin="0,0,0,10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="&#xE716;" FontFamily="Segoe Fluent Icons" FontSize="14" Foreground="#2199B0" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                            <TextBlock Text="Internal Meetings" FontFamily="Arial" FontSize="13" FontWeight="Bold" Foreground="#2B3A44" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                        <Border Grid.Column="1" Background="#E6F8FA" CornerRadius="10" Padding="8,3">
+                                            <TextBlock x:Name="InternalSectionPctText" Text="0%" FontFamily="Arial" FontSize="10" FontWeight="SemiBold" Foreground="#2199B0" />
+                                        </Border>
+                                    </Grid>
+
+                                    <!-- Internal Meeting Row -->
+                                    <Border Background="#F5F6FA" CornerRadius="6" Padding="10,8" Margin="0,0,0,4">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="75" />
+                                                <ColumnDefinition Width="75" />
+                                                <ColumnDefinition Width="75" />
+                                                <ColumnDefinition Width="95" />
+                                                <ColumnDefinition Width="85" />
+                                                <ColumnDefinition Width="95" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Internal Meetings" FontFamily="Arial" FontSize="12" VerticalAlignment="Center"
+                                                       ToolTip="Insert the number of internal Gainwell meetings (team/status, issue resolution, consultant meetings, etc.) expected." />
+                                            <TextBox x:Name="InternalMtgCountTextBox" Grid.Column="1" Text="0" Padding="6,4" FontFamily="Arial" FontSize="12" Margin="4,0" HorizontalContentAlignment="Center" TextChanged="OnCollabFieldChanged" />
+                                            <TextBox x:Name="InternalMtgHoursTextBox" Grid.Column="2" Text="1" Padding="6,4" FontFamily="Arial" FontSize="12" Margin="4,0" HorizontalContentAlignment="Center" TextChanged="OnCollabFieldChanged" />
+                                            <TextBox x:Name="InternalMtgAttendeesTextBox" Grid.Column="3" Text="0" Padding="6,4" FontFamily="Arial" FontSize="12" Margin="4,0" HorizontalContentAlignment="Center" TextChanged="OnCollabFieldChanged" />
+                                            <TextBlock x:Name="InternalMtgTotalText" Grid.Column="4" Text="0.00" FontFamily="Arial" FontSize="12" FontWeight="SemiBold" Foreground="#2199B0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            <TextBox x:Name="InternalMtgAdjustedTextBox" Grid.Column="5" Text="0" Padding="6,4" FontFamily="Arial" FontSize="12" Margin="4,0" HorizontalContentAlignment="Center" TextChanged="OnCollabFieldChanged" />
+                                            <TextBlock x:Name="InternalMtgGrandTotalText" Grid.Column="6" Text="0.00" FontFamily="Arial" FontSize="12" FontWeight="Bold" Foreground="#2199B0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- Internal Prep Row -->
+                                    <Border Background="White" CornerRadius="6" Padding="10,8" BorderBrush="#E8EAF0" BorderThickness="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="75" />
+                                                <ColumnDefinition Width="75" />
+                                                <ColumnDefinition Width="75" />
+                                                <ColumnDefinition Width="95" />
+                                                <ColumnDefinition Width="85" />
+                                                <ColumnDefinition Width="95" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Border Background="#E6F8FA" CornerRadius="3" Padding="4,1" Margin="0,0,6,0" VerticalAlignment="Center">
+                                                    <TextBlock Text="PREP" FontFamily="Arial" FontSize="8" FontWeight="Bold" Foreground="#2199B0" />
+                                                </Border>
+                                                <TextBlock Text="Internal Meeting Prep per person" FontFamily="Arial" FontSize="11" Foreground="#5A6978" VerticalAlignment="Center"
+                                                           ToolTip="Enter the number of preparation hours required for each person per meeting." />
+                                            </StackPanel>
+                                            <TextBox x:Name="InternalMtgPrepHoursTextBox" Grid.Column="2" Text="0" Padding="6,4" FontFamily="Arial" FontSize="12" Margin="4,0" HorizontalContentAlignment="Center" TextChanged="OnCollabFieldChanged" />
+                                            <TextBlock x:Name="InternalMtgPrepTotalText" Grid.Column="4" Text="0.00" FontFamily="Arial" FontSize="12" Foreground="#5A6978" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            <TextBox x:Name="InternalMtgPrepAdjustedTextBox" Grid.Column="5" Text="0" Padding="6,4" FontFamily="Arial" FontSize="12" Margin="4,0" HorizontalContentAlignment="Center" TextChanged="OnCollabFieldChanged" />
+                                            <TextBlock x:Name="InternalMtgPrepGrandTotalText" Grid.Column="6" Text="0.00" FontFamily="Arial" FontSize="12" FontWeight="SemiBold" Foreground="#5A6978" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!-- ═══════ SECTION 4: CONSULTANT/MENTOR (Purple accent) ═══════ -->
+                        <Border Background="White" CornerRadius="8" Padding="0" Margin="0,0,0,12" ClipToBounds="True">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="6" Opacity="0.04" ShadowDepth="2" Direction="270" />
+                            </Border.Effect>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Background="#55206E" CornerRadius="8,0,0,8" />
+                                <StackPanel Grid.Column="1" Margin="16,14">
+                                    <Grid Margin="0,0,0,10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="&#xE77B;" FontFamily="Segoe Fluent Icons" FontSize="14" Foreground="#55206E" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                            <TextBlock Text="Consultant / Mentor Effort" FontFamily="Arial" FontSize="13" FontWeight="Bold" Foreground="#2B3A44" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                        <Border Grid.Column="1" Background="#F3EDF8" CornerRadius="6" Padding="10,4">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Total: " FontFamily="Arial" FontSize="11" Foreground="#5A6978" />
+                                                <TextBlock x:Name="ConsultantTotalText" Text="0.00" FontFamily="Arial" FontSize="11" FontWeight="Bold" Foreground="#55206E" />
+                                                <TextBlock Text=" hrs" FontFamily="Arial" FontSize="11" Foreground="#5A6978" />
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+
+                                    <TextBlock Text="Insert consultant names and associated hours below." FontFamily="Arial" FontSize="11" Foreground="#8E99A8" Margin="0,0,0,8" />
+
+                                    <DataGrid x:Name="ConsultantGrid" AutoGenerateColumns="False"
+                                              CanUserAddRows="True" CanUserDeleteRows="True"
+                                              HeadersVisibility="Column" GridLinesVisibility="Horizontal"
+                                              HorizontalGridLinesBrush="#E8EAF0"
+                                              BorderThickness="1" BorderBrush="#D4D7E0"
+                                              RowHeight="34" MinHeight="80" MaxHeight="220"
+                                              FontFamily="Arial" FontSize="12"
+                                              Background="White" AlternatingRowBackground="#FAFBFC"
+                                              CellEditEnding="OnConsultantCellEditEnding">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Person Name" Binding="{Binding Name}" Width="*" />
+                                            <DataGridTextColumn Header="Hours" Binding="{Binding Hours, StringFormat=N2}" Width="100" />
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!-- ═══════ SECTION 5: ESTIMATES & PM (Gold accent) ═══════ -->
+                        <Border Background="White" CornerRadius="8" Padding="0" Margin="0,0,0,12" ClipToBounds="True">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="6" Opacity="0.04" ShadowDepth="2" Direction="270" />
+                            </Border.Effect>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Background="#E5AB4F" CornerRadius="8,0,0,8" />
+                                <StackPanel Grid.Column="1" Margin="16,14">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                        <TextBlock Text="&#xE9D5;" FontFamily="Segoe Fluent Icons" FontSize="14" Foreground="#E5AB4F" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                        <TextBlock Text="Estimates &amp; Project Management" FontFamily="Arial" FontSize="13" FontWeight="Bold" Foreground="#2B3A44" VerticalAlignment="Center" />
+                                    </StackPanel>
+
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="120" />
+                                            <ColumnDefinition Width="130" />
                                             <ColumnDefinition Width="100" />
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
@@ -2378,62 +2563,105 @@
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
 
-                                        <TextBlock Grid.Row="0" Text="Create Detailed and Final Estimates" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center" />
-                                        <TextBlock x:Name="EstimatesTotalText" Grid.Row="0" Grid.Column="2" Text="0.00" FontSize="13" FontWeight="Bold" Foreground="#2199B0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        <!-- Create Estimates Header -->
+                                        <TextBlock Grid.Row="0" Text="Create Detailed and Final Estimates" FontFamily="Arial" FontSize="12" FontWeight="SemiBold" Foreground="#2B3A44" VerticalAlignment="Center" />
+                                        <TextBlock x:Name="EstimatesTotalText" Grid.Row="0" Grid.Column="2" Text="0.00" FontFamily="Arial" FontSize="12" FontWeight="Bold" Foreground="#E5AB4F" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
-                                        <TextBlock Grid.Row="1" Text="  Create Detailed Estimate (hrs):" FontSize="12" Foreground="#5A6978" VerticalAlignment="Center" Margin="0,6,0,0"
+                                        <!-- Detail Estimate -->
+                                        <TextBlock Grid.Row="1" Text="  Create Detailed Estimate (hrs)" FontFamily="Arial" FontSize="11" Foreground="#5A6978" VerticalAlignment="Center" Margin="0,8,0,0"
                                                    ToolTip="Insert the number of hours to create the Detailed Estimate." />
-                                        <TextBox x:Name="CreateDetailEstHoursTextBox" Grid.Row="1" Grid.Column="1" Text="0" Padding="6,4" FontSize="12" Margin="4,6,4,0" TextChanged="OnCollabFieldChanged" />
+                                        <TextBox x:Name="CreateDetailEstHoursTextBox" Grid.Row="1" Grid.Column="1" Text="0" Padding="6,4" FontFamily="Arial" FontSize="12" Margin="4,8,4,0" HorizontalContentAlignment="Center" TextChanged="OnCollabFieldChanged" />
 
-                                        <TextBlock Grid.Row="2" Text="  Create Final Estimate (hrs):" FontSize="12" Foreground="#5A6978" VerticalAlignment="Center" Margin="0,6,0,0"
+                                        <!-- Final Estimate -->
+                                        <TextBlock Grid.Row="2" Text="  Create Final Estimate (hrs)" FontFamily="Arial" FontSize="11" Foreground="#5A6978" VerticalAlignment="Center" Margin="0,6,0,0"
                                                    ToolTip="Insert the number of hours to create the Final Estimate." />
-                                        <TextBox x:Name="CreateFinalEstHoursTextBox" Grid.Row="2" Grid.Column="1" Text="0" Padding="6,4" FontSize="12" Margin="4,6,4,0" TextChanged="OnCollabFieldChanged" />
+                                        <TextBox x:Name="CreateFinalEstHoursTextBox" Grid.Row="2" Grid.Column="1" Text="0" Padding="6,4" FontFamily="Arial" FontSize="12" Margin="4,6,4,0" HorizontalContentAlignment="Center" TextChanged="OnCollabFieldChanged" />
 
-                                        <TextBlock Grid.Row="3" Text="Project Manager Effort (hrs):" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,10,0,0"
-                                                   ToolTip="Insert the number of PM hours required." />
-                                        <TextBox x:Name="PmEffortHoursTextBox" Grid.Row="3" Grid.Column="1" Text="0" Padding="6,4" FontSize="12" Margin="4,10,4,0" TextChanged="OnCollabFieldChanged" />
-                                        <TextBlock x:Name="PmEffortTotalText" Grid.Row="3" Grid.Column="2" Text="0.00" FontSize="13" FontWeight="Bold" Foreground="#2199B0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,0" />
+                                        <!-- PM Effort -->
+                                        <Border Grid.Row="3" Grid.ColumnSpan="3" Background="#FDF8EF" CornerRadius="6" Padding="10,8" Margin="0,12,0,0">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="130" />
+                                                    <ColumnDefinition Width="100" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="Project Manager Effort (hrs)" FontFamily="Arial" FontSize="12" FontWeight="SemiBold" Foreground="#2B3A44" VerticalAlignment="Center"
+                                                           ToolTip="Insert the number of PM hours required. In Detailed Estimates this is a direct hour input (not a percentage)." />
+                                                <TextBox x:Name="PmEffortHoursTextBox" Grid.Column="1" Text="0" Padding="6,4" FontFamily="Arial" FontSize="12" Margin="4,0" HorizontalContentAlignment="Center" TextChanged="OnCollabFieldChanged" />
+                                                <TextBlock x:Name="PmEffortTotalText" Grid.Column="2" Text="0.00" FontFamily="Arial" FontSize="12" FontWeight="Bold" Foreground="#55206E" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            </Grid>
+                                        </Border>
                                     </Grid>
-                                </Border>
-
-                                <!-- Collaboration Total Summary -->
-                                <Border Background="#EDF0F8" CornerRadius="6" Padding="12">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="100" />
-                                            <ColumnDefinition Width="90" />
-                                            <ColumnDefinition Width="100" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Total Collaboration/Quality:" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center" />
-                                        <TextBlock x:Name="CollabHourTotalText" Grid.Column="1" Text="0.00" FontSize="14" FontWeight="Bold" Foreground="#2B3A44" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                        <TextBlock x:Name="CollabAdjTotalText" Grid.Column="2" Text="0.00" FontSize="14" FontWeight="Bold" Foreground="#2B3A44" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                        <TextBlock x:Name="CollabTotalText" Grid.Column="3" Text="0.00" 
-                                                   FontSize="16" FontWeight="Bold" Foreground="#2199B0" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                    </Grid>
-                                </Border>
-                            </StackPanel>
+                                </StackPanel>
+                            </Grid>
                         </Border>
 
-                        <!-- Assumptions -->
-                        <Border Style="{StaticResource CardBorder}">
-                            <StackPanel>
-                                <TextBlock Text="Assumptions" Style="{StaticResource SectionHeader}" />
-                                <TextBlock Text="Add assumptions that led to the numbers in the estimate." FontSize="11" Foreground="#5A6978" Margin="0,0,0,6" />
-                                <TextBox x:Name="CollabAssumptionsDetailTextBox" AcceptsReturn="True" TextWrapping="Wrap" 
-                                         Height="100" Padding="8,6" FontSize="12" />
-                            </StackPanel>
+                        <!-- ═══════ BOTTOM TOTAL SUMMARY ═══════ -->
+                        <Border CornerRadius="8" Padding="16,12" Margin="0,0,0,16">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <GradientStop Color="#1931E3" Offset="0" />
+                                    <GradientStop Color="#2E307A" Offset="1" />
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="120" />
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="120" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="TOTAL COLLABORATION / QUALITY" FontFamily="Arial" FontSize="13" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" />
+                                <TextBlock x:Name="CollabHourTotalText" Grid.Column="1" Text="0.00" FontFamily="Arial" FontSize="14" FontWeight="Bold" Foreground="#00EEAE" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <TextBlock x:Name="CollabAdjTotalText" Grid.Column="2" Text="0.00" FontFamily="Arial" FontSize="14" FontWeight="Bold" Foreground="#CC1AC7" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <TextBlock x:Name="CollabTotalText" Grid.Column="3" Text="0.00" FontFamily="Arial" FontSize="16" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Grid>
                         </Border>
 
-                        <!-- Adjusted Hours Assumption -->
-                        <Border Style="{StaticResource CardBorder}">
-                            <StackPanel>
-                                <TextBlock Text="*Additional Hours Notes" Style="{StaticResource SectionHeader}" />
-                                <TextBlock Text="Add justification for adjusted hours (i.e. BRD revisions and approvals)." FontSize="11" Foreground="#5A6978" Margin="0,0,0,6" />
-                                <TextBox x:Name="CollabAdjustedHrsCommentTextBox" AcceptsReturn="True" TextWrapping="Wrap" 
-                                         Height="100" Padding="8,6" FontSize="12" />
-                            </StackPanel>
+                        <!-- ═══════ ASSUMPTIONS ═══════ -->
+                        <Border Background="White" CornerRadius="8" Padding="0" Margin="0,0,0,12" ClipToBounds="True">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="6" Opacity="0.04" ShadowDepth="2" Direction="270" />
+                            </Border.Effect>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Background="#8E99A8" CornerRadius="8,0,0,8" />
+                                <StackPanel Grid.Column="1" Margin="16,14">
+                                    <TextBlock Text="Assumptions" FontFamily="Arial" FontSize="13" FontWeight="Bold" Foreground="#2B3A44" Margin="0,0,0,4" />
+                                    <TextBlock Text="Add assumptions that led to the numbers in the estimate." FontFamily="Arial" FontSize="11" Foreground="#8E99A8" Margin="0,0,0,8" />
+                                    <TextBox x:Name="CollabAssumptionsDetailTextBox" AcceptsReturn="True" TextWrapping="Wrap"
+                                             Height="100" Padding="8,6" FontFamily="Arial" FontSize="12"
+                                             BorderBrush="#D4D7E0" />
+                                    <TextBlock x:Name="CollabAssumptionsCharCount" Text="0/2000" FontFamily="Arial" FontSize="9" Foreground="#8E99A8" HorizontalAlignment="Right" Margin="0,4,0,0" />
+                                </StackPanel>
+                            </Grid>
                         </Border>
+
+                        <!-- ═══════ ADDITIONAL HOURS NOTES ═══════ -->
+                        <Border Background="White" CornerRadius="8" Padding="0" Margin="0,0,0,12" ClipToBounds="True">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="6" Opacity="0.04" ShadowDepth="2" Direction="270" />
+                            </Border.Effect>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Background="#CC1AC7" CornerRadius="8,0,0,8" />
+                                <StackPanel Grid.Column="1" Margin="16,14">
+                                    <TextBlock Text="*Additional Hours Notes" FontFamily="Arial" FontSize="13" FontWeight="Bold" Foreground="#2B3A44" Margin="0,0,0,4" />
+                                    <TextBlock Text="Add justification for adjusted hours (i.e. BRD revisions and approvals)." FontFamily="Arial" FontSize="11" Foreground="#8E99A8" Margin="0,0,0,8" />
+                                    <TextBox x:Name="CollabAdjustedHrsCommentTextBox" AcceptsReturn="True" TextWrapping="Wrap"
+                                             Height="100" Padding="8,6" FontFamily="Arial" FontSize="12"
+                                             BorderBrush="#D4D7E0" />
+                                    <TextBlock x:Name="CollabAdjNotesCharCount" Text="0/2000" FontFamily="Arial" FontSize="9" Foreground="#8E99A8" HorizontalAlignment="Right" Margin="0,4,0,0" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>

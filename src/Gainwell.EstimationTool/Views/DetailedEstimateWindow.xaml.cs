@@ -763,6 +763,27 @@ public partial class DetailedEstimateWindow : Window
         CollabHourTotalTopText.Text = hourTotal.ToString("N2");
         CollabAdjTotalTopText.Text = adjTotal.ToString("N2");
         CollabGrandTotalTopText.Text = grandTotal.ToString("N2");
+
+        // Update section percentage chips
+        if (grandTotal > 0)
+        {
+            decimal wprSection = wprMtgGrand + wprPrepGrand;
+            decimal clientSection = clientMtgGrand + clientPrepGrand;
+            decimal intSection = intMtgGrand + intPrepGrand;
+            WprSectionPctText.Text = $"{(wprSection / grandTotal * 100):N0}%";
+            ClientSectionPctText.Text = $"{(clientSection / grandTotal * 100):N0}%";
+            InternalSectionPctText.Text = $"{(intSection / grandTotal * 100):N0}%";
+        }
+        else
+        {
+            WprSectionPctText.Text = "0%";
+            ClientSectionPctText.Text = "0%";
+            InternalSectionPctText.Text = "0%";
+        }
+
+        // Update char counts for text fields
+        CollabAssumptionsCharCount.Text = $"{CollabAssumptionsDetailTextBox.Text.Length}/2000";
+        CollabAdjNotesCharCount.Text = $"{CollabAdjustedHrsCommentTextBox.Text.Length}/2000";
     }
 
     private static decimal ParseDecimal(TextBox? tb)
