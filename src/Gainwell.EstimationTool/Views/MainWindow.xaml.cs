@@ -13,6 +13,21 @@ namespace Gainwell.EstimationTool;
 
 public partial class MainWindow : Window
 {
+    private void NumericTextBox_GotFocus(object sender, KeyboardFocusChangedEventArgs e)
+    {
+        if (sender is TextBox tb && tb.Text == "0")
+            tb.Clear();
+    }
+
+    private void NumericTextBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (sender is TextBox tb && !tb.IsKeyboardFocusWithin)
+        {
+            tb.Focus();
+            e.Handled = true;
+        }
+    }
+
     // Undo stack for all actions
     private readonly Stack<UndoAction> _undoStack = new();
     private bool _sidebarVisible = true;
