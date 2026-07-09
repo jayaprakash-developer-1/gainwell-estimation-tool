@@ -44,6 +44,9 @@ ExcelReader/
 *.xlsm
 *.xlsx
 
+# But keep reference Excel files
+!docs/reference/*.xlsm
+
 ## Crash logs
 crash.log
 
