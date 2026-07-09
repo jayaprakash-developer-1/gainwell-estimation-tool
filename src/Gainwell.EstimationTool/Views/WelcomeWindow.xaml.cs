@@ -2,6 +2,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Gainwell.EstimationTool.Data;
 using Gainwell.EstimationTool.Models;
+using Gainwell.EstimationTool.ViewModels;
 
 namespace Gainwell.EstimationTool;
 
@@ -178,7 +179,25 @@ public partial class WelcomeWindow : Window
 
     private void OnFinalEstimateClick(object sender, RoutedEventArgs e)
     {
-        MessageBox.Show("Final Estimate is coming soon.", "Not Yet Available", MessageBoxButton.OK, MessageBoxImage.Information);
+        // Launch Final Estimate via the Initial Estimate window (which holds the data)
+        var mainWindow = new MainWindow();
+        mainWindow.Width = EstimateNavigator.WindowWidth;
+        mainWindow.Height = EstimateNavigator.WindowHeight;
+        mainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+        EstimateNavigator.RegisterWindow(mainWindow);
+
+        // If a project was selected from history, load it first
+        if (_selectedProject != null && mainWindow.DataContext is MainViewModel vm)
+        {
+            vm.ProjectName = _selectedProject.ProjectName;
+            vm.ChangeOrderId = _selectedProject.ChangeOrderId;
+            vm.ProjectDescription = _selectedProject.ProjectDescription ?? string.Empty;
+        }
+
+        // Switch directly to final estimate tab
+        mainWindow.Show();
+        EstimateNavigator.SwitchToFinalEstimate(mainWindow);
+        Close();
     }
 
     private void OnHistoryClick(object sender, RoutedEventArgs e)
