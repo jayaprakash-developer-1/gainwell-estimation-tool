@@ -204,17 +204,16 @@
                         </Button>
 
                         <!-- Final Estimate -->
-                        <Button Style="{StaticResource NavButton}" Click="OnFinalEstimateClick" Margin="8,0,0,0" IsEnabled="False">
+                        <Button Style="{StaticResource NavButton}" Click="OnFinalEstimateClick" Margin="8,0,0,0">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xE8FB;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" 
-                                               FontSize="24" Foreground="#8E99A8" VerticalAlignment="Center" Margin="0,0,12,0" />
+                                               FontSize="24" Foreground="#1931E3" VerticalAlignment="Center" Margin="0,0,12,0" />
                                     <TextBlock Text="Final Estimate" FontSize="16" FontWeight="SemiBold" 
-                                               Foreground="#8E99A8" VerticalAlignment="Center" />
+                                               Foreground="#2B3A44" VerticalAlignment="Center" />
                                 </StackPanel>
-                                <TextBlock Text="Consolidated final estimate combining all inputs. Coming soon." 
-                                           FontSize="12" Foreground="#8E99A8" TextWrapping="Wrap" />
-                                <TextBlock Text="Coming Soon" FontSize="11" Foreground="#C2C6D2" Margin="0,8,0,0" />
+                                <TextBlock Text="Consolidated read-only summary combining Initial Estimate calculations, collaboration, and adjustments." 
+                                           FontSize="12" Foreground="#5A6978" TextWrapping="Wrap" />
                             </StackPanel>
                         </Button>
                     </UniformGrid>

@@ -179,6 +179,25 @@ public partial class WelcomeWindow : Window
 
     private void OnFinalEstimateClick(object sender, RoutedEventArgs e)
     {
+        var projectName = ProjectNameTextBox.Text.Trim();
+        var changeOrder = ChangeOrderTextBox.Text.Trim();
+
+        if (string.IsNullOrWhiteSpace(projectName))
+        {
+            MessageBox.Show("Please enter a Project Name.", "Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
+            ProjectNameTextBox.Focus();
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(changeOrder))
+        {
+            MessageBox.Show("Please enter a CO / Defect #.", "Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
+            ChangeOrderTextBox.Focus();
+            return;
+        }
+
+        var description = DescriptionTextBox.Text.Trim();
+
         // Launch Final Estimate via the Initial Estimate window (which holds the data)
         var mainWindow = new MainWindow();
         mainWindow.Width = EstimateNavigator.WindowWidth;
@@ -186,12 +205,19 @@ public partial class WelcomeWindow : Window
         mainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
         EstimateNavigator.RegisterWindow(mainWindow);
 
-        // If a project was selected from history, load it first
-        if (_selectedProject != null && mainWindow.DataContext is MainViewModel vm)
+        if (mainWindow.DataContext is MainViewModel vm)
         {
-            vm.ProjectName = _selectedProject.ProjectName;
-            vm.ChangeOrderId = _selectedProject.ChangeOrderId;
-            vm.ProjectDescription = _selectedProject.ProjectDescription ?? string.Empty;
+            // If a project was loaded from history, use its full data
+            if (_selectedProject != null)
+            {
+                vm.LoadProject(_selectedProject);
+            }
+            else
+            {
+                vm.ProjectName = projectName;
+                vm.ChangeOrderId = changeOrder;
+                vm.ProjectDescription = description;
+            }
         }
 
         // Switch directly to final estimate tab
