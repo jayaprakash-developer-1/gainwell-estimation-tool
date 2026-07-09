@@ -46,7 +46,7 @@
         </Style>
 
         <Style x:Key="PrimaryButton" TargetType="Button">
-            <Setter Property="Background" Value="#6C63FF" />
+            <Setter Property="Background" Value="#1931E3" />
             <Setter Property="Foreground" Value="White" />
             <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="Padding" Value="16,8" />
@@ -64,7 +64,7 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#5A52E0" />
+                    <Setter Property="Background" Value="#2E307A" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -98,8 +98,8 @@
         <Style x:Key="KpiValue" TargetType="TextBlock">
             <Setter Property="FontSize" Value="22" />
             <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Foreground" Value="#6C63FF" />
-            <Setter Property="FontFamily" Value="Cascadia Mono, Consolas" />
+            <Setter Property="Foreground" Value="#1931E3" />
+            <Setter Property="FontFamily" Value="Arial" />
         </Style>
 
         <Style x:Key="KpiLabel" TargetType="TextBlock">
@@ -137,8 +137,9 @@
         <Border Grid.Row="0" Padding="24,16" Margin="8,8,8,0" CornerRadius="8,8,0,0">
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                    <GradientStop Color="#00857C" Offset="0" />
-                    <GradientStop Color="#006B64" Offset="1" />
+                    <GradientStop Color="#019681" Offset="0" />
+                    <GradientStop Color="#1A6478" Offset="0.5" />
+                    <GradientStop Color="#2E307A" Offset="1" />
                 </LinearGradientBrush>
             </Border.Background>
             <Grid>
@@ -151,13 +152,13 @@
 
                 <StackPanel Grid.Column="0" VerticalAlignment="Center" Orientation="Horizontal">
                     <Image Source="/Assets/logo.png" Height="36" Margin="0,0,12,0" VerticalAlignment="Center" />
-                    <TextBlock Text="Detailed Estimate" FontSize="20" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" />
+                    <TextBlock Text="Detailed Estimate" FontFamily="Arial" FontSize="20" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" />
                 </StackPanel>
 
                 <Border Grid.Column="1" Background="White" CornerRadius="6" Padding="16,8" Margin="8,0" VerticalAlignment="Center">
                     <StackPanel HorizontalAlignment="Center">
-                        <TextBlock x:Name="TotalHoursKpi" Text="0.00 Hrs" FontSize="18" FontWeight="Bold" Foreground="#00857C" HorizontalAlignment="Center" />
-                        <TextBlock Text="Total Hours" FontSize="10" Foreground="#374151" HorizontalAlignment="Center" />
+                        <TextBlock x:Name="TotalHoursKpi" Text="0.00 Hrs" FontFamily="Arial" FontSize="18" FontWeight="Bold" Foreground="#019681" HorizontalAlignment="Center" />
+                        <TextBlock Text="Total Hours" FontFamily="Arial" FontSize="10" Foreground="#5A6978" HorizontalAlignment="Center" />
                     </StackPanel>
                 </Border>
 
@@ -185,8 +186,8 @@
                         <TextBlock Text="Initial Estimate" FontSize="12" FontWeight="SemiBold" Foreground="#6B7280" />
                     </Border>
                     <!-- Detailed Estimate Tab (Active) -->
-                    <Border Background="#6C63FF" CornerRadius="6" Padding="16,8" Margin="4,0">
-                        <TextBlock Text="Detailed Estimate" FontSize="12" FontWeight="SemiBold" Foreground="White" />
+                    <Border Background="#1931E3" CornerRadius="6" Padding="16,8" Margin="4,0">
+                        <TextBlock Text="Detailed Estimate" FontFamily="Arial" FontSize="12" FontWeight="SemiBold" Foreground="White" />
                     </Border>
                     <!-- Final Estimate Tab -->
                     <Border Background="Transparent" CornerRadius="6" Padding="16,8" Margin="4,0"
@@ -226,11 +227,11 @@
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsSelected" Value="True">
                                         <Setter TargetName="TabBorder" Property="Background" Value="White" />
-                                        <Setter TargetName="TabBorder" Property="BorderBrush" Value="#00857C" />
-                                        <Setter Property="Foreground" Value="#00857C" />
+                                        <Setter TargetName="TabBorder" Property="BorderBrush" Value="#019681" />
+                                        <Setter Property="Foreground" Value="#019681" />
                                     </Trigger>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="TabBorder" Property="Background" Value="#F8FAFC" />
+                                        <Setter TargetName="TabBorder" Property="Background" Value="#F5F6FA" />
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
@@ -253,9 +254,9 @@
                                 <Border Height="4" VerticalAlignment="Top" CornerRadius="12,12,0,0">
                                     <Border.Background>
                                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                            <GradientStop Color="#00857C" Offset="0" />
-                                            <GradientStop Color="#6C63FF" Offset="0.5" />
-                                            <GradientStop Color="#EA580C" Offset="1" />
+                                            <GradientStop Color="#019681" Offset="0" />
+                                            <GradientStop Color="#1931E3" Offset="0.5" />
+                                            <GradientStop Color="#2E307A" Offset="1" />
                                         </LinearGradientBrush>
                                     </Border.Background>
                                 </Border>
@@ -340,11 +341,11 @@
                                 </Border.Effect>
                                 <StackPanel>
                                     <Grid Margin="0,0,0,8">
-                                        <Ellipse Width="32" Height="32" Fill="#BBF7D0" HorizontalAlignment="Left" />
-                                        <TextBlock Text="💻" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7,0,0,0" />
+                                        <Ellipse Width="32" Height="32" Fill="#E6F5F2" HorizontalAlignment="Left" />
+                                        <TextBlock Text="&#xE74C;" FontFamily="Segoe Fluent Icons" FontSize="14" Foreground="#019681" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7,0,0,0" />
                                     </Grid>
-                                    <TextBlock Text="SE HOURS" FontSize="9" FontWeight="Bold" Foreground="#166534" Margin="0,0,0,4" />
-                                    <TextBlock x:Name="SeHoursKpi" Text="0.00" FontSize="20" FontWeight="Bold" Foreground="#16A34A" />
+                                    <TextBlock Text="SE HOURS" FontFamily="Arial" FontSize="9" FontWeight="Bold" Foreground="#019681" Margin="0,0,0,4" />
+                                    <TextBlock x:Name="SeHoursKpi" Text="0.00" FontFamily="Arial" FontSize="20" FontWeight="Bold" Foreground="#019681" />
                                 </StackPanel>
                             </Border>
 
@@ -427,10 +428,10 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <Border Background="#EDE9FE" CornerRadius="6" Padding="8,4" Margin="0,0,12,0">
-                                        <TextBlock Text="PM" FontSize="10" FontWeight="Bold" Foreground="#7C3AED" />
+                                    <Border Background="#F3EBF6" CornerRadius="6" Padding="8,4" Margin="0,0,12,0">
+                                        <TextBlock Text="PM" FontFamily="Arial" FontSize="10" FontWeight="Bold" Foreground="#55206E" />
                                     </Border>
-                                    <TextBlock Text="Project Management Reserve" FontSize="13" FontWeight="SemiBold" Foreground="#374151" VerticalAlignment="Center" />
+                                    <TextBlock Text="Project Management Reserve" FontFamily="Arial" FontSize="13" FontWeight="SemiBold" Foreground="#2B3A44" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                                     <TextBox x:Name="PmReserveTextBox" Text="5" Width="48" Padding="6,4" FontSize="12" TextAlignment="Center" 
@@ -442,7 +443,7 @@
                                     </TextBox>
                                     <TextBlock Text=" %" FontSize="13" Foreground="#6B7280" VerticalAlignment="Center" Margin="2,0,16,0" />
                                     <Border Background="#F5F3FF" CornerRadius="6" Padding="10,4">
-                                        <TextBlock x:Name="PmReserveHoursText" Text="0.00 hrs" FontSize="13" FontWeight="Bold" Foreground="#6C63FF" />
+                                        <TextBlock x:Name="PmReserveHoursText" Text="0.00 hrs" FontSize="13" FontWeight="Bold" Foreground="#1931E3" />
                                     </Border>
                                 </StackPanel>
                             </Grid>
@@ -781,14 +782,55 @@
 
             <!-- Tab 2: SE Module/Documentation -->
             <TabItem Header="🔧 SE Module/Doco">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="260" />
-                    </Grid.ColumnDefinitions>
+                <DockPanel>
+                    <!-- STICKY SUMMARY BAR - matching Collaboration tab format -->
+                    <Border DockPanel.Dock="Top" CornerRadius="8" Padding="16,12" Margin="8,8,8,0">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <GradientStop Color="#019681" Offset="0" />
+                                <GradientStop Color="#1A6478" Offset="0.5" />
+                                <GradientStop Color="#2E307A" Offset="1" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="12" Opacity="0.12" ShadowDepth="4" Direction="270" />
+                        </Border.Effect>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
 
-                    <!-- Left: Development Section -->
-                    <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" Padding="8">
+                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                <TextBlock Text="SE Module / Documentation" FontFamily="Arial" FontSize="16" FontWeight="Bold" Foreground="White" />
+                                <TextBlock Text="Development, Promotion &amp; System Documentation" FontFamily="Arial" FontSize="10" Foreground="#00EEAE" Margin="0,2,0,0" />
+                            </StackPanel>
+
+                            <Border Grid.Column="1" Background="#FFFFFF" CornerRadius="6" Padding="14,8" Margin="8,0" Opacity="0.95">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock x:Name="SeDevTotalText" Text="0.00" FontFamily="Arial" FontSize="16" FontWeight="Bold" Foreground="#019681" HorizontalAlignment="Center" />
+                                    <TextBlock Text="Dev Hours" FontFamily="Arial" FontSize="9" Foreground="#5A6978" HorizontalAlignment="Center" />
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Column="2" Background="#FFFFFF" CornerRadius="6" Padding="14,8" Margin="8,0" Opacity="0.95">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock x:Name="SePromoDocTotalText" Text="0.00" FontFamily="Arial" FontSize="16" FontWeight="Bold" Foreground="#2199B0" HorizontalAlignment="Center" />
+                                    <TextBlock Text="Promotion" FontFamily="Arial" FontSize="9" Foreground="#5A6978" HorizontalAlignment="Center" />
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Column="3" Background="#FFFFFF" CornerRadius="6" Padding="14,8" Margin="8,0,0,0" Opacity="0.95">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock x:Name="SeTotalText" Text="0.00" FontFamily="Arial" FontSize="16" FontWeight="Bold" Foreground="#1931E3" HorizontalAlignment="Center" />
+                                    <TextBlock Text="Grand Total" FontFamily="Arial" FontSize="9" Foreground="#5A6978" HorizontalAlignment="Center" />
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <!-- SCROLLABLE CONTENT -->
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="8">
                         <StackPanel Margin="8">
                             <!-- Development Card - Premium -->
                             <Border Background="White" CornerRadius="12" Padding="0" Margin="0,0,0,12" ClipToBounds="True">
@@ -800,8 +842,8 @@
                                     <Border Padding="20,14" CornerRadius="12,12,0,0">
                                         <Border.Background>
                                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                                <GradientStop Color="#F0FDF4" Offset="0" />
-                                                <GradientStop Color="#ECFDF5" Offset="1" />
+                                                <GradientStop Color="#E6F5F2" Offset="0" />
+                                                <GradientStop Color="#F5F6FA" Offset="1" />
                                             </LinearGradientBrush>
                                         </Border.Background>
                                         <Grid>
@@ -812,13 +854,13 @@
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                <Border Background="#16A34A" CornerRadius="6" Padding="8,4" Margin="0,0,12,0">
-                                                    <TextBlock Text="DEV" FontSize="10" FontWeight="Bold" Foreground="White" />
+                                                <Border Background="#019681" CornerRadius="6" Padding="8,4" Margin="0,0,12,0">
+                                                    <TextBlock Text="DEV" FontFamily="Arial" FontSize="10" FontWeight="Bold" Foreground="White" />
                                                 </Border>
-                                                <TextBlock Text="Development Components" FontSize="14" FontWeight="SemiBold" Foreground="#1F2937" VerticalAlignment="Center" />
+                                                <TextBlock Text="Development" FontFamily="Arial" FontSize="14" FontWeight="SemiBold" Foreground="#2B3A44" VerticalAlignment="Center" />
                                             </StackPanel>
-                                            <TextBlock Grid.Column="2" Text="ESTIMATE BY" FontSize="9" FontWeight="Bold" Foreground="#9CA3AF" VerticalAlignment="Center" Margin="0,0,8,0" />
-                                            <TextBox x:Name="SeEstimateByTextBox" Grid.Column="3" Padding="10,6" FontSize="12" Width="180" BorderBrush="#D1D5DB" Background="White"
+                                            <TextBlock Grid.Column="2" Text="ESTIMATE BY" FontFamily="Arial" FontSize="9" FontWeight="Bold" Foreground="#8E99A8" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                            <TextBox x:Name="SeEstimateByTextBox" Grid.Column="3" Padding="10,6" FontFamily="Arial" FontSize="12" Width="180" BorderBrush="#D4D7E0" Background="White"
                                                      ToolTip="Name of the person responsible for the SE estimate">
                                                 <TextBox.Resources>
                                                     <Style TargetType="Border"><Setter Property="CornerRadius" Value="6"/></Style>
@@ -920,14 +962,14 @@
                                             <Border Grid.Column="1" CornerRadius="8" Padding="14,8">
                                                 <Border.Background>
                                                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                                        <GradientStop Color="#F0FDF4" Offset="0" />
-                                                        <GradientStop Color="#DCFCE7" Offset="1" />
+                                                        <GradientStop Color="#E6F5F2" Offset="0" />
+                                                        <GradientStop Color="#F5F6FA" Offset="1" />
                                                     </LinearGradientBrush>
                                                 </Border.Background>
                                                 <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Text="Total " FontSize="11" Foreground="#6B7280" VerticalAlignment="Center" />
-                                                    <TextBlock x:Name="SePromoDocTotalText" Text="0.00" FontSize="18" FontWeight="Bold" Foreground="#16A34A" VerticalAlignment="Center" />
-                                                    <TextBlock Text=" hrs" FontSize="11" Foreground="#6B7280" VerticalAlignment="Center" />
+                                                    <TextBlock Text="Total " FontFamily="Arial" FontSize="11" Foreground="#5A6978" VerticalAlignment="Center" />
+                                                    <TextBlock x:Name="SePromoDocCardText" Text="0.00" FontFamily="Arial" FontSize="18" FontWeight="Bold" Foreground="#019681" VerticalAlignment="Center" />
+                                                    <TextBlock Text=" hrs" FontFamily="Arial" FontSize="11" Foreground="#5A6978" VerticalAlignment="Center" />
                                                 </StackPanel>
                                             </Border>
                                         </Grid>
@@ -948,7 +990,8 @@
                                                 <TextBlock Text="Promotion" FontSize="13" FontWeight="SemiBold" Foreground="#1F2937" />
                                                 <TextBlock Text="Dev, Model, E2E, UAT, Prod &amp; Training" FontSize="10" Foreground="#9CA3AF" Margin="0,2,0,0" />
                                             </StackPanel>
-                                            <TextBox x:Name="PromotionHoursTextBox" Grid.Column="2" Text="0" Padding="10,8" FontSize="13" TextAlignment="Center" BorderBrush="#D1D5DB"
+                                            <TextBox x:Name="PromotionHoursTextBox" Grid.Column="2" Text="0" Padding="10,8" FontSize="13" TextAlignment="Center" BorderBrush="#D4D7E0"
+                                                     TextChanged="OnSePromoDocChanged"
                                                      ToolTip="Hours for promoting code through Dev, Model, E2E, UAT, Prod and Training environments">
                                                 <TextBox.Resources>
                                                     <Style TargetType="Border"><Setter Property="CornerRadius" Value="6"/></Style>
@@ -972,7 +1015,8 @@
                                                 <TextBlock Text="System Documentation" FontSize="13" FontWeight="SemiBold" Foreground="#1F2937" />
                                                 <TextBlock Text="Production Validation, Erwin, System Objects" FontSize="10" Foreground="#9CA3AF" Margin="0,2,0,0" />
                                             </StackPanel>
-                                            <TextBox x:Name="SystemDocHoursTextBox" Grid.Column="2" Text="0" Padding="10,8" FontSize="13" TextAlignment="Center" BorderBrush="#D1D5DB"
+                                            <TextBox x:Name="SystemDocHoursTextBox" Grid.Column="2" Text="0" Padding="10,8" FontSize="13" TextAlignment="Center" BorderBrush="#D4D7E0"
+                                                     TextChanged="OnSePromoDocChanged"
                                                      ToolTip="Hours for system documentation including Production Validation, Erwin, and System Objects">
                                                 <TextBox.Resources>
                                                     <Style TargetType="Border"><Setter Property="CornerRadius" Value="6"/></Style>
@@ -996,14 +1040,14 @@
                                         <TextBlock Text="Assumptions" FontSize="13" FontWeight="SemiBold" Foreground="#1F2937" VerticalAlignment="Center" />
                                     </StackPanel>
                                     <TextBox x:Name="SeModuleAssumptionsTextBox" AcceptsReturn="True" TextWrapping="Wrap" 
-                                             Height="80" Padding="12,10" FontSize="12" BorderBrush="#E5E7EB" Background="#FAFAFA"
-                                             MaxLength="1000" TextChanged="OnSeAssumptionTextChanged"
-                                             ToolTip="Enter any SE assumptions for this estimate (max 1000 characters)">
+                                             Height="80" Padding="12,10" FontSize="12" BorderBrush="#D4D7E0" Background="#F5F6FA"
+                                             MaxLength="4000" TextChanged="OnSeAssumptionTextChanged"
+                                             ToolTip="Enter any SE assumptions for this estimate (max 4000 characters)">
                                         <TextBox.Resources>
                                             <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
                                         </TextBox.Resources>
                                     </TextBox>
-                                    <TextBlock x:Name="SeAssumptionCharCount" Text="0/1000" FontSize="10" Foreground="#9CA3AF" 
+                                    <TextBlock x:Name="SeAssumptionCharCount" Text="0/4000" FontSize="10" Foreground="#8E99A8" 
                                                HorizontalAlignment="Right" Margin="0,4,4,0" />
                                 </StackPanel>
                             </Border>
@@ -1021,146 +1065,20 @@
                                         <TextBlock Text="Adjusted Hours Assumption" FontSize="13" FontWeight="SemiBold" Foreground="#1F2937" VerticalAlignment="Center" />
                                     </StackPanel>
                                     <TextBox x:Name="SeAdjustedHrsCommentTextBox" AcceptsReturn="True" TextWrapping="Wrap" 
-                                             Height="80" Padding="12,10" FontSize="12" BorderBrush="#E5E7EB" Background="#FAFAFA"
-                                             MaxLength="1000" TextChanged="OnSeAdjustedTextChanged"
-                                             ToolTip="Explain any adjustments made to the estimated hours (max 1000 characters)">
+                                             Height="80" Padding="12,10" FontSize="12" BorderBrush="#D4D7E0" Background="#F5F6FA"
+                                             MaxLength="4000" TextChanged="OnSeAdjustedTextChanged"
+                                             ToolTip="Explain any adjustments made to the estimated hours (max 4000 characters)">
                                         <TextBox.Resources>
                                             <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
                                         </TextBox.Resources>
                                     </TextBox>
-                                    <TextBlock x:Name="SeAdjustedCharCount" Text="0/1000" FontSize="10" Foreground="#9CA3AF" 
+                                    <TextBlock x:Name="SeAdjustedCharCount" Text="0/4000" FontSize="10" Foreground="#8E99A8" 
                                                HorizontalAlignment="Right" Margin="0,4,4,0" />
                                 </StackPanel>
                             </Border>
                         </StackPanel>
                     </ScrollViewer>
-
-                    <!-- Right: Total Panel - Premium Sidebar -->
-                    <Border Grid.Column="1" CornerRadius="0" Padding="0">
-                        <Border.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                <GradientStop Color="#FAFBFC" Offset="0" />
-                                <GradientStop Color="#F3F4F6" Offset="1" />
-                            </LinearGradientBrush>
-                        </Border.Background>
-                        <ScrollViewer VerticalScrollBarVisibility="Auto">
-                            <StackPanel Margin="16,16">
-                                <!-- Grand Total Hero -->
-                                <Border CornerRadius="12" Padding="18,16" Margin="0,0,0,16"
-                                        ToolTip="Sum of Development + Promotion + Documentation hours">
-                                    <Border.Background>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                            <GradientStop Color="#059669" Offset="0" />
-                                            <GradientStop Color="#047857" Offset="1" />
-                                        </LinearGradientBrush>
-                                    </Border.Background>
-                                    <Border.Effect>
-                                        <DropShadowEffect BlurRadius="12" Opacity="0.15" ShadowDepth="4" Direction="270" Color="#059669" />
-                                    </Border.Effect>
-                                    <StackPanel>
-                                        <TextBlock Text="SE GRAND TOTAL" FontSize="10" FontWeight="Bold" Foreground="#A7F3D0" Margin="0,0,0,6" />
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock x:Name="SeTotalText" Text="0.00" 
-                                                       FontSize="28" FontWeight="Bold" Foreground="White" />
-                                            <TextBlock Text=" hrs" FontSize="12" Foreground="#A7F3D0" VerticalAlignment="Bottom" Margin="0,0,0,5" />
-                                        </StackPanel>
-                                    </StackPanel>
-                                </Border>
-
-                                <!-- Breakdown Items -->
-                                <TextBlock Text="BREAKDOWN" FontSize="9" FontWeight="Bold" Foreground="#9CA3AF" Margin="4,0,0,10" />
-
-                                <Border Background="White" CornerRadius="10" Padding="14,12" Margin="0,0,0,8"
-                                        ToolTip="Total development hours from all component types">
-                                    <Border.Effect>
-                                        <DropShadowEffect BlurRadius="4" Opacity="0.04" ShadowDepth="1" Direction="270" />
-                                    </Border.Effect>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <Border Background="#DCFCE7" CornerRadius="6" Width="32" Height="32" VerticalAlignment="Center">
-                                            <TextBlock Text="💻" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                        </Border>
-                                        <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
-                                            <TextBlock Text="Development" FontSize="11" Foreground="#6B7280" />
-                                            <TextBlock x:Name="SeDevTotalText" Text="0.00" 
-                                                       FontSize="16" FontWeight="Bold" Foreground="#059669" />
-                                        </StackPanel>
-                                    </Grid>
-                                </Border>
-
-                                <Border Background="White" CornerRadius="10" Padding="14,12" Margin="0,0,0,8"
-                                        ToolTip="Hours for code promotion through environments">
-                                    <Border.Effect>
-                                        <DropShadowEffect BlurRadius="4" Opacity="0.04" ShadowDepth="1" Direction="270" />
-                                    </Border.Effect>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <Border Background="#E0F2FE" CornerRadius="6" Width="32" Height="32" VerticalAlignment="Center">
-                                            <TextBlock Text="🚀" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                        </Border>
-                                        <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
-                                            <TextBlock Text="Promotion" FontSize="11" Foreground="#6B7280" />
-                                            <TextBlock x:Name="SePromotionTotalText" Text="0.00" 
-                                                       FontSize="16" FontWeight="Bold" Foreground="#059669" />
-                                        </StackPanel>
-                                    </Grid>
-                                </Border>
-
-                                <Border Background="White" CornerRadius="10" Padding="14,12" Margin="0,0,0,8"
-                                        ToolTip="Hours for system documentation effort">
-                                    <Border.Effect>
-                                        <DropShadowEffect BlurRadius="4" Opacity="0.04" ShadowDepth="1" Direction="270" />
-                                    </Border.Effect>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <Border Background="#FEF3C7" CornerRadius="6" Width="32" Height="32" VerticalAlignment="Center">
-                                            <TextBlock Text="📄" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                        </Border>
-                                        <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
-                                            <TextBlock Text="Documentation" FontSize="11" Foreground="#6B7280" />
-                                            <TextBlock x:Name="SeDocTotalText" Text="0.00" 
-                                                       FontSize="16" FontWeight="Bold" Foreground="#059669" />
-                                        </StackPanel>
-                                    </Grid>
-                                </Border>
-
-                                <Border Background="White" CornerRadius="10" Padding="14,12" Margin="0,0,0,8"
-                                        ToolTip="Number of component types with hours entered">
-                                    <Border.Effect>
-                                        <DropShadowEffect BlurRadius="4" Opacity="0.04" ShadowDepth="1" Direction="270" />
-                                    </Border.Effect>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <Border Background="#F3E8FF" CornerRadius="6" Width="32" Height="32" VerticalAlignment="Center">
-                                            <TextBlock Text="🧩" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                        </Border>
-                                        <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
-                                            <TextBlock Text="Components" FontSize="11" Foreground="#6B7280" />
-                                            <TextBlock x:Name="SeComponentCountText" Text="0" 
-                                                       FontSize="16" FontWeight="Bold" Foreground="#7C3AED" />
-                                        </StackPanel>
-                                    </Grid>
-                                </Border>
-                            </StackPanel>
-                        </ScrollViewer>
-                    </Border>
-                </Grid>
+                </DockPanel>
             </TabItem>
 
             <!-- Tab 3: BA Considerations -->
