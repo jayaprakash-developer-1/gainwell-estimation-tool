@@ -191,7 +191,7 @@ public partial class DetailedEstimateWindow : Window
 
     private void InitializeGrids()
     {
-        // Setup BA Test Cases Grid GÇö 21 rows matching Excel Dtl BA_Considerations (rows R15-R37)
+        // Setup BA Test Cases Grid Gï¿½ï¿½ 21 rows matching Excel Dtl BA_Considerations (rows R15-R37)
         // New to Area group (R15-R21)
         BaTestCases.Add(new BaTestCaseRow { TaskName = "Understanding Requirements",                      Category = BaCategory.SystemTesting, TaskType = "UnderstandingRequirements", IsInfoRow = false, ExperienceLevel = ExperienceLevel.NewToArea  });
         BaTestCases.Add(new BaTestCaseRow { TaskName = "New: Write System Test Cases (# cases)",          Category = BaCategory.SystemTesting, TaskType = "WriteSystemTestCases",       IsInfoRow = false, ExperienceLevel = ExperienceLevel.NewToArea  });
@@ -218,16 +218,16 @@ public partial class DetailedEstimateWindow : Window
         BaTestCases.Add(new BaTestCaseRow { TaskName = "Expert: Pre Release Defects Creation and Retest", Category = BaCategory.SystemTesting, TaskType = "PreReleaseDefects",         IsInfoRow = false, ExperienceLevel = ExperienceLevel.Expert     });
         BaTestCasesGrid.ItemsSource = BaTestCases;
 
-        // Setup WTCGåÆIterationGåÆDerived propagation for each experience-level group
-        SetupWtcGroup(0);   // New to Area (rows 0GÇô6)
-        SetupWtcGroup(7);   // Proficient  (rows 7GÇô13)
-        SetupWtcGroup(14);  // Expert      (rows 14GÇô20)
+        // Setup WTCGï¿½ï¿½IterationGï¿½ï¿½Derived propagation for each experience-level group
+        SetupWtcGroup(0);   // New to Area (rows 0Gï¿½ï¿½6)
+        SetupWtcGroup(7);   // Proficient  (rows 7Gï¿½ï¿½13)
+        SetupWtcGroup(14);  // Expert      (rows 14Gï¿½ï¿½20)
 
-        // Setup Regression Testing GÇö Proficient hardcoded (matching Excel Row 40)
+        // Setup Regression Testing Gï¿½ï¿½ Proficient hardcoded (matching Excel Row 40)
         BaRegressionRows.Add(new BaTestCaseRow { TaskName = "Regression testing/document (# cases)", Category = BaCategory.SystemTesting, TaskType = "RegressionTesting", ExperienceLevel = ExperienceLevel.Proficient });
         BaRegressionGrid.ItemsSource = BaRegressionRows;
 
-        // Setup Production Validation Grid GÇö 9 rows matching Excel labels and order
+        // Setup Production Validation Grid Gï¿½ï¿½ 9 rows matching Excel labels and order
         BaValidationItems.Add(new BaValidationRow { TaskName = "General validation",            TaskType = "GeneralValidation", ExperienceLevel = ExperienceLevel.NewToArea  });
         BaValidationItems.Add(new BaValidationRow { TaskName = "Pricing changes",               TaskType = "PricingChanges",    ExperienceLevel = ExperienceLevel.NewToArea  });
         BaValidationItems.Add(new BaValidationRow { TaskName = "Reference changes",             TaskType = "ReferenceChanges",  ExperienceLevel = ExperienceLevel.NewToArea  });
@@ -239,7 +239,7 @@ public partial class DetailedEstimateWindow : Window
         BaValidationItems.Add(new BaValidationRow { TaskName = "3rd Exp Reference changes",     TaskType = "ReferenceChanges",  ExperienceLevel = ExperienceLevel.Expert     });
         BaProductionValidationGrid.ItemsSource = BaValidationItems;
 
-        // Complexity columns are now separate count inputs GÇö no ComboBox ItemsSource needed
+        // Complexity columns are now separate count inputs Gï¿½ï¿½ no ComboBox ItemsSource needed
 
         // Subscribe to PropertyChanged on all BA rows so summary strips update live
         // (equivalent to Excel's SUM formulas auto-recalculating on cell change)
@@ -391,7 +391,7 @@ public partial class DetailedEstimateWindow : Window
         UpdateSummaryTab();
     }
 
-    /// <summary>Sync card TextBox values GåÆ BaTestCases model rows (preserves all calculation logic).</summary>
+    /// <summary>Sync card TextBox values Gï¿½ï¿½ BaTestCases model rows (preserves all calculation logic).</summary>
     private void SyncCardsToModel()
     {
         // New to Area group (indices 0-6)
@@ -461,7 +461,7 @@ public partial class DetailedEstimateWindow : Window
         BaTestCases[20].ManualAdjHours = ParseDecimal(BaExpPRD_AdjHrs?.Text);
     }
 
-    /// <summary>Sync PV radio button selections GåÆ BaValidationItems model (0=none, 1=selected).</summary>
+    /// <summary>Sync PV radio button selections Gï¿½ï¿½ BaValidationItems model (0=none, 1=selected).</summary>
     private void SyncPvRadiosToModel()
     {
         // Row 0: New GV
@@ -703,7 +703,7 @@ public partial class DetailedEstimateWindow : Window
         decimal finalEst = ParseDecimal(CreateFinalEstHoursTextBox);
         decimal pmEffort = ParseDecimal(PmEffortHoursTextBox);
 
-        // Meeting Hour Totals (Excel: Count +ù MtgHrs +ù Attendees)
+        // Meeting Hour Totals (Excel: Count +ï¿½ MtgHrs +ï¿½ Attendees)
         decimal wprMtgTotal = wprCount * wprHrs * wprAtt;
         decimal wprPrepTotal = wprPrepHrs * wprAtt * wprCount;
         decimal clientMtgTotal = clientCount * clientHrs * clientAtt;
@@ -806,7 +806,7 @@ public partial class DetailedEstimateWindow : Window
 
     private void OnFinalTabClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
-        MessageBox.Show("Final Estimate is coming soon.", "Not Yet Available", MessageBoxButton.OK, MessageBoxImage.Information);
+        EstimateNavigator.SwitchToFinalEstimate(this);
     }
 
     private void OnSaveClick(object sender, RoutedEventArgs e)
@@ -836,7 +836,7 @@ public partial class DetailedEstimateWindow : Window
         // Validation: must have a project loaded from Initial Estimate history
         if (_currentProject == null || string.IsNullOrWhiteSpace(_currentProject.ProjectName))
         {
-            MessageBox.Show("Please load a project from Initial Estimate history using the \"=ƒôé Open\" button before saving.",
+            MessageBox.Show("Please load a project from Initial Estimate history using the \"=ï¿½ï¿½ï¿½ Open\" button before saving.",
                 "No Project Selected", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
@@ -1061,7 +1061,7 @@ public partial class DetailedEstimateWindow : Window
         // BA Grand Total Adjusted Exp Level = sum of all AdjustedExpLevel values
         decimal baGrandTotalAdjExp = BaTestCases.Where(r => !r.IsInfoRow).Sum(r => r.AdjustedExpLevel) + BaRegressionRows.Sum(r => r.AdjustedExpLevel) + BaValidationItems.Sum(r => r.AdjustedExpLevel);
         // BA Grand Total Adjusted Hrs = manual adj hours from BA rows + SysDoc + CommPlan
-        // Note: sysDocProdVal and remainingBdd flow directly to Grand Total (col 11 only in Excel) GÇö not Adjusted Hrs (col 10)
+        // Note: sysDocProdVal and remainingBdd flow directly to Grand Total (col 11 only in Excel) Gï¿½ï¿½ not Adjusted Hrs (col 10)
         decimal baGrandTotalAdjHrs = BaTestCases.Sum(r => r.ManualAdjHours) + BaRegressionRows.Sum(r => r.ManualAdjHours) + BaValidationItems.Sum(r => r.ManualAdjHours) + baSysDoc + commPlan;
         if (BaGrandTotalCT != null)     BaGrandTotalCT.Text     = baGrandTotalCT.ToString("N2");
         if (BaGrandTotalAdjExp != null)  BaGrandTotalAdjExp.Text  = baGrandTotalAdjExp.ToString("N2");
@@ -1205,12 +1205,12 @@ public class BaTestCaseRow : INotifyPropertyChanged
     private decimal _complexCount;
     private decimal _veryComplexCount;
     private decimal _manualAdjHours;
-    // Per-complexity iteration factors (WTC row) and effective WTC+ùIteration counts (derived rows)
+    // Per-complexity iteration factors (WTC row) and effective WTC+ï¿½Iteration counts (derived rows)
     private decimal _iterSimple, _iterModerate, _iterComplex, _iterVeryComplex;
     private decimal _effSimple, _effModerate, _effComplex, _effVeryComplex;
     /// <summary>When true (WTC rows): own counts are multiplied by per-complexity Iter* factors.</summary>
     public bool ApplyIteration { get; set; }
-    /// <summary>When true (derived rows): Complexity Total uses Eff* counts from WTC +ù Iteration.</summary>
+    /// <summary>When true (derived rows): Complexity Total uses Eff* counts from WTC +ï¿½ Iteration.</summary>
     public bool UseEffectiveCounts { get; set; }
 
     public string TaskName
@@ -1272,16 +1272,16 @@ public class BaTestCaseRow : INotifyPropertyChanged
         _                          => ExperienceLevel.ToString()
     };
 
-    /// <summary>Complexity Total GÇö weighted hours from counts (same as before).</summary>
+    /// <summary>Complexity Total Gï¿½ï¿½ weighted hours from counts (same as before).</summary>
     public decimal Total => IsInfoRow ? 0m : CalculateTotal();
-    /// <summary>Adjusted Exp Level = Complexity Total +ù experience multiplier.</summary>
+    /// <summary>Adjusted Exp Level = Complexity Total +ï¿½ experience multiplier.</summary>
     public decimal AdjustedExpLevel => Total * DetailedWeightedValues.GetExperienceMultiplier(EstimateRole.BA, ExperienceLevel);
     /// <summary>Grand Total = Adjusted Exp Level + Manual Adj Hours. Regression row applies MROUND(,0.25) matching Excel K40.</summary>
     public decimal GrandTotal => TaskType == "RegressionTesting" ? MRound(AdjustedExpLevel + ManualAdjHours) : AdjustedExpLevel + ManualAdjHours;
     /// <summary>Kept for backward compatibility with summary calculations.</summary>
     public decimal AdjustedHours => GrandTotal;
 
-    // Display properties GÇö blank for Iteration (IsInfoRow) rows, formatted value otherwise
+    // Display properties Gï¿½ï¿½ blank for Iteration (IsInfoRow) rows, formatted value otherwise
     public string TotalDisplay            => IsInfoRow ? "" : Total.ToString("N2");
     public string AdjustedExpLevelDisplay => IsInfoRow ? "" : AdjustedExpLevel.ToString("N2");
     public string GrandTotalDisplay       => IsInfoRow ? "" : GrandTotal.ToString("N2");
@@ -1294,7 +1294,7 @@ public class BaTestCaseRow : INotifyPropertyChanged
         RecalculateTotals();
     }
 
-    /// <summary>Sets effective WTC+ùIteration counts for derived rows. Called by PropagateWtcIteration.</summary>
+    /// <summary>Sets effective WTC+ï¿½Iteration counts for derived rows. Called by PropagateWtcIteration.</summary>
     public void SetEffectiveCounts(decimal s, decimal m, decimal c, decimal vc)
     {
         _effSimple = s; _effModerate = m; _effComplex = c; _effVeryComplex = vc;
@@ -1307,12 +1307,12 @@ public class BaTestCaseRow : INotifyPropertyChanged
         if (UseEffectiveCounts)
         {
             // Derived rows (DataPrep, ALM, SysTest, PreRelease):
-            // CT = +ú( WTC_count_i +ù rate_i +ù iteration_i ) GÇö WTC+ùIteration already pre-computed as Eff* counts
+            // CT = +ï¿½( WTC_count_i +ï¿½ rate_i +ï¿½ iteration_i ) Gï¿½ï¿½ WTC+ï¿½Iteration already pre-computed as Eff* counts
             sn = _effSimple; mn = _effModerate; cn = _effComplex; vn = _effVeryComplex;
         }
         else if (ApplyIteration)
         {
-            // WTC row: own counts +ù per-complexity iteration factor
+            // WTC row: own counts +ï¿½ per-complexity iteration factor
             sn = SimpleCount * _iterSimple;
             mn = ModerateCount * _iterModerate;
             cn = ComplexCount * _iterComplex;
@@ -1404,14 +1404,14 @@ public class BaValidationRow : INotifyPropertyChanged
         set { _manualAdjHours = value; OnPropertyChanged(); RecalculateTotals(); }
     }
 
-    /// <summary>Complexity Total = sum of (count +ù weighted hours) across all complexity levels.</summary>
+    /// <summary>Complexity Total = sum of (count +ï¿½ weighted hours) across all complexity levels.</summary>
     public decimal ComplexityTotal =>
         DetailedWeightedValues.GetBaHours(BaCategory.ProductionValidation, TaskType, BaComplexity.Simple)      * SimpleCount +
         DetailedWeightedValues.GetBaHours(BaCategory.ProductionValidation, TaskType, BaComplexity.Moderate)    * ModerateCount +
         DetailedWeightedValues.GetBaHours(BaCategory.ProductionValidation, TaskType, BaComplexity.Complex)     * ComplexCount +
         DetailedWeightedValues.GetBaHours(BaCategory.ProductionValidation, TaskType, BaComplexity.VeryComplex) * VeryComplexCount;
 
-    /// <summary>Adjusted Exp Level = Complexity Total +ù experience multiplier.</summary>
+    /// <summary>Adjusted Exp Level = Complexity Total +ï¿½ experience multiplier.</summary>
     public decimal AdjustedExpLevel => ComplexityTotal * DetailedWeightedValues.GetExperienceMultiplier(EstimateRole.BA, ExperienceLevel);
     /// <summary>Grand Total = Adjusted Exp Level + Manual Adj Hours (straight sum per Excel K45-K55). MROUND applied only at PV summary level.</summary>
     public decimal GrandTotal => AdjustedExpLevel + ManualAdjHours;

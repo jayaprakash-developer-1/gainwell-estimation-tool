@@ -12,6 +12,7 @@ public static class EstimateNavigator
 {
     private static MainWindow? _initialWindow;
     private static DetailedEstimateWindow? _detailedWindow;
+    private static FinalEstimateWindow? _finalWindow;
 
     // Fixed dimensions for all estimate windows
     public const double WindowWidth = 1500;
@@ -80,12 +81,40 @@ public static class EstimateNavigator
         source.Hide();
     }
 
+    public static void SwitchToFinalEstimate(Window source)
+    {
+        MainViewModel? mainVm = null;
+
+        if (source is MainWindow mw && mw.DataContext is MainViewModel vm)
+            mainVm = vm;
+
+        if (_finalWindow == null || !_finalWindow.IsLoaded)
+        {
+            _finalWindow = new FinalEstimateWindow();
+            _finalWindow.Closed += OnWindowClosed;
+            ApplyDimensions(_finalWindow, source);
+        }
+        else
+        {
+            SyncPosition(source, _finalWindow);
+        }
+
+        if (mainVm != null)
+            _finalWindow.LoadFromSource(mainVm);
+
+        _finalWindow.Show();
+        _finalWindow.Activate();
+        source.Hide();
+    }
+
     public static void RegisterWindow(Window window)
     {
         if (window is MainWindow mw)
             _initialWindow = mw;
         else if (window is DetailedEstimateWindow dw)
             _detailedWindow = dw;
+        else if (window is FinalEstimateWindow fw)
+            _finalWindow = fw;
 
         window.Closed += OnWindowClosed;
     }
@@ -114,8 +143,14 @@ public static class EstimateNavigator
             _detailedWindow.Closed -= OnWindowClosed;
             _detailedWindow.Close();
         }
+        if (_finalWindow != null && _finalWindow.IsLoaded)
+        {
+            _finalWindow.Closed -= OnWindowClosed;
+            _finalWindow.Close();
+        }
         _initialWindow = null;
         _detailedWindow = null;
+        _finalWindow = null;
     }
 
     private static void OnWindowClosed(object? sender, EventArgs e)
@@ -129,9 +164,12 @@ public static class EstimateNavigator
             return; // Other window still visible
         if (_detailedWindow != null && _detailedWindow.IsLoaded && _detailedWindow.IsVisible)
             return; // Other window still visible
+        if (_finalWindow != null && _finalWindow.IsLoaded && _finalWindow.IsVisible)
+            return; // Other window still visible
 
         _initialWindow = null;
         _detailedWindow = null;
+        _finalWindow = null;
         Application.Current.Shutdown();
     }
 

@@ -1,0 +1,781 @@
+<Window x:Class="Gainwell.EstimationTool.FinalEstimateWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Final Estimate"
+        Height="1000" Width="1500"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        Background="#EBEDF5"
+        Icon="/Assets/app.ico">
+
+    <Window.Resources>
+        <!-- Card Style -->
+        <Style x:Key="CardBorder" TargetType="Border">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="20" />
+            <Setter Property="Margin" Value="0,0,0,12" />
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="8" Opacity="0.06" ShadowDepth="2" Direction="270" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SectionHeader" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Arial" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="#2B3A44" />
+            <Setter Property="Margin" Value="0,0,0,12" />
+        </Style>
+
+        <Style x:Key="TableHeader" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Arial" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Padding" Value="8,6" />
+        </Style>
+
+        <Style x:Key="TableCell" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Arial" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="#2B3A44" />
+            <Setter Property="Padding" Value="8,6" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="TableCellNumeric" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Arial" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="#2B3A44" />
+            <Setter Property="Padding" Value="8,6" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="NavButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontFamily" Value="Arial" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Padding" Value="12,6" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="#4DB6AC" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1931E3" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ExportButton" TargetType="Button">
+            <Setter Property="Background" Value="#1931E3" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontFamily" Value="Arial" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Padding" Value="16,8" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#2E307A" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- ═══════════ HEADER BANNER ═══════════ -->
+        <Border Grid.Row="0" Padding="24,16" Margin="8,8,8,0" CornerRadius="8,8,0,0">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                    <GradientStop Color="#019681" Offset="0" />
+                    <GradientStop Color="#1A6478" Offset="0.5" />
+                    <GradientStop Color="#2E307A" Offset="1" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Orientation="Horizontal">
+                    <Image Source="/Assets/logo.png" Height="36" Margin="0,0,12,0" VerticalAlignment="Center" />
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Final Estimate" FontFamily="Arial" FontSize="20" FontWeight="Bold" Foreground="White" />
+                        <TextBlock Text="Consolidated Estimation Summary" FontFamily="Arial" FontSize="11" Foreground="#00EEAE" Margin="0,2,0,0" />
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Grand Total KPI -->
+                <Border Grid.Column="1" Background="White" CornerRadius="8" Padding="20,10" Margin="8,0" VerticalAlignment="Center">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock Text="{Binding GrandTotalHours, StringFormat={}{0:N0} Hrs}" FontFamily="Arial" FontSize="20" FontWeight="Bold" Foreground="#1931E3" HorizontalAlignment="Center" />
+                        <TextBlock Text="Grand Total" FontFamily="Arial" FontSize="10" Foreground="#5A6978" HorizontalAlignment="Center" />
+                    </StackPanel>
+                </Border>
+
+                <!-- T-Shirt Size KPI -->
+                <Border Grid.Column="2" Background="White" CornerRadius="8" Padding="16,10" Margin="8,0" VerticalAlignment="Center">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock Text="{Binding TShirtSize}" FontFamily="Arial" FontSize="20" FontWeight="Bold" Foreground="#019681" HorizontalAlignment="Center" />
+                        <TextBlock Text="T-Shirt Size" FontFamily="Arial" FontSize="10" Foreground="#5A6978" HorizontalAlignment="Center" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Navigation -->
+                <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0,0,0">
+                    <Button Content="Home" Style="{StaticResource NavButton}" Click="OnHomeClick" Margin="4,0" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- ═══════════ TAB NAVIGATION ═══════════ -->
+        <Border Grid.Row="1" Margin="8,0,8,0" Padding="4,4" Background="#F0F0F5" CornerRadius="0,0,8,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Border Background="Transparent" CornerRadius="6" Padding="16,8" Margin="4,0"
+                            Cursor="Hand" MouseLeftButtonDown="OnInitialTabClick">
+                        <TextBlock Text="Initial Estimate" FontFamily="Arial" FontSize="12" FontWeight="SemiBold" Foreground="#5A6978" />
+                    </Border>
+                    <Border Background="Transparent" CornerRadius="6" Padding="16,8" Margin="4,0"
+                            Cursor="Hand" MouseLeftButtonDown="OnDetailedTabClick">
+                        <TextBlock Text="Detailed Estimate" FontFamily="Arial" FontSize="12" FontWeight="SemiBold" Foreground="#5A6978" />
+                    </Border>
+                    <Border Background="#1931E3" CornerRadius="6" Padding="16,8" Margin="4,0">
+                        <TextBlock Text="Final Estimate" FontFamily="Arial" FontSize="12" FontWeight="SemiBold" Foreground="White" />
+                    </Border>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Content="Print" Style="{StaticResource ExportButton}" Click="OnPrintClick" Margin="4,0" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- ═══════════ MAIN CONTENT ═══════════ -->
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="8,8,8,8">
+            <Grid Margin="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="320" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Left: Main Content -->
+                <StackPanel Grid.Column="0" Margin="0,0,16,0">
+
+                    <!-- PROJECT INFO CARD -->
+                    <Border Style="{StaticResource CardBorder}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <!-- Top accent -->
+                            <Border Grid.Row="0" Height="3" VerticalAlignment="Top" Margin="-20,-20,-20,12" CornerRadius="8,8,0,0">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                        <GradientStop Color="#019681" Offset="0" />
+                                        <GradientStop Color="#1931E3" Offset="1" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                            </Border>
+
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,12,12">
+                                    <TextBlock Text="Project Name" FontFamily="Arial" FontSize="10" Foreground="#8E99A8" />
+                                    <TextBlock Text="{Binding ProjectName}" FontFamily="Arial" FontSize="13" FontWeight="SemiBold" Foreground="#2B3A44" Margin="0,2,0,0" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Grid.Row="0" Margin="0,0,12,12">
+                                    <TextBlock Text="CO / Defect #" FontFamily="Arial" FontSize="10" Foreground="#8E99A8" />
+                                    <TextBlock Text="{Binding ChangeOrderId}" FontFamily="Arial" FontSize="13" FontWeight="SemiBold" Foreground="#2B3A44" Margin="0,2,0,0" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="2" Grid.Row="0" Margin="0,0,0,12">
+                                    <TextBlock Text="Estimate Date" FontFamily="Arial" FontSize="10" Foreground="#8E99A8" />
+                                    <TextBlock Text="{Binding EstimateDate, StringFormat=MM/dd/yyyy}" FontFamily="Arial" FontSize="13" FontWeight="SemiBold" Foreground="#2B3A44" Margin="0,2,0,0" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="0" Grid.Row="1" Margin="0,0,12,0">
+                                    <TextBlock Text="Estimated By" FontFamily="Arial" FontSize="10" Foreground="#8E99A8" />
+                                    <TextBlock Text="{Binding EstimatedBy}" FontFamily="Arial" FontSize="13" Foreground="#2B3A44" Margin="0,2,0,0" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Grid.Row="1" Margin="0,0,12,0">
+                                    <TextBlock Text="Reviewed By" FontFamily="Arial" FontSize="10" Foreground="#8E99A8" />
+                                    <TextBlock Text="{Binding ReviewedBy}" FontFamily="Arial" FontSize="13" Foreground="#2B3A44" Margin="0,2,0,0" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="2" Grid.Row="1" Margin="0,0,0,0">
+                                    <TextBlock Text="Description" FontFamily="Arial" FontSize="10" Foreground="#8E99A8" />
+                                    <TextBlock Text="{Binding ProjectDescription}" FontFamily="Arial" FontSize="12" Foreground="#5A6978" TextWrapping="Wrap" Margin="0,2,0,0" />
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </Border>
+
+                    <!-- ESTIMATION BREAKDOWN TABLE -->
+                    <Border Style="{StaticResource CardBorder}">
+                        <StackPanel>
+                            <TextBlock Text="Estimation Breakdown" Style="{StaticResource SectionHeader}" />
+                            <TextBlock Text="{Binding SystemTestingMethod}" FontFamily="Arial" FontSize="10" Foreground="#8E99A8" Margin="0,0,0,8" />
+
+                            <!-- Table Header -->
+                            <Border CornerRadius="6,6,0,0" Padding="0">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                        <GradientStop Color="#019681" Offset="0" />
+                                        <GradientStop Color="#2E307A" Offset="1" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="Task" Style="{StaticResource TableHeader}" />
+                                    <TextBlock Grid.Column="1" Text="Calculated" Style="{StaticResource TableHeader}" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Column="2" Text="Adjusted" Style="{StaticResource TableHeader}" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Column="3" Text="Total" Style="{StaticResource TableHeader}" HorizontalAlignment="Right" />
+                                </Grid>
+                            </Border>
+
+                            <!-- Table Rows -->
+                            <Border BorderBrush="#E8EAF0" BorderThickness="1,0,1,1">
+                                <StackPanel>
+                                    <!-- Development -->
+                                    <Grid Background="#F5F6FA">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="Development" Style="{StaticResource TableCell}" FontWeight="SemiBold" />
+                                        <TextBlock Grid.Column="1" Text="{Binding DevelopmentCalculated, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" />
+                                        <TextBlock Grid.Column="2" Text="{Binding DevelopmentAdjusted, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" Foreground="#CC1AC7" />
+                                        <TextBlock Grid.Column="3" Text="{Binding DevelopmentTotal, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" FontWeight="SemiBold" />
+                                    </Grid>
+                                    <Border Height="1" Background="#E8EAF0" />
+
+                                    <!-- System Testing -->
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="System Testing" Style="{StaticResource TableCell}" />
+                                        <TextBlock Grid.Column="1" Text="{Binding SystemTestingCalculated, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" />
+                                        <TextBlock Grid.Column="2" Text="{Binding SystemTestingAdjusted, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" Foreground="#CC1AC7" />
+                                        <TextBlock Grid.Column="3" Text="{Binding SystemTestingTotal, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" FontWeight="SemiBold" />
+                                    </Grid>
+                                    <Border Height="1" Background="#E8EAF0" />
+
+                                    <!-- Analysis -->
+                                    <Grid Background="#F5F6FA">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="Analysis (5%)" Style="{StaticResource TableCell}" />
+                                        <TextBlock Grid.Column="1" Text="{Binding AnalysisCalculated, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" />
+                                        <TextBlock Grid.Column="2" Text="{Binding AnalysisAdjusted, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" Foreground="#CC1AC7" />
+                                        <TextBlock Grid.Column="3" Text="{Binding AnalysisTotal, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" FontWeight="SemiBold" />
+                                    </Grid>
+                                    <Border Height="1" Background="#E8EAF0" />
+
+                                    <!-- Business Design -->
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="Business Design (15%)" Style="{StaticResource TableCell}" />
+                                        <TextBlock Grid.Column="1" Text="{Binding BusinessDesignCalculated, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" />
+                                        <TextBlock Grid.Column="2" Text="{Binding BusinessDesignAdjusted, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" Foreground="#CC1AC7" />
+                                        <TextBlock Grid.Column="3" Text="{Binding BusinessDesignTotal, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" FontWeight="SemiBold" />
+                                    </Grid>
+                                    <Border Height="1" Background="#E8EAF0" />
+
+                                    <!-- Promotion -->
+                                    <Grid Background="#F5F6FA">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="Promotion (5%)" Style="{StaticResource TableCell}" />
+                                        <TextBlock Grid.Column="1" Text="{Binding PromotionCalculated, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" />
+                                        <TextBlock Grid.Column="2" Text="{Binding PromotionAdjusted, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" Foreground="#CC1AC7" />
+                                        <TextBlock Grid.Column="3" Text="{Binding PromotionTotal, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" FontWeight="SemiBold" />
+                                    </Grid>
+                                    <Border Height="1" Background="#E8EAF0" />
+
+                                    <!-- BA System Documentation -->
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="BA System Documentation (5%)" Style="{StaticResource TableCell}" />
+                                        <TextBlock Grid.Column="1" Text="{Binding BaSystemDocCalculated, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" />
+                                        <TextBlock Grid.Column="2" Text="{Binding BaSystemDocAdjusted, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" Foreground="#CC1AC7" />
+                                        <TextBlock Grid.Column="3" Text="{Binding BaSystemDocTotal, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" FontWeight="SemiBold" />
+                                    </Grid>
+                                    <Border Height="1" Background="#E8EAF0" />
+
+                                    <!-- Production Validation -->
+                                    <Grid Background="#F5F6FA">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="Production Validation (20%)" Style="{StaticResource TableCell}" />
+                                        <TextBlock Grid.Column="1" Text="{Binding ProductionValidationCalculated, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" />
+                                        <TextBlock Grid.Column="2" Text="{Binding ProductionValidationAdjusted, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" Foreground="#CC1AC7" />
+                                        <TextBlock Grid.Column="3" Text="{Binding ProductionValidationTotal, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" FontWeight="SemiBold" />
+                                    </Grid>
+                                    <Border Height="1" Background="#E8EAF0" />
+
+                                    <!-- PM Effort -->
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Style="{StaticResource TableCell}">
+                                            <Run Text="PM Effort (" /><Run Text="{Binding PmEffortPercentage, StringFormat={}{0:N0}, Mode=OneWay}" /><Run Text="%)" />
+                                        </TextBlock>
+                                        <TextBlock Grid.Column="1" Text="{Binding PmEffortCalculated, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" />
+                                        <TextBlock Grid.Column="2" Text="{Binding PmEffortAdjusted, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" Foreground="#CC1AC7" />
+                                        <TextBlock Grid.Column="3" Text="{Binding PmEffortTotal, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" FontWeight="SemiBold" />
+                                    </Grid>
+                                    <Border Height="1" Background="#E8EAF0" />
+
+                                    <!-- Collaboration Section Header -->
+                                    <Grid Background="#EDF0F8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="COLLABORATION" Style="{StaticResource TableCell}" FontWeight="Bold" Foreground="#2199B0" />
+                                        <TextBlock Grid.Column="1" Text="" Style="{StaticResource TableCellNumeric}" />
+                                        <TextBlock Grid.Column="2" Text="" Style="{StaticResource TableCellNumeric}" />
+                                        <TextBlock Grid.Column="3" Text="{Binding CollaborationTotalHours, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" FontWeight="SemiBold" Foreground="#2199B0" />
+                                    </Grid>
+                                    <Border Height="1" Background="#E8EAF0" />
+
+                                    <!-- WPRs -->
+                                    <Grid Background="#F5F6FA">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="  WPRs" Style="{StaticResource TableCell}" />
+                                        <TextBlock Grid.Column="1" Text="{Binding WprsCalculated, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" />
+                                        <TextBlock Grid.Column="2" Text="{Binding WprsAdjusted, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" Foreground="#CC1AC7" />
+                                        <TextBlock Grid.Column="3" Text="{Binding WprsTotal, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" />
+                                    </Grid>
+                                    <Border Height="1" Background="#E8EAF0" />
+
+                                    <!-- Client Meetings -->
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="  Client Meetings" Style="{StaticResource TableCell}" />
+                                        <TextBlock Grid.Column="1" Text="{Binding ClientMeetingsCalculated, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" />
+                                        <TextBlock Grid.Column="2" Text="{Binding ClientMeetingsAdjusted, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" Foreground="#CC1AC7" />
+                                        <TextBlock Grid.Column="3" Text="{Binding ClientMeetingsTotal, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" />
+                                    </Grid>
+                                    <Border Height="1" Background="#E8EAF0" />
+
+                                    <!-- Internal Meetings -->
+                                    <Grid Background="#F5F6FA">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="  Internal Meetings" Style="{StaticResource TableCell}" />
+                                        <TextBlock Grid.Column="1" Text="{Binding InternalMeetingsCalculated, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" />
+                                        <TextBlock Grid.Column="2" Text="{Binding InternalMeetingsAdjusted, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" Foreground="#CC1AC7" />
+                                        <TextBlock Grid.Column="3" Text="{Binding InternalMeetingsTotal, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" />
+                                    </Grid>
+                                    <Border Height="1" Background="#E8EAF0" />
+
+                                    <!-- Automation Test -->
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="  Automation Test Collab" Style="{StaticResource TableCell}" />
+                                        <TextBlock Grid.Column="1" Text="{Binding AutomationTestCalculated, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" />
+                                        <TextBlock Grid.Column="2" Text="{Binding AutomationTestAdjusted, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" Foreground="#CC1AC7" />
+                                        <TextBlock Grid.Column="3" Text="{Binding AutomationTestTotal, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" />
+                                    </Grid>
+                                    <Border Height="1" Background="#E8EAF0" />
+
+                                    <!-- Consultant/Mentor -->
+                                    <Grid Background="#F5F6FA">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="  Consultant/Mentor" Style="{StaticResource TableCell}" />
+                                        <TextBlock Grid.Column="1" Text="{Binding ConsultantMentorCalculated, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" />
+                                        <TextBlock Grid.Column="2" Text="{Binding ConsultantMentorAdjusted, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" Foreground="#CC1AC7" />
+                                        <TextBlock Grid.Column="3" Text="{Binding ConsultantMentorTotal, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" />
+                                    </Grid>
+                                    <Border Height="1" Background="#E8EAF0" />
+
+                                    <!-- Time for Estimates -->
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="Time for Estimates" Style="{StaticResource TableCell}" />
+                                        <TextBlock Grid.Column="1" Text="" Style="{StaticResource TableCellNumeric}" />
+                                        <TextBlock Grid.Column="2" Text="" Style="{StaticResource TableCellNumeric}" />
+                                        <TextBlock Grid.Column="3" Text="{Binding TimeForEstimates, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" />
+                                    </Grid>
+                                    <Border Height="1" Background="#E8EAF0" />
+
+                                    <!-- Total Actual Hours -->
+                                    <Grid Background="#F5F6FA">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="Total Actual Hours" Style="{StaticResource TableCell}" />
+                                        <TextBlock Grid.Column="1" Text="" Style="{StaticResource TableCellNumeric}" />
+                                        <TextBlock Grid.Column="2" Text="" Style="{StaticResource TableCellNumeric}" />
+                                        <TextBlock Grid.Column="3" Text="{Binding TotalActualHours, StringFormat={}{0:N2}}" Style="{StaticResource TableCellNumeric}" />
+                                    </Grid>
+
+                                    <!-- Subtotal -->
+                                    <Border Background="#019681" Padding="0">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="SUBTOTAL" FontFamily="Arial" FontSize="12" FontWeight="Bold" Foreground="White" Padding="8,8" />
+                                            <TextBlock Grid.Column="3" Text="{Binding SubtotalHours, StringFormat={}{0:N2}}" FontFamily="Arial" FontSize="12" FontWeight="Bold" Foreground="White" HorizontalAlignment="Right" Padding="8,8" />
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- Grand Total -->
+                                    <Border Padding="0">
+                                        <Border.Background>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                <GradientStop Color="#1931E3" Offset="0" />
+                                                <GradientStop Color="#2E307A" Offset="1" />
+                                            </LinearGradientBrush>
+                                        </Border.Background>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="GRAND TOTAL" FontFamily="Arial" FontSize="14" FontWeight="Bold" Foreground="White" Padding="8,10" />
+                                            <TextBlock Grid.Column="3" Text="{Binding GrandTotalHours, StringFormat={}{0:N0} Hrs}" FontFamily="Arial" FontSize="14" FontWeight="Bold" Foreground="#00EEAE" HorizontalAlignment="Right" Padding="8,10" />
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- COMPONENT DETAILS TABLE -->
+                    <Border Style="{StaticResource CardBorder}">
+                        <StackPanel>
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Component Details" Style="{StaticResource SectionHeader}" Margin="0" />
+                                <TextBlock Grid.Column="1" FontFamily="Arial" FontSize="11" Foreground="#5A6978" VerticalAlignment="Center">
+                                    <Run Text="{Binding ComponentCount, Mode=OneWay}" />
+                                    <Run Text=" components" />
+                                </TextBlock>
+                            </Grid>
+
+                            <DataGrid ItemsSource="{Binding ComponentRows}" AutoGenerateColumns="False"
+                                      IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False"
+                                      HeadersVisibility="Column" GridLinesVisibility="Horizontal"
+                                      HorizontalGridLinesBrush="#E8EAF0" BorderThickness="1" BorderBrush="#D4D7E0"
+                                      FontFamily="Arial" FontSize="11" RowHeight="32"
+                                      Background="White" AlternatingRowBackground="#F9FAFB">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="#" Binding="{Binding LineNumber}" Width="35" />
+                                    <DataGridTextColumn Header="Req #" Binding="{Binding RequirementId}" Width="80" />
+                                    <DataGridTextColumn Header="Component Type" Binding="{Binding ComponentType}" Width="*" />
+                                    <DataGridTextColumn Header="New/Change" Binding="{Binding ChangeType}" Width="80" />
+                                    <DataGridTextColumn Header="Size" Binding="{Binding Size}" Width="70" />
+                                    <DataGridTextColumn Header="Count" Binding="{Binding Count}" Width="50" />
+                                    <DataGridTextColumn Header="Base Hrs" Binding="{Binding BaseHours, StringFormat=N4}" Width="80" />
+                                    <DataGridTextColumn Header="Total Hrs" Binding="{Binding TotalHours, StringFormat=N4}" Width="80" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ASSUMPTIONS -->
+                    <Border Style="{StaticResource CardBorder}" x:Name="AssumptionsCard">
+                        <StackPanel>
+                            <TextBlock Text="Assumptions &amp; Notes" Style="{StaticResource SectionHeader}" />
+                            
+                            <StackPanel Margin="0,0,0,8" x:Name="SeAssumptionsPanel">
+                                <TextBlock Text="SE Assumptions" FontFamily="Arial" FontSize="10" FontWeight="Bold" Foreground="#019681" />
+                                <TextBlock Text="{Binding SeAssumptions}" FontFamily="Arial" FontSize="12" Foreground="#2B3A44" TextWrapping="Wrap" Margin="0,4,0,0" />
+                            </StackPanel>
+
+                            <StackPanel Margin="0,0,0,8" x:Name="BaAssumptionsPanel">
+                                <TextBlock Text="BA Assumptions" FontFamily="Arial" FontSize="10" FontWeight="Bold" Foreground="#2E307A" />
+                                <TextBlock Text="{Binding BaAssumptions}" FontFamily="Arial" FontSize="12" Foreground="#2B3A44" TextWrapping="Wrap" Margin="0,4,0,0" />
+                            </StackPanel>
+
+                            <StackPanel Margin="0,0,0,8" x:Name="CollabAssumptionsPanel">
+                                <TextBlock Text="Collaboration Assumptions" FontFamily="Arial" FontSize="10" FontWeight="Bold" Foreground="#2199B0" />
+                                <TextBlock Text="{Binding CollaborationAssumptions}" FontFamily="Arial" FontSize="12" Foreground="#2B3A44" TextWrapping="Wrap" Margin="0,4,0,0" />
+                            </StackPanel>
+
+                            <StackPanel Margin="0,0,0,0" x:Name="GeneralAssumptionsPanel">
+                                <TextBlock Text="General Assumptions" FontFamily="Arial" FontSize="10" FontWeight="Bold" Foreground="#5A6978" />
+                                <TextBlock Text="{Binding GeneralAssumptions}" FontFamily="Arial" FontSize="12" Foreground="#2B3A44" TextWrapping="Wrap" Margin="0,4,0,0" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- Right Sidebar: Role Breakout + Summary Cards -->
+                <StackPanel Grid.Column="1">
+                    <!-- Role Breakout Card -->
+                    <Border Style="{StaticResource CardBorder}">
+                        <StackPanel>
+                            <TextBlock Text="Role Breakout" Style="{StaticResource SectionHeader}" />
+
+                            <!-- BA -->
+                            <Grid Margin="0,6">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Orientation="Horizontal">
+                                    <Border Width="4" Height="16" Background="#2E307A" CornerRadius="2" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                    <TextBlock Text="BA" FontFamily="Arial" FontSize="12" Foreground="#2B3A44" VerticalAlignment="Center" />
+                                </StackPanel>
+                                <TextBlock Grid.Column="1" Text="{Binding BaRoleHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" FontWeight="SemiBold" Foreground="#2E307A" />
+                            </Grid>
+
+                            <!-- SE -->
+                            <Grid Margin="0,6">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Orientation="Horizontal">
+                                    <Border Width="4" Height="16" Background="#019681" CornerRadius="2" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                    <TextBlock Text="SE" FontFamily="Arial" FontSize="12" Foreground="#2B3A44" VerticalAlignment="Center" />
+                                </StackPanel>
+                                <TextBlock Grid.Column="1" Text="{Binding SeRoleHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" FontWeight="SemiBold" Foreground="#019681" />
+                            </Grid>
+
+                            <!-- Tester -->
+                            <Grid Margin="0,6">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Orientation="Horizontal">
+                                    <Border Width="4" Height="16" Background="#8C5CED" CornerRadius="2" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                    <TextBlock Text="Tester" FontFamily="Arial" FontSize="12" Foreground="#2B3A44" VerticalAlignment="Center" />
+                                </StackPanel>
+                                <TextBlock Grid.Column="1" Text="{Binding TesterRoleHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" FontWeight="SemiBold" Foreground="#8C5CED" />
+                            </Grid>
+
+                            <!-- PM -->
+                            <Grid Margin="0,6">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Orientation="Horizontal">
+                                    <Border Width="4" Height="16" Background="#55206E" CornerRadius="2" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                    <TextBlock Text="Project Manager" FontFamily="Arial" FontSize="12" Foreground="#2B3A44" VerticalAlignment="Center" />
+                                </StackPanel>
+                                <TextBlock Grid.Column="1" Text="{Binding PmRoleHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" FontWeight="SemiBold" Foreground="#55206E" />
+                            </Grid>
+
+                            <!-- Collaboration -->
+                            <Grid Margin="0,6">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Orientation="Horizontal">
+                                    <Border Width="4" Height="16" Background="#2199B0" CornerRadius="2" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                    <TextBlock Text="Collaboration" FontFamily="Arial" FontSize="12" Foreground="#2B3A44" VerticalAlignment="Center" />
+                                </StackPanel>
+                                <TextBlock Grid.Column="1" Text="{Binding CollaborationRoleHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" FontWeight="SemiBold" Foreground="#2199B0" />
+                            </Grid>
+
+                            <Border Height="1" Background="#E8EAF0" Margin="0,8" />
+
+                            <!-- Total -->
+                            <Grid Margin="0,4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Total" FontFamily="Arial" FontSize="12" FontWeight="Bold" Foreground="#2B3A44" VerticalAlignment="Center" />
+                                <TextBlock Grid.Column="1" Text="{Binding TotalRoleHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="14" FontWeight="Bold" Foreground="#1931E3" />
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Estimation Config Card -->
+                    <Border Style="{StaticResource CardBorder}">
+                        <StackPanel>
+                            <TextBlock Text="Configuration" Style="{StaticResource SectionHeader}" />
+
+                            <Grid Margin="0,4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="PM Effort %" FontFamily="Arial" FontSize="11" Foreground="#5A6978" />
+                                <TextBlock Grid.Column="1" Text="{Binding PmEffortPercentage, StringFormat={}{0:N0}%}" FontFamily="Arial" FontSize="11" FontWeight="SemiBold" Foreground="#2B3A44" />
+                            </Grid>
+
+                            <Grid Margin="0,4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="System Testing" FontFamily="Arial" FontSize="11" Foreground="#5A6978" />
+                                <TextBlock Grid.Column="1" x:Name="SysTestMethodText" FontFamily="Arial" FontSize="11" FontWeight="SemiBold" Foreground="#2B3A44" Text="30% Formula" />
+                            </Grid>
+
+                            <Grid Margin="0,4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Components" FontFamily="Arial" FontSize="11" Foreground="#5A6978" />
+                                <TextBlock Grid.Column="1" Text="{Binding ComponentCount}" FontFamily="Arial" FontSize="11" FontWeight="SemiBold" Foreground="#2B3A44" />
+                            </Grid>
+
+                            <Grid Margin="0,4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="T-Shirt Size" FontFamily="Arial" FontSize="11" Foreground="#5A6978" />
+                                <TextBlock Grid.Column="1" Text="{Binding TShirtSize}" FontFamily="Arial" FontSize="12" FontWeight="Bold" Foreground="#019681" />
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Adjusted Hours Summary -->
+                    <Border Style="{StaticResource CardBorder}">
+                        <StackPanel>
+                            <TextBlock Text="Adjusted Hours Comments" Style="{StaticResource SectionHeader}" />
+                            <TextBlock Text="{Binding AdjustedHoursComments}" FontFamily="Arial" FontSize="11" Foreground="#5A6978" TextWrapping="Wrap"
+                                       Visibility="{Binding AdjustedHoursComments, TargetNullValue=Collapsed, FallbackValue=Visible}" />
+                            <TextBlock Text="No adjustment comments" FontFamily="Arial" FontSize="11" Foreground="#C2C6D2" FontStyle="Italic"
+                                       x:Name="NoCommentsText" />
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</Window>

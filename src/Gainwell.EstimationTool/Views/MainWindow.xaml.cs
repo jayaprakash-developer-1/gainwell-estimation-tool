@@ -337,7 +337,7 @@ public partial class MainWindow : Window
 
     private void OnFinalTabClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
-        MessageBox.Show("Final Estimate is coming soon.", "Not Yet Available", MessageBoxButton.OK, MessageBoxImage.Information);
+        EstimateNavigator.SwitchToFinalEstimate(this);
     }
 
     private void OnSettingsClick(object sender, RoutedEventArgs e)
