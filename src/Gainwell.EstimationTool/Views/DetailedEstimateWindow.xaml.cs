@@ -182,11 +182,10 @@ public partial class DetailedEstimateWindow : Window
         var grandTotal = devTotal + promotion + doc;
 
         SeDevTotalText.Text = devTotal.ToString("N2");
-        SePromotionTotalText.Text = promotion.ToString("N2");
-        SeDocTotalText.Text = doc.ToString("N2");
-        SePromoDocTotalText.Text = (promotion + doc).ToString("N2");
+        var promoDoc = promotion + doc;
+        SePromoDocTotalText.Text = promoDoc.ToString("N2");
+        SePromoDocCardText.Text = promoDoc.ToString("N2");
         SeTotalText.Text = grandTotal.ToString("N2");
-        SeComponentCountText.Text = ComponentRows.Count(r => r.GrandTotal > 0).ToString();
     }
 
     private void InitializeGrids()
@@ -652,13 +651,20 @@ public partial class DetailedEstimateWindow : Window
     private void OnSeAssumptionTextChanged(object sender, TextChangedEventArgs e)
     {
         if (!IsLoaded) return;
-        SeAssumptionCharCount.Text = $"{SeModuleAssumptionsTextBox.Text.Length}/1000";
+        SeAssumptionCharCount.Text = $"{SeModuleAssumptionsTextBox.Text.Length}/4000";
     }
 
     private void OnSeAdjustedTextChanged(object sender, TextChangedEventArgs e)
     {
         if (!IsLoaded) return;
-        SeAdjustedCharCount.Text = $"{SeAdjustedHrsCommentTextBox.Text.Length}/1000";
+        SeAdjustedCharCount.Text = $"{SeAdjustedHrsCommentTextBox.Text.Length}/4000";
+    }
+
+    private void OnSePromoDocChanged(object sender, TextChangedEventArgs e)
+    {
+        if (!IsLoaded) return;
+        UpdateSeTotals();
+        UpdateSummaryTab();
     }
 
     private void OnConsultantCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
