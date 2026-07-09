@@ -229,9 +229,17 @@
         <Style x:Key="NumericTextBox" TargetType="TextBox">
             <Setter Property="Padding" Value="8,6" />
             <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="BorderBrush" Value="#D1D5DB" />
             <Setter Property="BorderThickness" Value="1" />
+            <EventSetter Event="GotKeyboardFocus" Handler="NumericTextBox_GotFocus" />
+            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="NumericTextBox_PreviewMouseDown" />
             <Style.Triggers>
+                <Trigger Property="Text" Value="0">
+                    <Setter Property="FontSize" Value="11" />
+                    <Setter Property="Foreground" Value="#C0C4CC" />
+                    <Setter Property="FontWeight" Value="Normal" />
+                </Trigger>
                 <Trigger Property="Validation.HasError" Value="True">
                     <Setter Property="BorderBrush" Value="#EF4444" />
                     <Setter Property="BorderThickness" Value="2" />

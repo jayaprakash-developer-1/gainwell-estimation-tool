@@ -50,6 +50,32 @@ public partial class DetailedEstimateWindow : Window
         InitializeGrids();
         InitializeSummaryGrids();
         LoadProjectInfo();
+
+        // Clear "0" on focus and restore if left empty (same UX as Initial Estimate)
+        AddHandler(UIElement.GotKeyboardFocusEvent, new KeyboardFocusChangedEventHandler(OnTextBoxGotFocus), true);
+        AddHandler(UIElement.PreviewMouseLeftButtonDownEvent, new MouseButtonEventHandler(OnTextBoxPreviewMouseDown), true);
+        AddHandler(UIElement.LostKeyboardFocusEvent, new KeyboardFocusChangedEventHandler(OnTextBoxLostFocus), true);
+    }
+
+    private static void OnTextBoxGotFocus(object sender, KeyboardFocusChangedEventArgs e)
+    {
+        if (e.NewFocus is System.Windows.Controls.TextBox tb && !tb.AcceptsReturn && tb.Text == "0")
+            tb.Clear();
+    }
+
+    private static void OnTextBoxPreviewMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.OriginalSource is System.Windows.Controls.TextBox tb && !tb.AcceptsReturn && !tb.IsKeyboardFocusWithin && tb.Text == "0")
+        {
+            tb.Focus();
+            e.Handled = true;
+        }
+    }
+
+    private static void OnTextBoxLostFocus(object sender, KeyboardFocusChangedEventArgs e)
+    {
+        if (e.OldFocus is System.Windows.Controls.TextBox tb && !tb.AcceptsReturn && string.IsNullOrWhiteSpace(tb.Text))
+            tb.Text = "0";
     }
 
     private void LoadProjectInfo()
@@ -341,6 +367,7 @@ public partial class DetailedEstimateWindow : Window
     private void OnSummaryFieldChanged(object sender, TextChangedEventArgs e)
     {
         if (!IsLoaded) return;
+        UpdateBaCardDisplays();
         UpdateSummaryTab();
     }
 
@@ -379,6 +406,7 @@ public partial class DetailedEstimateWindow : Window
     {
         if (!IsLoaded) return;
         SyncCardsToModel();
+        SyncPvRadiosToModel();
         UpdateBaCardDisplays();
         UpdateSummaryTab();
     }
@@ -524,20 +552,24 @@ public partial class DetailedEstimateWindow : Window
     private void UpdateBaCardDisplays()
     {
         // New to Area
-        if (BaNewUR_CT != null) BaNewUR_CT.Text = $"CT: {BaTestCases[0].Total:N2}";
-        if (BaNewUR_AdjExp != null) BaNewUR_AdjExp.Text = $"Adj: {BaTestCases[0].AdjustedExpLevel:N2}";
+        if (BaNewUR_CT != null) BaNewUR_CT.Text = $"Complexity Total: {BaTestCases[0].Total:N2}";
+        if (BaNewUR_AdjExp != null) BaNewUR_AdjExp.Text = $"Adj Exp Lvl: {BaTestCases[0].AdjustedExpLevel:N2}";
         if (BaNewUR_Total != null) BaNewUR_Total.Text = $"Total: {BaTestCases[0].GrandTotal:N2} hrs";
 
-        if (BaNewWTC_CT != null) BaNewWTC_CT.Text = $"CT: {BaTestCases[1].Total:N2}";
-        if (BaNewWTC_AdjExp != null) BaNewWTC_AdjExp.Text = $"Adj: {BaTestCases[1].AdjustedExpLevel:N2}";
+        if (BaNewWTC_CT != null) BaNewWTC_CT.Text = $"Complexity Total: {BaTestCases[1].Total:N2}";
+        if (BaNewWTC_AdjExp != null) BaNewWTC_AdjExp.Text = $"Adj Exp Lvl: {BaTestCases[1].AdjustedExpLevel:N2}";
         if (BaNewWTC_Total != null) BaNewWTC_Total.Text = $"Total: {BaTestCases[1].GrandTotal:N2} hrs";
 
+        if (BaNewDP_CT != null) BaNewDP_CT.Text = BaTestCases[3].Total.ToString("N2");
         if (BaNewDP_Calc != null) BaNewDP_Calc.Text = BaTestCases[3].AdjustedExpLevel.ToString("N2");
         if (BaNewDP_Total != null) BaNewDP_Total.Text = BaTestCases[3].GrandTotal.ToString("N2");
+        if (BaNewALM_CT != null) BaNewALM_CT.Text = BaTestCases[4].Total.ToString("N2");
         if (BaNewALM_Calc != null) BaNewALM_Calc.Text = BaTestCases[4].AdjustedExpLevel.ToString("N2");
         if (BaNewALM_Total != null) BaNewALM_Total.Text = BaTestCases[4].GrandTotal.ToString("N2");
+        if (BaNewSTE_CT != null) BaNewSTE_CT.Text = BaTestCases[5].Total.ToString("N2");
         if (BaNewSTE_Calc != null) BaNewSTE_Calc.Text = BaTestCases[5].AdjustedExpLevel.ToString("N2");
         if (BaNewSTE_Total != null) BaNewSTE_Total.Text = BaTestCases[5].GrandTotal.ToString("N2");
+        if (BaNewPRD_CT != null) BaNewPRD_CT.Text = BaTestCases[6].Total.ToString("N2");
         if (BaNewPRD_Calc != null) BaNewPRD_Calc.Text = BaTestCases[6].AdjustedExpLevel.ToString("N2");
         if (BaNewPRD_Total != null) BaNewPRD_Total.Text = BaTestCases[6].GrandTotal.ToString("N2");
 
@@ -545,20 +577,24 @@ public partial class DetailedEstimateWindow : Window
         if (BaNewToAreaSubtotal != null) BaNewToAreaSubtotal.Text = $"Subtotal: {newSubtotal:N2} hrs";
 
         // Proficient
-        if (BaProfUR_CT != null) BaProfUR_CT.Text = $"CT: {BaTestCases[7].Total:N2}";
-        if (BaProfUR_AdjExp != null) BaProfUR_AdjExp.Text = $"Adj: {BaTestCases[7].AdjustedExpLevel:N2}";
+        if (BaProfUR_CT != null) BaProfUR_CT.Text = $"Complexity Total: {BaTestCases[7].Total:N2}";
+        if (BaProfUR_AdjExp != null) BaProfUR_AdjExp.Text = $"Adj Exp Lvl: {BaTestCases[7].AdjustedExpLevel:N2}";
         if (BaProfUR_Total != null) BaProfUR_Total.Text = $"Total: {BaTestCases[7].GrandTotal:N2} hrs";
 
-        if (BaProfWTC_CT != null) BaProfWTC_CT.Text = $"CT: {BaTestCases[8].Total:N2}";
-        if (BaProfWTC_AdjExp != null) BaProfWTC_AdjExp.Text = $"Adj: {BaTestCases[8].AdjustedExpLevel:N2}";
+        if (BaProfWTC_CT != null) BaProfWTC_CT.Text = $"Complexity Total: {BaTestCases[8].Total:N2}";
+        if (BaProfWTC_AdjExp != null) BaProfWTC_AdjExp.Text = $"Adj Exp Lvl: {BaTestCases[8].AdjustedExpLevel:N2}";
         if (BaProfWTC_Total != null) BaProfWTC_Total.Text = $"Total: {BaTestCases[8].GrandTotal:N2} hrs";
 
+        if (BaProfDP_CT != null) BaProfDP_CT.Text = BaTestCases[10].Total.ToString("N2");
         if (BaProfDP_Calc != null) BaProfDP_Calc.Text = BaTestCases[10].AdjustedExpLevel.ToString("N2");
         if (BaProfDP_Total != null) BaProfDP_Total.Text = BaTestCases[10].GrandTotal.ToString("N2");
+        if (BaProfALM_CT != null) BaProfALM_CT.Text = BaTestCases[11].Total.ToString("N2");
         if (BaProfALM_Calc != null) BaProfALM_Calc.Text = BaTestCases[11].AdjustedExpLevel.ToString("N2");
         if (BaProfALM_Total != null) BaProfALM_Total.Text = BaTestCases[11].GrandTotal.ToString("N2");
+        if (BaProfSTE_CT != null) BaProfSTE_CT.Text = BaTestCases[12].Total.ToString("N2");
         if (BaProfSTE_Calc != null) BaProfSTE_Calc.Text = BaTestCases[12].AdjustedExpLevel.ToString("N2");
         if (BaProfSTE_Total != null) BaProfSTE_Total.Text = BaTestCases[12].GrandTotal.ToString("N2");
+        if (BaProfPRD_CT != null) BaProfPRD_CT.Text = BaTestCases[13].Total.ToString("N2");
         if (BaProfPRD_Calc != null) BaProfPRD_Calc.Text = BaTestCases[13].AdjustedExpLevel.ToString("N2");
         if (BaProfPRD_Total != null) BaProfPRD_Total.Text = BaTestCases[13].GrandTotal.ToString("N2");
 
@@ -566,20 +602,24 @@ public partial class DetailedEstimateWindow : Window
         if (BaProficientSubtotal != null) BaProficientSubtotal.Text = $"Subtotal: {profSubtotal:N2} hrs";
 
         // Expert
-        if (BaExpUR_CT != null) BaExpUR_CT.Text = $"CT: {BaTestCases[14].Total:N2}";
-        if (BaExpUR_AdjExp != null) BaExpUR_AdjExp.Text = $"Adj: {BaTestCases[14].AdjustedExpLevel:N2}";
+        if (BaExpUR_CT != null) BaExpUR_CT.Text = $"Complexity Total: {BaTestCases[14].Total:N2}";
+        if (BaExpUR_AdjExp != null) BaExpUR_AdjExp.Text = $"Adj Exp Lvl: {BaTestCases[14].AdjustedExpLevel:N2}";
         if (BaExpUR_Total != null) BaExpUR_Total.Text = $"Total: {BaTestCases[14].GrandTotal:N2} hrs";
 
-        if (BaExpWTC_CT != null) BaExpWTC_CT.Text = $"CT: {BaTestCases[15].Total:N2}";
-        if (BaExpWTC_AdjExp != null) BaExpWTC_AdjExp.Text = $"Adj: {BaTestCases[15].AdjustedExpLevel:N2}";
+        if (BaExpWTC_CT != null) BaExpWTC_CT.Text = $"Complexity Total: {BaTestCases[15].Total:N2}";
+        if (BaExpWTC_AdjExp != null) BaExpWTC_AdjExp.Text = $"Adj Exp Lvl: {BaTestCases[15].AdjustedExpLevel:N2}";
         if (BaExpWTC_Total != null) BaExpWTC_Total.Text = $"Total: {BaTestCases[15].GrandTotal:N2} hrs";
 
+        if (BaExpDP_CT != null) BaExpDP_CT.Text = BaTestCases[17].Total.ToString("N2");
         if (BaExpDP_Calc != null) BaExpDP_Calc.Text = BaTestCases[17].AdjustedExpLevel.ToString("N2");
         if (BaExpDP_Total != null) BaExpDP_Total.Text = BaTestCases[17].GrandTotal.ToString("N2");
+        if (BaExpALM_CT != null) BaExpALM_CT.Text = BaTestCases[18].Total.ToString("N2");
         if (BaExpALM_Calc != null) BaExpALM_Calc.Text = BaTestCases[18].AdjustedExpLevel.ToString("N2");
         if (BaExpALM_Total != null) BaExpALM_Total.Text = BaTestCases[18].GrandTotal.ToString("N2");
+        if (BaExpSTE_CT != null) BaExpSTE_CT.Text = BaTestCases[19].Total.ToString("N2");
         if (BaExpSTE_Calc != null) BaExpSTE_Calc.Text = BaTestCases[19].AdjustedExpLevel.ToString("N2");
         if (BaExpSTE_Total != null) BaExpSTE_Total.Text = BaTestCases[19].GrandTotal.ToString("N2");
+        if (BaExpPRD_CT != null) BaExpPRD_CT.Text = BaTestCases[20].Total.ToString("N2");
         if (BaExpPRD_Calc != null) BaExpPRD_Calc.Text = BaTestCases[20].AdjustedExpLevel.ToString("N2");
         if (BaExpPRD_Total != null) BaExpPRD_Total.Text = BaTestCases[20].GrandTotal.ToString("N2");
 
@@ -587,15 +627,15 @@ public partial class DetailedEstimateWindow : Window
         if (BaExpertSubtotal != null) BaExpertSubtotal.Text = $"Subtotal: {expSubtotal:N2} hrs";
 
         // PV displays
-        UpdatePvCardDisplay(BaPvNewGV_Result, BaPvNewGV_Total, BaValidationItems[0]);
-        UpdatePvCardDisplay(BaPvNewPC_Result, BaPvNewPC_Total, BaValidationItems[1]);
-        UpdatePvCardDisplay(BaPvNewRC_Result, BaPvNewRC_Total, BaValidationItems[2]);
-        UpdatePvCardDisplay(BaPvProfGV_Result, BaPvProfGV_Total, BaValidationItems[3]);
-        UpdatePvCardDisplay(BaPvProfPC_Result, BaPvProfPC_Total, BaValidationItems[4]);
-        UpdatePvCardDisplay(BaPvProfRC_Result, BaPvProfRC_Total, BaValidationItems[5]);
-        UpdatePvCardDisplay(BaPvExpGV_Result, BaPvExpGV_Total, BaValidationItems[6]);
-        UpdatePvCardDisplay(BaPvExpPC_Result, BaPvExpPC_Total, BaValidationItems[7]);
-        UpdatePvCardDisplay(BaPvExpRC_Result, BaPvExpRC_Total, BaValidationItems[8]);
+        UpdatePvCardDisplay(BaPvNewGV_CT, BaPvNewGV_Result, BaPvNewGV_Total, BaValidationItems[0]);
+        UpdatePvCardDisplay(BaPvNewPC_CT, BaPvNewPC_Result, BaPvNewPC_Total, BaValidationItems[1]);
+        UpdatePvCardDisplay(BaPvNewRC_CT, BaPvNewRC_Result, BaPvNewRC_Total, BaValidationItems[2]);
+        UpdatePvCardDisplay(BaPvProfGV_CT, BaPvProfGV_Result, BaPvProfGV_Total, BaValidationItems[3]);
+        UpdatePvCardDisplay(BaPvProfPC_CT, BaPvProfPC_Result, BaPvProfPC_Total, BaValidationItems[4]);
+        UpdatePvCardDisplay(BaPvProfRC_CT, BaPvProfRC_Result, BaPvProfRC_Total, BaValidationItems[5]);
+        UpdatePvCardDisplay(BaPvExpGV_CT, BaPvExpGV_Result, BaPvExpGV_Total, BaValidationItems[6]);
+        UpdatePvCardDisplay(BaPvExpPC_CT, BaPvExpPC_Result, BaPvExpPC_Total, BaValidationItems[7]);
+        UpdatePvCardDisplay(BaPvExpRC_CT, BaPvExpRC_Result, BaPvExpRC_Total, BaValidationItems[8]);
 
         // PV subtotals per experience level
         decimal pvNewSub = BaValidationItems.Take(3).Sum(r => r.GrandTotal);
@@ -619,9 +659,10 @@ public partial class DetailedEstimateWindow : Window
         if (BaStickySysDocText != null) BaStickySysDocText.Text = $"{(baSysDoc + commPlan):N2} hrs";
     }
 
-    private static void UpdatePvCardDisplay(System.Windows.Controls.TextBlock? resultTb, System.Windows.Controls.TextBlock? totalTb, BaValidationRow row)
+    private static void UpdatePvCardDisplay(System.Windows.Controls.TextBlock? ctTb, System.Windows.Controls.TextBlock? resultTb, System.Windows.Controls.TextBlock? totalTb, BaValidationRow row)
     {
-        if (resultTb != null) resultTb.Text = $"{row.AdjustedExpLevel:N2} hrs";
+        if (ctTb != null) ctTb.Text = $"Complexity Total: {row.ComplexityTotal:N2}";
+        if (resultTb != null) resultTb.Text = $"Adj Exp Lvl: {row.AdjustedExpLevel:N2}";
         if (totalTb != null) totalTb.Text = $"Total: {row.GrandTotal:N2}";
     }
 
