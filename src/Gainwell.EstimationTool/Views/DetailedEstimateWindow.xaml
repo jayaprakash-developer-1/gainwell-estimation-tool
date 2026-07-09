@@ -6,7 +6,7 @@
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
         Background="#F5F7FA"
-        Icon="Assets/app.ico"
+        Icon="/Assets/app.ico"
         KeyboardNavigation.TabNavigation="Cycle">
 
     <Window.InputBindings>
@@ -133,7 +133,7 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.Column="0" VerticalAlignment="Center" Orientation="Horizontal">
-                    <Image Source="Assets/logo.png" Height="36" Margin="0,0,12,0" VerticalAlignment="Center" />
+                    <Image Source="/Assets/logo.png" Height="36" Margin="0,0,12,0" VerticalAlignment="Center" />
                     <TextBlock Text="Detailed Estimate" FontSize="20" FontWeight="Bold" Foreground="White" VerticalAlignment="Center" />
                 </StackPanel>
 
