@@ -5,7 +5,7 @@
         Height="1000" Width="1500"
         WindowStartupLocation="CenterScreen"
         Background="#EBEDF5"
-        Icon="Assets/app.ico">
+        Icon="/Assets/app.ico">
 
     <Window.Resources>
         <Style x:Key="CardBorder" TargetType="Border">
@@ -121,7 +121,7 @@
             </Border.Background>
             <StackPanel>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <Image Source="Assets/logo.png" Height="40" Margin="0,0,16,0" VerticalAlignment="Center" />
+                    <Image Source="/Assets/logo.png" Height="40" Margin="0,0,16,0" VerticalAlignment="Center" />
                     <StackPanel VerticalAlignment="Center">
                         <TextBlock Text="Estimation Tool" FontSize="24" FontWeight="Bold" Foreground="White" />
                         <TextBlock Text="Component-Based Project Estimation" FontSize="13" Foreground="#00EEAE" Margin="0,4,0,0" />

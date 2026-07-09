@@ -6,7 +6,7 @@
         Height="700" Width="900"
         WindowStartupLocation="CenterOwner"
         Background="#EBEDF5"
-        Icon="Assets/app.ico">
+        Icon="/Assets/app.ico">
 
     <Window.DataContext>
         <vm:SettingsViewModel />
