@@ -676,13 +676,24 @@ public static class DetailedWeightedValues
     }
 
     /// <summary>
-    /// Get the total SE hours for a component (sum of all task phases).
+    /// Get the total SE hours for a component (sum of all task phases),
+    /// rounded to the nearest 0.25 to match Excel behavior.
     /// </summary>
     public static decimal GetSeTotalHours(ComponentType componentType, ComponentStatus status, Complexity complexity)
     {
-        return _seMatrix
+        var rawTotal = _seMatrix
             .Where(kv => kv.Key.Item1 == componentType && kv.Key.Item2 != SeTaskPhase.Total && kv.Key.Item3 == status && kv.Key.Item4 == complexity)
             .Sum(kv => kv.Value);
+        return RoundToQuarter(rawTotal);
+    }
+
+    /// <summary>
+    /// Rounds a value to the nearest 0.25 increment (0.00, 0.25, 0.50, 0.75).
+    /// Matches Excel MROUND(value, 0.25) behavior.
+    /// </summary>
+    public static decimal RoundToQuarter(decimal value)
+    {
+        return Math.Round(value * 4m, MidpointRounding.AwayFromZero) / 4m;
     }
 
     /// <summary>
