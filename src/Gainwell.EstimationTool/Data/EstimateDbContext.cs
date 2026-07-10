@@ -13,6 +13,13 @@ public class EstimateDbContext : DbContext
     public DbSet<ProjectEntity> Projects { get; set; } = null!;
     public DbSet<ComponentEntryEntity> ComponentEntries { get; set; } = null!;
     public DbSet<CollaborationItemEntity> CollaborationItems { get; set; } = null!;
+    public DbSet<DetailedSeComponentEntity> DetailedSeComponents { get; set; } = null!;
+    public DbSet<DetailedSeModuleEntity> DetailedSeModules { get; set; } = null!;
+    public DbSet<DetailedBaTestCaseEntity> DetailedBaTestCases { get; set; } = null!;
+    public DbSet<DetailedBaValidationEntity> DetailedBaValidations { get; set; } = null!;
+    public DbSet<DetailedConsultantEntity> DetailedConsultants { get; set; } = null!;
+    public DbSet<DetailedCollabMeetingEntity> DetailedCollabMeetings { get; set; } = null!;
+    public DbSet<DetailedMiscFieldsEntity> DetailedMiscFields { get; set; } = null!;
 
     private readonly string _dbPath = string.Empty;
 
@@ -167,6 +174,121 @@ public class EstimateDbContext : DbContext
             entity.HasKey(e => e.Id);
             entity.HasIndex(e => new { e.Role, e.Level }).IsUnique();
             entity.Property(e => e.Multiplier).HasColumnType("REAL");
+        });
+
+        // === Detailed Estimate Persistence Tables ===
+
+        modelBuilder.Entity<DetailedSeComponentEntity>(entity =>
+        {
+            entity.ToTable("DETAILED_SE_COMPONENTS");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.ProjectId).HasMaxLength(36).IsRequired();
+            entity.Property(e => e.ComponentType).HasMaxLength(50).IsRequired();
+            entity.Property(e => e.HoursTotal).HasColumnType("REAL");
+            entity.Property(e => e.AdjustedExpLevel).HasColumnType("REAL");
+            entity.Property(e => e.AdjustedHrs).HasColumnType("REAL");
+            entity.Property(e => e.GrandTotal).HasColumnType("REAL");
+            entity.HasOne(e => e.Project).WithMany().HasForeignKey(e => e.ProjectId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<DetailedSeModuleEntity>(entity =>
+        {
+            entity.ToTable("DETAILED_SE_MODULES");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.ProjectId).HasMaxLength(36).IsRequired();
+            entity.Property(e => e.ComponentType).HasMaxLength(50).IsRequired();
+            entity.Property(e => e.ExperienceLevel).HasMaxLength(20);
+            entity.Property(e => e.AssociatedRequirement).HasMaxLength(200);
+            entity.Property(e => e.ModuleName).HasMaxLength(200);
+            entity.Property(e => e.ComponentStatus).HasMaxLength(20);
+            entity.Property(e => e.ComplexityTotal).HasColumnType("REAL");
+            entity.Property(e => e.AdjustedExpLevel).HasColumnType("REAL");
+            entity.Property(e => e.AdjustedHrs).HasColumnType("REAL");
+            entity.Property(e => e.GrandTotal).HasColumnType("REAL");
+            entity.HasOne(e => e.Project).WithMany().HasForeignKey(e => e.ProjectId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<DetailedBaTestCaseEntity>(entity =>
+        {
+            entity.ToTable("DETAILED_BA_TEST_CASES");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.ProjectId).HasMaxLength(36).IsRequired();
+            entity.Property(e => e.TaskName).HasMaxLength(200);
+            entity.Property(e => e.TaskType).HasMaxLength(50);
+            entity.Property(e => e.Category).HasMaxLength(50);
+            entity.Property(e => e.ExperienceLevel).HasMaxLength(20);
+            entity.Property(e => e.GridType).HasMaxLength(20);
+            entity.Property(e => e.SimpleCount).HasColumnType("REAL");
+            entity.Property(e => e.ModerateCount).HasColumnType("REAL");
+            entity.Property(e => e.ComplexCount).HasColumnType("REAL");
+            entity.Property(e => e.VeryComplexCount).HasColumnType("REAL");
+            entity.Property(e => e.ManualAdjHours).HasColumnType("REAL");
+            entity.HasOne(e => e.Project).WithMany().HasForeignKey(e => e.ProjectId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<DetailedBaValidationEntity>(entity =>
+        {
+            entity.ToTable("DETAILED_BA_VALIDATIONS");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.ProjectId).HasMaxLength(36).IsRequired();
+            entity.Property(e => e.TaskName).HasMaxLength(200);
+            entity.Property(e => e.TaskType).HasMaxLength(50);
+            entity.Property(e => e.ExperienceLevel).HasMaxLength(20);
+            entity.Property(e => e.ManualAdjHours).HasColumnType("REAL");
+            entity.HasOne(e => e.Project).WithMany().HasForeignKey(e => e.ProjectId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<DetailedConsultantEntity>(entity =>
+        {
+            entity.ToTable("DETAILED_CONSULTANTS");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.ProjectId).HasMaxLength(36).IsRequired();
+            entity.Property(e => e.Name).HasMaxLength(200);
+            entity.Property(e => e.Hours).HasColumnType("REAL");
+            entity.HasOne(e => e.Project).WithMany().HasForeignKey(e => e.ProjectId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<DetailedCollabMeetingEntity>(entity =>
+        {
+            entity.ToTable("DETAILED_COLLAB_MEETINGS");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.ProjectId).HasMaxLength(36).IsRequired();
+            entity.Property(e => e.MeetingType).HasMaxLength(20).IsRequired();
+            entity.Property(e => e.MeetingCount).HasColumnType("REAL");
+            entity.Property(e => e.MeetingHours).HasColumnType("REAL");
+            entity.Property(e => e.Attendees).HasColumnType("REAL");
+            entity.Property(e => e.PrepHours).HasColumnType("REAL");
+            entity.Property(e => e.AdjustedMeeting).HasColumnType("REAL");
+            entity.Property(e => e.AdjustedPrep).HasColumnType("REAL");
+            entity.HasOne(e => e.Project).WithMany().HasForeignKey(e => e.ProjectId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<DetailedMiscFieldsEntity>(entity =>
+        {
+            entity.ToTable("DETAILED_MISC_FIELDS");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.ProjectId).HasMaxLength(36).IsRequired();
+            entity.Property(e => e.PromotionHours).HasColumnType("REAL");
+            entity.Property(e => e.SystemDocHours).HasColumnType("REAL");
+            entity.Property(e => e.PmReservePercentage).HasColumnType("REAL");
+            entity.Property(e => e.CreateDetailEstHours).HasColumnType("REAL");
+            entity.Property(e => e.CreateFinalEstHours).HasColumnType("REAL");
+            entity.Property(e => e.PmEffortHours).HasColumnType("REAL");
+            entity.Property(e => e.RemainingBddHours).HasColumnType("REAL");
+            entity.Property(e => e.SysDocProdValHours).HasColumnType("REAL");
+            entity.Property(e => e.BaSysDocHours).HasColumnType("REAL");
+            entity.Property(e => e.CommPlanHours).HasColumnType("REAL");
+            entity.Property(e => e.SeAdjustedComment).HasMaxLength(2000);
+            entity.Property(e => e.BaAdjustedComment).HasMaxLength(2000);
+            entity.Property(e => e.CollabAdjustedComment).HasMaxLength(2000);
+            entity.HasOne(e => e.Project).WithMany().HasForeignKey(e => e.ProjectId).OnDelete(DeleteBehavior.Cascade);
         });
     }
 }
