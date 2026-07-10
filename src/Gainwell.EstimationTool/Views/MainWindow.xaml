@@ -9,7 +9,8 @@
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
         Background="#F5F7FA"
-        Icon="/Assets/app.ico">
+        Icon="/Assets/app.ico"
+        PreviewMouseLeftButtonUp="Window_PreviewMouseLeftButtonUp">
 
     <Window.DataContext>
         <vm:MainViewModel />
@@ -130,7 +131,7 @@
         <!-- Ghost Button -->
         <Style x:Key="GhostButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Foreground" Value="#6B7280" />
+            <Setter Property="Foreground" Value="#2B3A44" />
             <Setter Property="Padding" Value="12,6" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="BorderBrush" Value="#E5E7EB" />
@@ -295,6 +296,31 @@
                                 Click="OnConfirmClearNo" Margin="0,0,8,0" />
                         <Button Content="Clear All" Style="{StaticResource DangerButton}" 
                                 Click="OnConfirmClearYes" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Delete Confirmation Overlay -->
+        <Grid x:Name="DeleteConfirmOverlay" Grid.Row="0" Grid.RowSpan="5" Panel.ZIndex="99" 
+              Visibility="Collapsed" Background="#40000000">
+            <Border Background="White" CornerRadius="12" Padding="32,24" 
+                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                    MinWidth="360">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="24" Opacity="0.2" ShadowDepth="8" Direction="270" />
+                </Border.Effect>
+                <StackPanel>
+                    <TextBlock Text="Delete Component?" FontSize="18" FontWeight="SemiBold" 
+                               Foreground="#1A1A2E" Margin="0,0,0,8" />
+                    <TextBlock x:Name="DeleteConfirmMessage" 
+                               Text="Are you sure you want to delete this item? You can undo with Ctrl+Z." 
+                               FontSize="13" Foreground="#6B7280" TextWrapping="Wrap" Margin="0,0,0,20" />
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="Cancel" Style="{StaticResource GhostButton}" 
+                                Click="OnConfirmDeleteNo" Margin="0,0,8,0" />
+                        <Button Content="Delete" Style="{StaticResource DangerButton}" 
+                                Click="OnConfirmDeleteYes" />
                     </StackPanel>
                 </StackPanel>
             </Border>
@@ -512,7 +538,7 @@
 
                                 <Button Content="↶ Undo" Style="{StaticResource GhostButton}" 
                                         Click="OnUndoClick"
-                                        ToolTip="Undo last delete (Ctrl+Z)" />
+                                        ToolTip="Undo last action (Ctrl+Z)" />
                             </StackPanel>
 
                             <Grid>
@@ -781,6 +807,7 @@
                                       Background="Transparent"
                                       SelectionMode="Single"
                                       SelectionUnit="Cell"
+                                      RowHeaderWidth="0"
                                       PreviewMouseLeftButtonDown="CollaborationGrid_PreviewMouseLeftButtonDown"
                                       CellEditEnding="CollaborationGrid_CellEditEnding"
                                       PreparingCellForEdit="CollaborationGrid_PreparingCellForEdit">
@@ -858,7 +885,7 @@
                                         <DataGridTemplateColumn.CellEditingTemplate>
                                             <DataTemplate>
                                                 <ComboBox ItemsSource="{Binding DataContext.MeetingCountOptions, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                          Text="{Binding NumberOfMeetings, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                                                          SelectedItem="{Binding NumberOfMeetings, UpdateSourceTrigger=PropertyChanged}"
                                                           IsEditable="True"
                                                           IsTextSearchEnabled="True"
                                                           StaysOpenOnEdit="True"
@@ -881,7 +908,7 @@
                                         <DataGridTemplateColumn.CellEditingTemplate>
                                             <DataTemplate>
                                                 <ComboBox ItemsSource="{Binding DataContext.MeetingDurationOptions, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                          Text="{Binding MeetingDurationMinutes, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                                                          SelectedItem="{Binding MeetingDurationMinutes, UpdateSourceTrigger=PropertyChanged}"
                                                           IsEditable="True"
                                                           IsTextSearchEnabled="True"
                                                           StaysOpenOnEdit="True"
@@ -904,7 +931,7 @@
                                         <DataGridTemplateColumn.CellEditingTemplate>
                                             <DataTemplate>
                                                 <ComboBox ItemsSource="{Binding DataContext.ParticipantCountOptions, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                          Text="{Binding NumberOfParticipants, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                                                          SelectedItem="{Binding NumberOfParticipants, UpdateSourceTrigger=PropertyChanged}"
                                                           IsEditable="True"
                                                           IsTextSearchEnabled="True"
                                                           StaysOpenOnEdit="True"
@@ -927,7 +954,7 @@
                                         <DataGridTemplateColumn.CellEditingTemplate>
                                             <DataTemplate>
                                                 <ComboBox ItemsSource="{Binding DataContext.PrepTimeOptions, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                          Text="{Binding ParticipantPrepTimeMinutes, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                                                          SelectedItem="{Binding ParticipantPrepTimeMinutes, UpdateSourceTrigger=PropertyChanged}"
                                                           IsEditable="True"
                                                           IsTextSearchEnabled="True"
                                                           StaysOpenOnEdit="True"

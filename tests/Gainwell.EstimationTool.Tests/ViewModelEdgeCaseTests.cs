@@ -291,9 +291,17 @@ public class ViewModelEdgeCaseTests
         Assert.Equal(0, vm.ComponentCount);
 
         vm.AddComponentCommand.Execute(null);
+        vm.Components[0].ComponentType = ComponentType.MISC;
+        vm.Components[0].ChangeType = ChangeType.New;
+        vm.Components[0].Size = ComponentSize.Small;
+        vm.Components[0].Count = 1;
         Assert.Equal(1, vm.ComponentCount);
 
         vm.AddComponentCommand.Execute(null);
+        vm.Components[1].ComponentType = ComponentType.MISC;
+        vm.Components[1].ChangeType = ChangeType.New;
+        vm.Components[1].Size = ComponentSize.Small;
+        vm.Components[1].Count = 1;
         Assert.Equal(2, vm.ComponentCount);
 
         vm.RemoveComponentCommand.Execute(vm.Components[0]);
