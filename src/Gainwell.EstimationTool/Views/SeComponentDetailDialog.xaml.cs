@@ -7,7 +7,7 @@ using System.Windows.Controls;
 using Gainwell.EstimationTool.Data;
 using Gainwell.EstimationTool.Models;
 
-namespace Gainwell.EstimationTool;
+namespace Gainwell.EstimationTool.Views;
 
 /// <summary>
 /// Dialog for entering module-level details for a component type.

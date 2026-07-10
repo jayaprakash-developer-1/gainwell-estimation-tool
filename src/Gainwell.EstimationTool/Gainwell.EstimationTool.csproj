@@ -22,11 +22,5 @@
     <Resource Include="Assets\app.ico" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="Views\DetailedEstimateWindow1.xaml.cs" />
-    <Page Remove="Views\DetailedEstimateWindow1.xaml" />
-    <None Include="Views\DetailedEstimateWindow1.xaml" />
-    <None Include="Views\DetailedEstimateWindow1.xaml.cs" />
-  </ItemGroup>
 
 </Project>

@@ -10,9 +10,9 @@ using Gainwell.EstimationTool.Data;
 using Gainwell.EstimationTool.Models;
 using Gainwell.EstimationTool.ViewModels;
 
-namespace Gainwell.EstimationTool;
+namespace Gainwell.EstimationTool.Views;
 
-public partial class MainWindow : Window
+public partial class InitialEstimateWindow : Window
 {
     private void NumericTextBox_GotFocus(object sender, KeyboardFocusChangedEventArgs e)
     {
@@ -39,7 +39,7 @@ public partial class MainWindow : Window
     private CollaborationRowViewModel? _pendingDeleteCollaboration;
     private int _pendingDeleteCollabIndex;
 
-    public MainWindow()
+    public InitialEstimateWindow()
     {
         InitializeComponent();
         Loaded += (_, _) => UpdateTabContext();
@@ -47,7 +47,7 @@ public partial class MainWindow : Window
         // When weighted values are changed in Settings, refresh all component base hours
         WeightedValues.ValuesChanged += () =>
         {
-            if (DataContext is MainViewModel vm)
+            if (DataContext is InitialEstimateViewModel vm)
             {
                 foreach (var c in vm.Components)
                     c.UpdateBaseHours();
@@ -55,7 +55,7 @@ public partial class MainWindow : Window
         };
 
         // Auto-focus Req # cell when a new component is added
-        if (DataContext is MainViewModel mainVm)
+        if (DataContext is InitialEstimateViewModel mainVm)
         {
             mainVm.Components.CollectionChanged += (_, args) =>
             {
@@ -123,7 +123,7 @@ public partial class MainWindow : Window
             // Update tab context and window title when project info changes
             mainVm.PropertyChanged += (_, args) =>
             {
-                if (args.PropertyName is nameof(MainViewModel.ProjectName) or nameof(MainViewModel.ChangeOrderId))
+                if (args.PropertyName is nameof(InitialEstimateViewModel.ProjectName) or nameof(InitialEstimateViewModel.ChangeOrderId))
                     UpdateTabContext();
             };
         }
@@ -131,7 +131,7 @@ public partial class MainWindow : Window
 
     private void UpdateTabContext()
     {
-        if (DataContext is MainViewModel vm)
+        if (DataContext is InitialEstimateViewModel vm)
         {
             var co = string.IsNullOrWhiteSpace(vm.ChangeOrderId) ? "" : vm.ChangeOrderId;
             var name = string.IsNullOrWhiteSpace(vm.ProjectName) ? "" : vm.ProjectName;
@@ -272,7 +272,7 @@ public partial class MainWindow : Window
     private void OnSaveExecuted(object sender, ExecutedRoutedEventArgs e) => PerformSave();
     private void OnNewComponentExecuted(object sender, ExecutedRoutedEventArgs e)
     {
-        if (DataContext is MainViewModel vm)
+        if (DataContext is InitialEstimateViewModel vm)
         {
             // Context-aware: add item to whichever tab is active
             if (MainTabControl.SelectedIndex == 1) // Collaboration tab
@@ -295,7 +295,7 @@ public partial class MainWindow : Window
 
     private void OnDeleteExecuted(object sender, ExecutedRoutedEventArgs e)
     {
-        if (DataContext is not MainViewModel vm) return;
+        if (DataContext is not InitialEstimateViewModel vm) return;
 
         // Context-aware: delete from whichever grid is active
         if (MainTabControl.SelectedIndex == 1 && CollaborationGrid.CurrentItem is CollaborationRowViewModel collabItem)
@@ -319,7 +319,7 @@ public partial class MainWindow : Window
 
     private void OnAddComponentClick(object sender, RoutedEventArgs e)
     {
-        if (DataContext is MainViewModel vm)
+        if (DataContext is InitialEstimateViewModel vm)
         {
             vm.AddComponentCommand.Execute(null);
             var added = vm.Components[^1];
@@ -373,7 +373,7 @@ public partial class MainWindow : Window
 
     private void PerformSave()
     {
-        if (DataContext is MainViewModel vm)
+        if (DataContext is InitialEstimateViewModel vm)
         {
             var result = vm.SaveProject();
             if (result != null)
@@ -388,7 +388,7 @@ public partial class MainWindow : Window
         var historyWindow = new HistoryWindow { Owner = this };
         if (historyWindow.ShowDialog() == true && historyWindow.SelectedProject != null)
         {
-            if (DataContext is MainViewModel vm)
+            if (DataContext is InitialEstimateViewModel vm)
             {
                 vm.LoadProject(historyWindow.SelectedProject);
                 ShowToast("Project loaded", false);
@@ -400,7 +400,7 @@ public partial class MainWindow : Window
 
     private void OnClearAllClick(object sender, RoutedEventArgs e)
     {
-        if (DataContext is not MainViewModel vm) return;
+        if (DataContext is not InitialEstimateViewModel vm) return;
         if (vm.Components.Count == 0 && vm.CollaborationItems.Count == 0) return;
 
         // Show inline confirmation
@@ -410,7 +410,7 @@ public partial class MainWindow : Window
     private void OnConfirmClearYes(object sender, RoutedEventArgs e)
     {
         ConfirmOverlay.Visibility = Visibility.Collapsed;
-        if (DataContext is MainViewModel vm)
+        if (DataContext is InitialEstimateViewModel vm)
         {
             // Push a single atomic undo for the entire clear operation
             var savedComponents = vm.Components.ToList();
@@ -446,7 +446,7 @@ public partial class MainWindow : Window
     {
         if (sender is Button btn && btn.DataContext is CollaborationRowViewModel item)
         {
-            if (DataContext is MainViewModel vm)
+            if (DataContext is InitialEstimateViewModel vm)
             {
                 _pendingDeleteComponent = null;
                 _pendingDeleteCollaboration = item;
@@ -460,7 +460,7 @@ public partial class MainWindow : Window
     private void OnConfirmDeleteYes(object sender, RoutedEventArgs e)
     {
         DeleteConfirmOverlay.Visibility = Visibility.Collapsed;
-        if (DataContext is not MainViewModel vm) return;
+        if (DataContext is not InitialEstimateViewModel vm) return;
 
         if (_pendingDeleteComponent != null)
         {
@@ -489,7 +489,7 @@ public partial class MainWindow : Window
 
     private void PushUndoComponent(ComponentRowViewModel component)
     {
-        if (DataContext is MainViewModel vm)
+        if (DataContext is InitialEstimateViewModel vm)
         {
             int index = vm.Components.IndexOf(component);
             _undoStack.Push(new UndoAction(UndoType.ComponentDelete, component, null, InsertIndex: index));
@@ -499,7 +499,7 @@ public partial class MainWindow : Window
     private void PerformUndo()
     {
         if (_undoStack.Count == 0) return;
-        if (DataContext is not MainViewModel vm) return;
+        if (DataContext is not InitialEstimateViewModel vm) return;
 
         _suppressUndo = true;
         try
@@ -609,15 +609,15 @@ public partial class MainWindow : Window
         {
             ToastText.Text = message;
             ToastPanel.Background = new SolidColorBrush(
-                isError ? (Color)ColorConverter.ConvertFromString("#FEF2F2")!
-                        : (Color)ColorConverter.ConvertFromString("#F0FDF4")!);
+                isError ? (Color)ColorConverter.ConvertFromString("#FDF2F8")!
+                        : (Color)ColorConverter.ConvertFromString("#E6F5F2")!);
             ToastPanel.BorderBrush = new SolidColorBrush(
-                isError ? (Color)ColorConverter.ConvertFromString("#FECACA")!
-                        : (Color)ColorConverter.ConvertFromString("#BBF7D0")!);
+                isError ? (Color)ColorConverter.ConvertFromString("#CC1AC7")!
+                        : (Color)ColorConverter.ConvertFromString("#019681")!);
             ToastIcon.Text = isError ? "⚠" : "✓";
             ToastIcon.Foreground = new SolidColorBrush(
-                isError ? (Color)ColorConverter.ConvertFromString("#DC2626")!
-                        : (Color)ColorConverter.ConvertFromString("#16A34A")!);
+                isError ? (Color)ColorConverter.ConvertFromString("#CC1AC7")!
+                        : (Color)ColorConverter.ConvertFromString("#019681")!);
 
             ToastPanel.Visibility = Visibility.Visible;
 
@@ -788,7 +788,7 @@ public partial class MainWindow : Window
 
     private void ValidatePmEffortComboBox()
     {
-        if (DataContext is not MainViewModel vm) return;
+        if (DataContext is not InitialEstimateViewModel vm) return;
 
         var text = PmEffortComboBox.Text?.Trim() ?? string.Empty;
         bool valid = int.TryParse(text, out int entered) && vm.PmEffortOptions.Contains((decimal)entered);

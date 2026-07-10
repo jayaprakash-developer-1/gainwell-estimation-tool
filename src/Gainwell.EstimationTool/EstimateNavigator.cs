@@ -1,6 +1,7 @@
 using System.Windows;
 using Gainwell.EstimationTool.Models;
 using Gainwell.EstimationTool.ViewModels;
+using Gainwell.EstimationTool.Views;
 
 namespace Gainwell.EstimationTool;
 
@@ -10,7 +11,7 @@ namespace Gainwell.EstimationTool;
 /// </summary>
 public static class EstimateNavigator
 {
-    private static MainWindow? _initialWindow;
+    private static InitialEstimateWindow? _initialWindow;
     private static DetailedEstimateWindow? _detailedWindow;
     private static FinalEstimateWindow? _finalWindow;
 
@@ -22,7 +23,7 @@ public static class EstimateNavigator
     {
         if (_initialWindow == null || !_initialWindow.IsLoaded)
         {
-            _initialWindow = new MainWindow();
+            _initialWindow = new InitialEstimateWindow();
             _initialWindow.Closed += OnWindowClosed;
             ApplyDimensions(_initialWindow, source);
         }
@@ -34,7 +35,7 @@ public static class EstimateNavigator
         // Transfer project info from detailed to initial
         if (source is DetailedEstimateWindow detailed && detailed.GetCurrentProjectEntity() is ProjectEntity project)
         {
-            if (_initialWindow.DataContext is MainViewModel vm)
+            if (_initialWindow.DataContext is InitialEstimateViewModel vm)
             {
                 vm.ProjectName = project.ProjectName;
                 vm.ChangeOrderId = project.ChangeOrderId;
@@ -51,7 +52,7 @@ public static class EstimateNavigator
     {
         ProjectEntity? project = null;
 
-        if (source is MainWindow && source.DataContext is MainViewModel vm)
+        if (source is InitialEstimateWindow && source.DataContext is InitialEstimateViewModel vm)
         {
             project = new ProjectEntity
             {
@@ -83,9 +84,9 @@ public static class EstimateNavigator
 
     public static void SwitchToFinalEstimate(Window source)
     {
-        MainViewModel? mainVm = null;
+        InitialEstimateViewModel? mainVm = null;
 
-        if (source is MainWindow mw && mw.DataContext is MainViewModel vm)
+        if (source is InitialEstimateWindow mw && mw.DataContext is InitialEstimateViewModel vm)
             mainVm = vm;
 
         if (_finalWindow == null || !_finalWindow.IsLoaded)
@@ -109,7 +110,7 @@ public static class EstimateNavigator
 
     public static void RegisterWindow(Window window)
     {
-        if (window is MainWindow mw)
+        if (window is InitialEstimateWindow mw)
             _initialWindow = mw;
         else if (window is DetailedEstimateWindow dw)
             _detailedWindow = dw;

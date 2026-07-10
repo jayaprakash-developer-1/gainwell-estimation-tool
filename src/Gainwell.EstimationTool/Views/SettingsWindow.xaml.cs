@@ -1,6 +1,6 @@
 using System.Windows;
 
-namespace Gainwell.EstimationTool;
+namespace Gainwell.EstimationTool.Views;
 
 public partial class SettingsWindow : Window
 {

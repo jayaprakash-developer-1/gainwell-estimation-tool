@@ -2,7 +2,7 @@ using System.Windows;
 using System.Windows.Input;
 using Gainwell.EstimationTool.ViewModels;
 
-namespace Gainwell.EstimationTool;
+namespace Gainwell.EstimationTool.Views;
 
 public partial class FinalEstimateWindow : Window
 {
@@ -15,12 +15,12 @@ public partial class FinalEstimateWindow : Window
         DataContext = _viewModel;
     }
 
-    public FinalEstimateWindow(MainViewModel source) : this()
+    public FinalEstimateWindow(InitialEstimateViewModel source) : this()
     {
         LoadFromSource(source);
     }
 
-    public void LoadFromSource(MainViewModel source)
+    public void LoadFromSource(InitialEstimateViewModel source)
     {
         _viewModel.LoadFromMainViewModel(source);
         UpdateAssumptionsVisibility();

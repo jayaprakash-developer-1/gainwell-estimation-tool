@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Gainwell.EstimationTool.Data;
 using Gainwell.EstimationTool.Models;
 
-namespace Gainwell.EstimationTool;
+namespace Gainwell.EstimationTool.Views;
 
 public partial class DetailedEstimateWindow : Window
 {
@@ -50,6 +50,7 @@ public partial class DetailedEstimateWindow : Window
         InitializeGrids();
         InitializeSummaryGrids();
         LoadProjectInfo();
+        LoadDetailedData();
 
         // Clear "0" on focus and restore if left empty (same UX as Initial Estimate)
         AddHandler(UIElement.GotKeyboardFocusEvent, new KeyboardFocusChangedEventHandler(OnTextBoxGotFocus), true);
@@ -122,6 +123,7 @@ public partial class DetailedEstimateWindow : Window
     {
         _currentProject = project;
         LoadProjectInfo();
+        LoadDetailedData();
     }
 
     public ProjectEntity? GetCurrentProjectEntity()
@@ -901,10 +903,9 @@ public partial class DetailedEstimateWindow : Window
     {
         CommitAllDataGridEdits();
 
-        // Validation: must have a project loaded from Initial Estimate history
         if (_currentProject == null || string.IsNullOrWhiteSpace(_currentProject.ProjectName))
         {
-            MessageBox.Show("Please load a project from Initial Estimate history using the \"=��� Open\" button before saving.",
+            MessageBox.Show("Please load a project before saving.",
                 "No Project Selected", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
@@ -922,22 +923,15 @@ public partial class DetailedEstimateWindow : Window
                 return;
             }
 
-            // Persist SE data
-            decimal promotion = decimal.TryParse(PromotionHoursTextBox.Text, out var p) ? p : 0;
-            decimal doc = decimal.TryParse(SystemDocHoursTextBox.Text, out var d) ? d : 0;
+            // === Persist summary totals to PROJECT_ESTIMATES ===
+            decimal promotion = ParseDecimal(PromotionHoursTextBox);
+            decimal doc = ParseDecimal(SystemDocHoursTextBox);
             decimal devTotal = ComponentRows.Sum(r => r.GrandTotal);
             existing.TotalDevelopmentHours = devTotal + promotion + doc;
-
-            // Persist SE assumptions and adjusted hours
             existing.SeAssumptions = SeModuleAssumptionsTextBox?.Text ?? string.Empty;
-
-            // Persist BA assumptions
             existing.BaAssumptions = BaAssumptionsDetailTextBox?.Text ?? string.Empty;
-
-            // Persist Collaboration assumptions
             existing.CollaborationAssumptions = CollabAssumptionsDetailTextBox?.Text ?? string.Empty;
 
-            // Persist adjusted hours comments (aggregated)
             var adjComments = new System.Text.StringBuilder();
             if (!string.IsNullOrWhiteSpace(SeAdjustedHrsCommentTextBox?.Text))
                 adjComments.AppendLine($"SE: {SeAdjustedHrsCommentTextBox.Text}");
@@ -947,16 +941,14 @@ public partial class DetailedEstimateWindow : Window
                 adjComments.AppendLine($"Collab: {CollabAdjustedHrsCommentTextBox.Text}");
             existing.AdjustedHoursComments = adjComments.ToString().TrimEnd();
 
-            // Persist BA total hours
-            decimal remainingBdd = decimal.TryParse(RemainingBddHoursTextBox?.Text, out var rb2) ? rb2 : 0;
-            decimal sysDocProdVal = decimal.TryParse(SysDocProdValidTextBox?.Text, out var sdp2) ? sdp2 : 0;
-            decimal baSysDoc = decimal.TryParse(BaSysDocHoursTextBox?.Text, out var bsd2) ? bsd2 : 0;
-            decimal commPlan = decimal.TryParse(CommPlanHoursTextBox?.Text, out var cp2) ? cp2 : 0;
+            decimal remainingBdd = ParseDecimal(RemainingBddHoursTextBox);
+            decimal sysDocProdVal = ParseDecimal(SysDocProdValidTextBox);
+            decimal baSysDoc = ParseDecimal(BaSysDocHoursTextBox);
+            decimal commPlan = ParseDecimal(CommPlanHoursTextBox);
             decimal baTotal = BaTestCases.Sum(r => r.AdjustedHours) + BaRegressionRows.Sum(r => r.AdjustedHours)
                 + BaValidationItems.Sum(r => r.AdjustedHours) + remainingBdd + sysDocProdVal + baSysDoc + commPlan;
             existing.BaAdjustedHours = baTotal;
 
-            // Persist Collaboration hours (full calculation matching Excel)
             decimal wprCount = ParseDecimal(WprCountTextBox);
             decimal wprHrs = ParseDecimal(WprHoursTextBox);
             decimal wprAtt = ParseDecimal(WprAttendeesTextBox);
@@ -987,17 +979,143 @@ public partial class DetailedEstimateWindow : Window
             decimal collabTotal = meetingHours + consultantTotal + (detailEst + finalEst) + pmEffort + meetingAdj;
             existing.CollaborationHours = collabTotal;
 
-            // Persist total hours with PM reserve
             decimal pmPct = decimal.TryParse(PmReserveTextBox?.Text, out var pm) ? pm : 5;
             decimal totalBeforeReserve = devTotal + promotion + doc + baTotal + collabTotal;
             existing.GrandTotalHours = totalBeforeReserve + (totalBeforeReserve * pmPct / 100m);
-
-            // Persist Estimated By
             existing.EstimatedBy = EstimatedByTextBox?.Text ?? Environment.UserName;
-
-            // Update metadata
             existing.LastModifiedDate = DateTime.UtcNow;
             existing.VersionNumber++;
+
+            // === Persist ALL Detailed Estimate row-level data ===
+            var pid = _currentProject.ProjectId;
+
+            // 1) SE Component rows
+            db.DetailedSeComponents.RemoveRange(db.DetailedSeComponents.Where(x => x.ProjectId == pid));
+            for (int i = 0; i < ComponentRows.Count; i++)
+            {
+                var cr = ComponentRows[i];
+                db.DetailedSeComponents.Add(new DetailedSeComponentEntity
+                {
+                    ProjectId = pid, LineNumber = i + 1,
+                    ComponentType = cr.ComponentType.ToString(),
+                    SimpleTotal = cr.SimpleTotal, ModerateTotal = cr.ModerateTotal, ComplexTotal = cr.ComplexTotal,
+                    HoursTotal = cr.HoursTotal, AdjustedExpLevel = cr.AdjustedExpLevel,
+                    AdjustedHrs = cr.AdjustedHrs, GrandTotal = cr.GrandTotal
+                });
+            }
+
+            // 2) SE Module entries (drill-down detail)
+            db.DetailedSeModules.RemoveRange(db.DetailedSeModules.Where(x => x.ProjectId == pid));
+            foreach (var cr in ComponentRows)
+            {
+                for (int j = 0; j < cr.ModuleEntries.Count; j++)
+                {
+                    var me = cr.ModuleEntries[j];
+                    db.DetailedSeModules.Add(new DetailedSeModuleEntity
+                    {
+                        ProjectId = pid, ComponentType = cr.ComponentType.ToString(), LineNumber = j + 1,
+                        ExperienceLevel = me.ExperienceLevel.ToString(),
+                        AssociatedRequirement = me.AssociatedRequirement, ModuleName = me.ModuleName,
+                        ComponentStatus = me.ComponentStatus.ToString(),
+                        SimpleCount = me.SimpleCount, ModerateCount = me.ModerateCount, ComplexCount = me.ComplexCount,
+                        ComplexityTotal = me.ComplexityTotal, AdjustedExpLevel = me.AdjustedExpLevel,
+                        AdjustedHrs = me.AdjustedHrs, GrandTotal = me.GrandTotal
+                    });
+                }
+            }
+
+            // 3) BA Test Cases + Regression rows
+            db.DetailedBaTestCases.RemoveRange(db.DetailedBaTestCases.Where(x => x.ProjectId == pid));
+            for (int i = 0; i < BaTestCases.Count; i++)
+            {
+                var row = BaTestCases[i];
+                db.DetailedBaTestCases.Add(new DetailedBaTestCaseEntity
+                {
+                    ProjectId = pid, LineNumber = i + 1, GridType = "TestCases",
+                    TaskName = row.TaskName, TaskType = row.TaskType,
+                    Category = row.Category.ToString(), ExperienceLevel = row.ExperienceLevel.ToString(),
+                    IsInfoRow = row.IsInfoRow,
+                    SimpleCount = row.SimpleCount, ModerateCount = row.ModerateCount,
+                    ComplexCount = row.ComplexCount, VeryComplexCount = row.VeryComplexCount,
+                    ManualAdjHours = row.ManualAdjHours
+                });
+            }
+            for (int i = 0; i < BaRegressionRows.Count; i++)
+            {
+                var row = BaRegressionRows[i];
+                db.DetailedBaTestCases.Add(new DetailedBaTestCaseEntity
+                {
+                    ProjectId = pid, LineNumber = i + 1, GridType = "Regression",
+                    TaskName = row.TaskName, TaskType = row.TaskType,
+                    Category = row.Category.ToString(), ExperienceLevel = row.ExperienceLevel.ToString(),
+                    IsInfoRow = row.IsInfoRow,
+                    SimpleCount = row.SimpleCount, ModerateCount = row.ModerateCount,
+                    ComplexCount = row.ComplexCount, VeryComplexCount = row.VeryComplexCount,
+                    ManualAdjHours = row.ManualAdjHours
+                });
+            }
+
+            // 4) BA Production Validation rows
+            db.DetailedBaValidations.RemoveRange(db.DetailedBaValidations.Where(x => x.ProjectId == pid));
+            for (int i = 0; i < BaValidationItems.Count; i++)
+            {
+                var row = BaValidationItems[i];
+                db.DetailedBaValidations.Add(new DetailedBaValidationEntity
+                {
+                    ProjectId = pid, LineNumber = i + 1,
+                    TaskName = row.TaskName, TaskType = row.TaskType,
+                    ExperienceLevel = row.ExperienceLevel.ToString(),
+                    SimpleCount = row.SimpleCount, ModerateCount = row.ModerateCount,
+                    ComplexCount = row.ComplexCount, VeryComplexCount = row.VeryComplexCount,
+                    ManualAdjHours = row.ManualAdjHours
+                });
+            }
+
+            // 5) Consultant/Mentor rows
+            db.DetailedConsultants.RemoveRange(db.DetailedConsultants.Where(x => x.ProjectId == pid));
+            for (int i = 0; i < Consultants.Count; i++)
+            {
+                var c = Consultants[i];
+                db.DetailedConsultants.Add(new DetailedConsultantEntity
+                {
+                    ProjectId = pid, LineNumber = i + 1, Name = c.Name, Hours = c.Hours
+                });
+            }
+
+            // 6) Collaboration meeting fields
+            db.DetailedCollabMeetings.RemoveRange(db.DetailedCollabMeetings.Where(x => x.ProjectId == pid));
+            db.DetailedCollabMeetings.Add(new DetailedCollabMeetingEntity
+            {
+                ProjectId = pid, MeetingType = "WPR",
+                MeetingCount = wprCount, MeetingHours = wprHrs, Attendees = wprAtt,
+                PrepHours = wprPrepHrs, AdjustedMeeting = wprAdj, AdjustedPrep = wprPrepAdj
+            });
+            db.DetailedCollabMeetings.Add(new DetailedCollabMeetingEntity
+            {
+                ProjectId = pid, MeetingType = "Client",
+                MeetingCount = clientCount, MeetingHours = clientHrs, Attendees = clientAtt,
+                PrepHours = clientPrepHrs, AdjustedMeeting = clientAdj, AdjustedPrep = clientPrepAdj
+            });
+            db.DetailedCollabMeetings.Add(new DetailedCollabMeetingEntity
+            {
+                ProjectId = pid, MeetingType = "Internal",
+                MeetingCount = intCount, MeetingHours = intHrs, Attendees = intAtt,
+                PrepHours = intPrepHrs, AdjustedMeeting = intAdj, AdjustedPrep = intPrepAdj
+            });
+
+            // 7) Misc fields (Promotion, Doc, PM Reserve, BDD, etc.)
+            db.DetailedMiscFields.RemoveRange(db.DetailedMiscFields.Where(x => x.ProjectId == pid));
+            db.DetailedMiscFields.Add(new DetailedMiscFieldsEntity
+            {
+                ProjectId = pid,
+                PromotionHours = promotion, SystemDocHours = doc, PmReservePercentage = pmPct,
+                CreateDetailEstHours = detailEst, CreateFinalEstHours = finalEst, PmEffortHours = pmEffort,
+                RemainingBddHours = remainingBdd, SysDocProdValHours = sysDocProdVal,
+                BaSysDocHours = baSysDoc, CommPlanHours = commPlan,
+                SeAdjustedComment = SeAdjustedHrsCommentTextBox?.Text ?? string.Empty,
+                BaAdjustedComment = BaAdjustedHrsCommentTextBox?.Text ?? string.Empty,
+                CollabAdjustedComment = CollabAdjustedHrsCommentTextBox?.Text ?? string.Empty
+            });
 
             db.SaveChanges();
             MessageBox.Show("Detailed Estimate saved successfully.", "Saved", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -1006,6 +1124,173 @@ public partial class DetailedEstimateWindow : Window
         {
             MessageBox.Show($"Error saving estimate: {ex.Message}", "Save Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
+    }
+
+    /// <summary>
+    /// Loads all persisted Detailed Estimate data from the database and populates the grids.
+    /// Called when navigating to the Detailed Estimate with an existing project.
+    /// </summary>
+    public void LoadDetailedData()
+    {
+        if (_currentProject == null) return;
+        var pid = _currentProject.ProjectId;
+
+        using var db = new EstimateDbContext();
+        db.Database.EnsureCreated();
+
+        // 1) Load SE Component rows
+        var seComps = db.DetailedSeComponents.Where(x => x.ProjectId == pid).OrderBy(x => x.LineNumber).ToList();
+        if (seComps.Count > 0)
+        {
+            foreach (var saved in seComps)
+            {
+                var match = ComponentRows.FirstOrDefault(r => r.ComponentType.ToString() == saved.ComponentType);
+                if (match != null)
+                {
+                    match.SimpleTotal = saved.SimpleTotal;
+                    match.ModerateTotal = saved.ModerateTotal;
+                    match.ComplexTotal = saved.ComplexTotal;
+                    match.HoursTotal = saved.HoursTotal;
+                    match.AdjustedExpLevel = saved.AdjustedExpLevel;
+                    match.AdjustedHrs = saved.AdjustedHrs;
+                    match.GrandTotal = saved.GrandTotal;
+                }
+            }
+
+            // 2) Load SE Module entries
+            var seModules = db.DetailedSeModules.Where(x => x.ProjectId == pid).OrderBy(x => x.LineNumber).ToList();
+            foreach (var cr in ComponentRows)
+            {
+                var modules = seModules.Where(m => m.ComponentType == cr.ComponentType.ToString()).ToList();
+                cr.ModuleEntries = modules.Select(m => new ModuleEntry
+                {
+                    ExperienceLevel = Enum.TryParse<ExperienceLevel>(m.ExperienceLevel, out var el) ? el : ExperienceLevel.Proficient,
+                    AssociatedRequirement = m.AssociatedRequirement,
+                    ModuleName = m.ModuleName,
+                    ComponentStatus = Enum.TryParse<ComponentStatus>(m.ComponentStatus, out var cs) ? cs : ComponentStatus.New,
+                    SimpleCount = m.SimpleCount, ModerateCount = m.ModerateCount, ComplexCount = m.ComplexCount,
+                    ComplexityTotal = m.ComplexityTotal, AdjustedExpLevel = m.AdjustedExpLevel,
+                    AdjustedHrs = m.AdjustedHrs, GrandTotal = m.GrandTotal
+                }).ToList();
+            }
+            ComponentTypeGrid.Items.Refresh();
+            UpdateSeTotals();
+        }
+
+        // 3) Load BA Test Cases
+        var baTestCases = db.DetailedBaTestCases.Where(x => x.ProjectId == pid && x.GridType == "TestCases")
+            .OrderBy(x => x.LineNumber).ToList();
+        if (baTestCases.Count > 0 && baTestCases.Count == BaTestCases.Count)
+        {
+            for (int i = 0; i < baTestCases.Count; i++)
+            {
+                var saved = baTestCases[i];
+                BaTestCases[i].SimpleCount = saved.SimpleCount;
+                BaTestCases[i].ModerateCount = saved.ModerateCount;
+                BaTestCases[i].ComplexCount = saved.ComplexCount;
+                BaTestCases[i].VeryComplexCount = saved.VeryComplexCount;
+                BaTestCases[i].ManualAdjHours = saved.ManualAdjHours;
+            }
+        }
+
+        // Load Regression rows
+        var baRegression = db.DetailedBaTestCases.Where(x => x.ProjectId == pid && x.GridType == "Regression")
+            .OrderBy(x => x.LineNumber).ToList();
+        if (baRegression.Count > 0 && baRegression.Count == BaRegressionRows.Count)
+        {
+            for (int i = 0; i < baRegression.Count; i++)
+            {
+                var saved = baRegression[i];
+                BaRegressionRows[i].SimpleCount = saved.SimpleCount;
+                BaRegressionRows[i].ModerateCount = saved.ModerateCount;
+                BaRegressionRows[i].ComplexCount = saved.ComplexCount;
+                BaRegressionRows[i].VeryComplexCount = saved.VeryComplexCount;
+                BaRegressionRows[i].ManualAdjHours = saved.ManualAdjHours;
+            }
+        }
+
+        // 4) Load BA Production Validation
+        var baValidations = db.DetailedBaValidations.Where(x => x.ProjectId == pid).OrderBy(x => x.LineNumber).ToList();
+        if (baValidations.Count > 0 && baValidations.Count == BaValidationItems.Count)
+        {
+            for (int i = 0; i < baValidations.Count; i++)
+            {
+                var saved = baValidations[i];
+                BaValidationItems[i].SimpleCount = saved.SimpleCount;
+                BaValidationItems[i].ModerateCount = saved.ModerateCount;
+                BaValidationItems[i].ComplexCount = saved.ComplexCount;
+                BaValidationItems[i].VeryComplexCount = saved.VeryComplexCount;
+                BaValidationItems[i].ManualAdjHours = saved.ManualAdjHours;
+            }
+        }
+
+        // 5) Load Consultants
+        var consultants = db.DetailedConsultants.Where(x => x.ProjectId == pid).OrderBy(x => x.LineNumber).ToList();
+        if (consultants.Count > 0)
+        {
+            Consultants.Clear();
+            foreach (var c in consultants)
+                Consultants.Add(new ConsultantRow { Name = c.Name, Hours = c.Hours });
+        }
+
+        // 6) Load Collaboration meeting fields
+        var meetings = db.DetailedCollabMeetings.Where(x => x.ProjectId == pid).ToList();
+        var wpr = meetings.FirstOrDefault(m => m.MeetingType == "WPR");
+        if (wpr != null)
+        {
+            SetTextBox(WprCountTextBox, wpr.MeetingCount);
+            SetTextBox(WprHoursTextBox, wpr.MeetingHours);
+            SetTextBox(WprAttendeesTextBox, wpr.Attendees);
+            SetTextBox(WprPrepHoursTextBox, wpr.PrepHours);
+            SetTextBox(WprAdjustedTextBox, wpr.AdjustedMeeting);
+            SetTextBox(WprPrepAdjustedTextBox, wpr.AdjustedPrep);
+        }
+        var client = meetings.FirstOrDefault(m => m.MeetingType == "Client");
+        if (client != null)
+        {
+            SetTextBox(ClientMtgCountTextBox, client.MeetingCount);
+            SetTextBox(ClientMtgHoursTextBox, client.MeetingHours);
+            SetTextBox(ClientMtgAttendeesTextBox, client.Attendees);
+            SetTextBox(ClientMtgPrepHoursTextBox, client.PrepHours);
+            SetTextBox(ClientMtgAdjustedTextBox, client.AdjustedMeeting);
+            SetTextBox(ClientMtgPrepAdjustedTextBox, client.AdjustedPrep);
+        }
+        var intMtg = meetings.FirstOrDefault(m => m.MeetingType == "Internal");
+        if (intMtg != null)
+        {
+            SetTextBox(InternalMtgCountTextBox, intMtg.MeetingCount);
+            SetTextBox(InternalMtgHoursTextBox, intMtg.MeetingHours);
+            SetTextBox(InternalMtgAttendeesTextBox, intMtg.Attendees);
+            SetTextBox(InternalMtgPrepHoursTextBox, intMtg.PrepHours);
+            SetTextBox(InternalMtgAdjustedTextBox, intMtg.AdjustedMeeting);
+            SetTextBox(InternalMtgPrepAdjustedTextBox, intMtg.AdjustedPrep);
+        }
+
+        // 7) Load Misc fields
+        var misc = db.DetailedMiscFields.FirstOrDefault(x => x.ProjectId == pid);
+        if (misc != null)
+        {
+            SetTextBox(PromotionHoursTextBox, misc.PromotionHours);
+            SetTextBox(SystemDocHoursTextBox, misc.SystemDocHours);
+            SetTextBox(PmReserveTextBox, misc.PmReservePercentage);
+            SetTextBox(CreateDetailEstHoursTextBox, misc.CreateDetailEstHours);
+            SetTextBox(CreateFinalEstHoursTextBox, misc.CreateFinalEstHours);
+            SetTextBox(PmEffortHoursTextBox, misc.PmEffortHours);
+            SetTextBox(RemainingBddHoursTextBox, misc.RemainingBddHours);
+            SetTextBox(SysDocProdValidTextBox, misc.SysDocProdValHours);
+            SetTextBox(BaSysDocHoursTextBox, misc.BaSysDocHours);
+            SetTextBox(CommPlanHoursTextBox, misc.CommPlanHours);
+            if (SeAdjustedHrsCommentTextBox != null) SeAdjustedHrsCommentTextBox.Text = misc.SeAdjustedComment;
+            if (BaAdjustedHrsCommentTextBox != null) BaAdjustedHrsCommentTextBox.Text = misc.BaAdjustedComment;
+            if (CollabAdjustedHrsCommentTextBox != null) CollabAdjustedHrsCommentTextBox.Text = misc.CollabAdjustedComment;
+        }
+
+        UpdateSeTotals();
+    }
+
+    private static void SetTextBox(TextBox? tb, decimal value)
+    {
+        if (tb != null) tb.Text = value == 0 ? "0" : value.ToString("G");
     }
 
     private static T? FindParent<T>(DependencyObject child) where T : DependencyObject

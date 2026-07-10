@@ -125,7 +125,7 @@ public partial class FinalEstimateViewModel : ObservableObject
     /// <summary>
     /// Loads all data from the MainViewModel to produce the Final Estimate summary.
     /// </summary>
-    public void LoadFromMainViewModel(MainViewModel source)
+    public void LoadFromMainViewModel(InitialEstimateViewModel source)
     {
         // Header
         ProjectName = source.ProjectName;

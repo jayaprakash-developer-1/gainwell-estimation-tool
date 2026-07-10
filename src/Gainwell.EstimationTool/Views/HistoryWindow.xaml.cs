@@ -8,7 +8,7 @@ using Gainwell.EstimationTool.Data;
 using Gainwell.EstimationTool.Models;
 using Gainwell.EstimationTool.ViewModels;
 
-namespace Gainwell.EstimationTool;
+namespace Gainwell.EstimationTool.Views;
 
 public partial class HistoryWindow : Window
 {
@@ -24,7 +24,7 @@ public partial class HistoryWindow : Window
 
     private void LoadProjects()
     {
-        _allProjects = MainViewModel.GetAllProjects();
+        _allProjects = InitialEstimateViewModel.GetAllProjects();
         ApplyFilter();
     }
 

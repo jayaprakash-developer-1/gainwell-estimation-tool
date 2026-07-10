@@ -10,7 +10,7 @@ using Gainwell.EstimationTool.Models;
 
 namespace Gainwell.EstimationTool.ViewModels;
 
-public partial class MainViewModel : ObservableObject
+public partial class InitialEstimateViewModel : ObservableObject
 {
     // === Project Header ===
     [ObservableProperty]
@@ -331,7 +331,7 @@ public partial class MainViewModel : ObservableObject
         c.Size != ComponentSize.None &&
         c.Count > 0);
 
-    public MainViewModel()
+    public InitialEstimateViewModel()
     {
         Components.CollectionChanged += (_, e) =>
         {
@@ -1158,7 +1158,7 @@ public partial class CollaborationRowViewModel : ObservableValidator
     /// Excel formula: ROUNDUP((Meetings × Participants × Duration/60) + (Meetings × Participants × PrepTime/60), 2)
     /// Matches Excel G36 = ROUNDUP((J36*L36*(K36/60))+(J36*L36*(M36/60)),2)
     /// </summary>
-    public decimal TotalHours => MainViewModel.RoundUp(NumberOfMeetings * ((MeetingDurationMinutes / 60m) + (ParticipantPrepTimeMinutes / 60m)) * NumberOfParticipants);
+    public decimal TotalHours => InitialEstimateViewModel.RoundUp(NumberOfMeetings * ((MeetingDurationMinutes / 60m) + (ParticipantPrepTimeMinutes / 60m)) * NumberOfParticipants);
 
     partial void OnNumberOfMeetingsChanged(int value) => OnPropertyChanged(nameof(TotalHours));
     partial void OnMeetingDurationMinutesChanged(int value) => OnPropertyChanged(nameof(TotalHours));
