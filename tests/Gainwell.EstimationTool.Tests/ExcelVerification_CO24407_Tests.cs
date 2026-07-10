@@ -10,9 +10,9 @@ namespace Gainwell.EstimationTool.Tests;
 /// </summary>
 public class ExcelVerification_CO24407_Tests
 {
-    private MainViewModel CreateVm() => new();
+    private InitialEstimateViewModel CreateVm() => new();
 
-    private ComponentRowViewModel AddComponent(MainViewModel vm, ComponentType type, ComponentSize size, ChangeType change, int count)
+    private ComponentRowViewModel AddComponent(InitialEstimateViewModel vm, ComponentType type, ComponentSize size, ChangeType change, int count)
     {
         vm.AddComponentCommand.Execute(null);
         var row = vm.Components[^1];
@@ -23,7 +23,7 @@ public class ExcelVerification_CO24407_Tests
         return row;
     }
 
-    private void ClearCollaboration(MainViewModel vm)
+    private void ClearCollaboration(InitialEstimateViewModel vm)
     {
         foreach (var item in vm.CollaborationItems.ToList())
             vm.RemoveCollaborationItemCommand.Execute(item);
@@ -99,12 +99,12 @@ public class ExcelVerification_CO24407_Tests
         AddComponent(vm, ComponentType.Reports, ComponentSize.Medium, ChangeType.New, 6);
 
         decimal dev = vm.TotalDevelopmentHours;
-        decimal sysTest = MainViewModel.RoundUp(dev * 0.30m);
-        decimal analysis = MainViewModel.RoundUp((dev + sysTest) * 0.05m);
-        decimal bizDesign = MainViewModel.RoundUp((dev + sysTest) * 0.15m);
-        decimal promotion = MainViewModel.RoundUp(dev * 0.05m);
-        decimal baDoc = MainViewModel.RoundUp(dev * 0.05m);
-        decimal prodVal = MainViewModel.RoundUp(sysTest * 0.20m);
+        decimal sysTest = InitialEstimateViewModel.RoundUp(dev * 0.30m);
+        decimal analysis = InitialEstimateViewModel.RoundUp((dev + sysTest) * 0.05m);
+        decimal bizDesign = InitialEstimateViewModel.RoundUp((dev + sysTest) * 0.15m);
+        decimal promotion = InitialEstimateViewModel.RoundUp(dev * 0.05m);
+        decimal baDoc = InitialEstimateViewModel.RoundUp(dev * 0.05m);
+        decimal prodVal = InitialEstimateViewModel.RoundUp(sysTest * 0.20m);
 
         Assert.Equal(sysTest, vm.SystemTestingHours);
         Assert.Equal(analysis, vm.AnalysisHours);
@@ -130,7 +130,7 @@ public class ExcelVerification_CO24407_Tests
         decimal allTasks = vm.TotalDevelopmentHours + vm.SystemTestingHours + vm.AnalysisHours
                          + vm.BusinessDesignHours + vm.PromotionHours + vm.BaSystemDocHours
                          + vm.ProductionValidationHours;
-        decimal expectedPM = MainViewModel.RoundUp(allTasks * 0.15m);
+        decimal expectedPM = InitialEstimateViewModel.RoundUp(allTasks * 0.15m);
         Assert.Equal(expectedPM, vm.ProjectManagementHours);
     }
 

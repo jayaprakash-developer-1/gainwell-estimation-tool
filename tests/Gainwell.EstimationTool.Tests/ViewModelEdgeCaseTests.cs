@@ -164,7 +164,7 @@ public class ViewModelEdgeCaseTests
     [Fact]
     public void MainViewModel_ZeroComponents_AllTotalsZero()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
 
         // Development and derived tasks are zero with no components
         Assert.Equal(0m, vm.TotalDevelopmentHours);
@@ -183,14 +183,14 @@ public class ViewModelEdgeCaseTests
     [Fact]
     public void MainViewModel_DefaultPmPercentage_Is15()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         Assert.Equal(15m, vm.PmEffortPercentage);
     }
 
     [Fact]
     public void MainViewModel_ChangePmPercentage_RecalculatesImmediately()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Large;
@@ -207,7 +207,7 @@ public class ViewModelEdgeCaseTests
     [Fact]
     public void MainViewModel_PmPercentage_Zero_NoPmHours()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.PmEffortPercentage = 0m;
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
@@ -220,7 +220,7 @@ public class ViewModelEdgeCaseTests
     [Fact]
     public void MainViewModel_RemoveNullComponent_DoesNothing()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
 
         vm.RemoveComponentCommand.Execute(null);
@@ -231,7 +231,7 @@ public class ViewModelEdgeCaseTests
     [Fact]
     public void MainViewModel_RemoveComponent_RenumbersRemaining()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.AddComponentCommand.Execute(null);
         vm.AddComponentCommand.Execute(null);
@@ -245,7 +245,7 @@ public class ViewModelEdgeCaseTests
     [Fact]
     public void MainViewModel_ClearAll_EmptiesCollection()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.AddComponentCommand.Execute(null);
         vm.AddComponentCommand.Execute(null);
@@ -258,7 +258,7 @@ public class ViewModelEdgeCaseTests
     [Fact]
     public void MainViewModel_ClearAll_ResetsAllTotals()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Large;
@@ -274,7 +274,7 @@ public class ViewModelEdgeCaseTests
     [Fact]
     public void MainViewModel_AddComponent_IncrementsLineNumber()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.AddComponentCommand.Execute(null);
         vm.AddComponentCommand.Execute(null);
@@ -287,7 +287,7 @@ public class ViewModelEdgeCaseTests
     [Fact]
     public void MainViewModel_ComponentCount_MatchesCollectionSize()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         Assert.Equal(0, vm.ComponentCount);
 
         vm.AddComponentCommand.Execute(null);
@@ -311,7 +311,7 @@ public class ViewModelEdgeCaseTests
     [Fact]
     public void MainViewModel_BaRoleHours_CalculatedCorrectly()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Large;
@@ -329,7 +329,7 @@ public class ViewModelEdgeCaseTests
     [Fact]
     public void MainViewModel_SeRoleHours_IncludesDevelopment()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Large;
@@ -342,7 +342,7 @@ public class ViewModelEdgeCaseTests
     [Fact]
     public void MainViewModel_TesterRoleHours_EqualsSystemTesting()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Large;
@@ -354,7 +354,7 @@ public class ViewModelEdgeCaseTests
     [Fact]
     public void MainViewModel_PmRoleHours_EqualsPmEffort()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Large;
@@ -366,7 +366,7 @@ public class ViewModelEdgeCaseTests
     [Fact]
     public void MainViewModel_GrandTotal_EqualsCeilingOfSubtotal()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Large;
@@ -380,7 +380,7 @@ public class ViewModelEdgeCaseTests
     [Fact]
     public void MainViewModel_MultipleComponents_TotalDevIsSumOfAll()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Large;

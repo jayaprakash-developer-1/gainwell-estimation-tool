@@ -30,27 +30,27 @@ public class NegativeBoundaryTests
     public void RoundUp_NegativeValue_RoundsAwayFromZero()
     {
         // -3.451 → shifted = -345.1, truncated = -345, shifted < truncated → (−345 − 1) / 100 = -3.46
-        Assert.Equal(-3.46m, MainViewModel.RoundUp(-3.451m));
+        Assert.Equal(-3.46m, InitialEstimateViewModel.RoundUp(-3.451m));
     }
 
     [Fact]
     public void RoundUp_NegativeExact_ReturnsExact()
     {
         // -5.12 → shifted = -512.0, truncated = -512 → exact match → -512/100 = -5.12
-        Assert.Equal(-5.12m, MainViewModel.RoundUp(-5.12m));
+        Assert.Equal(-5.12m, InitialEstimateViewModel.RoundUp(-5.12m));
     }
 
     [Fact]
     public void RoundUp_NegativeSmall_RoundsAwayFromZero()
     {
         // -0.001 → shifted = -0.1, truncated = 0, shifted < truncated → (0 - 1) / 100 = -0.01
-        Assert.Equal(-0.01m, MainViewModel.RoundUp(-0.001m));
+        Assert.Equal(-0.01m, InitialEstimateViewModel.RoundUp(-0.001m));
     }
 
     [Fact]
     public void RoundUp_NegativeWholeNumber_ReturnsExact()
     {
-        Assert.Equal(-10.00m, MainViewModel.RoundUp(-10.00m));
+        Assert.Equal(-10.00m, InitialEstimateViewModel.RoundUp(-10.00m));
     }
 
     #endregion
@@ -60,7 +60,7 @@ public class NegativeBoundaryTests
     [Fact]
     public void DevelopmentAdjusted_ExceedsDev_NegativeEffective()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Small;
@@ -77,7 +77,7 @@ public class NegativeBoundaryTests
     [Fact]
     public void NegativeEffectiveDev_CascadesToDerivedTasks()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Small;
@@ -101,7 +101,7 @@ public class NegativeBoundaryTests
     [Fact]
     public void CollaborationByType_ClientMeetings_SumsCorrectly()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Small;
@@ -122,7 +122,7 @@ public class NegativeBoundaryTests
     [Fact]
     public void CollaborationByType_InternalMeetings_SumsCorrectly()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Small;
@@ -142,7 +142,7 @@ public class NegativeBoundaryTests
     [Fact]
     public void CollaborationByType_AutomationTest_SumsCorrectly()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Small;
@@ -162,7 +162,7 @@ public class NegativeBoundaryTests
     [Fact]
     public void CollaborationByType_PerTypeTotals_IncludeAdjustedHours()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Small;
@@ -187,7 +187,7 @@ public class NegativeBoundaryTests
     public void ConsultantMentorHours_AlwaysZero_NoEnumMapping()
     {
         // ConsultantMentor is not in the CollaborationType enum switch — verify it's always 0
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Small;
@@ -213,7 +213,7 @@ public class NegativeBoundaryTests
     [Fact]
     public void LoadProject_FallsBackToSeAdjustedHours_WhenDevIsZero()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "BackwardCompat Test";
         vm.ChangeOrderId = "CO-1";
         vm.ProjectDescription = "Test";
@@ -227,14 +227,14 @@ public class NegativeBoundaryTests
         vm.SaveProject();
 
         // Simulate old project format: DevelopmentAdjustedHours=0, SeAdjustedHours=10
-        var projects = MainViewModel.GetAllProjects();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         var entity = projects.First(p => p.ProjectName == "BackwardCompat Test");
         entity.DevelopmentAdjustedHours = 0m;
         entity.SeAdjustedHours = 10m;
         entity.AnalysisAdjustedHours = 0m;
         entity.BaAdjustedHours = 7m;
 
-        var vm2 = new MainViewModel();
+        var vm2 = new InitialEstimateViewModel();
         vm2.LoadProject(entity);
 
         // Backward compat: loads SeAdjustedHours as DevelopmentAdjustedHours
@@ -245,7 +245,7 @@ public class NegativeBoundaryTests
     [Fact]
     public void LoadProject_PrefersDevAdjusted_WhenNonZero()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Prefer Dev Test";
         vm.ChangeOrderId = "CO-1";
         vm.ProjectDescription = "Test";
@@ -258,12 +258,12 @@ public class NegativeBoundaryTests
         vm.Components[0].Count = 1;
         vm.SaveProject();
 
-        var projects = MainViewModel.GetAllProjects();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         var entity = projects.First(p => p.ProjectName == "Prefer Dev Test");
         entity.DevelopmentAdjustedHours = 25m;
         entity.SeAdjustedHours = 999m; // Should be ignored
 
-        var vm2 = new MainViewModel();
+        var vm2 = new InitialEstimateViewModel();
         vm2.LoadProject(entity);
 
         Assert.Equal(25m, vm2.DevelopmentAdjustedHours);
@@ -276,7 +276,7 @@ public class NegativeBoundaryTests
     [Fact]
     public void LoadProject_NoCollaborationItems_InitializesDefaults()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "No Collab Test";
         vm.ChangeOrderId = "CO-1";
         vm.ProjectDescription = "Test";
@@ -290,11 +290,11 @@ public class NegativeBoundaryTests
         vm.SaveProject();
 
         // Create an entity with empty collaboration items
-        var projects = MainViewModel.GetAllProjects();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         var entity = projects.First(p => p.ProjectName == "No Collab Test");
         entity.CollaborationItems.Clear();
 
-        var vm2 = new MainViewModel();
+        var vm2 = new InitialEstimateViewModel();
         vm2.LoadProject(entity);
 
         // Should have 4 default collaboration items
@@ -341,7 +341,7 @@ public class NegativeBoundaryTests
             }
         };
 
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.LoadProject(entity);
 
         // Should fallback to WPRs
@@ -355,7 +355,7 @@ public class NegativeBoundaryTests
     [Fact]
     public void OnComponentChanged_DescriptionChange_DoesNotRecalculate()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Small;
@@ -372,7 +372,7 @@ public class NegativeBoundaryTests
     [Fact]
     public void OnComponentChanged_NotesChange_DoesNotRecalculate()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Small;
@@ -388,7 +388,7 @@ public class NegativeBoundaryTests
     [Fact]
     public void OnComponentChanged_RequirementIdChange_DoesNotRecalculate()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Small;
@@ -404,7 +404,7 @@ public class NegativeBoundaryTests
     [Fact]
     public void OnComponentChanged_CountChange_DoesRecalculate()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Small;
@@ -440,7 +440,7 @@ public class NegativeBoundaryTests
     [Fact]
     public void CollaborationRow_NotesChange_DoesNotAffectTotalHours()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Small;
@@ -503,7 +503,7 @@ public class NegativeBoundaryTests
     [Fact]
     public void ClearAll_ThenAddComponent_NoResidualState()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         // Setup a full project
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.K2Workflow;
@@ -534,7 +534,7 @@ public class NegativeBoundaryTests
     [Fact]
     public void ClearAll_ResetsCollaborationItems_ToDefaults()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         // Modify collaboration
         vm.CollaborationItems[0].NumberOfMeetings = 10;
         vm.CollaborationItems[0].MeetingDurationMinutes = 60;
@@ -608,7 +608,7 @@ public class NegativeBoundaryTests
     [Fact]
     public void UseTestCases_WithDevelopmentAdjusted_BothApply()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Large;
@@ -633,7 +633,7 @@ public class NegativeBoundaryTests
     [Fact]
     public void NegativeTestCaseCounts_TreatedAsZero()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Small;
@@ -695,7 +695,7 @@ public class NegativeBoundaryTests
     [Fact]
     public void SaveLoad_AllAdjustedHours_Preserved()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "All Adjusted Test";
         vm.ChangeOrderId = "CO-ADJ";
         vm.ProjectDescription = "Test all adjusted";
@@ -723,10 +723,10 @@ public class NegativeBoundaryTests
 
         vm.SaveProject();
 
-        var projects = MainViewModel.GetAllProjects();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         var entity = projects.First(p => p.ProjectName == "All Adjusted Test");
 
-        var vm2 = new MainViewModel();
+        var vm2 = new InitialEstimateViewModel();
         vm2.LoadProject(entity);
 
         Assert.Equal(10m, vm2.DevelopmentAdjustedHours);
@@ -751,7 +751,7 @@ public class NegativeBoundaryTests
     [Fact]
     public void SaveLoad_CollaborationItems_Preserved()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Collab RoundTrip";
         vm.ChangeOrderId = "CO-COL";
         vm.ProjectDescription = "Test collab round trip";
@@ -772,10 +772,10 @@ public class NegativeBoundaryTests
 
         vm.SaveProject();
 
-        var projects = MainViewModel.GetAllProjects();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         var entity = projects.First(p => p.ProjectName == "Collab RoundTrip");
 
-        var vm2 = new MainViewModel();
+        var vm2 = new InitialEstimateViewModel();
         vm2.LoadProject(entity);
 
         Assert.Equal(4, vm2.CollaborationItems.Count);
@@ -794,7 +794,7 @@ public class NegativeBoundaryTests
     [Fact]
     public void ComponentCount_ExcludesNoneTypes()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null); // Added with ComponentType.None
         vm.AddComponentCommand.Execute(null); // Another with None
         vm.Components[0].ComponentType = ComponentType.MISC;

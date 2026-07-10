@@ -10,9 +10,9 @@ namespace Gainwell.EstimationTool.Tests;
 /// </summary>
 public class ExcelVerification_CO23810_003_Tests
 {
-    private MainViewModel CreateVm() => new();
+    private InitialEstimateViewModel CreateVm() => new();
 
-    private ComponentRowViewModel AddComponent(MainViewModel vm, ComponentType type, ComponentSize size, ChangeType change, int count)
+    private ComponentRowViewModel AddComponent(InitialEstimateViewModel vm, ComponentType type, ComponentSize size, ChangeType change, int count)
     {
         vm.AddComponentCommand.Execute(null);
         var row = vm.Components[^1];
@@ -23,7 +23,7 @@ public class ExcelVerification_CO23810_003_Tests
         return row;
     }
 
-    private void ClearCollaboration(MainViewModel vm)
+    private void ClearCollaboration(InitialEstimateViewModel vm)
     {
         foreach (var item in vm.CollaborationItems.ToList())
             vm.RemoveCollaborationItemCommand.Execute(item);
@@ -182,7 +182,7 @@ public class ExcelVerification_CO23810_003_Tests
         const decimal r32Simple = 1.5675m, r32Medium = 3.44m;
         decimal mainHours = 50m * r31Simple + 30m * r31Medium;
         decimal defectHours = (50m * r32Simple + 30m * r32Medium) * 0.1m;
-        decimal expectedSysTest = MainViewModel.RoundUp((mainHours + defectHours) * 1.5m);
+        decimal expectedSysTest = InitialEstimateViewModel.RoundUp((mainHours + defectHours) * 1.5m);
 
         Assert.Equal(expectedSysTest, vm.SystemTestingHours);
     }
@@ -206,7 +206,7 @@ public class ExcelVerification_CO23810_003_Tests
         const decimal r32S = 1.5675m, r32M = 3.44m, r32C = 7.51m, r32VC = 13.13m;
         decimal main = 10m * r31S + 20m * r31M + 15m * r31C + 5m * r31VC;
         decimal defect = (10m * r32S + 20m * r32M + 15m * r32C + 5m * r32VC) * 0.1m;
-        decimal expected = MainViewModel.RoundUp((main + defect) * 2m);
+        decimal expected = InitialEstimateViewModel.RoundUp((main + defect) * 2m);
 
         Assert.Equal(expected, vm.SystemTestingHours);
     }

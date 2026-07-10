@@ -124,7 +124,7 @@ public class ExcelVerificationTests
         const decimal r32Simple = 1.5675m, r32Complex = 7.51m;
         decimal mainHours = 125m * r31Simple + 75m * r31Complex; // 274.0625 + 657 = 931.0625
         decimal defectHours = (125m * r32Simple + 75m * r32Complex) * 0.1m; // (195.9375 + 563.25) * 0.1 = 75.91875
-        decimal expectedSysTest = MainViewModel.RoundUp((mainHours + defectHours) * 2.5m);
+        decimal expectedSysTest = InitialEstimateViewModel.RoundUp((mainHours + defectHours) * 2.5m);
 
         var vm = CreateExcelVm(); // default iterations = 2.5m
         Assert.Equal(expectedSysTest, vm.SystemTestingTotalHours);
@@ -146,7 +146,7 @@ public class ExcelVerificationTests
 
         // With 2.5 iterations: (931.0625 + 75.91875) * 2.5 = 1006.98125 * 2.5 = 2517.453125
         // RoundUp(2517.453125) = 2517.46 — matches Excel
-        Assert.Equal(2517.46m, MainViewModel.RoundUp(1006.98125m * 2.5m));
+        Assert.Equal(2517.46m, InitialEstimateViewModel.RoundUp(1006.98125m * 2.5m));
     }
 
     #endregion
@@ -351,17 +351,17 @@ public class ExcelVerificationTests
         // to verify our formula logic is correct even though the tool uses int iterations
         
         decimal dev = 596.5625m;
-        decimal sysTest = MainViewModel.RoundUp(1006.98125m * 2.5m); // 2517.46
-        decimal analysis = MainViewModel.RoundUp((dev + sysTest) * 0.05m); // RoundUp(3114.0225 * 0.05) = RoundUp(155.701125) = 155.71
-        decimal bizDesign = MainViewModel.RoundUp((dev + sysTest) * 0.15m); // RoundUp(3114.0225 * 0.15) = RoundUp(467.103375) = 467.11
-        decimal promotion = MainViewModel.RoundUp(dev * 0.05m); // RoundUp(29.828125) = 29.83
-        decimal baSysDoc = MainViewModel.RoundUp(dev * 0.05m); // 29.83
+        decimal sysTest = InitialEstimateViewModel.RoundUp(1006.98125m * 2.5m); // 2517.46
+        decimal analysis = InitialEstimateViewModel.RoundUp((dev + sysTest) * 0.05m); // RoundUp(3114.0225 * 0.05) = RoundUp(155.701125) = 155.71
+        decimal bizDesign = InitialEstimateViewModel.RoundUp((dev + sysTest) * 0.15m); // RoundUp(3114.0225 * 0.15) = RoundUp(467.103375) = 467.11
+        decimal promotion = InitialEstimateViewModel.RoundUp(dev * 0.05m); // RoundUp(29.828125) = 29.83
+        decimal baSysDoc = InitialEstimateViewModel.RoundUp(dev * 0.05m); // 29.83
         decimal effectiveBaSysDoc = baSysDoc + 1.17m; // 31.00 (adjusted)
-        decimal prodVal = MainViewModel.RoundUp(sysTest * 0.20m); // RoundUp(503.492) = 503.5
+        decimal prodVal = InitialEstimateViewModel.RoundUp(sysTest * 0.20m); // RoundUp(503.492) = 503.5
         
         // PM uses EFFECTIVE values (calculated + adjusted) — Excel cascading formula
         decimal pmBase = dev + sysTest + analysis + bizDesign + promotion + effectiveBaSysDoc + prodVal;
-        decimal pm = MainViewModel.RoundUp(pmBase * 0.15m);
+        decimal pm = InitialEstimateViewModel.RoundUp(pmBase * 0.15m);
         
         // Verify individual tasks match Excel
         Assert.Equal(2517.46m, sysTest);
@@ -388,7 +388,7 @@ public class ExcelVerificationTests
         decimal collab = 125m + 42m + 18.75m; // WPRs + Client + Internal = 185.75
         decimal timeForEst = 129m;
 
-        decimal subtotal = MainViewModel.RoundUp(
+        decimal subtotal = InitialEstimateViewModel.RoundUp(
             dev + sysTest + analysis + bizDesign + promotion + baSysDoc + prodVal + pm + collab + timeForEst);
 
         // Excel Row 43: 5261.11
@@ -433,9 +433,9 @@ public class ExcelVerificationTests
     /// <summary>
     /// Creates a MainViewModel populated with the exact Excel data.
     /// </summary>
-    private MainViewModel CreateExcelVm(decimal iterations = 2.5m)
+    private InitialEstimateViewModel CreateExcelVm(decimal iterations = 2.5m)
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
 
         // Components
         vm.AddComponentCommand.Execute(null);

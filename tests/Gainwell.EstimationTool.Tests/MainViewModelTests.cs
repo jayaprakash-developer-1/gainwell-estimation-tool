@@ -12,9 +12,9 @@ namespace Gainwell.EstimationTool.Tests;
 /// </summary>
 public class MainViewModelTests
 {
-    private MainViewModel CreateVm() => new();
+    private InitialEstimateViewModel CreateVm() => new();
 
-    private ComponentRowViewModel AddComponent(MainViewModel vm, ComponentType type, ComponentSize size, ChangeType change, int count)
+    private ComponentRowViewModel AddComponent(InitialEstimateViewModel vm, ComponentType type, ComponentSize size, ChangeType change, int count)
     {
         vm.AddComponentCommand.Execute(null);
         var row = vm.Components[^1];

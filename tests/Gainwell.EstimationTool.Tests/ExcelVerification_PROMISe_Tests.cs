@@ -127,7 +127,7 @@ public class ExcelVerification_PROMISe_Tests
     [Fact]
     public void PROMISe_FormulaStructure_SystemTesting_30PercentOfDev()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         foreach (var item in vm.CollaborationItems.ToList())
             vm.RemoveCollaborationItemCommand.Execute(item);
 
@@ -146,7 +146,7 @@ public class ExcelVerification_PROMISe_Tests
     [Fact]
     public void PROMISe_FormulaStructure_Analysis_5PercentOfDevPlusSysTest()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         foreach (var item in vm.CollaborationItems.ToList())
             vm.RemoveCollaborationItemCommand.Execute(item);
 
@@ -164,7 +164,7 @@ public class ExcelVerification_PROMISe_Tests
     [Fact]
     public void PROMISe_FormulaStructure_BusinessDesign_15PercentOfDevPlusSysTest()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         foreach (var item in vm.CollaborationItems.ToList())
             vm.RemoveCollaborationItemCommand.Execute(item);
 
@@ -182,7 +182,7 @@ public class ExcelVerification_PROMISe_Tests
     [Fact]
     public void PROMISe_FormulaStructure_Promotion_5PercentOfDev()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         foreach (var item in vm.CollaborationItems.ToList())
             vm.RemoveCollaborationItemCommand.Execute(item);
 
@@ -200,7 +200,7 @@ public class ExcelVerification_PROMISe_Tests
     [Fact]
     public void PROMISe_FormulaStructure_ProductionValidation_20PercentOfSysTest()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         foreach (var item in vm.CollaborationItems.ToList())
             vm.RemoveCollaborationItemCommand.Execute(item);
 
@@ -218,7 +218,7 @@ public class ExcelVerification_PROMISe_Tests
     [Fact]
     public void PROMISe_FormulaStructure_GrandTotal_CeilingOfSubtotal()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         foreach (var item in vm.CollaborationItems.ToList())
             vm.RemoveCollaborationItemCommand.Execute(item);
 

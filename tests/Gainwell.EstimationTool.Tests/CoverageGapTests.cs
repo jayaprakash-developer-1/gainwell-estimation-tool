@@ -144,7 +144,7 @@ public class CoverageGapTests
     [Fact]
     public void PmEffortOptions_Contains1To20()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         Assert.Equal(20, vm.PmEffortOptions.Length);
         Assert.Equal(1m, vm.PmEffortOptions[0]);
         Assert.Equal(20m, vm.PmEffortOptions[^1]);
@@ -153,7 +153,7 @@ public class CoverageGapTests
     [Fact]
     public void MeetingCountOptions_Contains0To20()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         Assert.Equal(21, vm.MeetingCountOptions.Length);
         Assert.Equal(0, vm.MeetingCountOptions[0]);
         Assert.Equal(20, vm.MeetingCountOptions[^1]);
@@ -162,14 +162,14 @@ public class CoverageGapTests
     [Fact]
     public void MeetingDurationOptions_ContainsExpectedValues()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         Assert.Equal(new[] { 0, 15, 30, 45, 60 }, vm.MeetingDurationOptions);
     }
 
     [Fact]
     public void ParticipantCountOptions_Contains0To20()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         Assert.Equal(21, vm.ParticipantCountOptions.Length);
         Assert.Equal(0, vm.ParticipantCountOptions[0]);
         Assert.Equal(20, vm.ParticipantCountOptions[^1]);
@@ -178,7 +178,7 @@ public class CoverageGapTests
     [Fact]
     public void PrepTimeOptions_Contains0To180ByStep15()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         Assert.Equal(13, vm.PrepTimeOptions.Length);
         Assert.Equal(0, vm.PrepTimeOptions[0]);
         Assert.Equal(15, vm.PrepTimeOptions[1]);
@@ -192,14 +192,14 @@ public class CoverageGapTests
     [Fact]
     public void HasValidComponents_NoComponents_ReturnsFalse()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         Assert.False(vm.HasValidComponents);
     }
 
     [Fact]
     public void HasValidComponents_IncompleteComponent_ReturnsFalse()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         // Component has None types and Count=0 by default
         Assert.False(vm.HasValidComponents);
@@ -208,7 +208,7 @@ public class CoverageGapTests
     [Fact]
     public void HasValidComponents_ValidComponent_ReturnsTrue()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         var row = vm.Components[^1];
         row.RequirementId = "REQ-001";
@@ -222,7 +222,7 @@ public class CoverageGapTests
     [Fact]
     public void HasValidComponents_MissingRequirementId_ReturnsFalse()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         var row = vm.Components[^1];
         row.ComponentType = ComponentType.MISC;
@@ -236,7 +236,7 @@ public class CoverageGapTests
     [Fact]
     public void HasValidComponents_ZeroCount_ReturnsFalse()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         var row = vm.Components[^1];
         row.RequirementId = "REQ-001";
@@ -254,7 +254,7 @@ public class CoverageGapTests
     [Fact]
     public void SaveProject_MissingChangeOrderId_ReturnsError()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Test";
         vm.ChangeOrderId = "";
         var result = vm.SaveProject();
@@ -264,7 +264,7 @@ public class CoverageGapTests
     [Fact]
     public void SaveProject_MissingDescription_ReturnsError()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Test";
         vm.ChangeOrderId = "CO-1";
         vm.ProjectDescription = "";
@@ -275,7 +275,7 @@ public class CoverageGapTests
     [Fact]
     public void SaveProject_MissingEstimatedBy_ReturnsError()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Test";
         vm.ChangeOrderId = "CO-1";
         vm.ProjectDescription = "Desc";
@@ -287,7 +287,7 @@ public class CoverageGapTests
     [Fact]
     public void SaveProject_MissingReviewedBy_ReturnsError()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Test";
         vm.ChangeOrderId = "CO-1";
         vm.ProjectDescription = "Desc";
@@ -300,7 +300,7 @@ public class CoverageGapTests
     [Fact]
     public void SaveProject_NoComponents_ReturnsError()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Test";
         vm.ChangeOrderId = "CO-1";
         vm.ProjectDescription = "Desc";
@@ -317,7 +317,7 @@ public class CoverageGapTests
     [Fact]
     public void WprsAdjustedHours_Change_TriggersRecalculate()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Small;
@@ -331,7 +331,7 @@ public class CoverageGapTests
     [Fact]
     public void ClientMeetingsAdjustedHours_Change_TriggersRecalculate()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Small;
@@ -345,7 +345,7 @@ public class CoverageGapTests
     [Fact]
     public void InternalMeetingsAdjustedHours_Change_TriggersRecalculate()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Small;
@@ -359,7 +359,7 @@ public class CoverageGapTests
     [Fact]
     public void AutomationTestCollabAdjustedHours_Change_TriggersRecalculate()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Small;
@@ -373,7 +373,7 @@ public class CoverageGapTests
     [Fact]
     public void ConsultantMentorAdjustedHours_Change_TriggersRecalculate()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
         vm.Components[0].ComponentType = ComponentType.MISC;
         vm.Components[0].Size = ComponentSize.Small;

@@ -14,9 +14,9 @@ namespace Gainwell.EstimationTool.Tests;
 /// </summary>
 public class NewFeaturesTests
 {
-    private MainViewModel CreateVm() => new();
+    private InitialEstimateViewModel CreateVm() => new();
 
-    private ComponentRowViewModel AddComponent(MainViewModel vm, ComponentType type, ComponentSize size, ChangeType change, int count)
+    private ComponentRowViewModel AddComponent(InitialEstimateViewModel vm, ComponentType type, ComponentSize size, ChangeType change, int count)
     {
         vm.AddComponentCommand.Execute(null);
         var row = vm.Components[^1];
@@ -36,7 +36,7 @@ public class NewFeaturesTests
         Assert.False(vm.UseTestCasesForEstimate);
         AddComponent(vm, ComponentType.PowerBuilderWindows, ComponentSize.Medium, ChangeType.New, 1);
         // System Testing should be 30% of Development
-        decimal expected = MainViewModel.RoundUp(vm.TotalDevelopmentHours * 0.30m);
+        decimal expected = InitialEstimateViewModel.RoundUp(vm.TotalDevelopmentHours * 0.30m);
         Assert.Equal(expected, vm.SystemTestingHours);
     }
 
@@ -101,7 +101,7 @@ public class NewFeaturesTests
     {
         var vm = CreateVm();
         AddComponent(vm, ComponentType.Reports, ComponentSize.Large, ChangeType.New, 1);
-        decimal percentBased = MainViewModel.RoundUp(vm.TotalDevelopmentHours * 0.30m);
+        decimal percentBased = InitialEstimateViewModel.RoundUp(vm.TotalDevelopmentHours * 0.30m);
 
         vm.UseTestCasesForEstimate = true;
         vm.TestCasesSimple = 100;
@@ -424,7 +424,7 @@ public class NewFeaturesTests
         vm.TestCasesMedium = 5;
         vm.TestCaseIterations = 2;
         // row31: 10*2.1925+5*4.065=42.25  row32defect: (10*1.5675+5*3.44)*0.1=3.2875 → ROUNDUP((42.25+3.2875)*2,2)=91.08
-        decimal expectedSysTest = MainViewModel.RoundUp(
+        decimal expectedSysTest = InitialEstimateViewModel.RoundUp(
             (10m * 2.1925m + 5m * 4.065m + (10m * 1.5675m + 5m * 3.44m) * 0.1m) * 2m);
 
         // Add actual hours and time for estimates
@@ -642,10 +642,10 @@ public class NewFeaturesTests
         // System Testing = 440.90
         Assert.Equal(440.90m, vm.SystemTestingHours);
         // Analysis = ROUNDUP((dev + 440.90) * 5%)
-        decimal expectedAnalysis = MainViewModel.RoundUp((dev + 440.90m) * 0.05m);
+        decimal expectedAnalysis = InitialEstimateViewModel.RoundUp((dev + 440.90m) * 0.05m);
         Assert.Equal(expectedAnalysis, vm.AnalysisHours);
         // Business Design = ROUNDUP((dev + 440.90) * 15%)
-        decimal expectedBD = MainViewModel.RoundUp((dev + 440.90m) * 0.15m);
+        decimal expectedBD = InitialEstimateViewModel.RoundUp((dev + 440.90m) * 0.15m);
         Assert.Equal(expectedBD, vm.BusinessDesignHours);
     }
 

@@ -10,9 +10,9 @@ namespace Gainwell.EstimationTool.Tests;
 /// </summary>
 public class ExcelVerification_CO23869_002_Tests
 {
-    private MainViewModel CreateVm() => new();
+    private InitialEstimateViewModel CreateVm() => new();
 
-    private ComponentRowViewModel AddComponent(MainViewModel vm, ComponentType type, ComponentSize size, ChangeType change, int count)
+    private ComponentRowViewModel AddComponent(InitialEstimateViewModel vm, ComponentType type, ComponentSize size, ChangeType change, int count)
     {
         vm.AddComponentCommand.Execute(null);
         var row = vm.Components[^1];
@@ -23,7 +23,7 @@ public class ExcelVerification_CO23869_002_Tests
         return row;
     }
 
-    private void ClearCollaboration(MainViewModel vm)
+    private void ClearCollaboration(InitialEstimateViewModel vm)
     {
         foreach (var item in vm.CollaborationItems.ToList())
             vm.RemoveCollaborationItemCommand.Execute(item);
@@ -107,7 +107,7 @@ public class ExcelVerification_CO23869_002_Tests
 
         // Effective SysTest = calc + 20
         // ProdVal = ROUNDUP((calc + 20) * 0.20, 2)
-        decimal expectedProdVal = MainViewModel.RoundUp((sysTestCalc + 20m) * 0.20m);
+        decimal expectedProdVal = InitialEstimateViewModel.RoundUp((sysTestCalc + 20m) * 0.20m);
         Assert.Equal(expectedProdVal, vm.ProductionValidationHours);
     }
 
@@ -164,7 +164,7 @@ public class ExcelVerification_CO23869_002_Tests
 
         decimal allTasks = effectiveDev + effectiveSysTest + effectiveAnalysis + effectiveBizDesign
                          + effectivePromotion + effectiveBaDoc + effectiveProdVal;
-        decimal expectedPM = MainViewModel.RoundUp(allTasks * (pmPercent / 100m));
+        decimal expectedPM = InitialEstimateViewModel.RoundUp(allTasks * (pmPercent / 100m));
 
         Assert.Equal(expectedPM, vm.ProjectManagementHours);
     }

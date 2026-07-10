@@ -10,9 +10,9 @@ namespace Gainwell.EstimationTool.Tests;
 /// </summary>
 public class ExcelVerification_CO23810_002_Tests
 {
-    private MainViewModel CreateVm() => new();
+    private InitialEstimateViewModel CreateVm() => new();
 
-    private ComponentRowViewModel AddComponent(MainViewModel vm, ComponentType type, ComponentSize size, ChangeType change, int count)
+    private ComponentRowViewModel AddComponent(InitialEstimateViewModel vm, ComponentType type, ComponentSize size, ChangeType change, int count)
     {
         vm.AddComponentCommand.Execute(null);
         var row = vm.Components[^1];
@@ -23,7 +23,7 @@ public class ExcelVerification_CO23810_002_Tests
         return row;
     }
 
-    private void ClearCollaboration(MainViewModel vm)
+    private void ClearCollaboration(InitialEstimateViewModel vm)
     {
         foreach (var item in vm.CollaborationItems.ToList())
             vm.RemoveCollaborationItemCommand.Execute(item);
@@ -168,7 +168,7 @@ public class ExcelVerification_CO23810_002_Tests
         // PM = ROUNDUP((551.26+165.38+35.84+107.50+27.57+27.57+33.08) * 0.15, 2)
         // = ROUNDUP(948.20 * 0.15, 2) = ROUNDUP(142.23, 2) = 142.23
         decimal allTasks = 551.26m + 165.38m + 35.84m + 107.50m + 27.57m + 27.57m + 33.08m;
-        decimal expectedPM = MainViewModel.RoundUp(allTasks * 0.15m);
+        decimal expectedPM = InitialEstimateViewModel.RoundUp(allTasks * 0.15m);
         Assert.Equal(expectedPM, vm.ProjectManagementHours);
     }
 

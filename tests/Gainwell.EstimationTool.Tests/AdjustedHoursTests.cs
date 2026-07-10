@@ -10,9 +10,9 @@ namespace Gainwell.EstimationTool.Tests;
 /// </summary>
 public class AdjustedHoursTests
 {
-    private MainViewModel CreateVm() => new();
+    private InitialEstimateViewModel CreateVm() => new();
 
-    private void AddMiscLarge(MainViewModel vm)
+    private void AddMiscLarge(InitialEstimateViewModel vm)
     {
         vm.AddComponentCommand.Execute(null);
         var row = vm.Components[^1];

@@ -20,7 +20,7 @@ public class RoundUpAndTShirtTests
     [InlineData(5.10, 5.10)]
     public void RoundUp_ExactValues_NoChange(decimal input, decimal expected)
     {
-        Assert.Equal(expected, MainViewModel.RoundUp(input));
+        Assert.Equal(expected, InitialEstimateViewModel.RoundUp(input));
     }
 
     #endregion
@@ -40,7 +40,7 @@ public class RoundUpAndTShirtTests
     [InlineData(4.6875, 4.69)]
     public void RoundUp_PositiveValues_RoundsAwayFromZero(decimal input, decimal expected)
     {
-        Assert.Equal(expected, MainViewModel.RoundUp(input));
+        Assert.Equal(expected, InitialEstimateViewModel.RoundUp(input));
     }
 
     #endregion
@@ -53,7 +53,7 @@ public class RoundUpAndTShirtTests
     [InlineData(-0.001, -0.01)]
     public void RoundUp_NegativeValues_RoundsAwayFromZero(decimal input, decimal expected)
     {
-        Assert.Equal(expected, MainViewModel.RoundUp(input));
+        Assert.Equal(expected, InitialEstimateViewModel.RoundUp(input));
     }
 
     #endregion
@@ -67,7 +67,7 @@ public class RoundUpAndTShirtTests
     [InlineData(0.101, 0.11)]
     public void RoundUp_SmallFractions(decimal input, decimal expected)
     {
-        Assert.Equal(expected, MainViewModel.RoundUp(input));
+        Assert.Equal(expected, InitialEstimateViewModel.RoundUp(input));
     }
 
     #endregion
@@ -78,42 +78,42 @@ public class RoundUpAndTShirtTests
     public void RoundUp_WorkedExample_SystemTesting()
     {
         // 953.10 * 0.30 = 285.93 (exact)
-        Assert.Equal(285.93m, MainViewModel.RoundUp(953.10m * 0.30m));
+        Assert.Equal(285.93m, InitialEstimateViewModel.RoundUp(953.10m * 0.30m));
     }
 
     [Fact]
     public void RoundUp_WorkedExample_Analysis()
     {
         // (953.10 + 285.93) * 0.05 = 61.9515
-        Assert.Equal(61.96m, MainViewModel.RoundUp((953.10m + 285.93m) * 0.05m));
+        Assert.Equal(61.96m, InitialEstimateViewModel.RoundUp((953.10m + 285.93m) * 0.05m));
     }
 
     [Fact]
     public void RoundUp_WorkedExample_BusinessDesign()
     {
         // (953.10 + 285.93) * 0.15 = 185.8545
-        Assert.Equal(185.86m, MainViewModel.RoundUp((953.10m + 285.93m) * 0.15m));
+        Assert.Equal(185.86m, InitialEstimateViewModel.RoundUp((953.10m + 285.93m) * 0.15m));
     }
 
     [Fact]
     public void RoundUp_WorkedExample_Promotion()
     {
         // 953.10 * 0.05 = 47.655
-        Assert.Equal(47.66m, MainViewModel.RoundUp(953.10m * 0.05m));
+        Assert.Equal(47.66m, InitialEstimateViewModel.RoundUp(953.10m * 0.05m));
     }
 
     [Fact]
     public void RoundUp_WorkedExample_BASystemDoc()
     {
         // 953.10 * 0.05 = 47.655
-        Assert.Equal(47.66m, MainViewModel.RoundUp(953.10m * 0.05m));
+        Assert.Equal(47.66m, InitialEstimateViewModel.RoundUp(953.10m * 0.05m));
     }
 
     [Fact]
     public void RoundUp_WorkedExample_ProductionValidation()
     {
         // 285.93 * 0.20 = 57.186
-        Assert.Equal(57.19m, MainViewModel.RoundUp(285.93m * 0.20m));
+        Assert.Equal(57.19m, InitialEstimateViewModel.RoundUp(285.93m * 0.20m));
     }
 
     [Fact]
@@ -122,7 +122,7 @@ public class RoundUpAndTShirtTests
         // Sum = 953.10+285.93+61.96+185.86+47.66+47.66+57.19 = 1639.36
         // 1639.36 * 0.15 = 245.904
         decimal sum = 953.10m + 285.93m + 61.96m + 185.86m + 47.66m + 47.66m + 57.19m;
-        Assert.Equal(245.91m, MainViewModel.RoundUp(sum * 0.15m));
+        Assert.Equal(245.91m, InitialEstimateViewModel.RoundUp(sum * 0.15m));
     }
 
     #endregion
@@ -255,14 +255,14 @@ public class RoundUpAndTShirtTests
     public void TShirtSize_EmptyProject_WithCollaboration_Small()
     {
         // No components → T-shirt shows "—" regardless of collaboration
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         Assert.Equal("—", vm.TShirtSize);
     }
 
     [Fact]
     public void TShirtSize_UpdatesWhenComponentsChange()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         Assert.Equal("—", vm.TShirtSize);
 
         vm.AddComponentCommand.Execute(null);

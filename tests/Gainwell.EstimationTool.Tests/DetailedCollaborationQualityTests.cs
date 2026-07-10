@@ -1,4 +1,5 @@
 using Gainwell.EstimationTool;
+using Gainwell.EstimationTool.Views;
 
 namespace Gainwell.EstimationTool.Tests;
 

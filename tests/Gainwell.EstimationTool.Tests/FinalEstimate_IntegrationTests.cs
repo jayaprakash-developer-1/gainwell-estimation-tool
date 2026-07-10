@@ -12,9 +12,9 @@ namespace Gainwell.EstimationTool.Tests;
 /// </summary>
 public class FinalEstimate_IntegrationTests
 {
-    private MainViewModel CreateVm() => new();
+    private InitialEstimateViewModel CreateVm() => new();
 
-    private ComponentRowViewModel AddComponent(MainViewModel vm, ComponentType type, ComponentSize size, ChangeType change, int count)
+    private ComponentRowViewModel AddComponent(InitialEstimateViewModel vm, ComponentType type, ComponentSize size, ChangeType change, int count)
     {
         vm.AddComponentCommand.Execute(null);
         var row = vm.Components[^1];
@@ -25,7 +25,7 @@ public class FinalEstimate_IntegrationTests
         return row;
     }
 
-    private void ClearCollaboration(MainViewModel vm)
+    private void ClearCollaboration(InitialEstimateViewModel vm)
     {
         foreach (var item in vm.CollaborationItems.ToList())
             vm.RemoveCollaborationItemCommand.Execute(item);
@@ -45,7 +45,7 @@ public class FinalEstimate_IntegrationTests
         Assert.Equal("Small", vm.TShirtSize);
 
         // All derived tasks should cascade correctly
-        Assert.Equal(MainViewModel.RoundUp(20.94m * 0.30m), vm.SystemTestingHours);
+        Assert.Equal(InitialEstimateViewModel.RoundUp(20.94m * 0.30m), vm.SystemTestingHours);
         Assert.True(vm.GrandTotalHours < 100m);
     }
 

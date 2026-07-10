@@ -11,9 +11,9 @@ namespace Gainwell.EstimationTool.Tests;
 /// </summary>
 public class PersistenceRoundTripTests
 {
-    private MainViewModel CreateVm() => new();
+    private InitialEstimateViewModel CreateVm() => new();
 
-    private ComponentRowViewModel AddComponent(MainViewModel vm, ComponentType type, ComponentSize size, ChangeType change, int count)
+    private ComponentRowViewModel AddComponent(InitialEstimateViewModel vm, ComponentType type, ComponentSize size, ChangeType change, int count)
     {
         vm.AddComponentCommand.Execute(null);
         var row = vm.Components[^1];
@@ -439,7 +439,7 @@ public class PersistenceRoundTripTests
         AddComponent(vm2, ComponentType.MISC, ComponentSize.Small, ChangeType.New, 1);
         vm2.SaveProject();
 
-        var all = MainViewModel.GetAllProjects();
+        var all = InitialEstimateViewModel.GetAllProjects();
         Assert.True(all.Count >= 2);
         // Most recently modified should be first
         Assert.True(all[0].LastModifiedDate >= all[1].LastModifiedDate);

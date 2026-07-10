@@ -11,9 +11,9 @@ namespace Gainwell.EstimationTool.Tests;
 /// </summary>
 public class FullCalculationPipelineTests
 {
-    private MainViewModel CreateVm() => new();
+    private InitialEstimateViewModel CreateVm() => new();
 
-    private ComponentRowViewModel AddComponent(MainViewModel vm, ComponentType type, ComponentSize size, ChangeType change, int count)
+    private ComponentRowViewModel AddComponent(InitialEstimateViewModel vm, ComponentType type, ComponentSize size, ChangeType change, int count)
     {
         vm.AddComponentCommand.Execute(null);
         var row = vm.Components[^1];
@@ -94,13 +94,13 @@ public class FullCalculationPipelineTests
         // = 61.96/2 + 185.86 + 47.66 + 57.19 + 245.91/2
         // = 30.98 + 185.86 + 47.66 + 57.19 + 122.955
         // = 444.645 → ROUNDUP = 444.65
-        decimal baExpected = MainViewModel.RoundUp(
+        decimal baExpected = InitialEstimateViewModel.RoundUp(
             vm.AnalysisHours / 2m + vm.BusinessDesignHours + vm.BaSystemDocHours
             + vm.ProductionValidationHours + vm.TotalActualHours / 2m + vm.TimeForEstimates / 2m);
         Assert.Equal(baExpected, vm.BaRoleHours);
 
         // SE = Dev + Analysis/2 + Promotion + ActualHours/2 + TimeForEstimates/2
-        decimal seExpected = MainViewModel.RoundUp(
+        decimal seExpected = InitialEstimateViewModel.RoundUp(
             vm.TotalDevelopmentHours + vm.AnalysisHours / 2m + vm.PromotionHours
             + vm.TotalActualHours / 2m + vm.TimeForEstimates / 2m);
         Assert.Equal(seExpected, vm.SeRoleHours);
@@ -216,7 +216,7 @@ public class FullCalculationPipelineTests
 
         // Dev=100, SysTest=30, Analysis=6.50, BizDesign=19.50, Promotion=5, BADoc=5, ProdVal=6 = 172
         decimal devPlusDerived = 100m + 30m + 6.50m + 19.50m + 5m + 5m + 6m;
-        decimal expectedPM = MainViewModel.RoundUp(devPlusDerived * (pmPercent / 100m));
+        decimal expectedPM = InitialEstimateViewModel.RoundUp(devPlusDerived * (pmPercent / 100m));
         Assert.Equal(expectedPM, vm.ProjectManagementHours);
     }
 
@@ -266,7 +266,7 @@ public class FullCalculationPipelineTests
         decimal sum = vm.TotalDevelopmentHours + vm.SystemTestingHours + vm.AnalysisHours
                     + vm.BusinessDesignHours + vm.PromotionHours + vm.BaSystemDocHours
                     + vm.ProductionValidationHours;
-        decimal expectedPM = MainViewModel.RoundUp(sum * 0.15m);
+        decimal expectedPM = InitialEstimateViewModel.RoundUp(sum * 0.15m);
         Assert.Equal(expectedPM, vm.ProjectManagementHours);
     }
 
@@ -340,14 +340,14 @@ public class FullCalculationPipelineTests
         // PM = ROUNDUP(189.20*0.15) = 28.38
         // Subtotal = 189.20 + 28.38 + 0 + 0 + 20 + 5 = 242.58
         decimal effectiveDev = 110m;
-        decimal sysTest = MainViewModel.RoundUp(effectiveDev * 0.30m);
-        decimal analysis = MainViewModel.RoundUp((effectiveDev + sysTest) * 0.05m);
-        decimal bizDesign = MainViewModel.RoundUp((effectiveDev + sysTest) * 0.15m);
-        decimal promotion = MainViewModel.RoundUp(effectiveDev * 0.05m);
-        decimal baSysDoc = MainViewModel.RoundUp(effectiveDev * 0.05m);
-        decimal prodVal = MainViewModel.RoundUp(sysTest * 0.20m);
+        decimal sysTest = InitialEstimateViewModel.RoundUp(effectiveDev * 0.30m);
+        decimal analysis = InitialEstimateViewModel.RoundUp((effectiveDev + sysTest) * 0.05m);
+        decimal bizDesign = InitialEstimateViewModel.RoundUp((effectiveDev + sysTest) * 0.15m);
+        decimal promotion = InitialEstimateViewModel.RoundUp(effectiveDev * 0.05m);
+        decimal baSysDoc = InitialEstimateViewModel.RoundUp(effectiveDev * 0.05m);
+        decimal prodVal = InitialEstimateViewModel.RoundUp(sysTest * 0.20m);
         decimal devPlusDerived = effectiveDev + sysTest + analysis + bizDesign + promotion + baSysDoc + prodVal;
-        decimal pm = MainViewModel.RoundUp(devPlusDerived * 0.15m);
+        decimal pm = InitialEstimateViewModel.RoundUp(devPlusDerived * 0.15m);
         decimal expected = devPlusDerived + pm + 0m + 0m + 20m + 5m;
         Assert.Equal(expected, vm.SubtotalHours);
     }

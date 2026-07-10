@@ -13,9 +13,9 @@ public class FinalEstimateViewModel_Tests
 {
     #region Helpers
 
-    private MainViewModel CreateMainVm() => new();
+    private InitialEstimateViewModel CreateMainVm() => new();
 
-    private ComponentRowViewModel AddComponent(MainViewModel vm, ComponentType type, ComponentSize size, ChangeType change, int count)
+    private ComponentRowViewModel AddComponent(InitialEstimateViewModel vm, ComponentType type, ComponentSize size, ChangeType change, int count)
     {
         vm.AddComponentCommand.Execute(null);
         var row = vm.Components[^1];
@@ -26,13 +26,13 @@ public class FinalEstimateViewModel_Tests
         return row;
     }
 
-    private void ClearCollaboration(MainViewModel vm)
+    private void ClearCollaboration(InitialEstimateViewModel vm)
     {
         foreach (var item in vm.CollaborationItems.ToList())
             vm.RemoveCollaborationItemCommand.Execute(item);
     }
 
-    private FinalEstimateViewModel LoadFinalEstimate(MainViewModel vm)
+    private FinalEstimateViewModel LoadFinalEstimate(InitialEstimateViewModel vm)
     {
         var finalVm = new FinalEstimateViewModel();
         finalVm.LoadFromMainViewModel(vm);
@@ -1214,7 +1214,7 @@ public class FinalEstimateViewModel_Tests
         const decimal r32S = 1.5675m, r32M = 3.44m, r32C = 7.51m, r32VC = 13.13m;
         decimal main = 10m * r31S + 5m * r31M + 3m * r31C + 1m * r31VC;
         decimal defect = (10m * r32S + 5m * r32M + 3m * r32C + 1m * r32VC) * 0.1m;
-        decimal expected = MainViewModel.RoundUp((main + defect) * 1m);
+        decimal expected = InitialEstimateViewModel.RoundUp((main + defect) * 1m);
 
         Assert.Equal(expected, final.SystemTestingCalculated);
     }
@@ -1374,7 +1374,7 @@ public class FinalEstimateViewModel_Tests
                              + final.AnalysisTotal + final.BusinessDesignTotal
                              + final.PromotionTotal + final.BaSystemDocTotal
                              + final.ProductionValidationTotal;
-        decimal expectedPM = MainViewModel.RoundUp(allEffective * 0.10m);
+        decimal expectedPM = InitialEstimateViewModel.RoundUp(allEffective * 0.10m);
         Assert.Equal(expectedPM, final.PmEffortCalculated);
     }
 

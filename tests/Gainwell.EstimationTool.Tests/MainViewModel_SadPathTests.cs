@@ -10,9 +10,9 @@ namespace Gainwell.EstimationTool.Tests;
 /// </summary>
 public class MainViewModel_SadPathTests
 {
-    private MainViewModel CreateVm() => new();
+    private InitialEstimateViewModel CreateVm() => new();
 
-    private ComponentRowViewModel AddComponent(MainViewModel vm, ComponentType type, ComponentSize size, ChangeType change, int count)
+    private ComponentRowViewModel AddComponent(InitialEstimateViewModel vm, ComponentType type, ComponentSize size, ChangeType change, int count)
     {
         vm.AddComponentCommand.Execute(null);
         var row = vm.Components[^1];
@@ -23,7 +23,7 @@ public class MainViewModel_SadPathTests
         return row;
     }
 
-    private void ClearCollaboration(MainViewModel vm)
+    private void ClearCollaboration(InitialEstimateViewModel vm)
     {
         foreach (var item in vm.CollaborationItems.ToList())
             vm.RemoveCollaborationItemCommand.Execute(item);
@@ -323,7 +323,7 @@ public class MainViewModel_SadPathTests
         const decimal r32Simple = 1.5675m;
         decimal mainHours = 10m * r31Simple;
         decimal defectHours = 10m * r32Simple * 0.1m;
-        decimal expected = MainViewModel.RoundUp((mainHours + defectHours) * 1m);
+        decimal expected = InitialEstimateViewModel.RoundUp((mainHours + defectHours) * 1m);
         Assert.Equal(expected, vm.SystemTestingHours);
     }
 

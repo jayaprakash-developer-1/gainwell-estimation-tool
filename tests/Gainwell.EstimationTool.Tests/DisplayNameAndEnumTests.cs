@@ -65,35 +65,35 @@ public class DisplayNameAndEnumTests
     [Fact]
     public void MainViewModel_ComponentTypes_ContainsAll12()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         Assert.Equal(12, vm.ComponentTypes.Length);
     }
 
     [Fact]
     public void MainViewModel_ChangeTypes_ContainsAll3()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         Assert.Equal(3, vm.ChangeTypes.Length);
     }
 
     [Fact]
     public void MainViewModel_Sizes_ContainsAll4()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         Assert.Equal(4, vm.Sizes.Length);
     }
 
     [Fact]
     public void MainViewModel_CollaborationTypes_ContainsAll4()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         Assert.Equal(4, vm.CollaborationTypes.Length);
     }
 
     [Fact]
     public void MainViewModel_PmEffortOptions_Has20Values()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         Assert.Equal(20, vm.PmEffortOptions.Length);
         Assert.Contains(1m, vm.PmEffortOptions);
         Assert.Contains(5m, vm.PmEffortOptions);

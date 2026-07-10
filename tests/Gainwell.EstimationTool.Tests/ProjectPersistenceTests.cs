@@ -31,7 +31,7 @@ public class ProjectPersistenceTests : IDisposable
 
     #region Save Project Tests
 
-    private void FillRequiredFields(MainViewModel vm)
+    private void FillRequiredFields(InitialEstimateViewModel vm)
     {
         if (string.IsNullOrWhiteSpace(vm.ChangeOrderId)) vm.ChangeOrderId = "CO-TEST-001";
         if (string.IsNullOrWhiteSpace(vm.ProjectDescription)) vm.ProjectDescription = "Test description";
@@ -50,7 +50,7 @@ public class ProjectPersistenceTests : IDisposable
     [Fact]
     public void SaveProject_EmptyName_ReturnsError()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "";
 
         var result = vm.SaveProject();
@@ -61,7 +61,7 @@ public class ProjectPersistenceTests : IDisposable
     [Fact]
     public void SaveProject_WhitespaceName_ReturnsError()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "   ";
 
         var result = vm.SaveProject();
@@ -72,7 +72,7 @@ public class ProjectPersistenceTests : IDisposable
     [Fact]
     public void SaveProject_ValidProject_ReturnsNull()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Test Project";
         FillRequiredFields(vm);
 
@@ -84,7 +84,7 @@ public class ProjectPersistenceTests : IDisposable
     [Fact]
     public void SaveProject_PersistsToDatabase()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Persistence Test";
         vm.ChangeOrderId = "CO-123";
         vm.ProjectDescription = "A test project";
@@ -92,14 +92,14 @@ public class ProjectPersistenceTests : IDisposable
 
         vm.SaveProject();
 
-        var projects = MainViewModel.GetAllProjects();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         Assert.Contains(projects, p => p.ProjectName == "Persistence Test");
     }
 
     [Fact]
     public void SaveProject_PersistsComponents()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Component Test";
         vm.ChangeOrderId = "CO-TEST";
         vm.ProjectDescription = "Test";
@@ -115,7 +115,7 @@ public class ProjectPersistenceTests : IDisposable
 
         vm.SaveProject();
 
-        var projects = MainViewModel.GetAllProjects();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         var saved = projects.First(p => p.ProjectName == "Component Test");
         Assert.Single(saved.Components);
         Assert.Equal("REQ-001", saved.Components[0].RequirementId);
@@ -128,7 +128,7 @@ public class ProjectPersistenceTests : IDisposable
     [Fact]
     public void SaveProject_UpdatesExistingByName()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Update Test";
         vm.ChangeOrderId = "CO-001";
         FillRequiredFields(vm);
@@ -138,7 +138,7 @@ public class ProjectPersistenceTests : IDisposable
         vm.ChangeOrderId = "CO-002";
         vm.SaveProject();
 
-        var projects = MainViewModel.GetAllProjects();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         var matches = projects.Where(p => p.ProjectName == "Update Test").ToList();
         Assert.Single(matches);
         Assert.Equal("CO-002", matches[0].ChangeOrderId);
@@ -147,19 +147,19 @@ public class ProjectPersistenceTests : IDisposable
     [Fact]
     public void SaveProject_UniqueProjectName_Enforced()
     {
-        var vm1 = new MainViewModel();
+        var vm1 = new InitialEstimateViewModel();
         vm1.ProjectName = "Unique Project";
         FillRequiredFields(vm1);
         vm1.SaveProject();
 
         // Same name from another vm instance = should update (not duplicate)
-        var vm2 = new MainViewModel();
+        var vm2 = new InitialEstimateViewModel();
         vm2.ProjectName = "Unique Project";
         vm2.ChangeOrderId = "NEW-CO";
         FillRequiredFields(vm2);
         vm2.SaveProject();
 
-        var projects = MainViewModel.GetAllProjects();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         var matches = projects.Where(p => p.ProjectName == "Unique Project").ToList();
         Assert.Single(matches);
     }
@@ -167,12 +167,12 @@ public class ProjectPersistenceTests : IDisposable
     [Fact]
     public void SaveProject_SetsCreatedDate()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = $"Date Test {Guid.NewGuid():N}";
         FillRequiredFields(vm);
         vm.SaveProject();
 
-        var projects = MainViewModel.GetAllProjects();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         var saved = projects.First(p => p.ProjectName == vm.ProjectName);
         Assert.True((DateTime.UtcNow - saved.CreatedDate).TotalSeconds < 10);
     }
@@ -180,12 +180,12 @@ public class ProjectPersistenceTests : IDisposable
     [Fact]
     public void SaveProject_SetsCreatedBy()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "User Test";
         FillRequiredFields(vm);
         vm.SaveProject();
 
-        var projects = MainViewModel.GetAllProjects();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         var saved = projects.First(p => p.ProjectName == "User Test");
         Assert.Equal(Environment.UserName, saved.CreatedBy);
     }
@@ -193,13 +193,13 @@ public class ProjectPersistenceTests : IDisposable
     [Fact]
     public void SaveProject_PersistsPmPercentage()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "PM Test";
         vm.PmEffortPercentage = 20m;
         FillRequiredFields(vm);
         vm.SaveProject();
 
-        var projects = MainViewModel.GetAllProjects();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         var saved = projects.First(p => p.ProjectName == "PM Test");
         Assert.Equal(20m, saved.PmEffortPercentage);
     }
@@ -207,7 +207,7 @@ public class ProjectPersistenceTests : IDisposable
     [Fact]
     public void SaveProject_PersistsTotals()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Totals Test";
         FillRequiredFields(vm);
         vm.AddComponentCommand.Execute(null);
@@ -217,7 +217,7 @@ public class ProjectPersistenceTests : IDisposable
         vm.Components[^1].Count = 1;
         vm.SaveProject();
 
-        var projects = MainViewModel.GetAllProjects();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         var saved = projects.First(p => p.ProjectName == "Totals Test");
         Assert.True(saved.GrandTotalHours > 0);
         Assert.True(saved.TotalDevelopmentHours > 0);
@@ -226,7 +226,7 @@ public class ProjectPersistenceTests : IDisposable
     [Fact]
     public void SaveProject_PersistsTShirtSize()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "TShirt Test";
         FillRequiredFields(vm);
         vm.AddComponentCommand.Execute(null);
@@ -236,7 +236,7 @@ public class ProjectPersistenceTests : IDisposable
         vm.Components[^1].Count = 1;
         vm.SaveProject();
 
-        var projects = MainViewModel.GetAllProjects();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         var saved = projects.First(p => p.ProjectName == "TShirt Test");
         Assert.False(string.IsNullOrEmpty(saved.TShirtSize));
     }
@@ -244,7 +244,7 @@ public class ProjectPersistenceTests : IDisposable
     [Fact]
     public void SaveProject_MultipleComponents_AllPersisted()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Multi Component";
         vm.ChangeOrderId = "CO-TEST";
         vm.ProjectDescription = "Test";
@@ -267,7 +267,7 @@ public class ProjectPersistenceTests : IDisposable
         vm.Components[^1].Count = 1;
         vm.SaveProject();
 
-        var projects = MainViewModel.GetAllProjects();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         var saved = projects.First(p => p.ProjectName == "Multi Component");
         Assert.Equal(3, saved.Components.Count);
     }
@@ -279,13 +279,13 @@ public class ProjectPersistenceTests : IDisposable
     [Fact]
     public void LoadProject_RestoresProjectName()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Load Name Test";
         FillRequiredFields(vm);
         vm.SaveProject();
 
-        var vm2 = new MainViewModel();
-        var projects = MainViewModel.GetAllProjects();
+        var vm2 = new InitialEstimateViewModel();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         vm2.LoadProject(projects.First(p => p.ProjectName == "Load Name Test"));
 
         Assert.Equal("Load Name Test", vm2.ProjectName);
@@ -294,14 +294,14 @@ public class ProjectPersistenceTests : IDisposable
     [Fact]
     public void LoadProject_RestoresChangeOrderId()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Load CO Test";
         vm.ChangeOrderId = "CO-999";
         FillRequiredFields(vm);
         vm.SaveProject();
 
-        var vm2 = new MainViewModel();
-        var projects = MainViewModel.GetAllProjects();
+        var vm2 = new InitialEstimateViewModel();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         vm2.LoadProject(projects.First(p => p.ProjectName == "Load CO Test"));
 
         Assert.Equal("CO-999", vm2.ChangeOrderId);
@@ -310,14 +310,14 @@ public class ProjectPersistenceTests : IDisposable
     [Fact]
     public void LoadProject_RestoresDescription()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Load Desc Test";
         vm.ProjectDescription = "Test description";
         FillRequiredFields(vm);
         vm.SaveProject();
 
-        var vm2 = new MainViewModel();
-        var projects = MainViewModel.GetAllProjects();
+        var vm2 = new InitialEstimateViewModel();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         vm2.LoadProject(projects.First(p => p.ProjectName == "Load Desc Test"));
 
         Assert.Equal("Test description", vm2.ProjectDescription);
@@ -326,14 +326,14 @@ public class ProjectPersistenceTests : IDisposable
     [Fact]
     public void LoadProject_RestoresPmPercentage()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Load PM Test";
         vm.PmEffortPercentage = 19m;
         FillRequiredFields(vm);
         vm.SaveProject();
 
-        var vm2 = new MainViewModel();
-        var projects = MainViewModel.GetAllProjects();
+        var vm2 = new InitialEstimateViewModel();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         vm2.LoadProject(projects.First(p => p.ProjectName == "Load PM Test"));
 
         Assert.Equal(19m, vm2.PmEffortPercentage);
@@ -342,7 +342,7 @@ public class ProjectPersistenceTests : IDisposable
     [Fact]
     public void LoadProject_RestoresComponents()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Load Components Test";
         vm.ChangeOrderId = "CO-TEST";
         vm.ProjectDescription = "Test";
@@ -356,8 +356,8 @@ public class ProjectPersistenceTests : IDisposable
         vm.Components[^1].Count = 3;
         vm.SaveProject();
 
-        var vm2 = new MainViewModel();
-        var projects = MainViewModel.GetAllProjects();
+        var vm2 = new InitialEstimateViewModel();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         vm2.LoadProject(projects.First(p => p.ProjectName == "Load Components Test"));
 
         Assert.Single(vm2.Components);
@@ -372,7 +372,7 @@ public class ProjectPersistenceTests : IDisposable
     [Fact]
     public void LoadProject_RecalculatesTotals()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Load Recalc Test";
         FillRequiredFields(vm);
         vm.AddComponentCommand.Execute(null);
@@ -383,8 +383,8 @@ public class ProjectPersistenceTests : IDisposable
         var originalTotal = vm.GrandTotalHours;
         vm.SaveProject();
 
-        var vm2 = new MainViewModel();
-        var projects = MainViewModel.GetAllProjects();
+        var vm2 = new InitialEstimateViewModel();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         vm2.LoadProject(projects.First(p => p.ProjectName == "Load Recalc Test"));
 
         Assert.Equal(originalTotal, vm2.GrandTotalHours);
@@ -393,20 +393,20 @@ public class ProjectPersistenceTests : IDisposable
     [Fact]
     public void LoadProject_ClearsExistingComponents()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Load Clear Test";
         FillRequiredFields(vm);
         vm.SaveProject();
 
         // Start a new VM with some components already
-        var vm2 = new MainViewModel();
+        var vm2 = new InitialEstimateViewModel();
         vm2.AddComponentCommand.Execute(null);
         vm2.AddComponentCommand.Execute(null);
         vm2.AddComponentCommand.Execute(null);
         Assert.Equal(3, vm2.Components.Count);
 
         // Load project — should replace, not append
-        var projects = MainViewModel.GetAllProjects();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         vm2.LoadProject(projects.First(p => p.ProjectName == "Load Clear Test"));
 
         Assert.Single(vm2.Components);
@@ -415,7 +415,7 @@ public class ProjectPersistenceTests : IDisposable
     [Fact]
     public void LoadProject_ComponentLineNumbersPreserved()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Load Line Test";
         FillRequiredFields(vm);
         vm.AddComponentCommand.Execute(null);
@@ -425,8 +425,8 @@ public class ProjectPersistenceTests : IDisposable
         vm.Components[^1].Count = 1;
         vm.SaveProject();
 
-        var vm2 = new MainViewModel();
-        var projects = MainViewModel.GetAllProjects();
+        var vm2 = new InitialEstimateViewModel();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         vm2.LoadProject(projects.First(p => p.ProjectName == "Load Line Test"));
 
         Assert.Equal(1, vm2.Components[0].LineNumber);
@@ -436,7 +436,7 @@ public class ProjectPersistenceTests : IDisposable
     [Fact]
     public void LoadProject_BaseHoursRecalculated()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Load BaseHrs Test";
         vm.ChangeOrderId = "CO-TEST";
         vm.ProjectDescription = "Test";
@@ -450,8 +450,8 @@ public class ProjectPersistenceTests : IDisposable
         var expectedBase = vm.Components[^1].BaseHoursPerUnit;
         vm.SaveProject();
 
-        var vm2 = new MainViewModel();
-        var projects = MainViewModel.GetAllProjects();
+        var vm2 = new InitialEstimateViewModel();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         vm2.LoadProject(projects.First(p => p.ProjectName == "Load BaseHrs Test"));
 
         // First component is K2Workflow (only one saved)
@@ -466,24 +466,24 @@ public class ProjectPersistenceTests : IDisposable
     public void GetAllProjects_EmptyDatabase_ReturnsEmptyList()
     {
         // All projects from other tests may exist, so just verify it returns a list
-        var projects = MainViewModel.GetAllProjects();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         Assert.NotNull(projects);
     }
 
     [Fact]
     public void GetAllProjects_OrderedByLastModifiedDescending()
     {
-        var vm1 = new MainViewModel();
+        var vm1 = new InitialEstimateViewModel();
         vm1.ProjectName = "Order Test A";
         FillRequiredFields(vm1);
         vm1.SaveProject();
 
-        var vm2 = new MainViewModel();
+        var vm2 = new InitialEstimateViewModel();
         vm2.ProjectName = "Order Test B";
         FillRequiredFields(vm2);
         vm2.SaveProject();
 
-        var projects = MainViewModel.GetAllProjects();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         var a = projects.First(p => p.ProjectName == "Order Test A");
         var b = projects.First(p => p.ProjectName == "Order Test B");
         Assert.True(projects.IndexOf(b) < projects.IndexOf(a));
@@ -492,7 +492,7 @@ public class ProjectPersistenceTests : IDisposable
     [Fact]
     public void GetAllProjects_IncludesComponents()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Include Comp Test";
         FillRequiredFields(vm);
         vm.AddComponentCommand.Execute(null);
@@ -502,7 +502,7 @@ public class ProjectPersistenceTests : IDisposable
         vm.Components[^1].Count = 1;
         vm.SaveProject();
 
-        var projects = MainViewModel.GetAllProjects();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         var saved = projects.First(p => p.ProjectName == "Include Comp Test");
         Assert.Equal(2, saved.Components.Count);
     }
@@ -559,7 +559,7 @@ public class ProjectPersistenceTests : IDisposable
     [Fact]
     public void ComponentEntryEntity_StoresEnumAsString()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Enum String Test";
         vm.ChangeOrderId = "CO-TEST";
         vm.ProjectDescription = "Test";
@@ -572,7 +572,7 @@ public class ProjectPersistenceTests : IDisposable
         vm.Components[^1].Count = 1;
         vm.SaveProject();
 
-        var projects = MainViewModel.GetAllProjects();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         var saved = projects.First(p => p.ProjectName == "Enum String Test");
         Assert.Equal("ProgramsDBStoredProcs", saved.Components[0].ComponentType);
         Assert.Equal("Large", saved.Components[0].Size);
@@ -586,12 +586,12 @@ public class ProjectPersistenceTests : IDisposable
     [Fact]
     public void DeleteProject_RemovesFromDatabase()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Delete Test";
         FillRequiredFields(vm);
         vm.SaveProject();
 
-        var projects = MainViewModel.GetAllProjects();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         var toDelete = projects.First(p => p.ProjectName == "Delete Test");
 
         using var db = new EstimateDbContext();
@@ -599,14 +599,14 @@ public class ProjectPersistenceTests : IDisposable
         db.Projects.Remove(entity);
         db.SaveChanges();
 
-        var remaining = MainViewModel.GetAllProjects();
+        var remaining = InitialEstimateViewModel.GetAllProjects();
         Assert.DoesNotContain(remaining, p => p.ProjectName == "Delete Test");
     }
 
     [Fact]
     public void DeleteProject_CascadesDeleteComponents()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Cascade Test";
         FillRequiredFields(vm);
         vm.AddComponentCommand.Execute(null);
@@ -616,7 +616,7 @@ public class ProjectPersistenceTests : IDisposable
         vm.Components[^1].Count = 1;
         vm.SaveProject();
 
-        var projects = MainViewModel.GetAllProjects();
+        var projects = InitialEstimateViewModel.GetAllProjects();
         var toDelete = projects.First(p => p.ProjectName == "Cascade Test");
         var projectId = toDelete.ProjectId;
 

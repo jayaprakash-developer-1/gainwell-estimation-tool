@@ -11,9 +11,9 @@ namespace Gainwell.EstimationTool.Tests;
 /// </summary>
 public class FinalEstimate_AllPathTests
 {
-    private MainViewModel CreateVm() => new();
+    private InitialEstimateViewModel CreateVm() => new();
 
-    private ComponentRowViewModel AddComponent(MainViewModel vm, ComponentType type, ComponentSize size, ChangeType change, int count)
+    private ComponentRowViewModel AddComponent(InitialEstimateViewModel vm, ComponentType type, ComponentSize size, ChangeType change, int count)
     {
         vm.AddComponentCommand.Execute(null);
         var row = vm.Components[^1];
@@ -24,7 +24,7 @@ public class FinalEstimate_AllPathTests
         return row;
     }
 
-    private void ClearCollaboration(MainViewModel vm)
+    private void ClearCollaboration(InitialEstimateViewModel vm)
     {
         foreach (var item in vm.CollaborationItems.ToList())
             vm.RemoveCollaborationItemCommand.Execute(item);
@@ -262,7 +262,7 @@ public class FinalEstimate_AllPathTests
         decimal allTasks = vm.TotalDevelopmentHours + vm.SystemTestingHours + vm.AnalysisHours
                          + vm.BusinessDesignHours + vm.PromotionHours + vm.BaSystemDocHours
                          + vm.ProductionValidationHours;
-        decimal expectedPM = MainViewModel.RoundUp(allTasks * (pmPercent / 100m));
+        decimal expectedPM = InitialEstimateViewModel.RoundUp(allTasks * (pmPercent / 100m));
         Assert.Equal(expectedPM, vm.ProjectManagementHours);
     }
 
@@ -306,7 +306,7 @@ public class FinalEstimate_AllPathTests
         vm.TotalActualHours = 40m;
 
         // BA = ROUNDUP(Analysis/2 + BizDesign + BADoc + ProdVal + ActualHours/2 + TimeForEstimates/2, 2)
-        decimal expected = MainViewModel.RoundUp(
+        decimal expected = InitialEstimateViewModel.RoundUp(
             vm.AnalysisHours / 2m + vm.BusinessDesignHours + vm.BaSystemDocHours
             + vm.ProductionValidationHours + vm.TotalActualHours / 2m + vm.TimeForEstimates / 2m);
         Assert.Equal(expected, vm.BaRoleHours);
@@ -322,7 +322,7 @@ public class FinalEstimate_AllPathTests
         vm.TotalActualHours = 40m;
 
         // SE = ROUNDUP(Dev + Analysis/2 + Promotion + ActualHours/2 + TimeForEstimates/2, 2)
-        decimal expected = MainViewModel.RoundUp(
+        decimal expected = InitialEstimateViewModel.RoundUp(
             vm.TotalDevelopmentHours + vm.AnalysisHours / 2m + vm.PromotionHours
             + vm.TotalActualHours / 2m + vm.TimeForEstimates / 2m);
         Assert.Equal(expected, vm.SeRoleHours);
@@ -377,7 +377,7 @@ public class FinalEstimate_AllPathTests
         vm.TimeForEstimates = 10m;
         vm.TotalActualHours = 20m;
 
-        decimal expectedSubtotal = MainViewModel.RoundUp(
+        decimal expectedSubtotal = InitialEstimateViewModel.RoundUp(
             vm.DevelopmentTotalHours + vm.SystemTestingTotalHours + vm.AnalysisTotalHours
             + vm.BusinessDesignTotalHours + vm.PromotionTotalHours + vm.BaSystemDocTotalHours
             + vm.ProductionValidationTotalHours + vm.ProjectManagementTotalHours

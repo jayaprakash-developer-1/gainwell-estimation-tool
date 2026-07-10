@@ -10,7 +10,7 @@ namespace Gainwell.EstimationTool.Tests;
 /// </summary>
 public class CollaborationTests
 {
-    private MainViewModel CreateVm() => new();
+    private InitialEstimateViewModel CreateVm() => new();
 
     #region Collaboration Formula Tests
 
@@ -145,7 +145,7 @@ public class CollaborationTests
 
         // 10 × (0.25 + 0.0833...) × 2 = 6.6666... → ROUNDUP(6.6666...,2) = 6.67
         decimal expected = 10m * ((15m / 60m) + (5m / 60m)) * 2m;
-        Assert.Equal(MainViewModel.RoundUp(expected), row.TotalHours);
+        Assert.Equal(InitialEstimateViewModel.RoundUp(expected), row.TotalHours);
     }
 
     #endregion

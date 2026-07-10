@@ -9,9 +9,9 @@ namespace Gainwell.EstimationTool.Tests;
 /// </summary>
 public class MainViewModel_HappyPathTests
 {
-    private MainViewModel CreateVm() => new();
+    private InitialEstimateViewModel CreateVm() => new();
 
-    private ComponentRowViewModel AddComponent(MainViewModel vm, ComponentType type, ComponentSize size, ChangeType change, int count)
+    private ComponentRowViewModel AddComponent(InitialEstimateViewModel vm, ComponentType type, ComponentSize size, ChangeType change, int count)
     {
         vm.AddComponentCommand.Execute(null);
         var row = vm.Components[^1];
@@ -22,7 +22,7 @@ public class MainViewModel_HappyPathTests
         return row;
     }
 
-    private void ClearCollaboration(MainViewModel vm)
+    private void ClearCollaboration(InitialEstimateViewModel vm)
     {
         foreach (var item in vm.CollaborationItems.ToList())
             vm.RemoveCollaborationItemCommand.Execute(item);
@@ -298,7 +298,7 @@ public class MainViewModel_HappyPathTests
 
         // 100 * 2.1925 * 2 + (100 * 1.5675 * 0.1) * 2
         Assert.True(vm.SystemTestingHours > 0);
-        Assert.True(vm.SystemTestingHours != MainViewModel.RoundUp(100m * 0.30m)); // Not 30% anymore
+        Assert.True(vm.SystemTestingHours != InitialEstimateViewModel.RoundUp(100m * 0.30m)); // Not 30% anymore
     }
 
     [Fact]

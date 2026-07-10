@@ -1,6 +1,7 @@
 using Gainwell.EstimationTool.Data;
 using Gainwell.EstimationTool.Models;
 using Gainwell.EstimationTool.ViewModels;
+using Gainwell.EstimationTool.Views;
 
 namespace Gainwell.EstimationTool.Tests;
 
@@ -18,7 +19,7 @@ namespace Gainwell.EstimationTool.Tests;
 /// </summary>
 public class InitialEstimateAndDtlCollabCoverageTests
 {
-    private MainViewModel CreateVm() => new();
+    private InitialEstimateViewModel CreateVm() => new();
 
     #region Excel Role Breakout — Exact BA Formula (Row 47)
 
@@ -54,7 +55,7 @@ public class InitialEstimateAndDtlCollabCoverageTests
 
         // TimeForEstimates contributes half to BA
         Assert.True(baWithTime > baWithoutTime);
-        Assert.Equal(MainViewModel.RoundUp(baWithoutTime + 100m / 2m), baWithTime);
+        Assert.Equal(InitialEstimateViewModel.RoundUp(baWithoutTime + 100m / 2m), baWithTime);
     }
 
     #endregion
@@ -235,7 +236,7 @@ public class InitialEstimateAndDtlCollabCoverageTests
         vm.TimeForEstimates = 129m;
         vm.TotalActualHours = 0m;
 
-        decimal expected = MainViewModel.RoundUp(
+        decimal expected = InitialEstimateViewModel.RoundUp(
             vm.DevelopmentTotalHours +
             vm.SystemTestingTotalHours +
             vm.AnalysisTotalHours +
@@ -442,7 +443,7 @@ public class InitialEstimateAndDtlCollabCoverageTests
         vm.SystemTestingAdjustedHours = 50m;
 
         Assert.Equal(devBefore, vm.DevelopmentTotalHours); // Dev unchanged
-        Assert.True(vm.AnalysisHours > MainViewModel.RoundUp((100m + 30m) * 0.05m)); // Analysis increased
+        Assert.True(vm.AnalysisHours > InitialEstimateViewModel.RoundUp((100m + 30m) * 0.05m)); // Analysis increased
     }
 
     [Fact]
@@ -1171,9 +1172,9 @@ Consultant/Mentor Effort: Testing support";
 
     #region Helper — Creates VM with Exact Excel CO 23327 002 Data
 
-    private MainViewModel CreateExcelVm()
+    private InitialEstimateViewModel CreateExcelVm()
     {
-        var vm = new MainViewModel();
+        var vm = new InitialEstimateViewModel();
 
         // Components (Excel rows 7-9)
         vm.AddComponentCommand.Execute(null);
