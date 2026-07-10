@@ -48,7 +48,8 @@ public partial class SeComponentDetailDialog : Window
                     ComponentStatus = entry.ComponentStatus,
                     SimpleCount = entry.SimpleCount,
                     ModerateCount = entry.ModerateCount,
-                    ComplexCount = entry.ComplexCount
+                    ComplexCount = entry.ComplexCount,
+                    AdjustedHrs = entry.AdjustedHrs
                 });
             }
         }
