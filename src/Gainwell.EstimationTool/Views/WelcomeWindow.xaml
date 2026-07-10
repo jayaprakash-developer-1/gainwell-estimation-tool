@@ -1,4 +1,4 @@
-<Window x:Class="Gainwell.EstimationTool.WelcomeWindow"
+<Window x:Class="Gainwell.EstimationTool.Views.WelcomeWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Estimation Tool" 
@@ -229,6 +229,8 @@
                                     Click="OnHistoryClick" Margin="0,0,8,0" />
                             <Button Content="⚙ Settings" Style="{StaticResource GhostButton}" 
                                     Click="OnSettingsClick" Margin="0,0,8,0" />
+                            <Button Content="🗑 Clear Form" Style="{StaticResource GhostButton}" 
+                                    Click="OnClearFormClick" Margin="0,0,8,0" />
                         </StackPanel>
                     </StackPanel>
                 </Border>

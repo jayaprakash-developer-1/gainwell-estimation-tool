@@ -4,7 +4,7 @@ using Gainwell.EstimationTool.Data;
 using Gainwell.EstimationTool.Models;
 using Gainwell.EstimationTool.ViewModels;
 
-namespace Gainwell.EstimationTool;
+namespace Gainwell.EstimationTool.Views;
 
 public partial class WelcomeWindow : Window
 {
@@ -62,13 +62,13 @@ public partial class WelcomeWindow : Window
             return;
         }
 
-        var mainWindow = new MainWindow();
+        var mainWindow = new InitialEstimateWindow();
         mainWindow.Width = EstimateNavigator.WindowWidth;
         mainWindow.Height = EstimateNavigator.WindowHeight;
         mainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
         EstimateNavigator.RegisterWindow(mainWindow);
         mainWindow.Show();
-        if (mainWindow.DataContext is ViewModels.MainViewModel vm)
+        if (mainWindow.DataContext is ViewModels.InitialEstimateViewModel vm)
         {
             vm.ProjectName = projectName;
             vm.ChangeOrderId = changeOrder;
@@ -97,13 +97,13 @@ public partial class WelcomeWindow : Window
     {
         if (_selectedProject == null) return;
 
-        var mainWindow = new MainWindow();
+        var mainWindow = new InitialEstimateWindow();
         mainWindow.Width = EstimateNavigator.WindowWidth;
         mainWindow.Height = EstimateNavigator.WindowHeight;
         mainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
         EstimateNavigator.RegisterWindow(mainWindow);
         mainWindow.Show();
-        if (mainWindow.DataContext is ViewModels.MainViewModel vm)
+        if (mainWindow.DataContext is ViewModels.InitialEstimateViewModel vm)
         {
             vm.LoadProject(_selectedProject);
         }
@@ -134,13 +134,13 @@ public partial class WelcomeWindow : Window
             return;
         }
 
-        var mainWindow = new MainWindow();
+        var mainWindow = new InitialEstimateWindow();
         mainWindow.Width = EstimateNavigator.WindowWidth;
         mainWindow.Height = EstimateNavigator.WindowHeight;
         mainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
         EstimateNavigator.RegisterWindow(mainWindow);
         mainWindow.Show();
-        if (mainWindow.DataContext is ViewModels.MainViewModel vm)
+        if (mainWindow.DataContext is ViewModels.InitialEstimateViewModel vm)
         {
             vm.ProjectName = projectName;
             vm.ChangeOrderId = changeOrder;
@@ -199,13 +199,13 @@ public partial class WelcomeWindow : Window
         var description = DescriptionTextBox.Text.Trim();
 
         // Launch Final Estimate via the Initial Estimate window (which holds the data)
-        var mainWindow = new MainWindow();
+        var mainWindow = new InitialEstimateWindow();
         mainWindow.Width = EstimateNavigator.WindowWidth;
         mainWindow.Height = EstimateNavigator.WindowHeight;
         mainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
         EstimateNavigator.RegisterWindow(mainWindow);
 
-        if (mainWindow.DataContext is MainViewModel vm)
+        if (mainWindow.DataContext is InitialEstimateViewModel vm)
         {
             // If a project was loaded from history, use its full data
             if (_selectedProject != null)
@@ -242,5 +242,15 @@ public partial class WelcomeWindow : Window
     {
         var settingsWindow = new SettingsWindow { Owner = this };
         settingsWindow.ShowDialog();
+    }
+
+    private void OnClearFormClick(object sender, RoutedEventArgs e)
+    {
+        _selectedProject = null;
+        ProjectNameTextBox.Text = string.Empty;
+        ChangeOrderTextBox.Text = string.Empty;
+        DescriptionTextBox.Text = string.Empty;
+        RecentProjectsList.SelectedItem = null;
+        ProjectNameTextBox.Focus();
     }
 }

@@ -1,4 +1,4 @@
-<Window x:Class="Gainwell.EstimationTool.FinalEstimateWindow"
+<Window x:Class="Gainwell.EstimationTool.Views.FinalEstimateWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Final Estimate"

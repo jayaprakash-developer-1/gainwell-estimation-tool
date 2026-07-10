@@ -1,4 +1,4 @@
-<Window x:Class="Gainwell.EstimationTool.HistoryWindow"
+<Window x:Class="Gainwell.EstimationTool.Views.HistoryWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Project History" Height="500" Width="750"

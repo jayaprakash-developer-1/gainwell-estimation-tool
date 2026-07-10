@@ -1,4 +1,4 @@
-<Window x:Class="Gainwell.EstimationTool.SeComponentDetailDialog"
+<Window x:Class="Gainwell.EstimationTool.Views.SeComponentDetailDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Gainwell.EstimationTool.Models"
