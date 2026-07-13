@@ -36,7 +36,7 @@ public static class DemoDataSeeder
     private static ProjectEntity CreateSmallProject() => new()
     {
         ProjectName = "Provider Address Update Fix",
-        ChangeOrderId = "DEF-2026-0012",
+        ChangeOrderId = "20120",
         ProjectDescription = "Fix provider address validation on the network maintenance screen. Corrects ZIP+4 parsing and state dropdown population.",
         EstimatedBy = "RWilliams", ReviewedBy = "KChen",
         PmEffortPercentage = 15m,
@@ -70,7 +70,7 @@ public static class DemoDataSeeder
     private static ProjectEntity CreateMediumProject() => new()
     {
         ProjectName = "Authorization Letter Generation",
-        ChangeOrderId = "CO-2026-0198",
+        ChangeOrderId = "20198",
         ProjectDescription = "Automated prior authorization letter generation with configurable templates. Supports PDF output, member/provider letters, and batch printing.",
         EstimatedBy = "KChen", ReviewedBy = "MJohnson",
         PmEffortPercentage = 15m,
@@ -107,7 +107,7 @@ public static class DemoDataSeeder
     private static ProjectEntity CreateLargeProject() => new()
     {
         ProjectName = "Executive Reporting Dashboard",
-        ChangeOrderId = "CO-2026-0289",
+        ChangeOrderId = "20289 001",
         ProjectDescription = "Real-time KPI dashboard for claims volume, turnaround times, and provider network metrics with drill-down and export.",
         EstimatedBy = "MJohnson", ReviewedBy = "APatel",
         PmEffortPercentage = 15m,
@@ -143,7 +143,7 @@ public static class DemoDataSeeder
     private static ProjectEntity CreateXLargeProject() => new()
     {
         ProjectName = "Member Self-Service Portal",
-        ChangeOrderId = "CO-2026-0523",
+        ChangeOrderId = "20523 002",
         ProjectDescription = "Web-based member portal for eligibility verification, ID card requests, benefit inquiries, and claims status tracking.",
         EstimatedBy = "APatel", ReviewedBy = "JSmith",
         PmEffortPercentage = 15m,
@@ -182,7 +182,7 @@ public static class DemoDataSeeder
     private static ProjectEntity CreateXL1Project() => new()
     {
         ProjectName = "Claims Processing Enhancement",
-        ChangeOrderId = "CO-2026-0451",
+        ChangeOrderId = "20451 001",
         ProjectDescription = "Modernize claims adjudication workflow with automated rules engine, K2 integration, and real-time eligibility verification.",
         EstimatedBy = "JSmith", ReviewedBy = "LThompson",
         PmEffortPercentage = 15m,
@@ -220,7 +220,7 @@ public static class DemoDataSeeder
     private static ProjectEntity CreateXL2Project() => new()
     {
         ProjectName = "Provider Network Management System",
-        ChangeOrderId = "CO-2026-0612",
+        ChangeOrderId = "20612",
         ProjectDescription = "End-to-end provider credentialing, contracting, and network adequacy management with CAQH integration.",
         EstimatedBy = "LThompson", ReviewedBy = "DGarcia",
         PmEffortPercentage = 15m,
@@ -258,7 +258,7 @@ public static class DemoDataSeeder
     private static ProjectEntity CreateXL3Project() => new()
     {
         ProjectName = "Pharmacy Benefits Modernization",
-        ChangeOrderId = "CO-2026-0701",
+        ChangeOrderId = "20701 003",
         ProjectDescription = "Complete pharmacy claims, formulary management, and PBM integration overhaul with real-time drug interaction checking.",
         EstimatedBy = "DGarcia", ReviewedBy = "SAnderson",
         PmEffortPercentage = 15m,
@@ -296,7 +296,7 @@ public static class DemoDataSeeder
     private static ProjectEntity CreateXL4Project() => new()
     {
         ProjectName = "Medicaid Eligibility & Enrollment Platform",
-        ChangeOrderId = "CO-2026-0815",
+        ChangeOrderId = "20815",
         ProjectDescription = "State Medicaid eligibility determination, enrollment processing, MAGI income calculation with federal hub integration.",
         EstimatedBy = "SAnderson", ReviewedBy = "BNguyen",
         PmEffortPercentage = 15m,
@@ -334,7 +334,7 @@ public static class DemoDataSeeder
     private static ProjectEntity CreateXL5Project() => new()
     {
         ProjectName = "Enterprise Data Warehouse Migration",
-        ChangeOrderId = "CO-2026-0920",
+        ChangeOrderId = "20920 001",
         ProjectDescription = "Full DW redesign with real-time feeds, HEDIS reporting, predictive analytics, and CMS Star Ratings.",
         EstimatedBy = "BNguyen", ReviewedBy = "TReddy",
         PmEffortPercentage = 18m,
@@ -371,7 +371,7 @@ public static class DemoDataSeeder
     private static ProjectEntity CreateXL6Project() => new()
     {
         ProjectName = "Multi-State Claims Platform Consolidation",
-        ChangeOrderId = "CO-2026-1005",
+        ChangeOrderId = "21005",
         ProjectDescription = "Consolidate 3 state Medicaid claims platforms into unified multi-tenant architecture with state configs.",
         EstimatedBy = "TReddy", ReviewedBy = "JDavis",
         PmEffortPercentage = 18m,
@@ -409,7 +409,7 @@ public static class DemoDataSeeder
     private static ProjectEntity CreateXL7Project() => new()
     {
         ProjectName = "Integrated Care Management Platform",
-        ChangeOrderId = "CO-2026-1110",
+        ChangeOrderId = "21110 002",
         ProjectDescription = "Population health, care coordination, utilization management, and predictive risk scoring with HIE integration.",
         EstimatedBy = "JDavis", ReviewedBy = "CWilson",
         PmEffortPercentage = 20m,
@@ -447,7 +447,7 @@ public static class DemoDataSeeder
     private static ProjectEntity CreateXL8Project() => new()
     {
         ProjectName = "Next-Gen MMIS Platform Replacement",
-        ChangeOrderId = "CO-2026-1200",
+        ChangeOrderId = "21200",
         ProjectDescription = "Complete MMIS replacement — claims, eligibility, pharmacy, financials, provider, and member services.",
         EstimatedBy = "CWilson", ReviewedBy = "JSmith",
         PmEffortPercentage = 20m,

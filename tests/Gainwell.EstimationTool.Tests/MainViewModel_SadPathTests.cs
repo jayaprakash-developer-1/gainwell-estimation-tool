@@ -36,7 +36,7 @@ public class MainViewModel_SadPathTests
     {
         var vm = CreateVm();
         vm.ProjectName = "";
-        vm.ChangeOrderId = "CO-001";
+        vm.ChangeOrderId = "23327";
         vm.ProjectDescription = "Desc";
         vm.EstimatedBy = "User";
         vm.ReviewedBy = "Reviewer";
@@ -68,7 +68,7 @@ public class MainViewModel_SadPathTests
     {
         var vm = CreateVm();
         vm.ProjectName = "Test";
-        vm.ChangeOrderId = "CO-001";
+        vm.ChangeOrderId = "23327";
         vm.ProjectDescription = "";
         vm.EstimatedBy = "User";
         vm.ReviewedBy = "Reviewer";
@@ -84,7 +84,7 @@ public class MainViewModel_SadPathTests
     {
         var vm = CreateVm();
         vm.ProjectName = "Test";
-        vm.ChangeOrderId = "CO-001";
+        vm.ChangeOrderId = "23327";
         vm.ProjectDescription = "Desc";
         vm.EstimatedBy = "";
         vm.ReviewedBy = "Reviewer";
@@ -100,7 +100,7 @@ public class MainViewModel_SadPathTests
     {
         var vm = CreateVm();
         vm.ProjectName = "Test";
-        vm.ChangeOrderId = "CO-001";
+        vm.ChangeOrderId = "23327";
         vm.ProjectDescription = "Desc";
         vm.EstimatedBy = "User";
         vm.ReviewedBy = "";
@@ -116,7 +116,7 @@ public class MainViewModel_SadPathTests
     {
         var vm = CreateVm();
         vm.ProjectName = "Test";
-        vm.ChangeOrderId = "CO-001";
+        vm.ChangeOrderId = "23327";
         vm.ProjectDescription = "Desc";
         vm.EstimatedBy = "User";
         vm.ReviewedBy = "Reviewer";
@@ -131,7 +131,7 @@ public class MainViewModel_SadPathTests
     {
         var vm = CreateVm();
         vm.ProjectName = "Test";
-        vm.ChangeOrderId = "CO-001";
+        vm.ChangeOrderId = "23327";
         vm.ProjectDescription = "Desc";
         vm.EstimatedBy = "User";
         vm.ReviewedBy = "Reviewer";
@@ -293,7 +293,7 @@ public class MainViewModel_SadPathTests
     {
         var vm = CreateVm();
         vm.ProjectName = "   ";
-        vm.ChangeOrderId = "CO-001";
+        vm.ChangeOrderId = "23327";
         vm.ProjectDescription = "Desc";
         vm.EstimatedBy = "User";
         vm.ReviewedBy = "Reviewer";

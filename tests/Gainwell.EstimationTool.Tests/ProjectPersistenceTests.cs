@@ -33,7 +33,7 @@ public class ProjectPersistenceTests : IDisposable
 
     private void FillRequiredFields(InitialEstimateViewModel vm)
     {
-        if (string.IsNullOrWhiteSpace(vm.ChangeOrderId)) vm.ChangeOrderId = "CO-TEST-001";
+        if (string.IsNullOrWhiteSpace(vm.ChangeOrderId)) vm.ChangeOrderId = "12345";
         if (string.IsNullOrWhiteSpace(vm.ProjectDescription)) vm.ProjectDescription = "Test description";
         if (string.IsNullOrWhiteSpace(vm.EstimatedBy)) vm.EstimatedBy = "Tester";
         if (string.IsNullOrWhiteSpace(vm.ReviewedBy)) vm.ReviewedBy = "Reviewer";
@@ -86,7 +86,7 @@ public class ProjectPersistenceTests : IDisposable
     {
         var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Persistence Test";
-        vm.ChangeOrderId = "CO-123";
+        vm.ChangeOrderId = "23327";
         vm.ProjectDescription = "A test project";
         FillRequiredFields(vm);
 
@@ -101,7 +101,7 @@ public class ProjectPersistenceTests : IDisposable
     {
         var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Component Test";
-        vm.ChangeOrderId = "CO-TEST";
+        vm.ChangeOrderId = "23810";
         vm.ProjectDescription = "Test";
         vm.EstimatedBy = "Tester";
         vm.ReviewedBy = "Reviewer";
@@ -130,18 +130,18 @@ public class ProjectPersistenceTests : IDisposable
     {
         var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Update Test";
-        vm.ChangeOrderId = "CO-001";
+        vm.ChangeOrderId = "23327";
         FillRequiredFields(vm);
         vm.SaveProject();
 
         // Change and save again
-        vm.ChangeOrderId = "CO-002";
+        vm.ChangeOrderId = "23327 002";
         vm.SaveProject();
 
         var projects = InitialEstimateViewModel.GetAllProjects();
         var matches = projects.Where(p => p.ProjectName == "Update Test").ToList();
         Assert.Single(matches);
-        Assert.Equal("CO-002", matches[0].ChangeOrderId);
+        Assert.Equal("23327 002", matches[0].ChangeOrderId);
     }
 
     [Fact]
@@ -155,7 +155,7 @@ public class ProjectPersistenceTests : IDisposable
         // Same name from another vm instance = should update (not duplicate)
         var vm2 = new InitialEstimateViewModel();
         vm2.ProjectName = "Unique Project";
-        vm2.ChangeOrderId = "NEW-CO";
+        vm2.ChangeOrderId = "24407";
         FillRequiredFields(vm2);
         vm2.SaveProject();
 
@@ -246,7 +246,7 @@ public class ProjectPersistenceTests : IDisposable
     {
         var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Multi Component";
-        vm.ChangeOrderId = "CO-TEST";
+        vm.ChangeOrderId = "23869";
         vm.ProjectDescription = "Test";
         vm.EstimatedBy = "Tester";
         vm.ReviewedBy = "Reviewer";
@@ -296,7 +296,7 @@ public class ProjectPersistenceTests : IDisposable
     {
         var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Load CO Test";
-        vm.ChangeOrderId = "CO-999";
+        vm.ChangeOrderId = "23327";
         FillRequiredFields(vm);
         vm.SaveProject();
 
@@ -304,7 +304,7 @@ public class ProjectPersistenceTests : IDisposable
         var projects = InitialEstimateViewModel.GetAllProjects();
         vm2.LoadProject(projects.First(p => p.ProjectName == "Load CO Test"));
 
-        Assert.Equal("CO-999", vm2.ChangeOrderId);
+        Assert.Equal("23327", vm2.ChangeOrderId);
     }
 
     [Fact]
@@ -344,7 +344,7 @@ public class ProjectPersistenceTests : IDisposable
     {
         var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Load Components Test";
-        vm.ChangeOrderId = "CO-TEST";
+        vm.ChangeOrderId = "23810";
         vm.ProjectDescription = "Test";
         vm.EstimatedBy = "Tester";
         vm.ReviewedBy = "Reviewer";
@@ -438,7 +438,7 @@ public class ProjectPersistenceTests : IDisposable
     {
         var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Load BaseHrs Test";
-        vm.ChangeOrderId = "CO-TEST";
+        vm.ChangeOrderId = "23869";
         vm.ProjectDescription = "Test";
         vm.EstimatedBy = "Tester";
         vm.ReviewedBy = "Reviewer";
@@ -561,7 +561,7 @@ public class ProjectPersistenceTests : IDisposable
     {
         var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Enum String Test";
-        vm.ChangeOrderId = "CO-TEST";
+        vm.ChangeOrderId = "24407";
         vm.ProjectDescription = "Test";
         vm.EstimatedBy = "Tester";
         vm.ReviewedBy = "Reviewer";

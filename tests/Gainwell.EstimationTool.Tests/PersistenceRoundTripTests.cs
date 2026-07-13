@@ -24,7 +24,7 @@ public class PersistenceRoundTripTests
         return row;
     }
 
-    #region LoadProject — Component Round-Trip
+    #region LoadProject â€” Component Round-Trip
 
     [Fact]
     public void LoadProject_RestoresComponents()
@@ -79,7 +79,7 @@ public class PersistenceRoundTripTests
 
     #endregion
 
-    #region LoadProject — Collaboration Round-Trip
+    #region LoadProject â€” Collaboration Round-Trip
 
     [Fact]
     public void LoadProject_RestoresCollaborationItems()
@@ -126,13 +126,13 @@ public class PersistenceRoundTripTests
         var vm = CreateVm();
         vm.LoadProject(entity);
 
-        // 5 × (60/60 + 15/60) × 3 = 18.75
+        // 5 Ã— (60/60 + 15/60) Ã— 3 = 18.75
         Assert.Equal(18.75m, vm.TotalCollaborationHours);
     }
 
     #endregion
 
-    #region LoadProject — Header Fields
+    #region LoadProject â€” Header Fields
 
     [Fact]
     public void LoadProject_RestoresHeaderFields()
@@ -160,7 +160,7 @@ public class PersistenceRoundTripTests
 
     #endregion
 
-    #region LoadProject — Configuration Fields
+    #region LoadProject â€” Configuration Fields
 
     [Fact]
     public void LoadProject_RestoresPmPercentages()
@@ -181,7 +181,7 @@ public class PersistenceRoundTripTests
 
     #endregion
 
-    #region LoadProject — Adjusted Hours
+    #region LoadProject â€” Adjusted Hours
 
     [Fact]
     public void LoadProject_RestoresAllAdjustedHours()
@@ -218,7 +218,7 @@ public class PersistenceRoundTripTests
 
     #endregion
 
-    #region LoadProject — Assumptions
+    #region LoadProject â€” Assumptions
 
     [Fact]
     public void LoadProject_RestoresAssumptions()
@@ -247,7 +247,7 @@ public class PersistenceRoundTripTests
 
     #endregion
 
-    #region LoadProject — Test Cases and Actual Hours
+    #region LoadProject â€” Test Cases and Actual Hours
 
     [Fact]
     public void LoadProject_RestoresTestCaseSettings()
@@ -275,7 +275,7 @@ public class PersistenceRoundTripTests
         Assert.Equal(2, vm.TestCasesVeryComplex);
         Assert.Equal(3, vm.TestCaseIterations);
 
-        // Verify calculation: row31: 20*2.1925+10*4.065+5*8.76+2*14.38=157.06  defect*0.1=12.956  → ROUNDUP(170.016*3,2)=510.05
+        // Verify calculation: row31: 20*2.1925+10*4.065+5*8.76+2*14.38=157.06  defect*0.1=12.956  â†’ ROUNDUP(170.016*3,2)=510.05
         Assert.Equal(510.05m, vm.SystemTestingHours);
     }
 
@@ -302,7 +302,7 @@ public class PersistenceRoundTripTests
 
     #endregion
 
-    #region LoadProject — Clears Previous State
+    #region LoadProject â€” Clears Previous State
 
     [Fact]
     public void LoadProject_ClearsPreviousComponents()
@@ -355,7 +355,7 @@ public class PersistenceRoundTripTests
 
     #endregion
 
-    #region LoadProject — Recalculates After Load
+    #region LoadProject â€” Recalculates After Load
 
     [Fact]
     public void LoadProject_TriggersRecalculation()
@@ -376,7 +376,7 @@ public class PersistenceRoundTripTests
         // MISC Large New = 100, count 2 = 200 dev hours
         Assert.Equal(200m, vm.TotalDevelopmentHours);
         Assert.True(vm.GrandTotalHours > 200m); // Includes derived tasks + PM
-        // Dev(200) + derived + PM = ~395 subtotal + reserve → ~415 grand total → Large (300-749)
+        // Dev(200) + derived + PM = ~395 subtotal + reserve â†’ ~415 grand total â†’ Large (300-749)
         Assert.Equal("Large", vm.TShirtSize);
     }
 
@@ -405,7 +405,7 @@ public class PersistenceRoundTripTests
     {
         var vm = CreateVm();
         vm.ProjectName = "Valid Project Name";
-        vm.ChangeOrderId = "CO-001";
+        vm.ChangeOrderId = "23327";
         vm.ProjectDescription = "Test desc";
         vm.EstimatedBy = "Tester";
         vm.ReviewedBy = "Reviewer";
@@ -423,7 +423,7 @@ public class PersistenceRoundTripTests
         // Save two projects
         var vm1 = CreateVm();
         vm1.ProjectName = $"Project A {Guid.NewGuid():N}";
-        vm1.ChangeOrderId = "CO-A";
+        vm1.ChangeOrderId = "23327";
         vm1.ProjectDescription = "Desc A";
         vm1.EstimatedBy = "Tester";
         vm1.ReviewedBy = "Reviewer";
@@ -432,7 +432,7 @@ public class PersistenceRoundTripTests
 
         var vm2 = CreateVm();
         vm2.ProjectName = $"Project B {Guid.NewGuid():N}";
-        vm2.ChangeOrderId = "CO-B";
+        vm2.ChangeOrderId = "23810";
         vm2.ProjectDescription = "Desc B";
         vm2.EstimatedBy = "Tester";
         vm2.ReviewedBy = "Reviewer";

@@ -215,7 +215,7 @@ public class NegativeBoundaryTests
     {
         var vm = new InitialEstimateViewModel();
         vm.ProjectName = "BackwardCompat Test";
-        vm.ChangeOrderId = "CO-1";
+        vm.ChangeOrderId = "23327";
         vm.ProjectDescription = "Test";
         vm.EstimatedBy = "Tester";
         vm.ReviewedBy = "Reviewer";
@@ -247,7 +247,7 @@ public class NegativeBoundaryTests
     {
         var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Prefer Dev Test";
-        vm.ChangeOrderId = "CO-1";
+        vm.ChangeOrderId = "23327";
         vm.ProjectDescription = "Test";
         vm.EstimatedBy = "Tester";
         vm.ReviewedBy = "Reviewer";
@@ -278,7 +278,7 @@ public class NegativeBoundaryTests
     {
         var vm = new InitialEstimateViewModel();
         vm.ProjectName = "No Collab Test";
-        vm.ChangeOrderId = "CO-1";
+        vm.ChangeOrderId = "23327";
         vm.ProjectDescription = "Test";
         vm.EstimatedBy = "Tester";
         vm.ReviewedBy = "Reviewer";
@@ -697,7 +697,7 @@ public class NegativeBoundaryTests
     {
         var vm = new InitialEstimateViewModel();
         vm.ProjectName = "All Adjusted Test";
-        vm.ChangeOrderId = "CO-ADJ";
+        vm.ChangeOrderId = "23327 002";
         vm.ProjectDescription = "Test all adjusted";
         vm.EstimatedBy = "QA";
         vm.ReviewedBy = "QA Lead";
@@ -753,7 +753,7 @@ public class NegativeBoundaryTests
     {
         var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Collab RoundTrip";
-        vm.ChangeOrderId = "CO-COL";
+        vm.ChangeOrderId = "23810 002";
         vm.ProjectDescription = "Test collab round trip";
         vm.EstimatedBy = "QA";
         vm.ReviewedBy = "QA Lead";

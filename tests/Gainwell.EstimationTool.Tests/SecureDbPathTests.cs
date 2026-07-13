@@ -217,7 +217,7 @@ public class SecureDbPathTests : IDisposable
             // Save a project
             var vm = new Gainwell.EstimationTool.ViewModels.InitialEstimateViewModel();
             vm.ProjectName = "Secure Path Test";
-            vm.ChangeOrderId = "CO-SEC-001";
+            vm.ChangeOrderId = "23327 002";
             vm.ProjectDescription = "Testing secure DB path";
             vm.EstimatedBy = "Architect";
             vm.ReviewedBy = "Lead";
@@ -234,7 +234,7 @@ public class SecureDbPathTests : IDisposable
             // Reload and verify
             var projects = Gainwell.EstimationTool.ViewModels.InitialEstimateViewModel.GetAllProjects();
             var saved = projects.First(p => p.ProjectName == "Secure Path Test");
-            Assert.Equal("CO-SEC-001", saved.ChangeOrderId);
+            Assert.Equal("23327 002", saved.ChangeOrderId);
             Assert.Equal("Testing secure DB path", saved.ProjectDescription);
             Assert.Single(saved.Components);
             Assert.Equal("Reports", saved.Components[0].ComponentType);

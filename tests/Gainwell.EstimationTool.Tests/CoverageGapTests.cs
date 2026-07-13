@@ -261,12 +261,46 @@ public class CoverageGapTests
         Assert.Equal("CO / Defect # is required.", result);
     }
 
+    [Theory]
+    [InlineData("CO-001")]
+    [InlineData("CO-2024-001")]
+    [InlineData("1234")]       // Too few digits
+    [InlineData("123456")]     // Too many digits
+    [InlineData("23327-002")]  // Hyphen instead of space
+    [InlineData("ABCDE")]      // Letters
+    [InlineData("23327  002")] // Double space
+    public void SaveProject_InvalidChangeOrderFormat_ReturnsError(string invalidCo)
+    {
+        var vm = new InitialEstimateViewModel();
+        vm.ProjectName = "Test";
+        vm.ChangeOrderId = invalidCo;
+        var result = vm.SaveProject();
+        Assert.Equal("CO / Defect # must be in 99999 or 99999 999 format.", result);
+    }
+
+    [Theory]
+    [InlineData("23327")]
+    [InlineData("23810")]
+    [InlineData("23327 002")]
+    [InlineData("24407")]
+    [InlineData("99999 999")]
+    [InlineData("00000")]
+    public void SaveProject_ValidChangeOrderFormat_PassesValidation(string validCo)
+    {
+        var vm = new InitialEstimateViewModel();
+        vm.ProjectName = "Test";
+        vm.ChangeOrderId = validCo;
+        var result = vm.SaveProject();
+        // Should NOT get the format error — gets a different validation error instead
+        Assert.NotEqual("CO / Defect # must be in 99999 or 99999 999 format.", result);
+    }
+
     [Fact]
     public void SaveProject_MissingDescription_ReturnsError()
     {
         var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Test";
-        vm.ChangeOrderId = "CO-1";
+        vm.ChangeOrderId = "23327";
         vm.ProjectDescription = "";
         var result = vm.SaveProject();
         Assert.Equal("Description is required.", result);
@@ -277,7 +311,7 @@ public class CoverageGapTests
     {
         var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Test";
-        vm.ChangeOrderId = "CO-1";
+        vm.ChangeOrderId = "23327";
         vm.ProjectDescription = "Desc";
         vm.EstimatedBy = "";
         var result = vm.SaveProject();
@@ -289,7 +323,7 @@ public class CoverageGapTests
     {
         var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Test";
-        vm.ChangeOrderId = "CO-1";
+        vm.ChangeOrderId = "23327";
         vm.ProjectDescription = "Desc";
         vm.EstimatedBy = "Tester";
         vm.ReviewedBy = "";
@@ -302,7 +336,7 @@ public class CoverageGapTests
     {
         var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Test";
-        vm.ChangeOrderId = "CO-1";
+        vm.ChangeOrderId = "23327";
         vm.ProjectDescription = "Desc";
         vm.EstimatedBy = "Tester";
         vm.ReviewedBy = "Reviewer";

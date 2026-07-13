@@ -50,4 +50,10 @@ ExcelReader/
 ## Crash logs
 crash.log
 
+## Published output
+publish/
+
+## WPF temp project files
+*_wpftmp.csproj
+
 .for_my_referance/

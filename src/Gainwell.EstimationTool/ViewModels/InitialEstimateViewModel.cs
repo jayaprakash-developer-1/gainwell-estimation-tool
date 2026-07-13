@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Data.Sqlite;
@@ -680,6 +681,8 @@ public partial class InitialEstimateViewModel : ObservableObject
             return "Project Name is required.";
         if (string.IsNullOrWhiteSpace(ChangeOrderId))
             return "CO / Defect # is required.";
+        if (!Regex.IsMatch(ChangeOrderId.Trim(), @"^\d{5}( \d{3})?$"))
+            return "CO / Defect # must be in 99999 or 99999 999 format.";
         if (string.IsNullOrWhiteSpace(ProjectDescription))
             return "Description is required.";
         if (string.IsNullOrWhiteSpace(EstimatedBy))
