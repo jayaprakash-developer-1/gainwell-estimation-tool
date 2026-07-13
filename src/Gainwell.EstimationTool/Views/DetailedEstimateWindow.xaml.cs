@@ -1017,9 +1017,27 @@ public partial class DetailedEstimateWindow : Window
             var existing = db.Projects.FirstOrDefault(p => p.ProjectId == _currentProject.ProjectId);
             if (existing == null)
             {
-                MessageBox.Show("The selected project could not be found in the database.",
-                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                // Try finding by project name (handles navigation with mismatched ProjectId)
+                existing = db.Projects.FirstOrDefault(p => p.ProjectName == _currentProject.ProjectName);
+            }
+            if (existing == null)
+            {
+                // Project doesn't exist in DB yet — create it
+                existing = new ProjectEntity
+                {
+                    ProjectId = _currentProject.ProjectId,
+                    ProjectName = _currentProject.ProjectName,
+                    ChangeOrderId = _currentProject.ChangeOrderId,
+                    ProjectDescription = _currentProject.ProjectDescription,
+                    EstimatedBy = _currentProject.EstimatedBy ?? Environment.UserName,
+                    ReviewedBy = _currentProject.ReviewedBy ?? Environment.UserName,
+                    CreatedDate = DateTime.UtcNow,
+                    LastModifiedDate = DateTime.UtcNow
+                };
+                db.Projects.Add(existing);
+                db.SaveChanges();
+                // Update _currentProject to use the persisted ID
+                _currentProject.ProjectId = existing.ProjectId;
             }
 
             // === Persist summary totals to PROJECT_ESTIMATES ===

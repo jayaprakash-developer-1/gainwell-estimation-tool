@@ -1,4 +1,5 @@
 using System.Windows;
+using Gainwell.EstimationTool.Data;
 using Gainwell.EstimationTool.Models;
 using Gainwell.EstimationTool.ViewModels;
 using Gainwell.EstimationTool.Views;
@@ -54,14 +55,26 @@ public static class EstimateNavigator
 
         if (source is InitialEstimateWindow && source.DataContext is InitialEstimateViewModel vm)
         {
-            project = new ProjectEntity
+            // Look up the SAVED project from DB to get the correct ProjectId
+            if (!string.IsNullOrWhiteSpace(vm.ProjectName))
             {
-                ProjectName = vm.ProjectName,
-                ChangeOrderId = vm.ChangeOrderId,
-                ProjectDescription = vm.ProjectDescription,
-                EstimatedBy = vm.EstimatedBy,
-                ReviewedBy = vm.ReviewedBy
-            };
+                using var db = new EstimateDbContext();
+                db.EnsureSchema();
+                project = db.Projects.FirstOrDefault(p => p.ProjectName == vm.ProjectName);
+            }
+
+            // If not found in DB (project not yet saved), create a temporary entity
+            if (project == null)
+            {
+                project = new ProjectEntity
+                {
+                    ProjectName = vm.ProjectName,
+                    ChangeOrderId = vm.ChangeOrderId,
+                    ProjectDescription = vm.ProjectDescription,
+                    EstimatedBy = vm.EstimatedBy,
+                    ReviewedBy = vm.ReviewedBy
+                };
+            }
         }
 
         if (_detailedWindow == null || !_detailedWindow.IsLoaded)

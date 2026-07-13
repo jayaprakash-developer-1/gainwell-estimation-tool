@@ -66,6 +66,35 @@ public class EstimateDbContext : DbContext
     {
         try { Database.EnsureCreated(); }
         catch (SqliteException ex) when (ex.SqliteErrorCode == 1 && ex.Message.Contains("already exists")) { }
+
+        // Ensure newer columns exist in existing databases (SQLite ALTER TABLE ADD COLUMN)
+        MigrateSchema();
+    }
+
+    /// <summary>
+    /// Adds columns that may be missing from older database versions.
+    /// SQLite only supports ADD COLUMN, not DROP/ALTER, so this is safe to run repeatedly.
+    /// </summary>
+    private void MigrateSchema()
+    {
+        var conn = Database.GetDbConnection();
+        if (conn.State != System.Data.ConnectionState.Open) conn.Open();
+        using var cmd = conn.CreateCommand();
+
+        // Helper to safely add a column if it doesn't exist
+        void AddColumnIfMissing(string table, string column, string type, string defaultVal = "''")
+        {
+            try
+            {
+                cmd.CommandText = $"ALTER TABLE [{table}] ADD COLUMN [{column}] {type} DEFAULT {defaultVal}";
+                cmd.ExecuteNonQuery();
+            }
+            catch (SqliteException) { /* column already exists — ignore */ }
+        }
+
+        // Notes columns added after initial schema
+        AddColumnIfMissing("DETAILED_BA_TEST_CASES", "Notes", "TEXT", "''");
+        AddColumnIfMissing("DETAILED_BA_VALIDATIONS", "Notes", "TEXT", "''");
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)

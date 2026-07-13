@@ -190,12 +190,23 @@ public partial class WelcomeWindow : Window
         }
         else
         {
-            project = new ProjectEntity
+            // Look up existing project from DB first (may have been saved in Initial Estimate)
+            using var db = new EstimateDbContext();
+            db.EnsureSchema();
+            var existing = db.Projects.FirstOrDefault(p => p.ProjectName == projectName);
+            if (existing != null)
             {
-                ProjectName = projectName,
-                ChangeOrderId = changeOrder,
-                ProjectDescription = DescriptionTextBox.Text.Trim()
-            };
+                project = existing;
+            }
+            else
+            {
+                project = new ProjectEntity
+                {
+                    ProjectName = projectName,
+                    ChangeOrderId = changeOrder,
+                    ProjectDescription = DescriptionTextBox.Text.Trim()
+                };
+            }
         }
 
         var detailedWindow = new DetailedEstimateWindow(project);
