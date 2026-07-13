@@ -270,6 +270,7 @@ public class EstimateDbContext : DbContext
             entity.Property(e => e.ComplexCount).HasColumnType("REAL");
             entity.Property(e => e.VeryComplexCount).HasColumnType("REAL");
             entity.Property(e => e.ManualAdjHours).HasColumnType("REAL");
+            entity.Property(e => e.Notes).HasMaxLength(1000);
             entity.HasOne(e => e.Project).WithMany().HasForeignKey(e => e.ProjectId).OnDelete(DeleteBehavior.Cascade);
         });
 
@@ -287,6 +288,7 @@ public class EstimateDbContext : DbContext
             entity.Property(e => e.ComplexCount);
             entity.Property(e => e.VeryComplexCount);
             entity.Property(e => e.ManualAdjHours).HasColumnType("REAL");
+            entity.Property(e => e.Notes).HasMaxLength(1000);
             entity.HasOne(e => e.Project).WithMany().HasForeignKey(e => e.ProjectId).OnDelete(DeleteBehavior.Cascade);
         });
 
