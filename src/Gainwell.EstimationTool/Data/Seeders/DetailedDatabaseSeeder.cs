@@ -101,13 +101,14 @@ public static class DetailedDatabaseSeeder
                 TaskType TEXT,
                 Category TEXT,
                 ExperienceLevel TEXT,
-                GridType TEXT,
+                GridType TEXT DEFAULT 'TestCases',
                 IsInfoRow INTEGER NOT NULL DEFAULT 0,
                 SimpleCount REAL NOT NULL DEFAULT 0,
                 ModerateCount REAL NOT NULL DEFAULT 0,
                 ComplexCount REAL NOT NULL DEFAULT 0,
                 VeryComplexCount REAL NOT NULL DEFAULT 0,
                 ManualAdjHours REAL NOT NULL DEFAULT 0,
+                Notes TEXT DEFAULT '',
                 FOREIGN KEY (ProjectId) REFERENCES PROJECT_ESTIMATES(PROJECT_ID) ON DELETE CASCADE
             )");
 
@@ -118,6 +119,9 @@ public static class DetailedDatabaseSeeder
         // Add VeryComplexCount to existing DETAILED_BA_TEST_CASES tables
         try { db.Database.ExecuteSqlRaw("ALTER TABLE DETAILED_BA_TEST_CASES ADD COLUMN VeryComplexCount REAL NOT NULL DEFAULT 0"); }
         catch { /* column already exists */ }
+
+        // Add Notes column to existing tables (safe to call even if column already exists)
+        try { db.Database.ExecuteSqlRaw("ALTER TABLE DETAILED_BA_TEST_CASES ADD COLUMN Notes TEXT DEFAULT ''"); } catch { /* column already exists */ }
 
         db.Database.ExecuteSqlRaw(@"
             CREATE TABLE IF NOT EXISTS DETAILED_BA_VALIDATIONS (
@@ -132,11 +136,14 @@ public static class DetailedDatabaseSeeder
                 ComplexCount INTEGER NOT NULL DEFAULT 0,
                 VeryComplexCount INTEGER NOT NULL DEFAULT 0,
                 ManualAdjHours REAL NOT NULL DEFAULT 0,
+                Notes TEXT DEFAULT '',
                 FOREIGN KEY (ProjectId) REFERENCES PROJECT_ESTIMATES(PROJECT_ID) ON DELETE CASCADE
             )");
 
         try { db.Database.ExecuteSqlRaw("ALTER TABLE DETAILED_BA_VALIDATIONS ADD COLUMN VeryComplexCount INTEGER NOT NULL DEFAULT 0"); }
         catch { /* column already exists */ };
+        try { db.Database.ExecuteSqlRaw("ALTER TABLE DETAILED_BA_VALIDATIONS ADD COLUMN Notes TEXT DEFAULT ''"); } catch { /* column already exists */ }
+
 
         db.Database.ExecuteSqlRaw(@"
             CREATE TABLE IF NOT EXISTS DETAILED_CONSULTANTS (
