@@ -60,13 +60,17 @@ public partial class DetailedEstimateWindow : Window
 
     private static void OnTextBoxGotFocus(object sender, KeyboardFocusChangedEventArgs e)
     {
-        if (e.NewFocus is System.Windows.Controls.TextBox tb && !tb.AcceptsReturn && tb.Text == "0")
+        if (e.NewFocus is System.Windows.Controls.TextBox tb && !tb.AcceptsReturn
+            && tb.Tag as string != "text"
+            && tb.Text == "0")
             tb.Clear();
     }
 
     private static void OnTextBoxPreviewMouseDown(object sender, MouseButtonEventArgs e)
     {
-        if (e.OriginalSource is System.Windows.Controls.TextBox tb && !tb.AcceptsReturn && !tb.IsKeyboardFocusWithin && tb.Text == "0")
+        if (e.OriginalSource is System.Windows.Controls.TextBox tb && !tb.AcceptsReturn
+            && tb.Tag as string != "text"
+            && !tb.IsKeyboardFocusWithin && tb.Text == "0")
         {
             tb.Focus();
             e.Handled = true;
@@ -75,7 +79,9 @@ public partial class DetailedEstimateWindow : Window
 
     private static void OnTextBoxLostFocus(object sender, KeyboardFocusChangedEventArgs e)
     {
-        if (e.OldFocus is System.Windows.Controls.TextBox tb && !tb.AcceptsReturn && string.IsNullOrWhiteSpace(tb.Text))
+        if (e.OldFocus is System.Windows.Controls.TextBox tb && !tb.AcceptsReturn
+            && tb.Tag as string != "text"
+            && string.IsNullOrWhiteSpace(tb.Text))
             tb.Text = "0";
     }
 
@@ -412,6 +418,30 @@ public partial class DetailedEstimateWindow : Window
         UpdateSummaryTab();
     }
 
+    private void OnBaNotesChanged(object sender, TextChangedEventArgs e)
+    {
+        if (!IsLoaded) return;
+        if (sender is TextBox tb)
+        {
+            int len = tb.Text?.Length ?? 0;
+            // Find the sibling NotesCnt TextBlock by naming convention
+            string name = tb.Name?.Replace("_Notes", "_NotesCnt") ?? string.Empty;
+            if (FindName(name) is System.Windows.Controls.TextBlock cnt)
+                cnt.Text = $"{len}/1000";
+        }
+        SyncCardsToModel();
+        SyncPvRadiosToModel();
+        UpdateBaCardDisplays();
+        UpdateSummaryTab();
+    }
+
+    /// <summary>Clears "0" from text-only fields (Notes, Estimate By) on lost focus.</summary>
+    private void OnTextFieldLostFocus(object sender, RoutedEventArgs e)
+    {
+        if (sender is TextBox tb && tb.Text == "0")
+            tb.Text = string.Empty;
+    }
+
     private void OnPvRadioChanged(object sender, RoutedEventArgs e)
     {
         if (!IsLoaded) return;
@@ -429,11 +459,13 @@ public partial class DetailedEstimateWindow : Window
         BaTestCases[0].ComplexCount = ParseDecimal(BaNewUR_Complex?.Text);
         BaTestCases[0].VeryComplexCount = ParseDecimal(BaNewUR_VComplex?.Text);
         BaTestCases[0].ManualAdjHours = ParseDecimal(BaNewUR_AdjHrs?.Text);
+        BaTestCases[0].Notes = BaNewUR_Notes?.Text ?? string.Empty;
 
         BaTestCases[1].SimpleCount = ParseDecimal(BaNewWTC_Simple?.Text);
         BaTestCases[1].ModerateCount = ParseDecimal(BaNewWTC_Moderate?.Text);
         BaTestCases[1].ComplexCount = ParseDecimal(BaNewWTC_Complex?.Text);
         BaTestCases[1].VeryComplexCount = ParseDecimal(BaNewWTC_VComplex?.Text);
+        BaTestCases[1].Notes = BaNewWTC_Notes?.Text ?? string.Empty;
 
         BaTestCases[2].SimpleCount = ParseDecimal(BaNewIter_Simple?.Text);
         BaTestCases[2].ModerateCount = ParseDecimal(BaNewIter_Moderate?.Text);
@@ -441,9 +473,13 @@ public partial class DetailedEstimateWindow : Window
         BaTestCases[2].VeryComplexCount = ParseDecimal(BaNewIter_VComplex?.Text);
 
         BaTestCases[3].ManualAdjHours = ParseDecimal(BaNewDP_AdjHrs?.Text);
+        BaTestCases[3].Notes = BaNewDP_Notes?.Text ?? string.Empty;
         BaTestCases[4].ManualAdjHours = ParseDecimal(BaNewALM_AdjHrs?.Text);
+        BaTestCases[4].Notes = BaNewALM_Notes?.Text ?? string.Empty;
         BaTestCases[5].ManualAdjHours = ParseDecimal(BaNewSTE_AdjHrs?.Text);
+        BaTestCases[5].Notes = BaNewSTE_Notes?.Text ?? string.Empty;
         BaTestCases[6].ManualAdjHours = ParseDecimal(BaNewPRD_AdjHrs?.Text);
+        BaTestCases[6].Notes = BaNewPRD_Notes?.Text ?? string.Empty;
 
         // Proficient group (indices 7-13)
         BaTestCases[7].SimpleCount = ParseDecimal(BaProfUR_Simple?.Text);
@@ -451,11 +487,13 @@ public partial class DetailedEstimateWindow : Window
         BaTestCases[7].ComplexCount = ParseDecimal(BaProfUR_Complex?.Text);
         BaTestCases[7].VeryComplexCount = ParseDecimal(BaProfUR_VComplex?.Text);
         BaTestCases[7].ManualAdjHours = ParseDecimal(BaProfUR_AdjHrs?.Text);
+        BaTestCases[7].Notes = BaProfUR_Notes?.Text ?? string.Empty;
 
         BaTestCases[8].SimpleCount = ParseDecimal(BaProfWTC_Simple?.Text);
         BaTestCases[8].ModerateCount = ParseDecimal(BaProfWTC_Moderate?.Text);
         BaTestCases[8].ComplexCount = ParseDecimal(BaProfWTC_Complex?.Text);
         BaTestCases[8].VeryComplexCount = ParseDecimal(BaProfWTC_VComplex?.Text);
+        BaTestCases[8].Notes = BaProfWTC_Notes?.Text ?? string.Empty;
 
         BaTestCases[9].SimpleCount = ParseDecimal(BaProfIter_Simple?.Text);
         BaTestCases[9].ModerateCount = ParseDecimal(BaProfIter_Moderate?.Text);
@@ -463,9 +501,13 @@ public partial class DetailedEstimateWindow : Window
         BaTestCases[9].VeryComplexCount = ParseDecimal(BaProfIter_VComplex?.Text);
 
         BaTestCases[10].ManualAdjHours = ParseDecimal(BaProfDP_AdjHrs?.Text);
+        BaTestCases[10].Notes = BaProfDP_Notes?.Text ?? string.Empty;
         BaTestCases[11].ManualAdjHours = ParseDecimal(BaProfALM_AdjHrs?.Text);
+        BaTestCases[11].Notes = BaProfALM_Notes?.Text ?? string.Empty;
         BaTestCases[12].ManualAdjHours = ParseDecimal(BaProfSTE_AdjHrs?.Text);
+        BaTestCases[12].Notes = BaProfSTE_Notes?.Text ?? string.Empty;
         BaTestCases[13].ManualAdjHours = ParseDecimal(BaProfPRD_AdjHrs?.Text);
+        BaTestCases[13].Notes = BaProfPRD_Notes?.Text ?? string.Empty;
 
         // Expert group (indices 14-20)
         BaTestCases[14].SimpleCount = ParseDecimal(BaExpUR_Simple?.Text);
@@ -473,11 +515,13 @@ public partial class DetailedEstimateWindow : Window
         BaTestCases[14].ComplexCount = ParseDecimal(BaExpUR_Complex?.Text);
         BaTestCases[14].VeryComplexCount = ParseDecimal(BaExpUR_VComplex?.Text);
         BaTestCases[14].ManualAdjHours = ParseDecimal(BaExpUR_AdjHrs?.Text);
+        BaTestCases[14].Notes = BaExpUR_Notes?.Text ?? string.Empty;
 
         BaTestCases[15].SimpleCount = ParseDecimal(BaExpWTC_Simple?.Text);
         BaTestCases[15].ModerateCount = ParseDecimal(BaExpWTC_Moderate?.Text);
         BaTestCases[15].ComplexCount = ParseDecimal(BaExpWTC_Complex?.Text);
         BaTestCases[15].VeryComplexCount = ParseDecimal(BaExpWTC_VComplex?.Text);
+        BaTestCases[15].Notes = BaExpWTC_Notes?.Text ?? string.Empty;
 
         BaTestCases[16].SimpleCount = ParseDecimal(BaExpIter_Simple?.Text);
         BaTestCases[16].ModerateCount = ParseDecimal(BaExpIter_Moderate?.Text);
@@ -485,9 +529,13 @@ public partial class DetailedEstimateWindow : Window
         BaTestCases[16].VeryComplexCount = ParseDecimal(BaExpIter_VComplex?.Text);
 
         BaTestCases[17].ManualAdjHours = ParseDecimal(BaExpDP_AdjHrs?.Text);
+        BaTestCases[17].Notes = BaExpDP_Notes?.Text ?? string.Empty;
         BaTestCases[18].ManualAdjHours = ParseDecimal(BaExpALM_AdjHrs?.Text);
+        BaTestCases[18].Notes = BaExpALM_Notes?.Text ?? string.Empty;
         BaTestCases[19].ManualAdjHours = ParseDecimal(BaExpSTE_AdjHrs?.Text);
+        BaTestCases[19].Notes = BaExpSTE_Notes?.Text ?? string.Empty;
         BaTestCases[20].ManualAdjHours = ParseDecimal(BaExpPRD_AdjHrs?.Text);
+        BaTestCases[20].Notes = BaExpPRD_Notes?.Text ?? string.Empty;
     }
 
     /// <summary>Sync PV radio button selections G�� BaValidationItems model (0=none, 1=selected).</summary>
@@ -499,54 +547,63 @@ public partial class DetailedEstimateWindow : Window
         BaValidationItems[0].ComplexCount = BaPvNewGV_Complex?.IsChecked == true ? 1 : 0;
         BaValidationItems[0].VeryComplexCount = BaPvNewGV_VComplex?.IsChecked == true ? 1 : 0;
         BaValidationItems[0].ManualAdjHours = ParseDecimal(BaPvNewGV_Adj?.Text);
+        BaValidationItems[0].Notes = BaPvNewGV_Notes?.Text ?? string.Empty;
         // Row 1: New PC
         BaValidationItems[1].SimpleCount = BaPvNewPC_Simple?.IsChecked == true ? 1 : 0;
         BaValidationItems[1].ModerateCount = BaPvNewPC_Moderate?.IsChecked == true ? 1 : 0;
         BaValidationItems[1].ComplexCount = BaPvNewPC_Complex?.IsChecked == true ? 1 : 0;
         BaValidationItems[1].VeryComplexCount = BaPvNewPC_VComplex?.IsChecked == true ? 1 : 0;
         BaValidationItems[1].ManualAdjHours = ParseDecimal(BaPvNewPC_Adj?.Text);
+        BaValidationItems[1].Notes = BaPvNewPC_Notes?.Text ?? string.Empty;
         // Row 2: New RC
         BaValidationItems[2].SimpleCount = BaPvNewRC_Simple?.IsChecked == true ? 1 : 0;
         BaValidationItems[2].ModerateCount = BaPvNewRC_Moderate?.IsChecked == true ? 1 : 0;
         BaValidationItems[2].ComplexCount = BaPvNewRC_Complex?.IsChecked == true ? 1 : 0;
         BaValidationItems[2].VeryComplexCount = BaPvNewRC_VComplex?.IsChecked == true ? 1 : 0;
         BaValidationItems[2].ManualAdjHours = ParseDecimal(BaPvNewRC_Adj?.Text);
+        BaValidationItems[2].Notes = BaPvNewRC_Notes?.Text ?? string.Empty;
         // Row 3: Prof GV
         BaValidationItems[3].SimpleCount = BaPvProfGV_Simple?.IsChecked == true ? 1 : 0;
         BaValidationItems[3].ModerateCount = BaPvProfGV_Moderate?.IsChecked == true ? 1 : 0;
         BaValidationItems[3].ComplexCount = BaPvProfGV_Complex?.IsChecked == true ? 1 : 0;
         BaValidationItems[3].VeryComplexCount = BaPvProfGV_VComplex?.IsChecked == true ? 1 : 0;
         BaValidationItems[3].ManualAdjHours = ParseDecimal(BaPvProfGV_Adj?.Text);
+        BaValidationItems[3].Notes = BaPvProfGV_Notes?.Text ?? string.Empty;
         // Row 4: Prof PC
         BaValidationItems[4].SimpleCount = BaPvProfPC_Simple?.IsChecked == true ? 1 : 0;
         BaValidationItems[4].ModerateCount = BaPvProfPC_Moderate?.IsChecked == true ? 1 : 0;
         BaValidationItems[4].ComplexCount = BaPvProfPC_Complex?.IsChecked == true ? 1 : 0;
         BaValidationItems[4].VeryComplexCount = BaPvProfPC_VComplex?.IsChecked == true ? 1 : 0;
         BaValidationItems[4].ManualAdjHours = ParseDecimal(BaPvProfPC_Adj?.Text);
+        BaValidationItems[4].Notes = BaPvProfPC_Notes?.Text ?? string.Empty;
         // Row 5: Prof RC
         BaValidationItems[5].SimpleCount = BaPvProfRC_Simple?.IsChecked == true ? 1 : 0;
         BaValidationItems[5].ModerateCount = BaPvProfRC_Moderate?.IsChecked == true ? 1 : 0;
         BaValidationItems[5].ComplexCount = BaPvProfRC_Complex?.IsChecked == true ? 1 : 0;
         BaValidationItems[5].VeryComplexCount = BaPvProfRC_VComplex?.IsChecked == true ? 1 : 0;
         BaValidationItems[5].ManualAdjHours = ParseDecimal(BaPvProfRC_Adj?.Text);
+        BaValidationItems[5].Notes = BaPvProfRC_Notes?.Text ?? string.Empty;
         // Row 6: Exp GV
         BaValidationItems[6].SimpleCount = BaPvExpGV_Simple?.IsChecked == true ? 1 : 0;
         BaValidationItems[6].ModerateCount = BaPvExpGV_Moderate?.IsChecked == true ? 1 : 0;
         BaValidationItems[6].ComplexCount = BaPvExpGV_Complex?.IsChecked == true ? 1 : 0;
         BaValidationItems[6].VeryComplexCount = BaPvExpGV_VComplex?.IsChecked == true ? 1 : 0;
         BaValidationItems[6].ManualAdjHours = ParseDecimal(BaPvExpGV_Adj?.Text);
+        BaValidationItems[6].Notes = BaPvExpGV_Notes?.Text ?? string.Empty;
         // Row 7: Exp PC
         BaValidationItems[7].SimpleCount = BaPvExpPC_Simple?.IsChecked == true ? 1 : 0;
         BaValidationItems[7].ModerateCount = BaPvExpPC_Moderate?.IsChecked == true ? 1 : 0;
         BaValidationItems[7].ComplexCount = BaPvExpPC_Complex?.IsChecked == true ? 1 : 0;
         BaValidationItems[7].VeryComplexCount = BaPvExpPC_VComplex?.IsChecked == true ? 1 : 0;
         BaValidationItems[7].ManualAdjHours = ParseDecimal(BaPvExpPC_Adj?.Text);
+        BaValidationItems[7].Notes = BaPvExpPC_Notes?.Text ?? string.Empty;
         // Row 8: Exp RC
         BaValidationItems[8].SimpleCount = BaPvExpRC_Simple?.IsChecked == true ? 1 : 0;
         BaValidationItems[8].ModerateCount = BaPvExpRC_Moderate?.IsChecked == true ? 1 : 0;
         BaValidationItems[8].ComplexCount = BaPvExpRC_Complex?.IsChecked == true ? 1 : 0;
         BaValidationItems[8].VeryComplexCount = BaPvExpRC_VComplex?.IsChecked == true ? 1 : 0;
         BaValidationItems[8].ManualAdjHours = ParseDecimal(BaPvExpRC_Adj?.Text);
+        BaValidationItems[8].Notes = BaPvExpRC_Notes?.Text ?? string.Empty;
     }
 
     /// <summary>Update all card display labels from model calculated values.</summary>
@@ -658,6 +715,48 @@ public partial class DetailedEstimateWindow : Window
         if (BaStickyWtcText != null) BaStickyWtcText.Text = $"{wtcGT:N2} hrs";
         if (BaStickyPvText != null) BaStickyPvText.Text = $"{pvGT:N2} hrs";
         if (BaStickySysDocText != null) BaStickySysDocText.Text = $"{(baSysDoc + commPlan):N2} hrs";
+
+        // Sync Notes from model → UI (needed after loading from DB)
+        SyncNoteField(BaNewUR_Notes, BaTestCases[0].Notes, BaNewUR_NotesCnt);
+        SyncNoteField(BaNewWTC_Notes, BaTestCases[1].Notes, BaNewWTC_NotesCnt);
+        SyncNoteField(BaNewDP_Notes, BaTestCases[3].Notes, null);
+        SyncNoteField(BaNewALM_Notes, BaTestCases[4].Notes, null);
+        SyncNoteField(BaNewSTE_Notes, BaTestCases[5].Notes, null);
+        SyncNoteField(BaNewPRD_Notes, BaTestCases[6].Notes, null);
+        SyncNoteField(BaProfUR_Notes, BaTestCases[7].Notes, BaProfUR_NotesCnt);
+        SyncNoteField(BaProfWTC_Notes, BaTestCases[8].Notes, BaProfWTC_NotesCnt);
+        SyncNoteField(BaProfDP_Notes, BaTestCases[10].Notes, null);
+        SyncNoteField(BaProfALM_Notes, BaTestCases[11].Notes, null);
+        SyncNoteField(BaProfSTE_Notes, BaTestCases[12].Notes, null);
+        SyncNoteField(BaProfPRD_Notes, BaTestCases[13].Notes, null);
+        SyncNoteField(BaExpUR_Notes, BaTestCases[14].Notes, BaExpUR_NotesCnt);
+        SyncNoteField(BaExpWTC_Notes, BaTestCases[15].Notes, BaExpWTC_NotesCnt);
+        SyncNoteField(BaExpDP_Notes, BaTestCases[17].Notes, null);
+        SyncNoteField(BaExpALM_Notes, BaTestCases[18].Notes, null);
+        SyncNoteField(BaExpSTE_Notes, BaTestCases[19].Notes, null);
+        SyncNoteField(BaExpPRD_Notes, BaTestCases[20].Notes, null);
+        // PV Notes
+        SyncNoteField(BaPvNewGV_Notes, BaValidationItems[0].Notes, BaPvNewGV_NotesCnt);
+        SyncNoteField(BaPvNewPC_Notes, BaValidationItems[1].Notes, BaPvNewPC_NotesCnt);
+        SyncNoteField(BaPvNewRC_Notes, BaValidationItems[2].Notes, BaPvNewRC_NotesCnt);
+        SyncNoteField(BaPvProfGV_Notes, BaValidationItems[3].Notes, BaPvProfGV_NotesCnt);
+        SyncNoteField(BaPvProfPC_Notes, BaValidationItems[4].Notes, BaPvProfPC_NotesCnt);
+        SyncNoteField(BaPvProfRC_Notes, BaValidationItems[5].Notes, BaPvProfRC_NotesCnt);
+        SyncNoteField(BaPvExpGV_Notes, BaValidationItems[6].Notes, BaPvExpGV_NotesCnt);
+        SyncNoteField(BaPvExpPC_Notes, BaValidationItems[7].Notes, BaPvExpPC_NotesCnt);
+        SyncNoteField(BaPvExpRC_Notes, BaValidationItems[8].Notes, BaPvExpRC_NotesCnt);
+    }
+
+    private static void SyncNoteField(TextBox? tb, string notes, System.Windows.Controls.TextBlock? cnt)
+    {
+        // Treat "0" as empty to prevent spurious display
+        if (notes == "0") notes = string.Empty;
+        if (tb != null && tb.Text != notes) tb.Text = notes;
+        if (cnt != null)
+        {
+            int len = notes?.Length ?? 0;
+            cnt.Text = $"{len}/1000";
+        }
     }
 
     private static void UpdatePvCardDisplay(System.Windows.Controls.TextBlock? ctTb, System.Windows.Controls.TextBlock? resultTb, System.Windows.Controls.TextBlock? totalTb, BaValidationRow row)
@@ -1037,7 +1136,8 @@ public partial class DetailedEstimateWindow : Window
                     IsInfoRow = row.IsInfoRow,
                     SimpleCount = row.SimpleCount, ModerateCount = row.ModerateCount,
                     ComplexCount = row.ComplexCount, VeryComplexCount = row.VeryComplexCount,
-                    ManualAdjHours = row.ManualAdjHours
+                    ManualAdjHours = row.ManualAdjHours,
+                    Notes = row.Notes
                 });
             }
             for (int i = 0; i < BaRegressionRows.Count; i++)
@@ -1051,7 +1151,8 @@ public partial class DetailedEstimateWindow : Window
                     IsInfoRow = row.IsInfoRow,
                     SimpleCount = row.SimpleCount, ModerateCount = row.ModerateCount,
                     ComplexCount = row.ComplexCount, VeryComplexCount = row.VeryComplexCount,
-                    ManualAdjHours = row.ManualAdjHours
+                    ManualAdjHours = row.ManualAdjHours,
+                    Notes = row.Notes
                 });
             }
 
@@ -1067,7 +1168,8 @@ public partial class DetailedEstimateWindow : Window
                     ExperienceLevel = row.ExperienceLevel.ToString(),
                     SimpleCount = row.SimpleCount, ModerateCount = row.ModerateCount,
                     ComplexCount = row.ComplexCount, VeryComplexCount = row.VeryComplexCount,
-                    ManualAdjHours = row.ManualAdjHours
+                    ManualAdjHours = row.ManualAdjHours,
+                    Notes = row.Notes
                 });
             }
 
@@ -1190,6 +1292,7 @@ public partial class DetailedEstimateWindow : Window
                 BaTestCases[i].ComplexCount = saved.ComplexCount;
                 BaTestCases[i].VeryComplexCount = saved.VeryComplexCount;
                 BaTestCases[i].ManualAdjHours = saved.ManualAdjHours;
+                BaTestCases[i].Notes = saved.Notes;
             }
         }
 
@@ -1206,6 +1309,7 @@ public partial class DetailedEstimateWindow : Window
                 BaRegressionRows[i].ComplexCount = saved.ComplexCount;
                 BaRegressionRows[i].VeryComplexCount = saved.VeryComplexCount;
                 BaRegressionRows[i].ManualAdjHours = saved.ManualAdjHours;
+                BaRegressionRows[i].Notes = saved.Notes;
             }
         }
 
@@ -1221,6 +1325,7 @@ public partial class DetailedEstimateWindow : Window
                 BaValidationItems[i].ComplexCount = saved.ComplexCount;
                 BaValidationItems[i].VeryComplexCount = saved.VeryComplexCount;
                 BaValidationItems[i].ManualAdjHours = saved.ManualAdjHours;
+                BaValidationItems[i].Notes = saved.Notes;
             }
         }
 
@@ -1615,6 +1720,7 @@ public class BaTestCaseRow : INotifyPropertyChanged
     public decimal ComplexCount    { get => _complexCount;    set { _complexCount = value;    OnPropertyChanged(); RecalculateTotals(); } }
     public decimal VeryComplexCount { get => _veryComplexCount; set { _veryComplexCount = value; OnPropertyChanged(); RecalculateTotals(); } }
     public decimal ManualAdjHours { get => _manualAdjHours; set { _manualAdjHours = value; OnPropertyChanged(); RecalculateTotals(); } }
+    public string Notes { get; set; } = string.Empty;
 
     /// <summary>Display-friendly experience level name (read-only column in grid).</summary>
     public string ExperienceLevelDisplay => ExperienceLevel switch
@@ -1756,6 +1862,7 @@ public class BaValidationRow : INotifyPropertyChanged
         get => _manualAdjHours;
         set { _manualAdjHours = value; OnPropertyChanged(); RecalculateTotals(); }
     }
+    public string Notes { get; set; } = string.Empty;
 
     /// <summary>Complexity Total = sum of (count +� weighted hours) across all complexity levels.</summary>
     public decimal ComplexityTotal =>

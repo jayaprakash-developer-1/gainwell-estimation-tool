@@ -63,6 +63,7 @@ public class DetailedBaTestCaseEntity
     public decimal VeryComplexCount { get; set; }
     public decimal ManualAdjHours { get; set; }
     public string GridType { get; set; } = "TestCases"; // "TestCases" or "Regression"
+    public string Notes { get; set; } = string.Empty;
     public ProjectEntity? Project { get; set; }
 }
 
@@ -82,6 +83,7 @@ public class DetailedBaValidationEntity
     public int ComplexCount { get; set; }
     public int VeryComplexCount { get; set; }
     public decimal ManualAdjHours { get; set; }
+    public string Notes { get; set; } = string.Empty;
     public ProjectEntity? Project { get; set; }
 }
 
