@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Gainwell.EstimationTool.Models;
 
 /// <summary>
@@ -10,24 +12,30 @@ public class ComponentEntryEntity
     public int ComponentId { get; set; }
 
     /// <summary>Oracle: PROJECT_ID VARCHAR2(36) NOT NULL REFERENCES PROJECT_ESTIMATES</summary>
+    [Required, MaxLength(36)]
     public string ProjectId { get; set; } = string.Empty;
 
     /// <summary>Oracle: LINE_NUMBER NUMBER(5)</summary>
     public int LineNumber { get; set; }
 
     /// <summary>Oracle: REQUIREMENT_ID VARCHAR2(50)</summary>
+    [MaxLength(50)]
     public string RequirementId { get; set; } = string.Empty;
 
     /// <summary>Oracle: COMPONENT_TYPE VARCHAR2(50) NOT NULL</summary>
+    [Required, MaxLength(50)]
     public string ComponentType { get; set; } = string.Empty;
 
     /// <summary>Oracle: DESCRIPTION VARCHAR2(500)</summary>
+    [MaxLength(500)]
     public string Description { get; set; } = string.Empty;
 
     /// <summary>Oracle: CHANGE_TYPE VARCHAR2(10) NOT NULL</summary>
+    [Required, MaxLength(10)]
     public string ChangeType { get; set; } = string.Empty;
 
     /// <summary>Oracle: COMPONENT_SIZE VARCHAR2(10) NOT NULL</summary>
+    [Required, MaxLength(10)]
     public string Size { get; set; } = string.Empty;
 
     /// <summary>Oracle: COMPONENT_COUNT NUMBER(5) DEFAULT 1</summary>
@@ -40,6 +48,7 @@ public class ComponentEntryEntity
     public decimal TotalHours { get; set; }
 
     /// <summary>Oracle: NOTES VARCHAR2(1000)</summary>
+    [MaxLength(1000)]
     public string Notes { get; set; } = string.Empty;
 
     /// <summary>Navigation property back to parent project</summary>

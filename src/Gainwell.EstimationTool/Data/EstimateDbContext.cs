@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.Sqlite;
 using Gainwell.EstimationTool.Models;
 using System.IO;
 
@@ -21,22 +22,64 @@ public class EstimateDbContext : DbContext
     public DbSet<DetailedCollabMeetingEntity> DetailedCollabMeetings { get; set; } = null!;
     public DbSet<DetailedMiscFieldsEntity> DetailedMiscFields { get; set; } = null!;
 
+    private static readonly string SecureDbFolder = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+        "Gainwell", "EstimationTool");
+
     private readonly string _dbPath = string.Empty;
+
+    /// <summary>
+    /// Encryption password for SQLite database at rest.
+    /// Set before first DbContext use. Requires SQLCipher native library
+    /// (install SQLitePCLRaw.bundle_e_sqlcipher NuGet package to enable).
+    /// When null, no encryption is applied.
+    /// </summary>
+    public static string? EncryptionPassword { get; set; }
+
+    /// <summary>
+    /// Override database file path (for testing or custom deployments).
+    /// When null, uses %LOCALAPPDATA%\Gainwell\EstimationTool\estimates.db.
+    /// </summary>
+    public static string? DatabasePathOverride { get; set; }
 
     public EstimateDbContext()
     {
-        var folder = AppDomain.CurrentDomain.BaseDirectory;
-        _dbPath = Path.Combine(folder, "estimates.db");
+        if (DatabasePathOverride != null)
+        {
+            _dbPath = DatabasePathOverride;
+        }
+        else
+        {
+            Directory.CreateDirectory(SecureDbFolder);
+            _dbPath = Path.Combine(SecureDbFolder, "estimates.db");
+        }
     }
 
     public EstimateDbContext(DbContextOptions<EstimateDbContext> options) : base(options)
     {
     }
 
+    /// <summary>
+    /// Ensures database schema is created. Silently handles "table already exists" errors.
+    /// </summary>
+    public void EnsureSchema()
+    {
+        try { Database.EnsureCreated(); }
+        catch (SqliteException ex) when (ex.SqliteErrorCode == 1 && ex.Message.Contains("already exists")) { }
+    }
+
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
         if (!options.IsConfigured)
-            options.UseSqlite($"Data Source={_dbPath}");
+        {
+            var builder = new SqliteConnectionStringBuilder
+            {
+                DataSource = _dbPath
+            };
+            if (!string.IsNullOrEmpty(EncryptionPassword))
+                builder.Password = EncryptionPassword;
+            options.UseSqlite(builder.ConnectionString);
+        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

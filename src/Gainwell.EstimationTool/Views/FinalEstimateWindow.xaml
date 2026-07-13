@@ -1,4 +1,4 @@
-<Window x:Class="Gainwell.EstimationTool.Views.FinalEstimateWindow"
+﻿<Window x:Class="Gainwell.EstimationTool.Views.FinalEstimateWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Final Estimate"
@@ -9,20 +9,8 @@
         Icon="/Assets/app.ico">
 
     <Window.Resources>
-        <!-- Card Style -->
-        <Style x:Key="CardBorder" TargetType="Border">
-            <Setter Property="Background" Value="White" />
-            <Setter Property="CornerRadius" Value="8" />
-            <Setter Property="Padding" Value="20" />
-            <Setter Property="Margin" Value="0,0,0,12" />
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <DropShadowEffect BlurRadius="8" Opacity="0.06" ShadowDepth="2" Direction="270" />
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="SectionHeader" TargetType="TextBlock">
+        <!-- Section header variant for Final view (Bold weight) -->
+        <Style x:Key="SectionHeaderBold" TargetType="TextBlock">
             <Setter Property="FontFamily" Value="Arial" />
             <Setter Property="FontSize" Value="14" />
             <Setter Property="FontWeight" Value="Bold" />
@@ -63,7 +51,7 @@
             <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="Padding" Value="12,6" />
             <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="BorderBrush" Value="#4DB6AC" />
+            <Setter Property="BorderBrush" Value="#2199B0" />
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Template">
                 <Setter.Value>
@@ -167,7 +155,7 @@
         </Border>
 
         <!-- ═══════════ TAB NAVIGATION ═══════════ -->
-        <Border Grid.Row="1" Margin="8,0,8,0" Padding="4,4" Background="#F0F0F5" CornerRadius="0,0,8,8">
+        <Border Grid.Row="1" Margin="8,0,8,0" Padding="4,4" Background="#EBEDF5" CornerRadius="0,0,8,8">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -265,7 +253,7 @@
                     <!-- ESTIMATION BREAKDOWN TABLE -->
                     <Border Style="{StaticResource CardBorder}">
                         <StackPanel>
-                            <TextBlock Text="Estimation Breakdown" Style="{StaticResource SectionHeader}" />
+                            <TextBlock Text="Estimation Breakdown" Style="{StaticResource SectionHeaderBold}" />
                             <TextBlock Text="{Binding SystemTestingMethod}" FontFamily="Arial" FontSize="10" Foreground="#8E99A8" Margin="0,0,0,8" />
 
                             <!-- Table Header -->
@@ -580,7 +568,7 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="Component Details" Style="{StaticResource SectionHeader}" Margin="0" />
+                                <TextBlock Text="Component Details" Style="{StaticResource SectionHeaderBold}" Margin="0" />
                                 <TextBlock Grid.Column="1" FontFamily="Arial" FontSize="11" Foreground="#5A6978" VerticalAlignment="Center">
                                     <Run Text="{Binding ComponentCount, Mode=OneWay}" />
                                     <Run Text=" components" />
@@ -610,7 +598,7 @@
                     <!-- ASSUMPTIONS -->
                     <Border Style="{StaticResource CardBorder}" x:Name="AssumptionsCard">
                         <StackPanel>
-                            <TextBlock Text="Assumptions &amp; Notes" Style="{StaticResource SectionHeader}" />
+                            <TextBlock Text="Assumptions &amp; Notes" Style="{StaticResource SectionHeaderBold}" />
                             
                             <StackPanel Margin="0,0,0,8" x:Name="SeAssumptionsPanel">
                                 <TextBlock Text="SE Assumptions" FontFamily="Arial" FontSize="10" FontWeight="Bold" Foreground="#019681" />
@@ -640,7 +628,7 @@
                     <!-- Role Breakout Card -->
                     <Border Style="{StaticResource CardBorder}">
                         <StackPanel>
-                            <TextBlock Text="Role Breakout" Style="{StaticResource SectionHeader}" />
+                            <TextBlock Text="Role Breakout" Style="{StaticResource SectionHeaderBold}" />
 
                             <!-- BA -->
                             <Grid Margin="0,6">
@@ -724,7 +712,7 @@
                     <!-- Estimation Config Card -->
                     <Border Style="{StaticResource CardBorder}">
                         <StackPanel>
-                            <TextBlock Text="Configuration" Style="{StaticResource SectionHeader}" />
+                            <TextBlock Text="Configuration" Style="{StaticResource SectionHeaderBold}" />
 
                             <Grid Margin="0,4">
                                 <Grid.ColumnDefinitions>
@@ -767,7 +755,7 @@
                     <!-- Adjusted Hours Summary -->
                     <Border Style="{StaticResource CardBorder}">
                         <StackPanel>
-                            <TextBlock Text="Adjusted Hours Comments" Style="{StaticResource SectionHeader}" />
+                            <TextBlock Text="Adjusted Hours Comments" Style="{StaticResource SectionHeaderBold}" />
                             <TextBlock Text="{Binding AdjustedHoursComments}" FontFamily="Arial" FontSize="11" Foreground="#5A6978" TextWrapping="Wrap"
                                        Visibility="{Binding AdjustedHoursComments, TargetNullValue=Collapsed, FallbackValue=Visible}" />
                             <TextBlock Text="No adjustment comments" FontFamily="Arial" FontSize="11" Foreground="#C2C6D2" FontStyle="Italic"

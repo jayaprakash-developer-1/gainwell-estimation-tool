@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Gainwell.EstimationTool.Models;
 
 /// <summary>
@@ -7,21 +9,27 @@ namespace Gainwell.EstimationTool.Models;
 public class ProjectEntity
 {
     /// <summary>Oracle: PROJECT_ID VARCHAR2(36) PRIMARY KEY</summary>
+    [Required, MaxLength(36)]
     public string ProjectId { get; set; } = Guid.NewGuid().ToString("N");
 
     /// <summary>Oracle: PROJECT_NAME VARCHAR2(200) UNIQUE NOT NULL</summary>
+    [Required, MaxLength(200)]
     public string ProjectName { get; set; } = string.Empty;
 
     /// <summary>Oracle: CHANGE_ORDER_ID VARCHAR2(100)</summary>
+    [MaxLength(100)]
     public string ChangeOrderId { get; set; } = string.Empty;
 
     /// <summary>Oracle: PROJECT_DESCRIPTION VARCHAR2(500)</summary>
+    [MaxLength(500)]
     public string ProjectDescription { get; set; } = string.Empty;
 
     /// <summary>Oracle: ESTIMATED_BY VARCHAR2(100)</summary>
+    [MaxLength(100)]
     public string EstimatedBy { get; set; } = Environment.UserName;
 
     /// <summary>Oracle: REVIEWED_BY VARCHAR2(100)</summary>
+    [MaxLength(100)]
     public string ReviewedBy { get; set; } = string.Empty;
 
     /// <summary>Oracle: PM_EFFORT_PERCENTAGE NUMBER(5,2)</summary>
@@ -37,6 +45,7 @@ public class ProjectEntity
     public decimal GrandTotalHours { get; set; }
 
     /// <summary>Oracle: TSHIRT_SIZE VARCHAR2(20)</summary>
+    [MaxLength(20)]
     public string TShirtSize { get; set; } = string.Empty;
 
     // === Collaboration Hours ===
@@ -69,34 +78,52 @@ public class ProjectEntity
     public decimal ProjectManagementAdjustedHours { get; set; }
 
     // === Adjustment Row Notes ===
+    [MaxLength(1000)]
     public string DevelopmentNotes { get; set; } = string.Empty;
+    [MaxLength(1000)]
     public string AnalysisNotes { get; set; } = string.Empty;
+    [MaxLength(1000)]
     public string BusinessDesignNotes { get; set; } = string.Empty;
+    [MaxLength(1000)]
     public string SystemTestingNotes { get; set; } = string.Empty;
+    [MaxLength(1000)]
     public string PromotionNotes { get; set; } = string.Empty;
+    [MaxLength(1000)]
     public string BaSystemDocNotes { get; set; } = string.Empty;
+    [MaxLength(1000)]
     public string ProductionValidationNotes { get; set; } = string.Empty;
+    [MaxLength(1000)]
     public string ProjectManagementNotes { get; set; } = string.Empty;
+    [MaxLength(1000)]
     public string WprsNotes { get; set; } = string.Empty;
+    [MaxLength(1000)]
     public string ClientMeetingsNotes { get; set; } = string.Empty;
+    [MaxLength(1000)]
     public string InternalMeetingsNotes { get; set; } = string.Empty;
+    [MaxLength(1000)]
     public string AutomationTestCollabNotes { get; set; } = string.Empty;
+    [MaxLength(1000)]
     public string ConsultantMentorNotes { get; set; } = string.Empty;
 
     // === Assumptions ===
     /// <summary>Oracle: SE_ASSUMPTIONS VARCHAR2(2000)</summary>
+    [MaxLength(2000)]
     public string SeAssumptions { get; set; } = string.Empty;
 
     /// <summary>Oracle: BA_ASSUMPTIONS VARCHAR2(2000)</summary>
+    [MaxLength(2000)]
     public string BaAssumptions { get; set; } = string.Empty;
 
     /// <summary>Oracle: COLLABORATION_ASSUMPTIONS VARCHAR2(2000)</summary>
+    [MaxLength(2000)]
     public string CollaborationAssumptions { get; set; } = string.Empty;
 
     /// <summary>Oracle: GENERAL_ASSUMPTIONS VARCHAR2(2000)</summary>
+    [MaxLength(2000)]
     public string GeneralAssumptions { get; set; } = string.Empty;
 
     /// <summary>Oracle: ADJUSTED_HOURS_COMMENTS VARCHAR2(4000)</summary>
+    [MaxLength(4000)]
     public string AdjustedHoursComments { get; set; } = string.Empty;
 
     // === Total Actual Hours ===
@@ -121,6 +148,7 @@ public class ProjectEntity
     public DateTime LastModifiedDate { get; set; } = DateTime.UtcNow;
 
     /// <summary>Oracle: CREATED_BY VARCHAR2(100)</summary>
+    [MaxLength(100)]
     public string CreatedBy { get; set; } = Environment.UserName;
 
     /// <summary>Oracle: VERSION_NUMBER NUMBER(5)</summary>

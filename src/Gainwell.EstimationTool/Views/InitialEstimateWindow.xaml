@@ -40,146 +40,6 @@
         <conv:NotesCharCountColorConverter x:Key="NotesCharCountColor" />
         <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
 
-        <!-- Card Style -->
-        <Style x:Key="CardBorder" TargetType="Border">
-            <Setter Property="Background" Value="White" />
-            <Setter Property="CornerRadius" Value="8" />
-            <Setter Property="Padding" Value="16" />
-            <Setter Property="Margin" Value="8" />
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <DropShadowEffect BlurRadius="8" Opacity="0.08" ShadowDepth="2" Direction="270" />
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!-- Section Header -->
-        <Style x:Key="SectionHeader" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="Foreground" Value="#2B3A44" />
-            <Setter Property="Margin" Value="0,0,0,12" />
-        </Style>
-
-        <!-- KPI Value -->
-        <Style x:Key="KpiValue" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="22" />
-            <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Foreground" Value="#1931E3" />
-            <Setter Property="FontFamily" Value="Arial" />
-        </Style>
-
-        <!-- KPI Label -->
-        <Style x:Key="KpiLabel" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="Foreground" Value="#5A6978" />
-            <Setter Property="Margin" Value="0,4,0,0" />
-        </Style>
-
-        <!-- Help Icon Style — clean circle info icon -->
-        <Style x:Key="HelpIcon" TargetType="TextBlock">
-            <Setter Property="Text" Value="&#xE946;" />
-            <Setter Property="FontFamily" Value="Segoe Fluent Icons, Segoe MDL2 Assets" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="Foreground" Value="#8C5CED" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Margin" Value="5,0,0,0" />
-            <Setter Property="Cursor" Value="Help" />
-            <Setter Property="ToolTipService.Placement" Value="Right" />
-            <Setter Property="ToolTipService.HorizontalOffset" Value="6" />
-            <Setter Property="ToolTipService.InitialShowDelay" Value="200" />
-            <Setter Property="ToolTipService.ShowDuration" Value="30000" />
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Foreground" Value="#55206E" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <!-- Field Label Style -->
-        <Style x:Key="FieldLabel" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="Foreground" Value="#5A6978" />
-            <Setter Property="Margin" Value="0,0,0,4" />
-        </Style>
-
-        <!-- Primary Button -->
-        <Style x:Key="PrimaryButton" TargetType="Button">
-            <Setter Property="Background" Value="#1931E3" />
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="Padding" Value="16,8" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
-                                CornerRadius="6" Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#2E307A" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <!-- Ghost Button -->
-        <Style x:Key="GhostButton" TargetType="Button">
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Foreground" Value="#2B3A44" />
-            <Setter Property="Padding" Value="12,6" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="BorderBrush" Value="#D4D7E0" />
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="6" Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#EBEDF5" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <!-- Danger Button -->
-        <Style x:Key="DangerButton" TargetType="Button">
-            <Setter Property="Background" Value="#CC1AC7" />
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="Padding" Value="12,6" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
-                                CornerRadius="6" Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#55206E" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
         <!-- Tooltip Style — Stripe/Vercel inspired -->
         <Style TargetType="ToolTip">
             <Setter Property="OverridesDefaultStyle" Value="True" />
@@ -231,14 +91,14 @@
             <Setter Property="Padding" Value="8,6" />
             <Setter Property="FontSize" Value="13" />
             <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="BorderBrush" Value="#D1D5DB" />
+            <Setter Property="BorderBrush" Value="#D4D7E0" />
             <Setter Property="BorderThickness" Value="1" />
             <EventSetter Event="GotKeyboardFocus" Handler="NumericTextBox_GotFocus" />
             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="NumericTextBox_PreviewMouseDown" />
             <Style.Triggers>
                 <Trigger Property="Text" Value="0">
                     <Setter Property="FontSize" Value="11" />
-                    <Setter Property="Foreground" Value="#C0C4CC" />
+                    <Setter Property="Foreground" Value="#C2C6D2" />
                     <Setter Property="FontWeight" Value="Normal" />
                 </Trigger>
                 <Trigger Property="Validation.HasError" Value="True">
@@ -352,7 +212,7 @@
                 <StackPanel Grid.Column="1" Margin="24,0" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <TextBlock Text="{Binding GrandTotalHours, StringFormat='{}{0:N2} Hrs'}" 
                                FontSize="24" FontWeight="Bold" Foreground="White" FontFamily="Arial" />
-                    <TextBlock Text="Total Estimated Hours" FontSize="11" Foreground="#C7D2FE" HorizontalAlignment="Center" />
+                    <TextBlock Text="Total Estimated Hours" FontSize="11" Foreground="#00EEAE" HorizontalAlignment="Center" />
                 </StackPanel>
 
                 <Border Grid.Column="2" Background="White" CornerRadius="6" Padding="16,8" Margin="8,0" VerticalAlignment="Center">
@@ -371,7 +231,7 @@
 
                 <Button Grid.Column="4" Content="🏠 Home" Click="OnHomeClick" Margin="8,0,0,0"
                         VerticalAlignment="Center" Cursor="Hand" Padding="12,6"
-                        Background="Transparent" Foreground="White" BorderThickness="1" BorderBrush="#4DB6AC">
+                        Background="Transparent" Foreground="White" BorderThickness="1" BorderBrush="#2199B0">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border Background="{TemplateBinding Background}" 
@@ -388,7 +248,7 @@
         </Border>
 
         <!-- ═══════════ ESTIMATE TAB NAVIGATION ═══════════ -->
-        <Border Grid.Row="1" Margin="8,0,8,0" Padding="4,4" Background="#F0F0F5" CornerRadius="0,0,8,8">
+        <Border Grid.Row="1" Margin="8,0,8,0" Padding="4,4" Background="#EBEDF5" CornerRadius="0,0,8,8">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -409,15 +269,20 @@
                     <!-- Final Estimate Tab -->
                     <Border Background="Transparent" CornerRadius="6" Padding="16,8" Margin="4,0"
                             Cursor="Hand" MouseLeftButtonDown="OnFinalTabClick">
-                        <TextBlock Text="Final Estimate" FontSize="12" FontWeight="SemiBold" Foreground="#9CA3AF" />
+                        <TextBlock Text="Final Estimate" FontSize="12" FontWeight="SemiBold" Foreground="#8E99A8" />
                     </Border>
                 </StackPanel>
 
                 <!-- Save Button (Right) -->
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Border Width="1" Background="#D1D5DB" Margin="8,4" />
-                    <Button Content="💾 Save" Style="{StaticResource GhostButton}" 
-                            Click="OnSaveClick" Margin="4,0" ToolTip="Ctrl+S" />
+                    <Border Width="1" Background="#D4D7E0" Margin="8,4" />
+                    <Button Style="{StaticResource GhostButton}"
+                            Click="OnSaveClick" Margin="4,0" ToolTip="Ctrl+S">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE74E;" FontFamily="Segoe Fluent Icons" FontSize="12" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                            <TextBlock Text="Save" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </Grid>
         </Border>
@@ -517,7 +382,7 @@
                                 <TextBlock Text="Component Grid" Style="{StaticResource SectionHeader}" VerticalAlignment="Center" Margin="0,0,8,0" />
                                 <TextBlock Style="{StaticResource HelpIcon}" VerticalAlignment="Center" Margin="0,0,16,0"
                                            ToolTip="List every software component that needs to be built or changed. Each row represents one type of work. The system looks up base hours from the weighted values table and multiplies by count.&#x0a;&#x0a;• Component Type: What kind of artifact (window, report, program, etc.)&#x0a;• Size: Complexity level (Small=simple, Medium=moderate, Large=complex)&#x0a;• New/Change: Building from scratch vs. modifying existing&#x0a;• Count: How many of this exact type/size/change combination" />
-                                <Button Content="＋ Add Component" Style="{StaticResource PrimaryButton}" 
+                                <Button Content="+ Add Component" Style="{StaticResource PrimaryButton}" 
                                         Click="OnAddComponentClick" Margin="0,0,8,0" 
                                         ToolTip="Add a new component row (Ctrl+N)" />
 
@@ -741,7 +606,7 @@
                                         <DataGridTemplateColumn.CellEditingTemplate>
                                             <DataTemplate>
                                                 <StackPanel>
-                                                    <TextBox Text="{Binding Notes, UpdateSourceTrigger=PropertyChanged}" MaxLength="1000" Padding="4,2" FontSize="11" BorderBrush="#D1D5DB" BorderThickness="1" ToolTip="{Binding Notes}" Foreground="{Binding Notes, Converter={StaticResource NotesCharCountColor}}" />
+                                                    <TextBox Text="{Binding Notes, UpdateSourceTrigger=PropertyChanged}" MaxLength="1000" Padding="4,2" FontSize="11" BorderBrush="#D4D7E0" BorderThickness="1" ToolTip="{Binding Notes}" Foreground="{Binding Notes, Converter={StaticResource NotesCharCountColor}}" />
                                                     <TextBlock Text="{Binding Notes, Converter={StaticResource NotesCharCount}}" FontSize="9" Foreground="{Binding Notes, Converter={StaticResource NotesCharCountColor}}" HorizontalAlignment="Right" />
                                                 </StackPanel>
                                             </DataTemplate>
@@ -973,7 +838,7 @@
                                         <DataGridTemplateColumn.CellEditingTemplate>
                                             <DataTemplate>
                                                 <StackPanel>
-                                                    <TextBox Text="{Binding Notes, UpdateSourceTrigger=PropertyChanged}" MaxLength="1000" Padding="4,2" FontSize="11" BorderBrush="#D1D5DB" BorderThickness="1" ToolTip="{Binding Notes}" Foreground="{Binding Notes, Converter={StaticResource NotesCharCountColor}}" />
+                                                    <TextBox Text="{Binding Notes, UpdateSourceTrigger=PropertyChanged}" MaxLength="1000" Padding="4,2" FontSize="11" BorderBrush="#D4D7E0" BorderThickness="1" ToolTip="{Binding Notes}" Foreground="{Binding Notes, Converter={StaticResource NotesCharCountColor}}" />
                                                     <TextBlock Text="{Binding Notes, Converter={StaticResource NotesCharCount}}" FontSize="9" Foreground="{Binding Notes, Converter={StaticResource NotesCharCountColor}}" HorizontalAlignment="Right" />
                                                 </StackPanel>
                                             </DataTemplate>
@@ -1038,7 +903,7 @@
                                                      Style="{StaticResource NumericTextBox}" Margin="4,2" />
                                             <TextBlock Grid.Column="3" Text="{Binding DevelopmentTotalHours, StringFormat=N2}" FontSize="12" FontWeight="SemiBold" Foreground="#2B3A44" Padding="8,4" TextAlignment="Right" VerticalAlignment="Center" />
                                             <StackPanel Grid.Column="4" Margin="4,2">
-                                                <TextBox Text="{Binding DevelopmentNotes, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" FontSize="11" BorderBrush="#D1D5DB" BorderThickness="1" MaxLength="1000" Foreground="{Binding DevelopmentNotes, Converter={StaticResource NotesCharCountColor}}" ToolTip="{Binding DevelopmentNotes}" />
+                                                <TextBox Text="{Binding DevelopmentNotes, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" FontSize="11" BorderBrush="#D4D7E0" BorderThickness="1" MaxLength="1000" Foreground="{Binding DevelopmentNotes, Converter={StaticResource NotesCharCountColor}}" ToolTip="{Binding DevelopmentNotes}" />
                                                 <TextBlock Text="{Binding DevelopmentNotes, Converter={StaticResource NotesCharCount}}" FontSize="9" Foreground="{Binding DevelopmentNotes, Converter={StaticResource NotesCharCountColor}}" HorizontalAlignment="Right" />
                                             </StackPanel>
                                         </Grid>
@@ -1064,7 +929,7 @@
                                                      Style="{StaticResource NumericTextBox}" Margin="4,2" />
                                             <TextBlock Grid.Column="3" Text="{Binding AnalysisTotalHours, StringFormat=N2}" FontSize="12" FontWeight="SemiBold" Foreground="#2B3A44" Padding="8,4" TextAlignment="Right" VerticalAlignment="Center" />
                                             <StackPanel Grid.Column="4" Margin="4,2">
-                                                <TextBox Text="{Binding AnalysisNotes, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" FontSize="11" BorderBrush="#D1D5DB" BorderThickness="1" MaxLength="1000" Foreground="{Binding AnalysisNotes, Converter={StaticResource NotesCharCountColor}}" ToolTip="{Binding AnalysisNotes}" />
+                                                <TextBox Text="{Binding AnalysisNotes, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" FontSize="11" BorderBrush="#D4D7E0" BorderThickness="1" MaxLength="1000" Foreground="{Binding AnalysisNotes, Converter={StaticResource NotesCharCountColor}}" ToolTip="{Binding AnalysisNotes}" />
                                                 <TextBlock Text="{Binding AnalysisNotes, Converter={StaticResource NotesCharCount}}" FontSize="9" Foreground="{Binding AnalysisNotes, Converter={StaticResource NotesCharCountColor}}" HorizontalAlignment="Right" />
                                             </StackPanel>
                                         </Grid>
@@ -1090,7 +955,7 @@
                                                      Style="{StaticResource NumericTextBox}" Margin="4,2" />
                                             <TextBlock Grid.Column="3" Text="{Binding BusinessDesignTotalHours, StringFormat=N2}" FontSize="12" FontWeight="SemiBold" Foreground="#2B3A44" Padding="8,4" TextAlignment="Right" VerticalAlignment="Center" />
                                             <StackPanel Grid.Column="4" Margin="4,2">
-                                                <TextBox Text="{Binding BusinessDesignNotes, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" FontSize="11" BorderBrush="#D1D5DB" BorderThickness="1" MaxLength="1000" Foreground="{Binding BusinessDesignNotes, Converter={StaticResource NotesCharCountColor}}" ToolTip="{Binding BusinessDesignNotes}" />
+                                                <TextBox Text="{Binding BusinessDesignNotes, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" FontSize="11" BorderBrush="#D4D7E0" BorderThickness="1" MaxLength="1000" Foreground="{Binding BusinessDesignNotes, Converter={StaticResource NotesCharCountColor}}" ToolTip="{Binding BusinessDesignNotes}" />
                                                 <TextBlock Text="{Binding BusinessDesignNotes, Converter={StaticResource NotesCharCount}}" FontSize="9" Foreground="{Binding BusinessDesignNotes, Converter={StaticResource NotesCharCountColor}}" HorizontalAlignment="Right" />
                                             </StackPanel>
                                         </Grid>
@@ -1116,7 +981,7 @@
                                                      Style="{StaticResource NumericTextBox}" Margin="4,2" />
                                             <TextBlock Grid.Column="3" Text="{Binding SystemTestingTotalHours, StringFormat=N2}" FontSize="12" FontWeight="SemiBold" Foreground="#2B3A44" Padding="8,4" TextAlignment="Right" VerticalAlignment="Center" />
                                             <StackPanel Grid.Column="4" Margin="4,2">
-                                                <TextBox Text="{Binding SystemTestingNotes, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" FontSize="11" BorderBrush="#D1D5DB" BorderThickness="1" MaxLength="1000" Foreground="{Binding SystemTestingNotes, Converter={StaticResource NotesCharCountColor}}" ToolTip="{Binding SystemTestingNotes}" />
+                                                <TextBox Text="{Binding SystemTestingNotes, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" FontSize="11" BorderBrush="#D4D7E0" BorderThickness="1" MaxLength="1000" Foreground="{Binding SystemTestingNotes, Converter={StaticResource NotesCharCountColor}}" ToolTip="{Binding SystemTestingNotes}" />
                                                 <TextBlock Text="{Binding SystemTestingNotes, Converter={StaticResource NotesCharCount}}" FontSize="9" Foreground="{Binding SystemTestingNotes, Converter={StaticResource NotesCharCountColor}}" HorizontalAlignment="Right" />
                                             </StackPanel>
                                         </Grid>
@@ -1142,7 +1007,7 @@
                                                      Style="{StaticResource NumericTextBox}" Margin="4,2" />
                                             <TextBlock Grid.Column="3" Text="{Binding PromotionTotalHours, StringFormat=N2}" FontSize="12" FontWeight="SemiBold" Foreground="#2B3A44" Padding="8,4" TextAlignment="Right" VerticalAlignment="Center" />
                                             <StackPanel Grid.Column="4" Margin="4,2">
-                                                <TextBox Text="{Binding PromotionNotes, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" FontSize="11" BorderBrush="#D1D5DB" BorderThickness="1" MaxLength="1000" Foreground="{Binding PromotionNotes, Converter={StaticResource NotesCharCountColor}}" ToolTip="{Binding PromotionNotes}" />
+                                                <TextBox Text="{Binding PromotionNotes, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" FontSize="11" BorderBrush="#D4D7E0" BorderThickness="1" MaxLength="1000" Foreground="{Binding PromotionNotes, Converter={StaticResource NotesCharCountColor}}" ToolTip="{Binding PromotionNotes}" />
                                                 <TextBlock Text="{Binding PromotionNotes, Converter={StaticResource NotesCharCount}}" FontSize="9" Foreground="{Binding PromotionNotes, Converter={StaticResource NotesCharCountColor}}" HorizontalAlignment="Right" />
                                             </StackPanel>
                                         </Grid>
@@ -1168,7 +1033,7 @@
                                                      Style="{StaticResource NumericTextBox}" Margin="4,2" />
                                             <TextBlock Grid.Column="3" Text="{Binding BaSystemDocTotalHours, StringFormat=N2}" FontSize="12" FontWeight="SemiBold" Foreground="#2B3A44" Padding="8,4" TextAlignment="Right" VerticalAlignment="Center" />
                                             <StackPanel Grid.Column="4" Margin="4,2">
-                                                <TextBox Text="{Binding BaSystemDocNotes, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" FontSize="11" BorderBrush="#D1D5DB" BorderThickness="1" MaxLength="1000" Foreground="{Binding BaSystemDocNotes, Converter={StaticResource NotesCharCountColor}}" ToolTip="{Binding BaSystemDocNotes}" />
+                                                <TextBox Text="{Binding BaSystemDocNotes, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" FontSize="11" BorderBrush="#D4D7E0" BorderThickness="1" MaxLength="1000" Foreground="{Binding BaSystemDocNotes, Converter={StaticResource NotesCharCountColor}}" ToolTip="{Binding BaSystemDocNotes}" />
                                                 <TextBlock Text="{Binding BaSystemDocNotes, Converter={StaticResource NotesCharCount}}" FontSize="9" Foreground="{Binding BaSystemDocNotes, Converter={StaticResource NotesCharCountColor}}" HorizontalAlignment="Right" />
                                             </StackPanel>
                                         </Grid>
@@ -1194,7 +1059,7 @@
                                                      Style="{StaticResource NumericTextBox}" Margin="4,2" />
                                             <TextBlock Grid.Column="3" Text="{Binding ProductionValidationTotalHours, StringFormat=N2}" FontSize="12" FontWeight="SemiBold" Foreground="#2B3A44" Padding="8,4" TextAlignment="Right" VerticalAlignment="Center" />
                                             <StackPanel Grid.Column="4" Margin="4,2">
-                                                <TextBox Text="{Binding ProductionValidationNotes, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" FontSize="11" BorderBrush="#D1D5DB" BorderThickness="1" MaxLength="1000" Foreground="{Binding ProductionValidationNotes, Converter={StaticResource NotesCharCountColor}}" ToolTip="{Binding ProductionValidationNotes}" />
+                                                <TextBox Text="{Binding ProductionValidationNotes, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" FontSize="11" BorderBrush="#D4D7E0" BorderThickness="1" MaxLength="1000" Foreground="{Binding ProductionValidationNotes, Converter={StaticResource NotesCharCountColor}}" ToolTip="{Binding ProductionValidationNotes}" />
                                                 <TextBlock Text="{Binding ProductionValidationNotes, Converter={StaticResource NotesCharCount}}" FontSize="9" Foreground="{Binding ProductionValidationNotes, Converter={StaticResource NotesCharCountColor}}" HorizontalAlignment="Right" />
                                             </StackPanel>
                                         </Grid>
@@ -1220,7 +1085,7 @@
                                                      Style="{StaticResource NumericTextBox}" Margin="4,2" />
                                             <TextBlock Grid.Column="3" Text="{Binding ProjectManagementTotalHours, StringFormat=N2}" FontSize="12" FontWeight="SemiBold" Foreground="#2B3A44" Padding="8,4" TextAlignment="Right" VerticalAlignment="Center" />
                                             <StackPanel Grid.Column="4" Margin="4,2">
-                                                <TextBox Text="{Binding ProjectManagementNotes, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" FontSize="11" BorderBrush="#D1D5DB" BorderThickness="1" MaxLength="1000" Foreground="{Binding ProjectManagementNotes, Converter={StaticResource NotesCharCountColor}}" ToolTip="{Binding ProjectManagementNotes}" />
+                                                <TextBox Text="{Binding ProjectManagementNotes, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" FontSize="11" BorderBrush="#D4D7E0" BorderThickness="1" MaxLength="1000" Foreground="{Binding ProjectManagementNotes, Converter={StaticResource NotesCharCountColor}}" ToolTip="{Binding ProjectManagementNotes}" />
                                                 <TextBlock Text="{Binding ProjectManagementNotes, Converter={StaticResource NotesCharCount}}" FontSize="9" Foreground="{Binding ProjectManagementNotes, Converter={StaticResource NotesCharCountColor}}" HorizontalAlignment="Right" />
                                             </StackPanel>
                                         </Grid>
@@ -1246,7 +1111,7 @@
                                                      Style="{StaticResource NumericTextBox}" Margin="4,2" />
                                             <TextBlock Grid.Column="3" Text="{Binding WprsTotalHours, StringFormat=N2}" FontSize="12" FontWeight="SemiBold" Foreground="#2B3A44" Padding="8,4" TextAlignment="Right" VerticalAlignment="Center" />
                                             <StackPanel Grid.Column="4" Margin="4,2">
-                                                <TextBox Text="{Binding WprsNotes, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" FontSize="11" BorderBrush="#D1D5DB" BorderThickness="1" MaxLength="1000" Foreground="{Binding WprsNotes, Converter={StaticResource NotesCharCountColor}}" ToolTip="{Binding WprsNotes}" />
+                                                <TextBox Text="{Binding WprsNotes, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" FontSize="11" BorderBrush="#D4D7E0" BorderThickness="1" MaxLength="1000" Foreground="{Binding WprsNotes, Converter={StaticResource NotesCharCountColor}}" ToolTip="{Binding WprsNotes}" />
                                                 <TextBlock Text="{Binding WprsNotes, Converter={StaticResource NotesCharCount}}" FontSize="9" Foreground="{Binding WprsNotes, Converter={StaticResource NotesCharCountColor}}" HorizontalAlignment="Right" />
                                             </StackPanel>
                                         </Grid>
@@ -1272,7 +1137,7 @@
                                                      Style="{StaticResource NumericTextBox}" Margin="4,2" />
                                             <TextBlock Grid.Column="3" Text="{Binding ClientMeetingsTotalHours, StringFormat=N2}" FontSize="12" FontWeight="SemiBold" Foreground="#2B3A44" Padding="8,4" TextAlignment="Right" VerticalAlignment="Center" />
                                             <StackPanel Grid.Column="4" Margin="4,2">
-                                                <TextBox Text="{Binding ClientMeetingsNotes, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" FontSize="11" BorderBrush="#D1D5DB" BorderThickness="1" MaxLength="1000" Foreground="{Binding ClientMeetingsNotes, Converter={StaticResource NotesCharCountColor}}" ToolTip="{Binding ClientMeetingsNotes}" />
+                                                <TextBox Text="{Binding ClientMeetingsNotes, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" FontSize="11" BorderBrush="#D4D7E0" BorderThickness="1" MaxLength="1000" Foreground="{Binding ClientMeetingsNotes, Converter={StaticResource NotesCharCountColor}}" ToolTip="{Binding ClientMeetingsNotes}" />
                                                 <TextBlock Text="{Binding ClientMeetingsNotes, Converter={StaticResource NotesCharCount}}" FontSize="9" Foreground="{Binding ClientMeetingsNotes, Converter={StaticResource NotesCharCountColor}}" HorizontalAlignment="Right" />
                                             </StackPanel>
                                         </Grid>
@@ -1298,7 +1163,7 @@
                                                      Style="{StaticResource NumericTextBox}" Margin="4,2" />
                                             <TextBlock Grid.Column="3" Text="{Binding InternalMeetingsTotalHours, StringFormat=N2}" FontSize="12" FontWeight="SemiBold" Foreground="#2B3A44" Padding="8,4" TextAlignment="Right" VerticalAlignment="Center" />
                                             <StackPanel Grid.Column="4" Margin="4,2">
-                                                <TextBox Text="{Binding InternalMeetingsNotes, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" FontSize="11" BorderBrush="#D1D5DB" BorderThickness="1" MaxLength="1000" Foreground="{Binding InternalMeetingsNotes, Converter={StaticResource NotesCharCountColor}}" ToolTip="{Binding InternalMeetingsNotes}" />
+                                                <TextBox Text="{Binding InternalMeetingsNotes, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" FontSize="11" BorderBrush="#D4D7E0" BorderThickness="1" MaxLength="1000" Foreground="{Binding InternalMeetingsNotes, Converter={StaticResource NotesCharCountColor}}" ToolTip="{Binding InternalMeetingsNotes}" />
                                                 <TextBlock Text="{Binding InternalMeetingsNotes, Converter={StaticResource NotesCharCount}}" FontSize="9" Foreground="{Binding InternalMeetingsNotes, Converter={StaticResource NotesCharCountColor}}" HorizontalAlignment="Right" />
                                             </StackPanel>
                                         </Grid>
@@ -1324,7 +1189,7 @@
                                                      Style="{StaticResource NumericTextBox}" Margin="4,2" />
                                             <TextBlock Grid.Column="3" Text="{Binding AutomationTestCollabTotalHours, StringFormat=N2}" FontSize="12" FontWeight="SemiBold" Foreground="#2B3A44" Padding="8,4" TextAlignment="Right" VerticalAlignment="Center" />
                                             <StackPanel Grid.Column="4" Margin="4,2">
-                                                <TextBox Text="{Binding AutomationTestCollabNotes, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" FontSize="11" BorderBrush="#D1D5DB" BorderThickness="1" MaxLength="1000" Foreground="{Binding AutomationTestCollabNotes, Converter={StaticResource NotesCharCountColor}}" ToolTip="{Binding AutomationTestCollabNotes}" />
+                                                <TextBox Text="{Binding AutomationTestCollabNotes, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" FontSize="11" BorderBrush="#D4D7E0" BorderThickness="1" MaxLength="1000" Foreground="{Binding AutomationTestCollabNotes, Converter={StaticResource NotesCharCountColor}}" ToolTip="{Binding AutomationTestCollabNotes}" />
                                                 <TextBlock Text="{Binding AutomationTestCollabNotes, Converter={StaticResource NotesCharCount}}" FontSize="9" Foreground="{Binding AutomationTestCollabNotes, Converter={StaticResource NotesCharCountColor}}" HorizontalAlignment="Right" />
                                             </StackPanel>
                                         </Grid>
@@ -1350,7 +1215,7 @@
                                                      Style="{StaticResource NumericTextBox}" Margin="4,2" />
                                             <TextBlock Grid.Column="3" Text="{Binding ConsultantMentorTotalHours, StringFormat=N2}" FontSize="12" FontWeight="SemiBold" Foreground="#2B3A44" Padding="8,4" TextAlignment="Right" VerticalAlignment="Center" />
                                             <StackPanel Grid.Column="4" Margin="4,2">
-                                                <TextBox Text="{Binding ConsultantMentorNotes, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" FontSize="11" BorderBrush="#D1D5DB" BorderThickness="1" MaxLength="1000" Foreground="{Binding ConsultantMentorNotes, Converter={StaticResource NotesCharCountColor}}" ToolTip="{Binding ConsultantMentorNotes}" />
+                                                <TextBox Text="{Binding ConsultantMentorNotes, UpdateSourceTrigger=PropertyChanged}" Padding="4,2" FontSize="11" BorderBrush="#D4D7E0" BorderThickness="1" MaxLength="1000" Foreground="{Binding ConsultantMentorNotes, Converter={StaticResource NotesCharCountColor}}" ToolTip="{Binding ConsultantMentorNotes}" />
                                                 <TextBlock Text="{Binding ConsultantMentorNotes, Converter={StaticResource NotesCharCount}}" FontSize="9" Foreground="{Binding ConsultantMentorNotes, Converter={StaticResource NotesCharCountColor}}" HorizontalAlignment="Right" />
                                             </StackPanel>
                                         </Grid>
@@ -1372,7 +1237,7 @@
                                                 <TextBlock Text="Collaboration &amp; Quality (Total)" FontSize="12" FontWeight="Medium" Foreground="#2B3A44" Padding="8,4" TextWrapping="Wrap" />
                                             </DockPanel>
                                             <TextBlock Grid.Column="1" Text="{Binding TotalCollaborationHours, StringFormat=N2}" FontSize="12" Foreground="#5A6978" Padding="8,4" TextAlignment="Right" VerticalAlignment="Center" />
-                                            <TextBlock Grid.Column="2" FontSize="12" Foreground="#D1D5DB" Padding="8,4" TextAlignment="Right" VerticalAlignment="Center" Text="—" />
+                                            <TextBlock Grid.Column="2" FontSize="12" Foreground="#D4D7E0" Padding="8,4" TextAlignment="Right" VerticalAlignment="Center" Text="—" />
                                             <TextBlock Grid.Column="3" Text="{Binding CollaborationTotalHours, StringFormat=N2}" FontSize="12" FontWeight="SemiBold" Foreground="#2B3A44" Padding="8,4" TextAlignment="Right" VerticalAlignment="Center" />
                                             <TextBlock Grid.Column="4" />
                                         </Grid>
@@ -1533,7 +1398,7 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="System Testing (30%)" Foreground="#2B3A44" FontSize="12" ToolTip="ROUNDUP(Development × 30%, 2) — Standard testing effort based on dev complexity" />
-                                <TextBlock Grid.Column="1" Text="{Binding SystemTestingTotalHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" Foreground="#059669" />
+                                <TextBlock Grid.Column="1" Text="{Binding SystemTestingTotalHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" Foreground="#019681" />
                             </Grid>
 
                             <Grid Margin="0,4">
@@ -1542,7 +1407,7 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="Analysis (5%)" Foreground="#2B3A44" FontSize="12" ToolTip="ROUNDUP((Development + System Testing) × 5%, 2) — Requirements analysis effort" />
-                                <TextBlock Grid.Column="1" Text="{Binding AnalysisTotalHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" Foreground="#059669" />
+                                <TextBlock Grid.Column="1" Text="{Binding AnalysisTotalHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" Foreground="#019681" />
                             </Grid>
 
                             <Grid Margin="0,4">
@@ -1551,7 +1416,7 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="Business Design (15%)" Foreground="#2B3A44" FontSize="12" ToolTip="ROUNDUP((Development + System Testing) × 15%, 2) — Business requirements and design documentation" />
-                                <TextBlock Grid.Column="1" Text="{Binding BusinessDesignTotalHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" Foreground="#059669" />
+                                <TextBlock Grid.Column="1" Text="{Binding BusinessDesignTotalHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" Foreground="#019681" />
                             </Grid>
 
                             <Grid Margin="0,4">
@@ -1560,7 +1425,7 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="Promotion (5%)" Foreground="#2B3A44" FontSize="12" ToolTip="ROUNDUP(Development × 5%, 2) — Code promotion/deployment to environments" />
-                                <TextBlock Grid.Column="1" Text="{Binding PromotionTotalHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" Foreground="#059669" />
+                                <TextBlock Grid.Column="1" Text="{Binding PromotionTotalHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" Foreground="#019681" />
                             </Grid>
 
                             <Grid Margin="0,4">
@@ -1569,7 +1434,7 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="BA System Documentation (5%)" Foreground="#2B3A44" FontSize="12" ToolTip="ROUNDUP(Development × 5%, 2) — BA system documentation effort" />
-                                <TextBlock Grid.Column="1" Text="{Binding BaSystemDocTotalHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" Foreground="#059669" />
+                                <TextBlock Grid.Column="1" Text="{Binding BaSystemDocTotalHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" Foreground="#019681" />
                             </Grid>
 
                             <Grid Margin="0,4">
@@ -1578,7 +1443,7 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="Production Validation (20%)" Foreground="#2B3A44" FontSize="12" ToolTip="ROUNDUP(System Testing × 20%, 2) — Production validation/verification after deployment" />
-                                <TextBlock Grid.Column="1" Text="{Binding ProductionValidationTotalHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" Foreground="#059669" />
+                                <TextBlock Grid.Column="1" Text="{Binding ProductionValidationTotalHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" Foreground="#019681" />
                             </Grid>
 
                             <Separator Margin="0,8" />
@@ -1614,7 +1479,7 @@
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="Collaboration" Foreground="#2B3A44" FontSize="12"
                                            ToolTip="Sum of all collaboration types (calculated + adjusted hours)" />
-                                <TextBlock Grid.Column="1" Text="{Binding CollaborationTotalHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" Foreground="#F59E0B" />
+                                <TextBlock Grid.Column="1" Text="{Binding CollaborationTotalHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" Foreground="#E5AB4F" />
                             </Grid>
 
                             <Separator Margin="0,8" />
@@ -1661,10 +1526,10 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Orientation="Horizontal">
-                                    <Ellipse Width="8" Height="8" Fill="#3B82F6" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                    <Ellipse Width="8" Height="8" Fill="#2E307A" Margin="0,0,8,0" VerticalAlignment="Center" />
                                     <TextBlock Text="BA" Foreground="#2B3A44" FontSize="12" />
                                 </StackPanel>
-                                <TextBlock Grid.Column="1" Text="{Binding BaRoleHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" Foreground="#3B82F6" />
+                                <TextBlock Grid.Column="1" Text="{Binding BaRoleHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" Foreground="#2E307A" />
                             </Grid>
 
                             <Grid Margin="0,6">
@@ -1673,10 +1538,10 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Orientation="Horizontal">
-                                    <Ellipse Width="8" Height="8" Fill="#8B5CF6" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                    <Ellipse Width="8" Height="8" Fill="#8C5CED" Margin="0,0,8,0" VerticalAlignment="Center" />
                                     <TextBlock Text="SE" Foreground="#2B3A44" FontSize="12" />
                                 </StackPanel>
-                                <TextBlock Grid.Column="1" Text="{Binding SeRoleHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" Foreground="#8B5CF6" />
+                                <TextBlock Grid.Column="1" Text="{Binding SeRoleHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" Foreground="#8C5CED" />
                             </Grid>
 
                             <Grid Margin="0,6">
@@ -1685,10 +1550,10 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Orientation="Horizontal">
-                                    <Ellipse Width="8" Height="8" Fill="#10B981" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                    <Ellipse Width="8" Height="8" Fill="#019681" Margin="0,0,8,0" VerticalAlignment="Center" />
                                     <TextBlock Text="Tester" Foreground="#2B3A44" FontSize="12" />
                                 </StackPanel>
-                                <TextBlock Grid.Column="1" Text="{Binding TesterRoleHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" Foreground="#10B981" />
+                                <TextBlock Grid.Column="1" Text="{Binding TesterRoleHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" Foreground="#019681" />
                             </Grid>
 
                             <Grid Margin="0,6">
@@ -1697,10 +1562,10 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Orientation="Horizontal">
-                                    <Ellipse Width="8" Height="8" Fill="#F59E0B" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                    <Ellipse Width="8" Height="8" Fill="#E5AB4F" Margin="0,0,8,0" VerticalAlignment="Center" />
                                     <TextBlock Text="Project Manager" Foreground="#2B3A44" FontSize="12" />
                                 </StackPanel>
-                                <TextBlock Grid.Column="1" Text="{Binding PmRoleHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" Foreground="#F59E0B" />
+                                <TextBlock Grid.Column="1" Text="{Binding PmRoleHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" Foreground="#E5AB4F" />
                             </Grid>
 
                             <Grid Margin="0,6">
@@ -1709,10 +1574,10 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Orientation="Horizontal">
-                                    <Ellipse Width="8" Height="8" Fill="#EC4899" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                    <Ellipse Width="8" Height="8" Fill="#CC1AC7" Margin="0,0,8,0" VerticalAlignment="Center" />
                                     <TextBlock Text="Collaboration Hours" Foreground="#2B3A44" FontSize="12" />
                                 </StackPanel>
-                                <TextBlock Grid.Column="1" Text="{Binding CollaborationRoleHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" Foreground="#EC4899" />
+                                <TextBlock Grid.Column="1" Text="{Binding CollaborationRoleHours, StringFormat={}{0:N2} Hrs}" FontFamily="Arial" FontSize="13" Foreground="#CC1AC7" />
                             </Grid>
                         </StackPanel>
                     </Border>
@@ -1787,10 +1652,10 @@
         <Border Grid.Row="4" Background="#F5F6FA" Padding="16,8" Margin="8,0,8,8" CornerRadius="0,0,8,8" BorderBrush="#D4D7E0" BorderThickness="0,1,0,0">
             <Grid>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="Ctrl+S Save" FontSize="10" Foreground="#9CA3AF" Margin="0,0,12,0" />
-                    <TextBlock Text="Ctrl+N Add" FontSize="10" Foreground="#9CA3AF" Margin="0,0,12,0" />
-                    <TextBlock Text="Ctrl+Z Undo" FontSize="10" Foreground="#9CA3AF" Margin="0,0,12,0" />
-                    <TextBlock Text="Del Remove" FontSize="10" Foreground="#9CA3AF" />
+                    <TextBlock Text="Ctrl+S Save" FontSize="10" Foreground="#8E99A8" Margin="0,0,12,0" />
+                    <TextBlock Text="Ctrl+N Add" FontSize="10" Foreground="#8E99A8" Margin="0,0,12,0" />
+                    <TextBlock Text="Ctrl+Z Undo" FontSize="10" Foreground="#8E99A8" Margin="0,0,12,0" />
+                    <TextBlock Text="Del Remove" FontSize="10" Foreground="#8E99A8" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <TextBlock Text="{Binding TotalDevelopmentHours, StringFormat='Dev: {0:N2}'}" 

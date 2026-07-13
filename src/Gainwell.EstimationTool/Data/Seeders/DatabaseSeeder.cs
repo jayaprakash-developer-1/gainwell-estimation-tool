@@ -34,7 +34,7 @@ public static class DatabaseSeeder
         foreach (var sql in alterStatements)
         {
             try { db.Database.ExecuteSqlRaw(sql); }
-            catch { /* column already exists — ignore */ }
+            catch (Microsoft.Data.Sqlite.SqliteException) { /* Column already exists â€” expected during migration */ }
         }
 
         if (db.WeightedValues.Any())

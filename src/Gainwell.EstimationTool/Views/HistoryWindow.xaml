@@ -20,7 +20,7 @@
                     <GradientStop Color="#2E307A" Offset="1" />
                 </LinearGradientBrush>
             </Border.Background>
-            <TextBlock Text="📋 Project History" FontSize="18" FontWeight="SemiBold" Foreground="White" />
+            <TextBlock Text="Project History" FontSize="18" FontWeight="SemiBold" Foreground="White" />
         </Border>
 
         <!-- Search bar -->
@@ -32,7 +32,7 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="🔍" FontSize="13" VerticalAlignment="Center" Margin="0,0,6,0" />
+                <TextBlock Grid.Column="0" Text="&#xE721;" FontFamily="Segoe Fluent Icons" FontSize="13" VerticalAlignment="Center" Margin="0,0,6,0" />
                 <TextBox x:Name="SearchBox" Grid.Column="1"
                          BorderThickness="0" Padding="0,2" FontSize="13" VerticalAlignment="Center"
                          TextChanged="OnSearchTextChanged"

@@ -13,17 +13,6 @@
     </Window.DataContext>
 
     <Window.Resources>
-        <Style x:Key="CardBorder" TargetType="Border">
-            <Setter Property="Background" Value="White" />
-            <Setter Property="CornerRadius" Value="8" />
-            <Setter Property="Padding" Value="16" />
-            <Setter Property="Margin" Value="8" />
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <DropShadowEffect BlurRadius="8" Opacity="0.08" ShadowDepth="2" Direction="270" />
-                </Setter.Value>
-            </Setter>
-        </Style>
     </Window.Resources>
 
     <Grid>
@@ -48,7 +37,9 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <StackPanel>
-                    <TextBlock Text="⚙ Weighted Values Settings" FontSize="18" FontWeight="Bold" Foreground="White" />
+                    <TextBlock FontSize="18" FontWeight="Bold" Foreground="White">
+                        <Run Text="&#xE713;" FontFamily="Segoe Fluent Icons"/> Weighted Values Settings
+                    </TextBlock>
                     <TextBlock Text="Edit base hours per component type. Changes take effect immediately in calculations." 
                                FontSize="12" Foreground="#00EEAE" Margin="0,4,0,0" />
                 </StackPanel>
@@ -65,8 +56,12 @@
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <Button Content="💾 Save All Changes" Command="{Binding SaveAllCommand}"
+                    <Button Command="{Binding SaveAllCommand}"
                             Padding="12,6" FontWeight="SemiBold" Cursor="Hand">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE74E;" FontFamily="Segoe Fluent Icons" FontSize="12" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                            <TextBlock Text="Save All Changes" VerticalAlignment="Center"/>
+                        </StackPanel>
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border Background="White" CornerRadius="6" Padding="{TemplateBinding Padding}">

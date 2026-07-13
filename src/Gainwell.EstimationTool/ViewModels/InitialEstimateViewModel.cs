@@ -7,6 +7,7 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Gainwell.EstimationTool.Data;
 using Gainwell.EstimationTool.Models;
+using Gainwell.EstimationTool.Services;
 
 namespace Gainwell.EstimationTool.ViewModels;
 
@@ -557,7 +558,7 @@ public partial class InitialEstimateViewModel : ObservableObject
     partial void OnTotalActualHoursChanged(decimal value) => Recalculate();
     partial void OnTimeForEstimatesChanged(decimal value) => Recalculate();
 
-    // === Core Calculation Engine (matches Excel exactly) ===
+    // === Core Calculation Engine (delegates to CalculationEngine service) ===
     private void Recalculate()
     {
         if (_suppressRecalculate) return;
@@ -573,59 +574,7 @@ public partial class InitialEstimateViewModel : ObservableObject
             && c.Count > 0);
         CollaborationCount = CollaborationItems.Count;
 
-        // All adjustments cascade: each task uses effective (calculated + adjusted) values
-        // from upstream tasks for its own calculation.
-
-        // Effective Development = component hours + adjustment
-        decimal effectiveDev = dev + DevelopmentAdjustedHours;
-
-        // Step 2: System Testing (depends on effectiveDev)
-        if (UseTestCasesForEstimate)
-        {
-            // Test case-based formula matching Excel IntialEstWeightedValues rows 31 & 32:
-            // Row 31 = Write TC + Data Prep + ALM Tasks + Test Execution (per complexity)
-            // Row 32 = Write TC + ALM Tasks + Test Execution (excl. Data Prep) × 10% defect correction
-            const decimal r31Simple = 2.1925m, r31Medium = 4.065m, r31Complex = 8.76m, r31VeryComplex = 14.38m;
-            const decimal r32Simple = 1.5675m, r32Medium = 3.44m,  r32Complex = 7.51m, r32VeryComplex = 13.13m;
-            decimal mainHours   = TestCasesSimple * r31Simple + TestCasesMedium * r31Medium
-                                + TestCasesComplex * r31Complex + TestCasesVeryComplex * r31VeryComplex;
-            decimal defectHours = (TestCasesSimple * r32Simple + TestCasesMedium * r32Medium
-                                + TestCasesComplex * r32Complex + TestCasesVeryComplex * r32VeryComplex) * 0.1m;
-            SystemTestingHours = RoundUp((mainHours + defectHours) * Math.Max(1m, TestCaseIterations));
-        }
-        else
-        {
-            SystemTestingHours = RoundUp(effectiveDev * 0.30m);
-        }
-        decimal effectiveSysTest = SystemTestingHours + SystemTestingAdjustedHours;
-
-        // Step 3: Analysis (depends on effectiveDev + effectiveSysTest)
-        AnalysisHours = RoundUp((effectiveDev + effectiveSysTest) * 0.05m);
-        decimal effectiveAnalysis = AnalysisHours + AnalysisAdjustedHours;
-
-        // Step 4: Business Design (depends on effectiveDev + effectiveSysTest)
-        BusinessDesignHours = RoundUp((effectiveDev + effectiveSysTest) * 0.15m);
-        decimal effectiveBizDesign = BusinessDesignHours + BusinessDesignAdjustedHours;
-
-        // Step 5: Promotion (depends on effectiveDev)
-        PromotionHours = RoundUp(effectiveDev * 0.05m);
-        decimal effectivePromotion = PromotionHours + PromotionAdjustedHours;
-
-        // Step 6: BA System Documentation (depends on effectiveDev)
-        BaSystemDocHours = RoundUp(effectiveDev * 0.05m);
-        decimal effectiveBaSysDoc = BaSystemDocHours + BaSystemDocAdjustedHours;
-
-        // Step 7: Production Validation (depends on effectiveSysTest)
-        ProductionValidationHours = RoundUp(effectiveSysTest * 0.20m);
-        decimal effectiveProdVal = ProductionValidationHours + ProductionValidationAdjustedHours;
-
-        // Step 8: PM Effort (depends on all effective task hours)
-        decimal allEffectiveTasks = effectiveDev + effectiveSysTest + effectiveAnalysis + effectiveBizDesign
-                                  + effectivePromotion + effectiveBaSysDoc + effectiveProdVal;
-        ProjectManagementHours = RoundUp(allEffectiveTasks * (PmEffortPercentage / 100m));
-        decimal effectivePM = ProjectManagementHours + ProjectManagementAdjustedHours;
-
-        // Step 9: Collaboration = sum of all collaboration items (also split by type)
+        // Calculate per-type collaboration hours
         decimal collab = 0m;
         decimal wprs = 0m, clientMtg = 0m, internalMtg = 0m, autoTest = 0m, consultant = 0m;
         foreach (var item in CollaborationItems)
@@ -646,84 +595,83 @@ public partial class InitialEstimateViewModel : ObservableObject
         AutomationTestCollabHours = autoTest;
         ConsultantMentorHours     = consultant;
 
-        // Per-type totals = calculated + per-type adjusted
-        WprsTotalHours                 = wprs     + WprsAdjustedHours;
-        ClientMeetingsTotalHours       = clientMtg + ClientMeetingsAdjustedHours;
-        InternalMeetingsTotalHours     = internalMtg + InternalMeetingsAdjustedHours;
-        AutomationTestCollabTotalHours = autoTest  + AutomationTestCollabAdjustedHours;
-        ConsultantMentorTotalHours     = consultant + ConsultantMentorAdjustedHours;
-
-        // Effective collab = sum of all per-type totals (replaces old collab + CollaborationAdjustedHours)
-        decimal effectiveCollab = WprsTotalHours + ClientMeetingsTotalHours + InternalMeetingsTotalHours
-                                + AutomationTestCollabTotalHours + ConsultantMentorTotalHours;
-
-        // Per-task totals (effective = calculated + adjusted, shown in UI)
-        DevelopmentTotalHours = effectiveDev;
-        SystemTestingTotalHours = effectiveSysTest;
-        AnalysisTotalHours = effectiveAnalysis;
-        BusinessDesignTotalHours = effectiveBizDesign;
-        PromotionTotalHours = effectivePromotion;
-        BaSystemDocTotalHours = effectiveBaSysDoc;
-        ProductionValidationTotalHours = effectiveProdVal;
-        ProjectManagementTotalHours = effectivePM;
-        CollaborationTotalHours = effectiveCollab;
-
-        // Step 10: Subtotal = ROUNDUP(SUM of all effective task totals + Time for Estimates + Actual Hours, 2)
-        // Matches Excel I43 = ROUNDUP(SUM(I27:I42), 2)
-        SubtotalHours = RoundUp(effectiveDev + effectiveSysTest + effectiveAnalysis + effectiveBizDesign
-                      + effectivePromotion + effectiveBaSysDoc + effectiveProdVal
-                      + effectivePM + effectiveCollab + TimeForEstimates + TotalActualHours);
-
-        // When no components and no adjusted dev hours exist, don't show totals in summary
-        if (ComponentCount == 0 && effectiveDev == 0m)
+        // Delegate to CalculationEngine for the 10-step pipeline
+        var input = new CalculationInput
         {
-            GrandTotalHours = 0m;
-            TShirtSize = "—";
-        }
-        else
-        {
-            // Grand Total = Subtotal rounded up to whole number (matches Excel I3 = ROUNDUP(I43,0))
-            GrandTotalHours = Math.Ceiling(SubtotalHours);
+            DevelopmentHours = dev,
+            ComponentCount = ComponentCount,
+            UseTestCasesForEstimate = UseTestCasesForEstimate,
+            TestCasesSimple = TestCasesSimple,
+            TestCasesMedium = TestCasesMedium,
+            TestCasesComplex = TestCasesComplex,
+            TestCasesVeryComplex = TestCasesVeryComplex,
+            TestCaseIterations = TestCaseIterations,
+            PmEffortPercentage = PmEffortPercentage,
+            DevelopmentAdjustedHours = DevelopmentAdjustedHours,
+            SystemTestingAdjustedHours = SystemTestingAdjustedHours,
+            AnalysisAdjustedHours = AnalysisAdjustedHours,
+            BusinessDesignAdjustedHours = BusinessDesignAdjustedHours,
+            PromotionAdjustedHours = PromotionAdjustedHours,
+            BaSystemDocAdjustedHours = BaSystemDocAdjustedHours,
+            ProductionValidationAdjustedHours = ProductionValidationAdjustedHours,
+            ProjectManagementAdjustedHours = ProjectManagementAdjustedHours,
+            WprsHours = wprs,
+            ClientMeetingsHours = clientMtg,
+            InternalMeetingsHours = internalMtg,
+            AutomationTestCollabHours = autoTest,
+            ConsultantMentorHours = consultant,
+            WprsAdjustedHours = WprsAdjustedHours,
+            ClientMeetingsAdjustedHours = ClientMeetingsAdjustedHours,
+            InternalMeetingsAdjustedHours = InternalMeetingsAdjustedHours,
+            AutomationTestCollabAdjustedHours = AutomationTestCollabAdjustedHours,
+            ConsultantMentorAdjustedHours = ConsultantMentorAdjustedHours,
+            TimeForEstimates = TimeForEstimates,
+            TotalActualHours = TotalActualHours
+        };
 
-            // T-Shirt Size
-            TShirtSize = WeightedValues.GetTShirtSize(GrandTotalHours);
-        }
+        var result = CalculationEngine.Calculate(input);
 
-        // === Role Breakout (Excel rows 47-51) ===
-        // BA = ROUNDUP(Analysis/2 + BizDesign + BADoc + ProdVal + ActualHours/2 + TimeForEstimates/2, 2)
-        // Excel B47: ROUNDUP((I28/2)+I29+I32+I33+(I41/2)+(I42/2),2) — PM is NOT included
-        BaRoleHours = RoundUp(effectiveAnalysis / 2m + effectiveBizDesign + effectiveBaSysDoc
-                     + effectiveProdVal + TotalActualHours / 2m + TimeForEstimates / 2m);
+        // Apply results to ViewModel properties
+        SystemTestingHours = result.SystemTestingHours;
+        AnalysisHours = result.AnalysisHours;
+        BusinessDesignHours = result.BusinessDesignHours;
+        PromotionHours = result.PromotionHours;
+        BaSystemDocHours = result.BaSystemDocHours;
+        ProductionValidationHours = result.ProductionValidationHours;
+        ProjectManagementHours = result.ProjectManagementHours;
 
-        // SE = ROUNDUP(Dev + Analysis/2 + Promotion + ActualHours/2 + TimeForEstimates/2, 2)
-        // Excel B48: ROUNDUP(I27+(I28/2)+I31+(I41/2)+(I42/2),2) — PM is NOT included
-        SeRoleHours = RoundUp(effectiveDev + effectiveAnalysis / 2m + effectivePromotion
-                     + TotalActualHours / 2m + TimeForEstimates / 2m);
+        WprsTotalHours = result.WprsTotalHours;
+        ClientMeetingsTotalHours = result.ClientMeetingsTotalHours;
+        InternalMeetingsTotalHours = result.InternalMeetingsTotalHours;
+        AutomationTestCollabTotalHours = result.AutomationTestCollabTotalHours;
+        ConsultantMentorTotalHours = result.ConsultantMentorTotalHours;
 
-        // Tester = System Testing (effective)
-        TesterRoleHours = effectiveSysTest;
+        DevelopmentTotalHours = result.DevelopmentTotalHours;
+        SystemTestingTotalHours = result.SystemTestingTotalHours;
+        AnalysisTotalHours = result.AnalysisTotalHours;
+        BusinessDesignTotalHours = result.BusinessDesignTotalHours;
+        PromotionTotalHours = result.PromotionTotalHours;
+        BaSystemDocTotalHours = result.BaSystemDocTotalHours;
+        ProductionValidationTotalHours = result.ProductionValidationTotalHours;
+        ProjectManagementTotalHours = result.ProjectManagementTotalHours;
+        CollaborationTotalHours = result.CollaborationTotalHours;
 
-        // PM = PM Effort (effective)
-        PmRoleHours = effectivePM;
+        SubtotalHours = result.SubtotalHours;
+        GrandTotalHours = result.GrandTotalHours;
+        TShirtSize = result.TShirtSize;
 
-        // Collaboration = Collaboration total (effective)
-        CollaborationRoleHours = effectiveCollab;
+        BaRoleHours = result.BaRoleHours;
+        SeRoleHours = result.SeRoleHours;
+        TesterRoleHours = result.TesterRoleHours;
+        PmRoleHours = result.PmRoleHours;
+        CollaborationRoleHours = result.CollaborationRoleHours;
     }
 
     /// <summary>
-    /// Excel ROUNDUP(x, 2) — always rounds away from zero at 3rd decimal.
+    /// Excel ROUNDUP(x, 2) — delegates to CalculationEngine.
+    /// Kept as public static for backward compatibility with tests and CollaborationRowViewModel.
     /// </summary>
-    public static decimal RoundUp(decimal value)
-    {
-        if (value == 0) return 0;
-        decimal shifted = value * 100m;
-        decimal truncated = Math.Truncate(shifted);
-        if (shifted > truncated)
-            return (truncated + 1m) / 100m;
-        else if (shifted < truncated)
-            return (truncated - 1m) / 100m;
-        return truncated / 100m;
-    }
+    public static decimal RoundUp(decimal value) => CalculationEngine.RoundUp(value);
 
     // === Persistence ===
     public string? SaveProject()
@@ -742,8 +690,7 @@ public partial class InitialEstimateViewModel : ObservableObject
             return "At least one component must be added before saving.";
 
         using var db = new EstimateDbContext();
-        try { db.Database.EnsureCreated(); }
-        catch (SqliteException ex) when (ex.SqliteErrorCode == 1 && ex.Message.Contains("already exists")) { }
+        db.EnsureSchema();
 
         ProjectEntity? existing = null;
         if (_currentProjectId != null)
@@ -756,182 +703,40 @@ public partial class InitialEstimateViewModel : ObservableObject
 
         if (existing != null)
         {
-            existing.ProjectName = ProjectName;
-            existing.ChangeOrderId = ChangeOrderId;
-            existing.ProjectDescription = ProjectDescription;
-            existing.EstimatedBy = EstimatedBy;
-            existing.ReviewedBy = ReviewedBy;
-            existing.PmEffortPercentage = PmEffortPercentage;
-            existing.TotalDevelopmentHours = TotalDevelopmentHours;
-            existing.GrandTotalHours = GrandTotalHours;
-            existing.TShirtSize = TShirtSize;
-            existing.CollaborationHours = TotalCollaborationHours;
-            existing.DevelopmentAdjustedHours = DevelopmentAdjustedHours;
-            existing.AnalysisAdjustedHours = AnalysisAdjustedHours;
-            existing.BusinessDesignAdjustedHours = BusinessDesignAdjustedHours;
-            existing.SystemTestingAdjustedHours = SystemTestingAdjustedHours;
-            existing.PromotionAdjustedHours = PromotionAdjustedHours;
-            existing.BaSystemDocAdjustedHours = BaSystemDocAdjustedHours;
-            existing.ProductionValidationAdjustedHours = ProductionValidationAdjustedHours;
-            existing.ProjectManagementAdjustedHours = ProjectManagementAdjustedHours;
-            existing.CollaborationAdjustedHours = CollaborationAdjustedHours;
-            existing.WprsAdjustedHours = WprsAdjustedHours;
-            existing.ClientMeetingsAdjustedHours = ClientMeetingsAdjustedHours;
-            existing.InternalMeetingsAdjustedHours = InternalMeetingsAdjustedHours;
-            existing.AutomationTestCollabAdjustedHours = AutomationTestCollabAdjustedHours;
-            existing.ConsultantMentorAdjustedHours = ConsultantMentorAdjustedHours;
-            existing.SeAdjustedHours = DevelopmentAdjustedHours; // backward compat
-            existing.BaAdjustedHours = AnalysisAdjustedHours; // backward compat
-            existing.SeAssumptions = SeAssumptions;
-            existing.BaAssumptions = BaAssumptions;
-            existing.CollaborationAssumptions = CollaborationAssumptions;
-            existing.GeneralAssumptions = GeneralAssumptions;
-            existing.AdjustedHoursComments = AdjustedHoursComments;
-            existing.DevelopmentNotes = DevelopmentNotes;
-            existing.AnalysisNotes = AnalysisNotes;
-            existing.BusinessDesignNotes = BusinessDesignNotes;
-            existing.SystemTestingNotes = SystemTestingNotes;
-            existing.PromotionNotes = PromotionNotes;
-            existing.BaSystemDocNotes = BaSystemDocNotes;
-            existing.ProductionValidationNotes = ProductionValidationNotes;
-            existing.ProjectManagementNotes = ProjectManagementNotes;
-            existing.WprsNotes = WprsNotes;
-            existing.ClientMeetingsNotes = ClientMeetingsNotes;
-            existing.InternalMeetingsNotes = InternalMeetingsNotes;
-            existing.AutomationTestCollabNotes = AutomationTestCollabNotes;
-            existing.ConsultantMentorNotes = ConsultantMentorNotes;
-            existing.TotalActualHours = TotalActualHours;
-            existing.ActualHoursAsOfDate = ActualHoursAsOfDate;
-            existing.TimeForEstimates = TimeForEstimates;
-            existing.UseTestCasesForEstimate = UseTestCasesForEstimate;
-            existing.TestCasesSimple = TestCasesSimple;
-            existing.TestCasesMedium = TestCasesMedium;
-            existing.TestCasesComplex = TestCasesComplex;
-            existing.TestCasesVeryComplex = TestCasesVeryComplex;
-            existing.TestCaseIterations = TestCaseIterations;
+            ProjectMapper.MapToEntity(this, existing);
             existing.LastModifiedDate = DateTime.UtcNow;
             existing.VersionNumber++;
 
             db.ComponentEntries.RemoveRange(existing.Components);
-            existing.Components = MapComponentsToEntities(existing.ProjectId);
+            existing.Components = Components
+                .Where(c => c.ComponentType != ComponentType.None)
+                .Select(c => ProjectMapper.MapComponentToEntity(c, existing.ProjectId))
+                .ToList();
 
             db.CollaborationItems.RemoveRange(existing.CollaborationItems);
-            existing.CollaborationItems = MapCollaborationToEntities(existing.ProjectId);
+            existing.CollaborationItems = CollaborationItems
+                .Select(item => ProjectMapper.MapCollaborationToEntity(item, existing.ProjectId))
+                .ToList();
 
             _currentProjectId = existing.ProjectId;
         }
         else
         {
-            var project = new ProjectEntity
-            {
-                ProjectName = ProjectName,
-                ChangeOrderId = ChangeOrderId,
-                ProjectDescription = ProjectDescription,
-                EstimatedBy = EstimatedBy,
-                ReviewedBy = ReviewedBy,
-                PmEffortPercentage = PmEffortPercentage,
-                TotalDevelopmentHours = TotalDevelopmentHours,
-                GrandTotalHours = GrandTotalHours,
-                TShirtSize = TShirtSize,
-                CollaborationHours = TotalCollaborationHours,
-                DevelopmentAdjustedHours = DevelopmentAdjustedHours,
-                AnalysisAdjustedHours = AnalysisAdjustedHours,
-                BusinessDesignAdjustedHours = BusinessDesignAdjustedHours,
-                SystemTestingAdjustedHours = SystemTestingAdjustedHours,
-                PromotionAdjustedHours = PromotionAdjustedHours,
-                BaSystemDocAdjustedHours = BaSystemDocAdjustedHours,
-                ProductionValidationAdjustedHours = ProductionValidationAdjustedHours,
-                ProjectManagementAdjustedHours = ProjectManagementAdjustedHours,
-                CollaborationAdjustedHours = CollaborationAdjustedHours,
-                WprsAdjustedHours = WprsAdjustedHours,
-                ClientMeetingsAdjustedHours = ClientMeetingsAdjustedHours,
-                InternalMeetingsAdjustedHours = InternalMeetingsAdjustedHours,
-                AutomationTestCollabAdjustedHours = AutomationTestCollabAdjustedHours,
-                ConsultantMentorAdjustedHours = ConsultantMentorAdjustedHours,
-                SeAdjustedHours = DevelopmentAdjustedHours, // backward compat
-                BaAdjustedHours = AnalysisAdjustedHours, // backward compat
-                SeAssumptions = SeAssumptions,
-                BaAssumptions = BaAssumptions,
-                CollaborationAssumptions = CollaborationAssumptions,
-                GeneralAssumptions = GeneralAssumptions,
-                AdjustedHoursComments = AdjustedHoursComments,
-                DevelopmentNotes = DevelopmentNotes,
-                AnalysisNotes = AnalysisNotes,
-                BusinessDesignNotes = BusinessDesignNotes,
-                SystemTestingNotes = SystemTestingNotes,
-                PromotionNotes = PromotionNotes,
-                BaSystemDocNotes = BaSystemDocNotes,
-                ProductionValidationNotes = ProductionValidationNotes,
-                ProjectManagementNotes = ProjectManagementNotes,
-                WprsNotes = WprsNotes,
-                ClientMeetingsNotes = ClientMeetingsNotes,
-                InternalMeetingsNotes = InternalMeetingsNotes,
-                AutomationTestCollabNotes = AutomationTestCollabNotes,
-                ConsultantMentorNotes = ConsultantMentorNotes,
-                TotalActualHours = TotalActualHours,
-                ActualHoursAsOfDate = ActualHoursAsOfDate,
-                TimeForEstimates = TimeForEstimates,
-                UseTestCasesForEstimate = UseTestCasesForEstimate,
-                TestCasesSimple = TestCasesSimple,
-                TestCasesMedium = TestCasesMedium,
-                TestCasesComplex = TestCasesComplex,
-                TestCasesVeryComplex = TestCasesVeryComplex,
-                TestCaseIterations = TestCaseIterations,
-            };
-            project.Components = MapComponentsToEntities(project.ProjectId);
-            project.CollaborationItems = MapCollaborationToEntities(project.ProjectId);
+            var project = new ProjectEntity();
+            ProjectMapper.MapToEntity(this, project);
+            project.Components = Components
+                .Where(c => c.ComponentType != ComponentType.None)
+                .Select(c => ProjectMapper.MapComponentToEntity(c, project.ProjectId))
+                .ToList();
+            project.CollaborationItems = CollaborationItems
+                .Select(item => ProjectMapper.MapCollaborationToEntity(item, project.ProjectId))
+                .ToList();
             db.Projects.Add(project);
             _currentProjectId = project.ProjectId;
         }
 
         db.SaveChanges();
         return null;
-    }
-
-    private List<ComponentEntryEntity> MapComponentsToEntities(string projectId)
-    {
-        var list = new List<ComponentEntryEntity>();
-        foreach (var c in Components)
-        {
-            if (c.ComponentType == ComponentType.None) continue; // skip unselected placeholder rows
-            list.Add(new ComponentEntryEntity
-            {
-                ProjectId = projectId,
-                LineNumber = c.LineNumber,
-                RequirementId = c.RequirementId,
-                ComponentType = c.ComponentType.ToString(),
-                Description = c.Description,
-                ChangeType = c.ChangeType.ToString(),
-                Size = c.Size.ToString(),
-                Count = c.Count,
-                BaseHoursPerUnit = c.BaseHoursPerUnit,
-                TotalHours = c.TotalHours,
-                Notes = c.Notes
-            });
-        }
-        return list;
-    }
-
-    private List<CollaborationItemEntity> MapCollaborationToEntities(string projectId)
-    {
-        var list = new List<CollaborationItemEntity>();
-        foreach (var item in CollaborationItems)
-        {
-            list.Add(new CollaborationItemEntity
-            {
-                ProjectId = projectId,
-                LineNumber = item.LineNumber,
-                TaskName = item.TaskName,
-                CollaborationType = item.CollabType.ToString(),
-                NumberOfMeetings = item.NumberOfMeetings,
-                MeetingDurationMinutes = item.MeetingDurationMinutes,
-                NumberOfParticipants = item.NumberOfParticipants,
-                ParticipantPrepTimeMinutes = item.ParticipantPrepTimeMinutes,
-                TotalHours = item.TotalHours,
-                Notes = item.Notes
-            });
-        }
-        return list;
     }
 
     public void LoadProject(ProjectEntity project)
@@ -945,68 +750,11 @@ public partial class InitialEstimateViewModel : ObservableObject
         CollaborationItems.Clear();
 
         _currentProjectId = project.ProjectId;
-        ProjectName = project.ProjectName;
-        ChangeOrderId = project.ChangeOrderId;
-        ProjectDescription = project.ProjectDescription;
-        EstimatedBy = project.EstimatedBy;
-        ReviewedBy = project.ReviewedBy;
-        PmEffortPercentage = project.PmEffortPercentage;
-        DevelopmentAdjustedHours = project.DevelopmentAdjustedHours != 0 ? project.DevelopmentAdjustedHours : project.SeAdjustedHours;
-        AnalysisAdjustedHours = project.AnalysisAdjustedHours != 0 ? project.AnalysisAdjustedHours : project.BaAdjustedHours;
-        BusinessDesignAdjustedHours = project.BusinessDesignAdjustedHours;
-        SystemTestingAdjustedHours = project.SystemTestingAdjustedHours;
-        PromotionAdjustedHours = project.PromotionAdjustedHours;
-        BaSystemDocAdjustedHours = project.BaSystemDocAdjustedHours;
-        ProductionValidationAdjustedHours = project.ProductionValidationAdjustedHours;
-        ProjectManagementAdjustedHours = project.ProjectManagementAdjustedHours;
-        CollaborationAdjustedHours = project.CollaborationAdjustedHours;
-        WprsAdjustedHours = project.WprsAdjustedHours;
-        ClientMeetingsAdjustedHours = project.ClientMeetingsAdjustedHours;
-        InternalMeetingsAdjustedHours = project.InternalMeetingsAdjustedHours;
-        AutomationTestCollabAdjustedHours = project.AutomationTestCollabAdjustedHours;
-        ConsultantMentorAdjustedHours = project.ConsultantMentorAdjustedHours;
-        SeAssumptions = project.SeAssumptions;
-        BaAssumptions = project.BaAssumptions;
-        CollaborationAssumptions = project.CollaborationAssumptions;
-        GeneralAssumptions = project.GeneralAssumptions;
-        AdjustedHoursComments = project.AdjustedHoursComments;
-        DevelopmentNotes = project.DevelopmentNotes;
-        AnalysisNotes = project.AnalysisNotes;
-        BusinessDesignNotes = project.BusinessDesignNotes;
-        SystemTestingNotes = project.SystemTestingNotes;
-        PromotionNotes = project.PromotionNotes;
-        BaSystemDocNotes = project.BaSystemDocNotes;
-        ProductionValidationNotes = project.ProductionValidationNotes;
-        ProjectManagementNotes = project.ProjectManagementNotes;
-        WprsNotes = project.WprsNotes;
-        ClientMeetingsNotes = project.ClientMeetingsNotes;
-        InternalMeetingsNotes = project.InternalMeetingsNotes;
-        AutomationTestCollabNotes = project.AutomationTestCollabNotes;
-        ConsultantMentorNotes = project.ConsultantMentorNotes;
-        TotalActualHours = project.TotalActualHours;
-        ActualHoursAsOfDate = project.ActualHoursAsOfDate;
-        TimeForEstimates = project.TimeForEstimates;
-        UseTestCasesForEstimate = project.UseTestCasesForEstimate;
-        TestCasesSimple = project.TestCasesSimple;
-        TestCasesMedium = project.TestCasesMedium;
-        TestCasesComplex = project.TestCasesComplex;
-        TestCasesVeryComplex = project.TestCasesVeryComplex;
-        TestCaseIterations = project.TestCaseIterations;
+        ProjectMapper.MapToViewModel(project, this);
 
         foreach (var entry in project.Components.OrderBy(c => c.LineNumber))
         {
-            var row = new ComponentRowViewModel
-            {
-                LineNumber = entry.LineNumber,
-                RequirementId = entry.RequirementId,
-                ComponentType = Enum.Parse<ComponentType>(entry.ComponentType),
-                Description = entry.Description,
-                ChangeType = Enum.Parse<ChangeType>(entry.ChangeType),
-                Size = Enum.Parse<ComponentSize>(entry.Size),
-                Count = entry.Count,
-                Notes = entry.Notes
-            };
-            row.UpdateBaseHours();
+            var row = ProjectMapper.MapEntityToComponent(entry);
             row.PropertyChanged += OnComponentChanged;
             Components.Add(row);
         }
@@ -1016,17 +764,7 @@ public partial class InitialEstimateViewModel : ObservableObject
         {
             foreach (var entry in savedCollab)
             {
-                var row = new CollaborationRowViewModel
-                {
-                    LineNumber = entry.LineNumber,
-                    TaskName = entry.TaskName,
-                    CollabType = Enum.TryParse<CollaborationType>(entry.CollaborationType, out var ct) ? ct : CollaborationType.WPRs,
-                    NumberOfMeetings = entry.NumberOfMeetings,
-                    MeetingDurationMinutes = entry.MeetingDurationMinutes,
-                    NumberOfParticipants = entry.NumberOfParticipants,
-                    ParticipantPrepTimeMinutes = entry.ParticipantPrepTimeMinutes,
-                    Notes = entry.Notes
-                };
+                var row = ProjectMapper.MapEntityToCollaboration(entry);
                 row.PropertyChanged += OnCollaborationChanged;
                 CollaborationItems.Add(row);
             }
@@ -1042,8 +780,7 @@ public partial class InitialEstimateViewModel : ObservableObject
     public static List<ProjectEntity> GetAllProjects()
     {
         using var db = new EstimateDbContext();
-        try { db.Database.EnsureCreated(); }
-        catch (SqliteException ex) when (ex.SqliteErrorCode == 1 && ex.Message.Contains("already exists")) { }
+        db.EnsureSchema();
         return db.Projects.Include(p => p.Components).Include(p => p.CollaborationItems)
                  .OrderByDescending(p => p.LastModifiedDate)
                  .ToList();

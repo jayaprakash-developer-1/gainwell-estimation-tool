@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Gainwell.EstimationTool.Data;
 using Gainwell.EstimationTool.Models;
+using Gainwell.EstimationTool.Services;
 
 namespace Gainwell.EstimationTool.ViewModels;
 
@@ -127,92 +128,7 @@ public partial class FinalEstimateViewModel : ObservableObject
     /// </summary>
     public void LoadFromMainViewModel(InitialEstimateViewModel source)
     {
-        // Header
-        ProjectName = source.ProjectName;
-        ChangeOrderId = source.ChangeOrderId;
-        ProjectDescription = source.ProjectDescription;
-        EstimatedBy = source.EstimatedBy;
-        ReviewedBy = source.ReviewedBy;
-        EstimateDate = DateTime.Now;
-
-        // Component summary
-        ComponentCount = source.ComponentCount;
-        TotalDevelopmentHours = source.TotalDevelopmentHours;
-
-        // Derived tasks — Calculated | Adjusted | Total
-        DevelopmentCalculated = source.TotalDevelopmentHours;
-        DevelopmentAdjusted = source.DevelopmentAdjustedHours;
-        DevelopmentTotal = source.DevelopmentTotalHours;
-
-        SystemTestingCalculated = source.SystemTestingHours;
-        SystemTestingAdjusted = source.SystemTestingAdjustedHours;
-        SystemTestingTotal = source.SystemTestingTotalHours;
-
-        AnalysisCalculated = source.AnalysisHours;
-        AnalysisAdjusted = source.AnalysisAdjustedHours;
-        AnalysisTotal = source.AnalysisTotalHours;
-
-        BusinessDesignCalculated = source.BusinessDesignHours;
-        BusinessDesignAdjusted = source.BusinessDesignAdjustedHours;
-        BusinessDesignTotal = source.BusinessDesignTotalHours;
-
-        PromotionCalculated = source.PromotionHours;
-        PromotionAdjusted = source.PromotionAdjustedHours;
-        PromotionTotal = source.PromotionTotalHours;
-
-        BaSystemDocCalculated = source.BaSystemDocHours;
-        BaSystemDocAdjusted = source.BaSystemDocAdjustedHours;
-        BaSystemDocTotal = source.BaSystemDocTotalHours;
-
-        ProductionValidationCalculated = source.ProductionValidationHours;
-        ProductionValidationAdjusted = source.ProductionValidationAdjustedHours;
-        ProductionValidationTotal = source.ProductionValidationTotalHours;
-
-        PmEffortCalculated = source.ProjectManagementHours;
-        PmEffortAdjusted = source.ProjectManagementAdjustedHours;
-        PmEffortTotal = source.ProjectManagementTotalHours;
-        PmEffortPercentage = source.PmEffortPercentage;
-
-        // Collaboration breakdown
-        WprsCalculated = source.WprsHours;
-        WprsAdjusted = source.WprsAdjustedHours;
-        WprsTotal = source.WprsTotalHours;
-
-        ClientMeetingsCalculated = source.ClientMeetingsHours;
-        ClientMeetingsAdjusted = source.ClientMeetingsAdjustedHours;
-        ClientMeetingsTotal = source.ClientMeetingsTotalHours;
-
-        InternalMeetingsCalculated = source.InternalMeetingsHours;
-        InternalMeetingsAdjusted = source.InternalMeetingsAdjustedHours;
-        InternalMeetingsTotal = source.InternalMeetingsTotalHours;
-
-        AutomationTestCalculated = source.AutomationTestCollabHours;
-        AutomationTestAdjusted = source.AutomationTestCollabAdjustedHours;
-        AutomationTestTotal = source.AutomationTestCollabTotalHours;
-
-        ConsultantMentorCalculated = source.ConsultantMentorHours;
-        ConsultantMentorAdjusted = source.ConsultantMentorAdjustedHours;
-        ConsultantMentorTotal = source.ConsultantMentorTotalHours;
-
-        CollaborationTotalHours = source.CollaborationTotalHours;
-
-        // Additional items
-        TimeForEstimates = source.TimeForEstimates;
-        TotalActualHours = source.TotalActualHours;
-        ActualHoursAsOfDate = source.ActualHoursAsOfDate;
-
-        // Totals
-        SubtotalHours = source.SubtotalHours;
-        GrandTotalHours = source.GrandTotalHours;
-        TShirtSize = source.TShirtSize;
-
-        // Role breakout
-        BaRoleHours = source.BaRoleHours;
-        SeRoleHours = source.SeRoleHours;
-        TesterRoleHours = source.TesterRoleHours;
-        PmRoleHours = source.PmRoleHours;
-        CollaborationRoleHours = source.CollaborationRoleHours;
-        TotalRoleHours = BaRoleHours + SeRoleHours + TesterRoleHours + PmRoleHours + CollaborationRoleHours;
+        ProjectMapper.MapToFinalEstimate(source, this);
 
         // Assumptions
         SeAssumptions = source.SeAssumptions;
