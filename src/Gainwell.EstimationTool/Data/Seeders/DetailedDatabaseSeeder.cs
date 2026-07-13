@@ -55,6 +55,134 @@ public static class DetailedDatabaseSeeder
             CREATE UNIQUE INDEX IF NOT EXISTS IX_EXPERIENCE_LEVELS_Role_Level
             ON EXPERIENCE_LEVELS (Role, Level)");
 
+        // Detailed estimate persistence tables (added later – need CREATE IF NOT EXISTS for existing DBs)
+        db.Database.ExecuteSqlRaw(@"
+            CREATE TABLE IF NOT EXISTS DETAILED_SE_COMPONENTS (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                ProjectId TEXT NOT NULL,
+                LineNumber INTEGER NOT NULL DEFAULT 0,
+                ComponentType TEXT NOT NULL,
+                SimpleTotal INTEGER NOT NULL DEFAULT 0,
+                ModerateTotal INTEGER NOT NULL DEFAULT 0,
+                ComplexTotal INTEGER NOT NULL DEFAULT 0,
+                HoursTotal REAL NOT NULL DEFAULT 0,
+                AdjustedExpLevel REAL NOT NULL DEFAULT 0,
+                AdjustedHrs REAL NOT NULL DEFAULT 0,
+                GrandTotal REAL NOT NULL DEFAULT 0,
+                FOREIGN KEY (ProjectId) REFERENCES PROJECT_ESTIMATES(PROJECT_ID) ON DELETE CASCADE
+            )");
+
+        db.Database.ExecuteSqlRaw(@"
+            CREATE TABLE IF NOT EXISTS DETAILED_SE_MODULES (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                ProjectId TEXT NOT NULL,
+                LineNumber INTEGER NOT NULL DEFAULT 0,
+                ComponentType TEXT NOT NULL,
+                ExperienceLevel TEXT,
+                AssociatedRequirement TEXT,
+                ModuleName TEXT,
+                ComponentStatus TEXT,
+                SimpleCount INTEGER NOT NULL DEFAULT 0,
+                ModerateCount INTEGER NOT NULL DEFAULT 0,
+                ComplexCount INTEGER NOT NULL DEFAULT 0,
+                ComplexityTotal REAL NOT NULL DEFAULT 0,
+                AdjustedExpLevel REAL NOT NULL DEFAULT 0,
+                AdjustedHrs REAL NOT NULL DEFAULT 0,
+                GrandTotal REAL NOT NULL DEFAULT 0,
+                FOREIGN KEY (ProjectId) REFERENCES PROJECT_ESTIMATES(PROJECT_ID) ON DELETE CASCADE
+            )");
+
+        db.Database.ExecuteSqlRaw(@"
+            CREATE TABLE IF NOT EXISTS DETAILED_BA_TEST_CASES (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                ProjectId TEXT NOT NULL,
+                LineNumber INTEGER NOT NULL DEFAULT 0,
+                TaskName TEXT,
+                TaskType TEXT,
+                Category TEXT,
+                ExperienceLevel TEXT,
+                GridType TEXT,
+                IsInfoRow INTEGER NOT NULL DEFAULT 0,
+                SimpleCount REAL NOT NULL DEFAULT 0,
+                ModerateCount REAL NOT NULL DEFAULT 0,
+                ComplexCount REAL NOT NULL DEFAULT 0,
+                VeryComplexCount REAL NOT NULL DEFAULT 0,
+                ManualAdjHours REAL NOT NULL DEFAULT 0,
+                FOREIGN KEY (ProjectId) REFERENCES PROJECT_ESTIMATES(PROJECT_ID) ON DELETE CASCADE
+            )");
+
+        // Add IsInfoRow column to existing DETAILED_BA_TEST_CASES tables
+        try { db.Database.ExecuteSqlRaw("ALTER TABLE DETAILED_BA_TEST_CASES ADD COLUMN IsInfoRow INTEGER NOT NULL DEFAULT 0"); }
+        catch { /* column already exists */ }
+
+        // Add VeryComplexCount to existing DETAILED_BA_TEST_CASES tables
+        try { db.Database.ExecuteSqlRaw("ALTER TABLE DETAILED_BA_TEST_CASES ADD COLUMN VeryComplexCount REAL NOT NULL DEFAULT 0"); }
+        catch { /* column already exists */ }
+
+        db.Database.ExecuteSqlRaw(@"
+            CREATE TABLE IF NOT EXISTS DETAILED_BA_VALIDATIONS (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                ProjectId TEXT NOT NULL,
+                LineNumber INTEGER NOT NULL DEFAULT 0,
+                TaskName TEXT,
+                TaskType TEXT,
+                ExperienceLevel TEXT,
+                SimpleCount INTEGER NOT NULL DEFAULT 0,
+                ModerateCount INTEGER NOT NULL DEFAULT 0,
+                ComplexCount INTEGER NOT NULL DEFAULT 0,
+                VeryComplexCount INTEGER NOT NULL DEFAULT 0,
+                ManualAdjHours REAL NOT NULL DEFAULT 0,
+                FOREIGN KEY (ProjectId) REFERENCES PROJECT_ESTIMATES(PROJECT_ID) ON DELETE CASCADE
+            )");
+
+        try { db.Database.ExecuteSqlRaw("ALTER TABLE DETAILED_BA_VALIDATIONS ADD COLUMN VeryComplexCount INTEGER NOT NULL DEFAULT 0"); }
+        catch { /* column already exists */ };
+
+        db.Database.ExecuteSqlRaw(@"
+            CREATE TABLE IF NOT EXISTS DETAILED_CONSULTANTS (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                ProjectId TEXT NOT NULL,
+                LineNumber INTEGER NOT NULL DEFAULT 0,
+                Name TEXT,
+                Hours REAL NOT NULL DEFAULT 0,
+                FOREIGN KEY (ProjectId) REFERENCES PROJECT_ESTIMATES(PROJECT_ID) ON DELETE CASCADE
+            )");
+
+        db.Database.ExecuteSqlRaw(@"
+            CREATE TABLE IF NOT EXISTS DETAILED_COLLAB_MEETINGS (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                ProjectId TEXT NOT NULL,
+                LineNumber INTEGER NOT NULL DEFAULT 0,
+                MeetingType TEXT NOT NULL,
+                MeetingCount REAL NOT NULL DEFAULT 0,
+                MeetingHours REAL NOT NULL DEFAULT 0,
+                Attendees REAL NOT NULL DEFAULT 0,
+                PrepHours REAL NOT NULL DEFAULT 0,
+                AdjustedMeeting REAL NOT NULL DEFAULT 0,
+                AdjustedPrep REAL NOT NULL DEFAULT 0,
+                FOREIGN KEY (ProjectId) REFERENCES PROJECT_ESTIMATES(PROJECT_ID) ON DELETE CASCADE
+            )");
+
+        db.Database.ExecuteSqlRaw(@"
+            CREATE TABLE IF NOT EXISTS DETAILED_MISC_FIELDS (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                ProjectId TEXT NOT NULL,
+                PromotionHours REAL NOT NULL DEFAULT 0,
+                SystemDocHours REAL NOT NULL DEFAULT 0,
+                PmReservePercentage REAL NOT NULL DEFAULT 0,
+                CreateDetailEstHours REAL NOT NULL DEFAULT 0,
+                CreateFinalEstHours REAL NOT NULL DEFAULT 0,
+                PmEffortHours REAL NOT NULL DEFAULT 0,
+                RemainingBddHours REAL NOT NULL DEFAULT 0,
+                SysDocProdValHours REAL NOT NULL DEFAULT 0,
+                BaSysDocHours REAL NOT NULL DEFAULT 0,
+                CommPlanHours REAL NOT NULL DEFAULT 0,
+                SeAdjustedComment TEXT,
+                BaAdjustedComment TEXT,
+                CollabAdjustedComment TEXT,
+                FOREIGN KEY (ProjectId) REFERENCES PROJECT_ESTIMATES(PROJECT_ID) ON DELETE CASCADE
+            )");
+
         SeedSeWeightedValues(db);
         SeedBaWeightedValues(db);
         SeedExperienceLevels(db);

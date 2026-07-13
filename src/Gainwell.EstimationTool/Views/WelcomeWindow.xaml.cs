@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using Microsoft.EntityFrameworkCore;
 using Gainwell.EstimationTool.Data;
 using Gainwell.EstimationTool.Models;
 using Gainwell.EstimationTool.ViewModels;
@@ -93,9 +94,21 @@ public partial class WelcomeWindow : Window
         OpenSelectedProject();
     }
 
+    private ProjectEntity? ReloadProjectWithData(ProjectEntity project)
+    {
+        using var db = new EstimateDbContext();
+        return db.Projects
+            .Include(p => p.Components)
+            .Include(p => p.CollaborationItems)
+            .FirstOrDefault(p => p.ProjectId == project.ProjectId);
+    }
+
     private void OpenSelectedProject()
     {
         if (_selectedProject == null) return;
+
+        var fullProject = ReloadProjectWithData(_selectedProject);
+        if (fullProject == null) return;
 
         var mainWindow = new InitialEstimateWindow();
         mainWindow.Width = EstimateNavigator.WindowWidth;
@@ -105,7 +118,7 @@ public partial class WelcomeWindow : Window
         mainWindow.Show();
         if (mainWindow.DataContext is ViewModels.InitialEstimateViewModel vm)
         {
-            vm.LoadProject(_selectedProject);
+            vm.LoadProject(fullProject);
         }
         Close();
     }
@@ -142,9 +155,18 @@ public partial class WelcomeWindow : Window
         mainWindow.Show();
         if (mainWindow.DataContext is ViewModels.InitialEstimateViewModel vm)
         {
-            vm.ProjectName = projectName;
-            vm.ChangeOrderId = changeOrder;
-            vm.ProjectDescription = description;
+            if (_selectedProject != null)
+            {
+                var fullProject = ReloadProjectWithData(_selectedProject);
+                if (fullProject != null)
+                    vm.LoadProject(fullProject);
+            }
+            else
+            {
+                vm.ProjectName = projectName;
+                vm.ChangeOrderId = changeOrder;
+                vm.ProjectDescription = description;
+            }
         }
         Close();
     }
@@ -161,12 +183,20 @@ public partial class WelcomeWindow : Window
             return;
         }
 
-        var project = new ProjectEntity
+        ProjectEntity project;
+        if (_selectedProject != null)
         {
-            ProjectName = projectName,
-            ChangeOrderId = changeOrder,
-            ProjectDescription = DescriptionTextBox.Text.Trim()
-        };
+            project = ReloadProjectWithData(_selectedProject) ?? _selectedProject;
+        }
+        else
+        {
+            project = new ProjectEntity
+            {
+                ProjectName = projectName,
+                ChangeOrderId = changeOrder,
+                ProjectDescription = DescriptionTextBox.Text.Trim()
+            };
+        }
 
         var detailedWindow = new DetailedEstimateWindow(project);
         detailedWindow.Width = EstimateNavigator.WindowWidth;
@@ -210,7 +240,9 @@ public partial class WelcomeWindow : Window
             // If a project was loaded from history, use its full data
             if (_selectedProject != null)
             {
-                vm.LoadProject(_selectedProject);
+                var fullProject = ReloadProjectWithData(_selectedProject);
+                if (fullProject != null)
+                    vm.LoadProject(fullProject);
             }
             else
             {

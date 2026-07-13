@@ -163,9 +163,14 @@
                 </Border>
 
                 <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Button Content="?? Home" Style="{StaticResource GhostButton}" 
+                    <Button Style="{StaticResource GhostButton}" 
                             Click="OnHomeClick" Margin="4,0"
-                            Foreground="White" BorderBrush="#4DB6AC" />
+                            Foreground="White" BorderBrush="#4DB6AC">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE80F;" FontFamily="Segoe Fluent Icons" FontSize="12" VerticalAlignment="Center" Margin="0,0,4,0" />
+                            <TextBlock Text="Home" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </Grid>
         </Border>
@@ -199,10 +204,20 @@
                 <!-- Save & Settings Buttons (Right) -->
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                     <Border Width="1" Background="#D1D5DB" Margin="8,4" />
-                    <Button Content="?? Save" Style="{StaticResource GhostButton}" 
-                            Click="OnSaveClick" Margin="4,0" ToolTip="Ctrl+S" />
-                    <Button Content="? Settings" Style="{StaticResource GhostButton}" 
-                            Click="OnSettingsClick" Margin="4,0" />
+                    <Button Style="{StaticResource GhostButton}" 
+                            Click="OnSaveClick" Margin="4,0" ToolTip="Ctrl+S">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE74E;" FontFamily="Segoe Fluent Icons" FontSize="12" VerticalAlignment="Center" Margin="0,0,4,0" />
+                            <TextBlock Text="Save" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource GhostButton}" 
+                            Click="OnSettingsClick" Margin="4,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE713;" FontFamily="Segoe Fluent Icons" FontSize="12" VerticalAlignment="Center" Margin="0,0,4,0" />
+                            <TextBlock Text="Settings" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </Grid>
         </Border>
@@ -241,7 +256,13 @@
             </TabControl.Resources>
 
             <!-- Tab 1: Summary -->
-            <TabItem Header="?? Estimate Summary">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE9F9;" FontFamily="Segoe Fluent Icons" FontSize="12" VerticalAlignment="Center" Margin="0,0,6,0" />
+                        <TextBlock Text="Estimate Summary" VerticalAlignment="Center" />
+                    </StackPanel>
+                </TabItem.Header>
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="8">
                     <StackPanel Margin="8">
                         <!-- Project Header Card with gradient accent -->
@@ -317,10 +338,6 @@
                                     <DropShadowEffect BlurRadius="10" Opacity="0.06" ShadowDepth="2" Direction="270" />
                                 </Border.Effect>
                                 <StackPanel>
-                                    <Grid Margin="0,0,0,8">
-                                        <Ellipse Width="32" Height="32" Fill="#E8EAF0" HorizontalAlignment="Left" />
-                                        <TextBlock Text="?" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8,0,0,0" />
-                                    </Grid>
                                     <TextBlock Text="ACTUAL HOURS" FontSize="9" FontWeight="Bold" Foreground="#9CA3AF" Margin="0,0,0,4" />
                                     <TextBox x:Name="ActualHoursTextBox" Text="0" Padding="0" FontSize="20" FontWeight="Bold" Foreground="#2B3A44" 
                                              BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Left" TextChanged="OnSummaryFieldChanged" />
@@ -340,10 +357,6 @@
                                     <DropShadowEffect BlurRadius="10" Opacity="0.06" ShadowDepth="2" Direction="270" />
                                 </Border.Effect>
                                 <StackPanel>
-                                    <Grid Margin="0,0,0,8">
-                                        <Ellipse Width="32" Height="32" Fill="#E6F5F2" HorizontalAlignment="Left" />
-                                        <TextBlock Text="&#xE74C;" FontFamily="Segoe Fluent Icons" FontSize="14" Foreground="#019681" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7,0,0,0" />
-                                    </Grid>
                                     <TextBlock Text="SE HOURS" FontFamily="Arial" FontSize="9" FontWeight="Bold" Foreground="#019681" Margin="0,0,0,4" />
                                     <TextBlock x:Name="SeHoursKpi" Text="0.00" FontFamily="Arial" FontSize="20" FontWeight="Bold" Foreground="#019681" />
                                 </StackPanel>
@@ -362,10 +375,6 @@
                                     <DropShadowEffect BlurRadius="10" Opacity="0.06" ShadowDepth="2" Direction="270" />
                                 </Border.Effect>
                                 <StackPanel>
-                                    <Grid Margin="0,0,0,8">
-                                        <Ellipse Width="32" Height="32" Fill="#BFDBFE" HorizontalAlignment="Left" />
-                                        <TextBlock Text="??" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7,0,0,0" />
-                                    </Grid>
                                     <TextBlock Text="BA HOURS" FontSize="9" FontWeight="Bold" Foreground="#1E40AF" Margin="0,0,0,4" />
                                     <TextBlock x:Name="BaHoursKpi" Text="0.00" FontSize="20" FontWeight="Bold" Foreground="#2563EB" />
                                 </StackPanel>
@@ -384,10 +393,6 @@
                                     <DropShadowEffect BlurRadius="10" Opacity="0.06" ShadowDepth="2" Direction="270" />
                                 </Border.Effect>
                                 <StackPanel>
-                                    <Grid Margin="0,0,0,8">
-                                        <Ellipse Width="32" Height="32" Fill="#FED7AA" HorizontalAlignment="Left" />
-                                        <TextBlock Text="??" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7,0,0,0" />
-                                    </Grid>
                                     <TextBlock Text="COLLAB HOURS" FontSize="9" FontWeight="Bold" Foreground="#9A3412" Margin="0,0,0,4" />
                                     <TextBlock x:Name="CollabHoursKpi" Text="0.00" FontSize="20" FontWeight="Bold" Foreground="#EA580C" />
                                 </StackPanel>
@@ -406,10 +411,6 @@
                                     <DropShadowEffect BlurRadius="12" Opacity="0.08" ShadowDepth="3" Direction="270" />
                                 </Border.Effect>
                                 <StackPanel>
-                                    <Grid Margin="0,0,0,8">
-                                        <Ellipse Width="32" Height="32" Fill="#99F6E4" HorizontalAlignment="Left" />
-                                        <TextBlock Text="S" FontSize="16" FontWeight="Bold" Foreground="#0D9488" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" />
-                                    </Grid>
                                     <TextBlock Text="TOTAL ESTIMATE" FontSize="9" FontWeight="Bold" Foreground="#134E4A" Margin="0,0,0,4" />
                                     <TextBlock x:Name="TotalWithReserveText" Text="0.00" FontSize="20" FontWeight="Bold" Foreground="#00857C" />
                                 </StackPanel>
@@ -781,7 +782,13 @@
             </TabItem>
 
             <!-- Tab 2: SE Module/Documentation -->
-            <TabItem Header="?? SE Module/Doco">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE74C;" FontFamily="Segoe Fluent Icons" FontSize="12" VerticalAlignment="Center" Margin="0,0,6,0" />
+                        <TextBlock Text="SE Module/Doco" VerticalAlignment="Center" />
+                    </StackPanel>
+                </TabItem.Header>
                 <DockPanel>
                     <!-- STICKY SUMMARY BAR - matching Collaboration tab format -->
                     <Border DockPanel.Dock="Top" CornerRadius="8" Padding="16,12" Margin="8,8,8,0">
@@ -872,7 +879,7 @@
                                     <!-- Hint text -->
                                     <Border Background="#FAFAFA" Padding="20,10">
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="??" FontSize="12" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                            <TextBlock Text="&#xEA80;" FontFamily="Segoe Fluent Icons" FontSize="12" Margin="0,0,8,0" VerticalAlignment="Center" />
                                             <TextBlock Text="Double-click a component row to enter module details" FontSize="11" Foreground="#5A6978" VerticalAlignment="Center" FontStyle="Italic" />
                                         </StackPanel>
                                     </Border>
@@ -984,7 +991,7 @@
                                                 <ColumnDefinition Width="100" />
                                             </Grid.ColumnDefinitions>
                                             <Border Background="#E0F2FE" CornerRadius="20" Width="36" Height="36" Margin="0,0,14,0" VerticalAlignment="Center">
-                                                <TextBlock Text="??" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                <TextBlock Text="&#xE728;" FontFamily="Segoe Fluent Icons" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                             </Border>
                                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                                 <TextBlock Text="Promotion" FontSize="13" FontWeight="SemiBold" Foreground="#1F2937" />
@@ -1009,7 +1016,7 @@
                                                 <ColumnDefinition Width="100" />
                                             </Grid.ColumnDefinitions>
                                             <Border Background="#FEF3C7" CornerRadius="20" Width="36" Height="36" Margin="0,0,14,0" VerticalAlignment="Center">
-                                                <TextBlock Text="??" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                <TextBlock Text="&#xE8A5;" FontFamily="Segoe Fluent Icons" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                             </Border>
                                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                                 <TextBlock Text="System Documentation" FontSize="13" FontWeight="SemiBold" Foreground="#1F2937" />
@@ -1035,7 +1042,7 @@
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                                         <Border Background="#FEF3C7" CornerRadius="4" Padding="6,3" Margin="0,0,10,0" VerticalAlignment="Center">
-                                            <TextBlock Text="??" FontSize="10" />
+                                            <TextBlock Text="&#xE70B;" FontFamily="Segoe Fluent Icons" FontSize="10" />
                                         </Border>
                                         <TextBlock Text="Assumptions" FontSize="13" FontWeight="SemiBold" Foreground="#1F2937" VerticalAlignment="Center" />
                                     </StackPanel>
@@ -1082,7 +1089,13 @@
             </TabItem>
 
             <!-- Tab 3: BA Considerations -->
-            <TabItem Header="?? BA Considerations">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE8A4;" FontFamily="Segoe Fluent Icons" FontSize="12" VerticalAlignment="Center" Margin="0,0,6,0" />
+                        <TextBlock Text="BA Considerations" VerticalAlignment="Center" />
+                    </StackPanel>
+                </TabItem.Header>
                 <DockPanel>
                     <!-- STICKY SUMMARY BAR — always visible at top -->
                     <Border DockPanel.Dock="Top" Margin="8,8,8,0" CornerRadius="8" Padding="16,12"
@@ -1106,14 +1119,14 @@
                                 <Border Background="White" CornerRadius="6" Padding="14,8" Margin="4,0">
                                     <Border.Effect><DropShadowEffect BlurRadius="4" Opacity="0.06" ShadowDepth="1" Direction="270" /></Border.Effect>
                                     <StackPanel HorizontalAlignment="Center">
-                                        <TextBlock Text="?? BDD" FontSize="10" Foreground="#5A6978" HorizontalAlignment="Center" />
+                                        <TextBlock Text="&#xE8A4; BDD" FontFamily="Segoe Fluent Icons" FontSize="10" Foreground="#5A6978" HorizontalAlignment="Center" />
                                         <TextBlock x:Name="BaStickyBddText" Text="0.00 hrs" FontSize="12" FontWeight="SemiBold" Foreground="#1931E3" HorizontalAlignment="Center" />
                                     </StackPanel>
                                 </Border>
                                 <Border Background="White" CornerRadius="6" Padding="14,8" Margin="4,0">
                                     <Border.Effect><DropShadowEffect BlurRadius="4" Opacity="0.06" ShadowDepth="1" Direction="270" /></Border.Effect>
                                     <StackPanel HorizontalAlignment="Center">
-                                        <TextBlock Text="?? WTC" FontSize="10" Foreground="#5A6978" HorizontalAlignment="Center" />
+                                        <TextBlock Text="&#xE71A; WTC" FontFamily="Segoe Fluent Icons" FontSize="10" Foreground="#5A6978" HorizontalAlignment="Center" />
                                         <TextBlock x:Name="BaStickyWtcText" Text="0.00 hrs" FontSize="12" FontWeight="SemiBold" Foreground="#1931E3" HorizontalAlignment="Center" />
                                     </StackPanel>
                                 </Border>
@@ -1127,7 +1140,7 @@
                                 <Border Background="White" CornerRadius="6" Padding="14,8" Margin="4,0">
                                     <Border.Effect><DropShadowEffect BlurRadius="4" Opacity="0.06" ShadowDepth="1" Direction="270" /></Border.Effect>
                                     <StackPanel HorizontalAlignment="Center">
-                                        <TextBlock Text="?? Sys Doc / CP" FontSize="10" Foreground="#5A6978" HorizontalAlignment="Center" />
+                                        <TextBlock Text="&#xE8A5; Sys Doc / CP" FontFamily="Segoe Fluent Icons" FontSize="10" Foreground="#5A6978" HorizontalAlignment="Center" />
                                         <TextBlock x:Name="BaStickySysDocText" Text="0.00 hrs" FontSize="12" FontWeight="SemiBold" Foreground="#1931E3" HorizontalAlignment="Center" />
                                     </StackPanel>
                                 </Border>
@@ -1198,7 +1211,7 @@
                                     </StackPanel>
                                     <Expander IsExpanded="False" Margin="0,0,0,8">
                                         <Expander.Header>
-                                            <TextBlock Text="?? Instructions" FontSize="11" Foreground="#5A6978" />
+                                            <TextBlock Text="&#xE946; Instructions" FontFamily="Segoe Fluent Icons" FontSize="11" Foreground="#5A6978" />
                                         </Expander.Header>
                                         <TextBlock FontSize="11" Foreground="#5A6978" TextWrapping="Wrap" Margin="0,4,0,0"
                                                    Text="Ideally at the time of submitting the detail estimate, there will be zero hours left on BDD creation, since the BDD work must have been complete at this point in time. There may be cases where a conditional approval is granted requesting BDD updates and a new version of the BDD is *not* requested. In such cases, the remaining BDD work may be entered here and the overall hours can be submitted to the data librarians (Only if the hours are *not* included in the Actual hours in the Dtl EstimateSummary)." />
@@ -1418,7 +1431,7 @@
                                                             <ColumnDefinition Width="Auto" />
                                                             <ColumnDefinition Width="*" />
                                                         </Grid.ColumnDefinitions>
-                                                        <TextBlock Text="??" FontSize="14" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                                        <TextBlock Text="&#xE72C;" FontFamily="Segoe Fluent Icons" FontSize="14" VerticalAlignment="Center" Margin="0,0,8,0" />
                                                         <StackPanel Grid.Column="1">
                                                             <TextBlock Text="Iteration Factors (multipliers for auto-calculated tasks)" FontSize="11" FontWeight="Medium" Foreground="#2E307A" Margin="0,0,0,4" />
                                                             <StackPanel Orientation="Horizontal">
@@ -1473,28 +1486,28 @@
                                                             <TextBlock Grid.Row="0" Grid.Column="3" Text="Adj Hrs" FontSize="9" Foreground="#5A6978" HorizontalAlignment="Center" Margin="0,0,0,4" />
                                                             <TextBlock Grid.Row="0" Grid.Column="4" Text="Total" FontSize="9" Foreground="#5A6978" HorizontalAlignment="Center" Margin="0,0,0,4" />
                                                             <!-- Data Preparation -->
-                                                            <TextBlock Grid.Row="1" Grid.Column="0" Text="?? Data Preparation" FontSize="11" VerticalAlignment="Center" Margin="0,2" />
+                                                            <TextBlock Grid.Row="1" Grid.Column="0" Text="&#xE7B8; Data Preparation" FontFamily="Segoe Fluent Icons" FontSize="11" VerticalAlignment="Center" Margin="0,2" />
                                                             <TextBlock x:Name="BaNewDP_CT" Grid.Row="1" Grid.Column="1" Text="0.00" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <TextBlock x:Name="BaNewDP_Calc" Grid.Row="1" Grid.Column="2" Text="0.00" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <TextBox x:Name="BaNewDP_AdjHrs" Grid.Row="1" Grid.Column="3" Text="0" Width="60" FontSize="11" TextAlignment="Center"
                                                                      Background="#F5F6FA" BorderBrush="#D4D7E0" Padding="2" TextChanged="OnBaCardValueChanged" />
                                                             <TextBlock x:Name="BaNewDP_Total" Grid.Row="1" Grid.Column="4" Text="0.00" FontSize="11" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <!-- ALM -->
-                                                            <TextBlock Grid.Row="2" Grid.Column="0" Text="?? ALM Upload, Linking and Generating Reports" FontSize="11" VerticalAlignment="Center" Margin="0,2" />
+                                                            <TextBlock Grid.Row="2" Grid.Column="0" Text="&#xE898; ALM Upload" FontFamily="Segoe Fluent Icons" FontSize="11" VerticalAlignment="Center" Margin="0,2" />
                                                             <TextBlock x:Name="BaNewALM_CT" Grid.Row="2" Grid.Column="1" Text="0.00" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <TextBlock x:Name="BaNewALM_Calc" Grid.Row="2" Grid.Column="2" Text="0.00" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <TextBox x:Name="BaNewALM_AdjHrs" Grid.Row="2" Grid.Column="3" Text="0" Width="60" FontSize="11" TextAlignment="Center"
                                                                      Background="#F5F6FA" BorderBrush="#D4D7E0" Padding="2" TextChanged="OnBaCardValueChanged" />
                                                             <TextBlock x:Name="BaNewALM_Total" Grid.Row="2" Grid.Column="4" Text="0.00" FontSize="11" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <!-- Sys Test Execution -->
-                                                            <TextBlock Grid.Row="3" Grid.Column="0" Text="?? Sys Test Execution" FontSize="11" VerticalAlignment="Center" Margin="0,2" />
+                                                            <TextBlock Grid.Row="3" Grid.Column="0" Text="&#xE768; Sys Test Execution" FontFamily="Segoe Fluent Icons" FontSize="11" VerticalAlignment="Center" Margin="0,2" />
                                                             <TextBlock x:Name="BaNewSTE_CT" Grid.Row="3" Grid.Column="1" Text="0.00" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <TextBlock x:Name="BaNewSTE_Calc" Grid.Row="3" Grid.Column="2" Text="0.00" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <TextBox x:Name="BaNewSTE_AdjHrs" Grid.Row="3" Grid.Column="3" Text="0" Width="60" FontSize="11" TextAlignment="Center"
                                                                      Background="#F5F6FA" BorderBrush="#D4D7E0" Padding="2" TextChanged="OnBaCardValueChanged" />
                                                             <TextBlock x:Name="BaNewSTE_Total" Grid.Row="3" Grid.Column="4" Text="0.00" FontSize="11" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <!-- Pre Release Defects Creation and Retest -->
-                                                            <TextBlock Grid.Row="4" Grid.Column="0" Text="?? Pre Release Defects Creation and Retest" FontSize="11" VerticalAlignment="Center" Margin="0,2" />
+                                                            <TextBlock Grid.Row="4" Grid.Column="0" Text="&#xEBE8; Pre Release Defects" FontFamily="Segoe Fluent Icons" FontSize="11" VerticalAlignment="Center" Margin="0,2" />
                                                             <TextBlock x:Name="BaNewPRD_CT" Grid.Row="4" Grid.Column="1" Text="0.00" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <TextBlock x:Name="BaNewPRD_Calc" Grid.Row="4" Grid.Column="2" Text="0.00" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <TextBox x:Name="BaNewPRD_AdjHrs" Grid.Row="4" Grid.Column="3" Text="0" Width="60" FontSize="11" TextAlignment="Center"
@@ -1604,7 +1617,7 @@
                                                 <!-- Iteration -->
                                                 <Border Background="#EDF0F8" CornerRadius="6" Padding="10,8" Margin="0,0,0,6" BorderBrush="#C2C6D2" BorderThickness="1">
                                                     <StackPanel Orientation="Horizontal">
-                                                        <TextBlock Text="?? Iteration:" FontSize="11" FontWeight="Medium" Foreground="#2E307A" VerticalAlignment="Center" Margin="0,0,12,0" />
+                                                        <TextBlock Text="&#xE72C; Iteration:" FontFamily="Segoe Fluent Icons" FontSize="11" FontWeight="Medium" Foreground="#2E307A" VerticalAlignment="Center" Margin="0,0,12,0" />
                                                         <StackPanel Margin="0,0,12,0"><TextBlock Text="Simple" FontSize="9" Foreground="#5A6978" HorizontalAlignment="Center" /><TextBox x:Name="BaProfIter_Simple" Text="0" Width="45" TextAlignment="Center" FontSize="11" Background="#F5F6FA" BorderBrush="#D4D7E0" Padding="2" TextChanged="OnBaCardValueChanged" /></StackPanel>
                                                         <StackPanel Margin="0,0,12,0"><TextBlock Text="Moderate" FontSize="9" Foreground="#5A6978" HorizontalAlignment="Center" /><TextBox x:Name="BaProfIter_Moderate" Text="0" Width="45" TextAlignment="Center" FontSize="11" Background="#F5F6FA" BorderBrush="#D4D7E0" Padding="2" TextChanged="OnBaCardValueChanged" /></StackPanel>
                                                         <StackPanel Margin="0,0,12,0"><TextBlock Text="Complex" FontSize="9" Foreground="#5A6978" HorizontalAlignment="Center" /><TextBox x:Name="BaProfIter_Complex" Text="0" Width="45" TextAlignment="Center" FontSize="11" Background="#F5F6FA" BorderBrush="#D4D7E0" Padding="2" TextChanged="OnBaCardValueChanged" /></StackPanel>
@@ -1622,22 +1635,22 @@
                                                             <TextBlock Grid.Row="0" Grid.Column="2" Text="Adj Exp Lvl" FontSize="9" Foreground="#5A6978" HorizontalAlignment="Center" />
                                                             <TextBlock Grid.Row="0" Grid.Column="3" Text="Adj Hrs" FontSize="9" Foreground="#5A6978" HorizontalAlignment="Center" />
                                                             <TextBlock Grid.Row="0" Grid.Column="4" Text="Total" FontSize="9" Foreground="#5A6978" HorizontalAlignment="Center" />
-                                                            <TextBlock Grid.Row="1" Grid.Column="0" Text="?? Data Preparation" FontSize="11" VerticalAlignment="Center" Margin="0,2" />
+                                                            <TextBlock Grid.Row="1" Grid.Column="0" Text="&#xE7B8; Data Preparation" FontFamily="Segoe Fluent Icons" FontSize="11" VerticalAlignment="Center" Margin="0,2" />
                                                             <TextBlock x:Name="BaProfDP_CT" Grid.Row="1" Grid.Column="1" Text="0.00" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <TextBlock x:Name="BaProfDP_Calc" Grid.Row="1" Grid.Column="2" Text="0.00" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <TextBox x:Name="BaProfDP_AdjHrs" Grid.Row="1" Grid.Column="3" Text="0" Width="60" FontSize="11" TextAlignment="Center" Background="#F5F6FA" BorderBrush="#D4D7E0" Padding="2" TextChanged="OnBaCardValueChanged" />
                                                             <TextBlock x:Name="BaProfDP_Total" Grid.Row="1" Grid.Column="4" Text="0.00" FontSize="11" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                                            <TextBlock Grid.Row="2" Grid.Column="0" Text="?? ALM Upload, Linking and Generating Reports" FontSize="11" VerticalAlignment="Center" Margin="0,2" />
+                                                            <TextBlock Grid.Row="2" Grid.Column="0" Text="&#xE898; ALM Upload" FontFamily="Segoe Fluent Icons" FontSize="11" VerticalAlignment="Center" Margin="0,2" />
                                                             <TextBlock x:Name="BaProfALM_CT" Grid.Row="2" Grid.Column="1" Text="0.00" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <TextBlock x:Name="BaProfALM_Calc" Grid.Row="2" Grid.Column="2" Text="0.00" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <TextBox x:Name="BaProfALM_AdjHrs" Grid.Row="2" Grid.Column="3" Text="0" Width="60" FontSize="11" TextAlignment="Center" Background="#F5F6FA" BorderBrush="#D4D7E0" Padding="2" TextChanged="OnBaCardValueChanged" />
                                                             <TextBlock x:Name="BaProfALM_Total" Grid.Row="2" Grid.Column="4" Text="0.00" FontSize="11" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                                            <TextBlock Grid.Row="3" Grid.Column="0" Text="?? Sys Test Execution" FontSize="11" VerticalAlignment="Center" Margin="0,2" />
+                                                            <TextBlock Grid.Row="3" Grid.Column="0" Text="&#xE768; Sys Test Execution" FontFamily="Segoe Fluent Icons" FontSize="11" VerticalAlignment="Center" Margin="0,2" />
                                                             <TextBlock x:Name="BaProfSTE_CT" Grid.Row="3" Grid.Column="1" Text="0.00" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <TextBlock x:Name="BaProfSTE_Calc" Grid.Row="3" Grid.Column="2" Text="0.00" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <TextBox x:Name="BaProfSTE_AdjHrs" Grid.Row="3" Grid.Column="3" Text="0" Width="60" FontSize="11" TextAlignment="Center" Background="#F5F6FA" BorderBrush="#D4D7E0" Padding="2" TextChanged="OnBaCardValueChanged" />
                                                             <TextBlock x:Name="BaProfSTE_Total" Grid.Row="3" Grid.Column="4" Text="0.00" FontSize="11" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                                            <TextBlock Grid.Row="4" Grid.Column="0" Text="?? Pre Release Defects Creation and Retest" FontSize="11" VerticalAlignment="Center" Margin="0,2" />
+                                                            <TextBlock Grid.Row="4" Grid.Column="0" Text="&#xEBE8; Pre Release Defects" FontFamily="Segoe Fluent Icons" FontSize="11" VerticalAlignment="Center" Margin="0,2" />
                                                             <TextBlock x:Name="BaProfPRD_CT" Grid.Row="4" Grid.Column="1" Text="0.00" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <TextBlock x:Name="BaProfPRD_Calc" Grid.Row="4" Grid.Column="2" Text="0.00" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <TextBox x:Name="BaProfPRD_AdjHrs" Grid.Row="4" Grid.Column="3" Text="0" Width="60" FontSize="11" TextAlignment="Center" Background="#F5F6FA" BorderBrush="#D4D7E0" Padding="2" TextChanged="OnBaCardValueChanged" />
@@ -1717,7 +1730,7 @@
                                                 <!-- Iteration -->
                                                 <Border Background="#EDF0F8" CornerRadius="6" Padding="10,8" Margin="0,0,0,6" BorderBrush="#C2C6D2" BorderThickness="1">
                                                     <StackPanel Orientation="Horizontal">
-                                                        <TextBlock Text="?? Iteration:" FontSize="11" FontWeight="Medium" Foreground="#2E307A" VerticalAlignment="Center" Margin="0,0,12,0" />
+                                                        <TextBlock Text="&#xE72C; Iteration:" FontFamily="Segoe Fluent Icons" FontSize="11" FontWeight="Medium" Foreground="#2E307A" VerticalAlignment="Center" Margin="0,0,12,0" />
                                                         <StackPanel Margin="0,0,12,0"><TextBlock Text="Simple" FontSize="9" Foreground="#5A6978" HorizontalAlignment="Center" /><TextBox x:Name="BaExpIter_Simple" Text="0" Width="45" TextAlignment="Center" FontSize="11" Background="#F5F6FA" BorderBrush="#D4D7E0" Padding="2" TextChanged="OnBaCardValueChanged" /></StackPanel>
                                                         <StackPanel Margin="0,0,12,0"><TextBlock Text="Moderate" FontSize="9" Foreground="#5A6978" HorizontalAlignment="Center" /><TextBox x:Name="BaExpIter_Moderate" Text="0" Width="45" TextAlignment="Center" FontSize="11" Background="#F5F6FA" BorderBrush="#D4D7E0" Padding="2" TextChanged="OnBaCardValueChanged" /></StackPanel>
                                                         <StackPanel Margin="0,0,12,0"><TextBlock Text="Complex" FontSize="9" Foreground="#5A6978" HorizontalAlignment="Center" /><TextBox x:Name="BaExpIter_Complex" Text="0" Width="45" TextAlignment="Center" FontSize="11" Background="#F5F6FA" BorderBrush="#D4D7E0" Padding="2" TextChanged="OnBaCardValueChanged" /></StackPanel>
@@ -1735,22 +1748,22 @@
                                                             <TextBlock Grid.Row="0" Grid.Column="2" Text="Adj Exp Lvl" FontSize="9" Foreground="#5A6978" HorizontalAlignment="Center" />
                                                             <TextBlock Grid.Row="0" Grid.Column="3" Text="Adj Hrs" FontSize="9" Foreground="#5A6978" HorizontalAlignment="Center" />
                                                             <TextBlock Grid.Row="0" Grid.Column="4" Text="Total" FontSize="9" Foreground="#5A6978" HorizontalAlignment="Center" />
-                                                            <TextBlock Grid.Row="1" Grid.Column="0" Text="?? Data Preparation" FontSize="11" VerticalAlignment="Center" Margin="0,2" />
+                                                            <TextBlock Grid.Row="1" Grid.Column="0" Text="&#xE7B8; Data Preparation" FontFamily="Segoe Fluent Icons" FontSize="11" VerticalAlignment="Center" Margin="0,2" />
                                                             <TextBlock x:Name="BaExpDP_CT" Grid.Row="1" Grid.Column="1" Text="0.00" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <TextBlock x:Name="BaExpDP_Calc" Grid.Row="1" Grid.Column="2" Text="0.00" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <TextBox x:Name="BaExpDP_AdjHrs" Grid.Row="1" Grid.Column="3" Text="0" Width="60" FontSize="11" TextAlignment="Center" Background="#F5F6FA" BorderBrush="#D4D7E0" Padding="2" TextChanged="OnBaCardValueChanged" />
                                                             <TextBlock x:Name="BaExpDP_Total" Grid.Row="1" Grid.Column="4" Text="0.00" FontSize="11" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                                            <TextBlock Grid.Row="2" Grid.Column="0" Text="?? ALM Upload, Linking and Generating Reports" FontSize="11" VerticalAlignment="Center" Margin="0,2" />
+                                                            <TextBlock Grid.Row="2" Grid.Column="0" Text="&#xE898; ALM Upload" FontFamily="Segoe Fluent Icons" FontSize="11" VerticalAlignment="Center" Margin="0,2" />
                                                             <TextBlock x:Name="BaExpALM_CT" Grid.Row="2" Grid.Column="1" Text="0.00" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <TextBlock x:Name="BaExpALM_Calc" Grid.Row="2" Grid.Column="2" Text="0.00" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <TextBox x:Name="BaExpALM_AdjHrs" Grid.Row="2" Grid.Column="3" Text="0" Width="60" FontSize="11" TextAlignment="Center" Background="#F5F6FA" BorderBrush="#D4D7E0" Padding="2" TextChanged="OnBaCardValueChanged" />
                                                             <TextBlock x:Name="BaExpALM_Total" Grid.Row="2" Grid.Column="4" Text="0.00" FontSize="11" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                                            <TextBlock Grid.Row="3" Grid.Column="0" Text="?? Sys Test Execution" FontSize="11" VerticalAlignment="Center" Margin="0,2" />
+                                                            <TextBlock Grid.Row="3" Grid.Column="0" Text="&#xE768; Sys Test Execution" FontFamily="Segoe Fluent Icons" FontSize="11" VerticalAlignment="Center" Margin="0,2" />
                                                             <TextBlock x:Name="BaExpSTE_CT" Grid.Row="3" Grid.Column="1" Text="0.00" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <TextBlock x:Name="BaExpSTE_Calc" Grid.Row="3" Grid.Column="2" Text="0.00" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <TextBox x:Name="BaExpSTE_AdjHrs" Grid.Row="3" Grid.Column="3" Text="0" Width="60" FontSize="11" TextAlignment="Center" Background="#F5F6FA" BorderBrush="#D4D7E0" Padding="2" TextChanged="OnBaCardValueChanged" />
                                                             <TextBlock x:Name="BaExpSTE_Total" Grid.Row="3" Grid.Column="4" Text="0.00" FontSize="11" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                                            <TextBlock Grid.Row="4" Grid.Column="0" Text="?? Pre Release Defects Creation and Retest" FontSize="11" VerticalAlignment="Center" Margin="0,2" />
+                                                            <TextBlock Grid.Row="4" Grid.Column="0" Text="&#xEBE8; Pre Release Defects" FontFamily="Segoe Fluent Icons" FontSize="11" VerticalAlignment="Center" Margin="0,2" />
                                                             <TextBlock x:Name="BaExpPRD_CT" Grid.Row="4" Grid.Column="1" Text="0.00" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <TextBlock x:Name="BaExpPRD_Calc" Grid.Row="4" Grid.Column="2" Text="0.00" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             <TextBox x:Name="BaExpPRD_AdjHrs" Grid.Row="4" Grid.Column="3" Text="0" Width="60" FontSize="11" TextAlignment="Center" Background="#F5F6FA" BorderBrush="#D4D7E0" Padding="2" TextChanged="OnBaCardValueChanged" />
@@ -2077,7 +2090,7 @@
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <StackPanel>
-                                                <TextBlock Text="?? System Documentation" FontSize="12" FontWeight="Medium" />
+                                                <TextBlock Text="&#xE8A5; System Documentation" FontFamily="Segoe Fluent Icons" FontSize="12" FontWeight="Medium" />
                                                 <TextBlock Text="Insert time for all items in the BDD (user manuals, deployment docs, etc.)" FontSize="10" Foreground="#5A6978" Margin="0,2,0,0" />
                                             </StackPanel>
                                             <Border Grid.Column="1" BorderBrush="#D4D7E0" BorderThickness="1" CornerRadius="6" Background="#F5F6FA" Padding="4,2">
@@ -2097,7 +2110,7 @@
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <StackPanel>
-                                                <TextBlock Text="?? Communication Plan" FontSize="12" FontWeight="Medium" />
+                                                <TextBlock Text="&#xE717; Communication Plan" FontFamily="Segoe Fluent Icons" FontSize="12" FontWeight="Medium" />
                                                 <TextBlock Text="Insert time needed to create a Communication Plan" FontSize="10" Foreground="#5A6978" Margin="0,2,0,0" />
                                             </StackPanel>
                                             <Border Grid.Column="1" BorderBrush="#D4D7E0" BorderThickness="1" CornerRadius="6" Background="#F5F6FA" Padding="4,2">
@@ -2149,7 +2162,13 @@
             </TabItem>
 
             <!-- Tab 4: Collaboration/Quality -->
-            <TabItem Header="Collaboration/Quality">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE77B;" FontFamily="Segoe Fluent Icons" FontSize="12" VerticalAlignment="Center" Margin="0,0,6,0" />
+                        <TextBlock Text="Collaboration/Quality" VerticalAlignment="Center" />
+                    </StackPanel>
+                </TabItem.Header>
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="8">
                     <StackPanel Margin="8">
 

@@ -221,6 +221,7 @@ public class EstimateDbContext : DbContext
             entity.Property(e => e.Category).HasMaxLength(50);
             entity.Property(e => e.ExperienceLevel).HasMaxLength(20);
             entity.Property(e => e.GridType).HasMaxLength(20);
+            entity.Property(e => e.IsInfoRow);
             entity.Property(e => e.SimpleCount).HasColumnType("REAL");
             entity.Property(e => e.ModerateCount).HasColumnType("REAL");
             entity.Property(e => e.ComplexCount).HasColumnType("REAL");
@@ -238,6 +239,10 @@ public class EstimateDbContext : DbContext
             entity.Property(e => e.TaskName).HasMaxLength(200);
             entity.Property(e => e.TaskType).HasMaxLength(50);
             entity.Property(e => e.ExperienceLevel).HasMaxLength(20);
+            entity.Property(e => e.SimpleCount);
+            entity.Property(e => e.ModerateCount);
+            entity.Property(e => e.ComplexCount);
+            entity.Property(e => e.VeryComplexCount);
             entity.Property(e => e.ManualAdjHours).HasColumnType("REAL");
             entity.HasOne(e => e.Project).WithMany().HasForeignKey(e => e.ProjectId).OnDelete(DeleteBehavior.Cascade);
         });
