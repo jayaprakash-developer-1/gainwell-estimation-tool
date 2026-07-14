@@ -143,6 +143,9 @@ public static class DetailedDatabaseSeeder
         try { db.Database.ExecuteSqlRaw("ALTER TABLE DETAILED_BA_VALIDATIONS ADD COLUMN VeryComplexCount INTEGER NOT NULL DEFAULT 0"); }
         catch { /* column already exists */ };
         try { db.Database.ExecuteSqlRaw("ALTER TABLE DETAILED_BA_VALIDATIONS ADD COLUMN Notes TEXT DEFAULT ''"); } catch { /* column already exists */ }
+        try { db.Database.ExecuteSqlRaw("ALTER TABLE DETAILED_MISC_FIELDS ADD COLUMN SeEstimateBy TEXT DEFAULT ''"); } catch { /* column already exists */ }
+        try { db.Database.ExecuteSqlRaw("ALTER TABLE DETAILED_MISC_FIELDS ADD COLUMN BaEstimateBy TEXT DEFAULT ''"); } catch { /* column already exists */ }
+        try { db.Database.ExecuteSqlRaw("ALTER TABLE DETAILED_MISC_FIELDS ADD COLUMN CollabEstimateBy TEXT DEFAULT ''"); } catch { /* column already exists */ }
 
 
         db.Database.ExecuteSqlRaw(@"

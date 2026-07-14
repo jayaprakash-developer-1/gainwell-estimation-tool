@@ -84,8 +84,8 @@ public static class ProjectMapper
         vm.ProjectName = entity.ProjectName;
         vm.ChangeOrderId = entity.ChangeOrderId;
         vm.ProjectDescription = entity.ProjectDescription;
-        vm.EstimatedBy = entity.EstimatedBy;
-        vm.ReviewedBy = entity.ReviewedBy;
+        vm.EstimatedBy = !string.IsNullOrWhiteSpace(entity.EstimatedBy) ? entity.EstimatedBy : Environment.UserName;
+        vm.ReviewedBy = entity.ReviewedBy ?? string.Empty;
         vm.PmEffortPercentage = entity.PmEffortPercentage;
 
         // Per-task adjusted hours (with backward compat fallback)
