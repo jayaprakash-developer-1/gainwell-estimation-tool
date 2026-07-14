@@ -96,7 +96,7 @@ public class MainViewModel_SadPathTests
     }
 
     [Fact]
-    public void SadPath_SaveProject_EmptyReviewedBy_ReturnsError()
+    public void SadPath_SaveProject_EmptyReviewedBy_IsAllowed()
     {
         var vm = CreateVm();
         vm.ProjectName = "Test";
@@ -107,12 +107,12 @@ public class MainViewModel_SadPathTests
         AddComponent(vm, ComponentType.MISC, ComponentSize.Large, ChangeType.New, 1);
 
         var result = vm.SaveProject();
-        Assert.NotNull(result);
-        Assert.Contains("Reviewed By", result);
+        // ReviewedBy is no longer required — should not return a ReviewedBy error
+        Assert.True(result == null || !result.Contains("Reviewed By"));
     }
 
     [Fact]
-    public void SadPath_SaveProject_NoComponents_ReturnsError()
+    public void SadPath_SaveProject_NoComponents_Succeeds()
     {
         var vm = CreateVm();
         vm.ProjectName = "Test";
@@ -122,12 +122,12 @@ public class MainViewModel_SadPathTests
         vm.ReviewedBy = "Reviewer";
 
         var result = vm.SaveProject();
-        Assert.NotNull(result);
-        Assert.Contains("component", result, StringComparison.OrdinalIgnoreCase);
+        // Components are no longer required — should not return a component error
+        Assert.True(result == null || !result.Contains("component", StringComparison.OrdinalIgnoreCase));
     }
 
     [Fact]
-    public void SadPath_SaveProject_OnlyNoneTypeComponents_ReturnsError()
+    public void SadPath_SaveProject_OnlyNoneTypeComponents_Succeeds()
     {
         var vm = CreateVm();
         vm.ProjectName = "Test";
@@ -138,8 +138,8 @@ public class MainViewModel_SadPathTests
         vm.AddComponentCommand.Execute(null); // Adds with ComponentType.None
 
         var result = vm.SaveProject();
-        Assert.NotNull(result);
-        Assert.Contains("component", result, StringComparison.OrdinalIgnoreCase);
+        // Components are no longer required — should not return a component error
+        Assert.True(result == null || !result.Contains("component", StringComparison.OrdinalIgnoreCase));
     }
 
     #endregion
