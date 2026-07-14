@@ -275,16 +275,24 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
-                            <!-- Actual Hours Card -->
-                            <Border Grid.Column="0" Background="White" CornerRadius="10" Padding="16,14" Margin="4"
-                                    ToolTip="Enter the total actual hours spent on this project">
+                            <!-- Actual Hours Card (editable) -->
+                            <Border Grid.Column="0" CornerRadius="10" Padding="16,14" Margin="4"
+                                    BorderBrush="#019681" BorderThickness="1.5"
+                                    ToolTip="Enter the total actual hours spent on this project (editable)">
+                                <Border.Background>
+                                    <SolidColorBrush Color="White" />
+                                </Border.Background>
                                 <Border.Effect>
                                     <DropShadowEffect BlurRadius="10" Opacity="0.06" ShadowDepth="2" Direction="270" />
                                 </Border.Effect>
                                 <StackPanel>
-                                    <TextBlock Text="ACTUAL HOURS" FontSize="9" FontWeight="Bold" Foreground="#8E99A8" Margin="0,0,0,4" />
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                        <TextBlock Text="ACTUAL HOURS" FontSize="9" FontWeight="Bold" Foreground="#8E99A8" />
+                                        <TextBlock Text="  (edit)" FontSize="8" Foreground="#019681" FontStyle="Italic" VerticalAlignment="Center" />
+                                    </StackPanel>
                                     <TextBox x:Name="ActualHoursTextBox" Text="0" Padding="0" FontSize="20" FontWeight="Bold" Foreground="#2B3A44" 
                                              BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Left" TextChanged="OnSummaryFieldChanged" />
                                 </StackPanel>
@@ -294,19 +302,12 @@
                             <Border Grid.Column="1" CornerRadius="10" Padding="16,14" Margin="4"
                                     ToolTip="Total hours estimated by Software Engineering (auto-calculated from SE tab)">
                                 <Border.Background>
-                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                        <GradientStop Color="#E6F5F2" Offset="0" />
-                                        <GradientStop Color="#E6F5F2" Offset="1" />
-                                    </LinearGradientBrush>
+                                    <SolidColorBrush Color="#E6F5F2" />
                                 </Border.Background>
                                 <Border.Effect>
                                     <DropShadowEffect BlurRadius="10" Opacity="0.06" ShadowDepth="2" Direction="270" />
                                 </Border.Effect>
                                 <StackPanel>
-                                    <Grid Margin="0,0,0,8">
-                                        <Ellipse Width="32" Height="32" Fill="#E6F5F2" HorizontalAlignment="Left" />
-                                        <TextBlock Text="&#xE74C;" FontFamily="Segoe Fluent Icons" FontSize="14" Foreground="#019681" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="7,0,0,0" />
-                                    </Grid>
                                     <TextBlock Text="SE HOURS" FontFamily="Arial" FontSize="9" FontWeight="Bold" Foreground="#019681" Margin="0,0,0,4" />
                                     <TextBlock x:Name="SeHoursKpi" Text="0.00" FontFamily="Arial" FontSize="20" FontWeight="Bold" Foreground="#019681" />
                                 </StackPanel>
@@ -316,10 +317,7 @@
                             <Border Grid.Column="2" CornerRadius="10" Padding="16,14" Margin="4"
                                     ToolTip="Total hours estimated by Business Analyst (auto-calculated from BA tab)">
                                 <Border.Background>
-                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                        <GradientStop Color="#EDF0F8" Offset="0" />
-                                        <GradientStop Color="#EDF0F8" Offset="1" />
-                                    </LinearGradientBrush>
+                                    <SolidColorBrush Color="#EDF0F8" />
                                 </Border.Background>
                                 <Border.Effect>
                                     <DropShadowEffect BlurRadius="10" Opacity="0.06" ShadowDepth="2" Direction="270" />
@@ -334,10 +332,7 @@
                             <Border Grid.Column="3" CornerRadius="10" Padding="16,14" Margin="4"
                                     ToolTip="Total Collaboration/Quality hours including meetings, WPRs, and mentoring">
                                 <Border.Background>
-                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                        <GradientStop Color="#FDF8EF" Offset="0" />
-                                        <GradientStop Color="#FDF8EF" Offset="1" />
-                                    </LinearGradientBrush>
+                                    <SolidColorBrush Color="#FDF8EF" />
                                 </Border.Background>
                                 <Border.Effect>
                                     <DropShadowEffect BlurRadius="10" Opacity="0.06" ShadowDepth="2" Direction="270" />
@@ -348,61 +343,39 @@
                                 </StackPanel>
                             </Border>
 
-                            <!-- Total Estimate Card -->
+                            <!-- PM Reserve Card -->
                             <Border Grid.Column="4" CornerRadius="10" Padding="16,14" Margin="4"
-                                    ToolTip="Grand total of all estimated hours including PM reserve">
+                                    ToolTip="PM Reserve = 5% of sum of (Actual + SE + BA + Collab) hours">
                                 <Border.Background>
-                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                        <GradientStop Color="#E6F5F2" Offset="0" />
-                                        <GradientStop Color="#E6F5F2" Offset="1" />
-                                    </LinearGradientBrush>
+                                    <SolidColorBrush Color="#F5F3FF" />
+                                </Border.Background>
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="10" Opacity="0.06" ShadowDepth="2" Direction="270" />
+                                </Border.Effect>
+                                <StackPanel>
+                                    <TextBlock Text="PM RESERVE (5%)" FontSize="9" FontWeight="Bold" Foreground="#55206E" Margin="0,0,0,4" />
+                                    <TextBlock x:Name="PmReserveHoursText" Text="0.00" FontSize="20" FontWeight="Bold" Foreground="#55206E" />
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Total Estimate Card -->
+                            <Border Grid.Column="5" CornerRadius="10" Padding="16,14" Margin="4"
+                                    ToolTip="Grand total of all estimated hours including PM reserve (rounded up to nearest 10)">
+                                <Border.Background>
+                                    <SolidColorBrush Color="#E6F5F2" />
                                 </Border.Background>
                                 <Border.Effect>
                                     <DropShadowEffect BlurRadius="12" Opacity="0.08" ShadowDepth="3" Direction="270" />
                                 </Border.Effect>
                                 <StackPanel>
-                                    <Grid Margin="0,0,0,8">
-                                        <Ellipse Width="32" Height="32" Fill="#00EEAE" HorizontalAlignment="Left" />
-                                        <TextBlock Text="S" FontSize="16" FontWeight="Bold" Foreground="#019681" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" />
-                                    </Grid>
                                     <TextBlock Text="TOTAL ESTIMATE" FontSize="9" FontWeight="Bold" Foreground="#2B3A44" Margin="0,0,0,4" />
                                     <TextBlock x:Name="TotalWithReserveText" Text="0.00" FontSize="20" FontWeight="Bold" Foreground="#019681" />
                                 </StackPanel>
                             </Border>
                         </Grid>
 
-                        <!-- PM Reserve Row -->
-                        <Border Background="White" CornerRadius="10" Padding="16,12" Margin="12,0,12,8">
-                            <Border.Effect>
-                                <DropShadowEffect BlurRadius="6" Opacity="0.04" ShadowDepth="1" Direction="270" />
-                            </Border.Effect>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <Border Background="#EDF0F8" CornerRadius="6" Padding="8,4" Margin="0,0,12,0">
-                                        <TextBlock Text="PM" FontFamily="Arial" FontSize="10" FontWeight="Bold" Foreground="#55206E" />
-                                    </Border>
-                                    <TextBlock Text="Project Management Reserve" FontFamily="Arial" FontSize="13" FontWeight="SemiBold" Foreground="#2B3A44" VerticalAlignment="Center" />
-                                </StackPanel>
-                                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                                    <TextBox x:Name="PmReserveTextBox" Text="5" Width="48" Padding="6,4" FontSize="12" TextAlignment="Center" 
-                                             BorderBrush="#D4D7E0" TextChanged="OnSummaryFieldChanged"
-                                             ToolTip="Percentage of total hours to reserve for Project Management (typically 5-10%)">
-                                        <TextBox.Resources>
-                                            <Style TargetType="Border"><Setter Property="CornerRadius" Value="6"/></Style>
-                                        </TextBox.Resources>
-                                    </TextBox>
-                                    <TextBlock Text=" %" FontSize="13" Foreground="#5A6978" VerticalAlignment="Center" Margin="2,0,16,0" />
-                                    <Border Background="#F5F3FF" CornerRadius="6" Padding="10,4">
-                                        <TextBlock x:Name="PmReserveHoursText" Text="0.00 hrs" FontSize="13" FontWeight="Bold" Foreground="#1931E3" />
-                                    </Border>
-                                </StackPanel>
-                            </Grid>
-                        </Border>
+                        <!-- PM Reserve is hardcoded at 5% and shown in KPI cards above -->
+                        <TextBox x:Name="PmReserveTextBox" Text="5" Visibility="Collapsed" />
 
                         <!--  TEAM / ESTIMATED BY  -->
                         <Border Background="White" CornerRadius="10" Padding="20,16" Margin="12,8">

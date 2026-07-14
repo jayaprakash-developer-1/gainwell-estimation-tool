@@ -95,14 +95,8 @@ public partial class SeComponentDetailDialog : Window
 
     private void OnSave(object sender, RoutedEventArgs e)
     {
-        // Validate: Module Name is required for rows with data
-        var rowsWithData = Entries.Where(r => r.SimpleCount > 0 || r.ModerateCount > 0 || r.ComplexCount > 0 || !string.IsNullOrWhiteSpace(r.ModuleName)).ToList();
-        var missingNames = rowsWithData.Where(r => string.IsNullOrWhiteSpace(r.ModuleName)).ToList();
-        if (missingNames.Count > 0)
-        {
-            MessageBox.Show("Module Name is required for all rows that have data entered.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            return;
-        }
+        var rowsWithData = Entries.Where(r => r.SimpleCount > 0 || r.ModerateCount > 0 || r.ComplexCount > 0 
+            || r.AdjustedHrs != 0 || !string.IsNullOrWhiteSpace(r.ModuleName)).ToList();
 
         ResultEntries = new List<ModuleEntry>();
         foreach (var row in rowsWithData)

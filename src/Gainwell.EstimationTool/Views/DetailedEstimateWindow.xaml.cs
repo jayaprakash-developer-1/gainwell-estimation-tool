@@ -538,7 +538,71 @@ public partial class DetailedEstimateWindow : Window
         BaTestCases[20].Notes = BaExpPRD_Notes?.Text ?? string.Empty;
     }
 
-    /// <summary>Sync PV radio button selections G�� BaValidationItems model (0=none, 1=selected).</summary>
+    /// <summary>Push model data back to BA card TextBoxes (reverse of SyncCardsToModel, used after loading).</summary>
+    private void SyncModelToCards()
+    {
+        void Set(TextBox? tb, decimal v) { if (tb != null) tb.Text = v == 0 ? "0" : v.ToString("G"); }
+
+        // New to Area (indices 0-6)
+        Set(BaNewUR_Simple, BaTestCases[0].SimpleCount); Set(BaNewUR_Moderate, BaTestCases[0].ModerateCount);
+        Set(BaNewUR_Complex, BaTestCases[0].ComplexCount); Set(BaNewUR_VComplex, BaTestCases[0].VeryComplexCount);
+        Set(BaNewUR_AdjHrs, BaTestCases[0].ManualAdjHours);
+        Set(BaNewWTC_Simple, BaTestCases[1].SimpleCount); Set(BaNewWTC_Moderate, BaTestCases[1].ModerateCount);
+        Set(BaNewWTC_Complex, BaTestCases[1].ComplexCount); Set(BaNewWTC_VComplex, BaTestCases[1].VeryComplexCount);
+        Set(BaNewIter_Simple, BaTestCases[2].SimpleCount); Set(BaNewIter_Moderate, BaTestCases[2].ModerateCount);
+        Set(BaNewIter_Complex, BaTestCases[2].ComplexCount); Set(BaNewIter_VComplex, BaTestCases[2].VeryComplexCount);
+        Set(BaNewDP_AdjHrs, BaTestCases[3].ManualAdjHours); Set(BaNewALM_AdjHrs, BaTestCases[4].ManualAdjHours);
+        Set(BaNewSTE_AdjHrs, BaTestCases[5].ManualAdjHours); Set(BaNewPRD_AdjHrs, BaTestCases[6].ManualAdjHours);
+
+        // Proficient (indices 7-13)
+        Set(BaProfUR_Simple, BaTestCases[7].SimpleCount); Set(BaProfUR_Moderate, BaTestCases[7].ModerateCount);
+        Set(BaProfUR_Complex, BaTestCases[7].ComplexCount); Set(BaProfUR_VComplex, BaTestCases[7].VeryComplexCount);
+        Set(BaProfUR_AdjHrs, BaTestCases[7].ManualAdjHours);
+        Set(BaProfWTC_Simple, BaTestCases[8].SimpleCount); Set(BaProfWTC_Moderate, BaTestCases[8].ModerateCount);
+        Set(BaProfWTC_Complex, BaTestCases[8].ComplexCount); Set(BaProfWTC_VComplex, BaTestCases[8].VeryComplexCount);
+        Set(BaProfIter_Simple, BaTestCases[9].SimpleCount); Set(BaProfIter_Moderate, BaTestCases[9].ModerateCount);
+        Set(BaProfIter_Complex, BaTestCases[9].ComplexCount); Set(BaProfIter_VComplex, BaTestCases[9].VeryComplexCount);
+        Set(BaProfDP_AdjHrs, BaTestCases[10].ManualAdjHours); Set(BaProfALM_AdjHrs, BaTestCases[11].ManualAdjHours);
+        Set(BaProfSTE_AdjHrs, BaTestCases[12].ManualAdjHours); Set(BaProfPRD_AdjHrs, BaTestCases[13].ManualAdjHours);
+
+        // Expert (indices 14-20)
+        Set(BaExpUR_Simple, BaTestCases[14].SimpleCount); Set(BaExpUR_Moderate, BaTestCases[14].ModerateCount);
+        Set(BaExpUR_Complex, BaTestCases[14].ComplexCount); Set(BaExpUR_VComplex, BaTestCases[14].VeryComplexCount);
+        Set(BaExpUR_AdjHrs, BaTestCases[14].ManualAdjHours);
+        Set(BaExpWTC_Simple, BaTestCases[15].SimpleCount); Set(BaExpWTC_Moderate, BaTestCases[15].ModerateCount);
+        Set(BaExpWTC_Complex, BaTestCases[15].ComplexCount); Set(BaExpWTC_VComplex, BaTestCases[15].VeryComplexCount);
+        Set(BaExpIter_Simple, BaTestCases[16].SimpleCount); Set(BaExpIter_Moderate, BaTestCases[16].ModerateCount);
+        Set(BaExpIter_Complex, BaTestCases[16].ComplexCount); Set(BaExpIter_VComplex, BaTestCases[16].VeryComplexCount);
+        Set(BaExpDP_AdjHrs, BaTestCases[17].ManualAdjHours); Set(BaExpALM_AdjHrs, BaTestCases[18].ManualAdjHours);
+        Set(BaExpSTE_AdjHrs, BaTestCases[19].ManualAdjHours); Set(BaExpPRD_AdjHrs, BaTestCases[20].ManualAdjHours);
+    }
+
+    /// <summary>Push BaValidationItems model back to PV radio buttons (reverse of SyncPvRadiosToModel).</summary>
+    private void SyncModelToPvRadios()
+    {
+        void SetRadio(RadioButton? none, RadioButton? simple, RadioButton? moderate, RadioButton? complex, RadioButton? vcomplex, TextBox? adj, int idx)
+        {
+            var item = BaValidationItems[idx];
+            if (item.VeryComplexCount > 0 && vcomplex != null) vcomplex.IsChecked = true;
+            else if (item.ComplexCount > 0 && complex != null) complex.IsChecked = true;
+            else if (item.ModerateCount > 0 && moderate != null) moderate.IsChecked = true;
+            else if (item.SimpleCount > 0 && simple != null) simple.IsChecked = true;
+            else if (none != null) none.IsChecked = true;
+            if (adj != null) adj.Text = item.ManualAdjHours == 0 ? "0" : item.ManualAdjHours.ToString("G");
+        }
+
+        SetRadio(BaPvNewGV_None, BaPvNewGV_Simple, BaPvNewGV_Moderate, BaPvNewGV_Complex, BaPvNewGV_VComplex, BaPvNewGV_Adj, 0);
+        SetRadio(BaPvNewPC_None, BaPvNewPC_Simple, BaPvNewPC_Moderate, BaPvNewPC_Complex, BaPvNewPC_VComplex, BaPvNewPC_Adj, 1);
+        SetRadio(BaPvNewRC_None, BaPvNewRC_Simple, BaPvNewRC_Moderate, BaPvNewRC_Complex, BaPvNewRC_VComplex, BaPvNewRC_Adj, 2);
+        SetRadio(BaPvProfGV_None, BaPvProfGV_Simple, BaPvProfGV_Moderate, BaPvProfGV_Complex, BaPvProfGV_VComplex, BaPvProfGV_Adj, 3);
+        SetRadio(BaPvProfPC_None, BaPvProfPC_Simple, BaPvProfPC_Moderate, BaPvProfPC_Complex, BaPvProfPC_VComplex, BaPvProfPC_Adj, 4);
+        SetRadio(BaPvProfRC_None, BaPvProfRC_Simple, BaPvProfRC_Moderate, BaPvProfRC_Complex, BaPvProfRC_VComplex, BaPvProfRC_Adj, 5);
+        SetRadio(BaPvExpGV_None, BaPvExpGV_Simple, BaPvExpGV_Moderate, BaPvExpGV_Complex, BaPvExpGV_VComplex, BaPvExpGV_Adj, 6);
+        SetRadio(BaPvExpPC_None, BaPvExpPC_Simple, BaPvExpPC_Moderate, BaPvExpPC_Complex, BaPvExpPC_VComplex, BaPvExpPC_Adj, 7);
+        SetRadio(BaPvExpRC_None, BaPvExpRC_Simple, BaPvExpRC_Moderate, BaPvExpRC_Complex, BaPvExpRC_VComplex, BaPvExpRC_Adj, 8);
+    }
+
+    /// <summary>Sync PV radio button selections -> BaValidationItems model (0=none, 1=selected).</summary>
     private void SyncPvRadiosToModel()
     {
         // Row 0: New GV
@@ -1087,10 +1151,12 @@ public partial class DetailedEstimateWindow : Window
             decimal collabTotal = meetingHours + consultantTotal + (detailEst + finalEst) + pmEffort + meetingAdj;
             existing.CollaborationHours = collabTotal;
 
-            decimal pmPct = decimal.TryParse(PmReserveTextBox?.Text, out var pm) ? pm : 5;
-            decimal totalBeforeReserve = devTotal + promotion + doc + baTotal + collabTotal;
+            decimal actualHours = ParseDecimal(ActualHoursTextBox);
+            existing.TotalActualHours = actualHours;
+            decimal pmPct = 5m; // Hardcoded 5% PM Reserve
+            decimal totalBeforeReserve = actualHours + devTotal + promotion + doc + baTotal + collabTotal;
             existing.GrandTotalHours = totalBeforeReserve + (totalBeforeReserve * pmPct / 100m);
-            existing.EstimatedBy = EstimatedByTextBox?.Text ?? Environment.UserName;
+            existing.EstimatedBy = SeEstimateByTextBox?.Text ?? Environment.UserName;
             existing.LastModifiedDate = DateTime.UtcNow;
             existing.VersionNumber++;
 
@@ -1225,7 +1291,15 @@ public partial class DetailedEstimateWindow : Window
                 BaSysDocHours = baSysDoc, CommPlanHours = commPlan,
                 SeAdjustedComment = SeAdjustedHrsCommentTextBox?.Text ?? string.Empty,
                 BaAdjustedComment = BaAdjustedHrsCommentTextBox?.Text ?? string.Empty,
-                CollabAdjustedComment = CollabAdjustedHrsCommentTextBox?.Text ?? string.Empty
+                CollabAdjustedComment = CollabAdjustedHrsCommentTextBox?.Text ?? string.Empty,
+                SeEstimateBy = SeEstimateByTextBox?.Text ?? string.Empty,
+                BaEstimateBy = BaEstimateByTextBox?.Text ?? string.Empty,
+                CollabEstimateBy = CollabEstimateByTextBox?.Text ?? string.Empty,
+                SeAssumptions = SeModuleAssumptionsTextBox?.Text ?? string.Empty,
+                BaAssumptions = BaAssumptionsDetailTextBox?.Text ?? string.Empty,
+                CollabAssumptions = CollabAssumptionsDetailTextBox?.Text ?? string.Empty,
+                ActualHours = actualHours,
+                ActualHoursDate = ActualHoursDateTextBox?.Text ?? string.Empty
             });
 
             db.SaveChanges();
@@ -1397,9 +1471,35 @@ public partial class DetailedEstimateWindow : Window
             if (SeAdjustedHrsCommentTextBox != null) SeAdjustedHrsCommentTextBox.Text = misc.SeAdjustedComment;
             if (BaAdjustedHrsCommentTextBox != null) BaAdjustedHrsCommentTextBox.Text = misc.BaAdjustedComment;
             if (CollabAdjustedHrsCommentTextBox != null) CollabAdjustedHrsCommentTextBox.Text = misc.CollabAdjustedComment;
+
+            // Restore EstimateBy fields
+            if (SeEstimateByTextBox != null && !string.IsNullOrEmpty(misc.SeEstimateBy))
+                SeEstimateByTextBox.Text = misc.SeEstimateBy;
+            if (BaEstimateByTextBox != null && !string.IsNullOrEmpty(misc.BaEstimateBy))
+                BaEstimateByTextBox.Text = misc.BaEstimateBy;
+            if (CollabEstimateByTextBox != null && !string.IsNullOrEmpty(misc.CollabEstimateBy))
+                CollabEstimateByTextBox.Text = misc.CollabEstimateBy;
+
+            // Restore Assumptions
+            if (SeModuleAssumptionsTextBox != null && !string.IsNullOrEmpty(misc.SeAssumptions))
+                SeModuleAssumptionsTextBox.Text = misc.SeAssumptions;
+            if (BaAssumptionsDetailTextBox != null && !string.IsNullOrEmpty(misc.BaAssumptions))
+                BaAssumptionsDetailTextBox.Text = misc.BaAssumptions;
+            if (CollabAssumptionsDetailTextBox != null && !string.IsNullOrEmpty(misc.CollabAssumptions))
+                CollabAssumptionsDetailTextBox.Text = misc.CollabAssumptions;
+
+            // Restore Actual Hours and Date
+            SetTextBox(ActualHoursTextBox, misc.ActualHours);
+            if (ActualHoursDateTextBox != null && !string.IsNullOrEmpty(misc.ActualHoursDate))
+                ActualHoursDateTextBox.Text = misc.ActualHoursDate;
         }
 
         UpdateSeTotals();
+        SyncModelToCards();
+        SyncModelToPvRadios();
+        RecalculateCollaboration();
+        UpdateBaCardDisplays();
+        UpdateSummaryTab();
     }
 
     private static void SetTextBox(TextBox? tb, decimal value)
@@ -1496,10 +1596,64 @@ public partial class DetailedEstimateWindow : Window
             SysDocCommPlanTotalText.Text = (baSysDoc + commPlan).ToString("N2");
         decimal baTotalStraight = BaTestCases.Sum(r => r.Total) + BaRegressionRows.Sum(r => r.Total) + BaValidationItems.Sum(r => r.Hours);
         decimal baTotalAdj = BaTestCases.Sum(r => r.AdjustedHours) + BaRegressionRows.Sum(r => r.AdjustedHours) + BaValidationItems.Sum(r => r.AdjustedHours) + remainingBdd + sysDocProdVal + baSysDoc + commPlan;
-        BaSummaryRows[0].StraightHours = baTotalStraight;
-        BaSummaryRows[0].AdjustedExpLevel = baTotalAdj;
-        BaSummaryRows[0].GrandTotal = baTotalAdj;
-        BaSummaryGrid?.Items.Refresh();
+
+        // Populate individual BA Summary rows
+        var wtcOnlyRows = BaTestCases.Where(r => r.TaskType == "WriteSystemTestCases" && !r.IsInfoRow).ToList();
+        var dpRows = BaTestCases.Where(r => r.TaskType == "DataPreparation" && !r.IsInfoRow).ToList();
+        var almRows = BaTestCases.Where(r => r.TaskType == "ALMUpload" && !r.IsInfoRow).ToList();
+        var steRows = BaTestCases.Where(r => r.TaskType == "SysTestExecution" && !r.IsInfoRow).ToList();
+        var prdRows = BaTestCases.Where(r => r.TaskType == "PreReleaseDefects" && !r.IsInfoRow).ToList();
+        var urRows = BaTestCases.Where(r => r.TaskType == "UnderstandingRequirements" && !r.IsInfoRow).ToList();
+
+        // Row 1: Remaining BDD Work
+        BaSummaryRows[1].StraightHours = remainingBdd;
+        BaSummaryRows[1].GrandTotal = remainingBdd;
+
+        // Row 2: Write System Test Cases Summary (includes UR + WTC + auto-calc tasks)
+        decimal wtcStraight = wtcOnlyRows.Sum(r => r.Total) + urRows.Sum(r => r.Total);
+        decimal wtcAdjExp = wtcOnlyRows.Sum(r => r.AdjustedExpLevel) + urRows.Sum(r => r.AdjustedExpLevel);
+        decimal wtcAdjHrs = wtcOnlyRows.Sum(r => r.ManualAdjHours) + urRows.Sum(r => r.ManualAdjHours);
+        decimal wtcGrand = wtcOnlyRows.Sum(r => r.GrandTotal) + urRows.Sum(r => r.GrandTotal);
+        BaSummaryRows[2].StraightHours = wtcStraight;
+        BaSummaryRows[2].AdjustedExpLevel = wtcAdjExp;
+        BaSummaryRows[2].AdjustedMisc = wtcAdjHrs;
+        BaSummaryRows[2].GrandTotal = wtcGrand;
+
+        // Row 3: Data Preparation Summary
+        BaSummaryRows[3].StraightHours = dpRows.Sum(r => r.Total);
+        BaSummaryRows[3].AdjustedExpLevel = dpRows.Sum(r => r.AdjustedExpLevel);
+        BaSummaryRows[3].AdjustedMisc = dpRows.Sum(r => r.ManualAdjHours);
+        BaSummaryRows[3].GrandTotal = dpRows.Sum(r => r.GrandTotal);
+
+        // Row 4: Testing and Documentation Summary (ALM + STE + PRD)
+        decimal testDocStraight = almRows.Sum(r => r.Total) + steRows.Sum(r => r.Total) + prdRows.Sum(r => r.Total);
+        decimal testDocAdjExp = almRows.Sum(r => r.AdjustedExpLevel) + steRows.Sum(r => r.AdjustedExpLevel) + prdRows.Sum(r => r.AdjustedExpLevel);
+        decimal testDocAdjHrs = almRows.Sum(r => r.ManualAdjHours) + steRows.Sum(r => r.ManualAdjHours) + prdRows.Sum(r => r.ManualAdjHours);
+        decimal testDocGrand = almRows.Sum(r => r.GrandTotal) + steRows.Sum(r => r.GrandTotal) + prdRows.Sum(r => r.GrandTotal);
+        BaSummaryRows[4].StraightHours = testDocStraight;
+        BaSummaryRows[4].AdjustedExpLevel = testDocAdjExp;
+        BaSummaryRows[4].AdjustedMisc = testDocAdjHrs;
+        BaSummaryRows[4].GrandTotal = testDocGrand;
+
+        // Row 5: Regression Testing/Documentation
+        BaSummaryRows[5].StraightHours = BaRegressionRows.Sum(r => r.Total);
+        BaSummaryRows[5].AdjustedExpLevel = BaRegressionRows.Sum(r => r.AdjustedExpLevel);
+        BaSummaryRows[5].AdjustedMisc = BaRegressionRows.Sum(r => r.ManualAdjHours);
+        BaSummaryRows[5].GrandTotal = BaRegressionRows.Sum(r => r.GrandTotal);
+
+        // Row 6: Perform Production Validation
+        BaSummaryRows[6].StraightHours = BaValidationItems.Sum(r => r.ComplexityTotal);
+        BaSummaryRows[6].AdjustedExpLevel = BaValidationItems.Sum(r => r.AdjustedExpLevel);
+        BaSummaryRows[6].AdjustedMisc = BaValidationItems.Sum(r => r.ManualAdjHours);
+        BaSummaryRows[6].GrandTotal = BaValidationItems.Sum(r => r.GrandTotal);
+
+        // Row 7: Production Validation Documentation
+        BaSummaryRows[7].StraightHours = sysDocProdVal;
+        BaSummaryRows[7].GrandTotal = sysDocProdVal;
+
+        // Row 8: System Documentation / Communication
+        BaSummaryRows[8].StraightHours = baSysDoc + commPlan;
+        BaSummaryRows[8].GrandTotal = baSysDoc + commPlan;
 
         // WTC Summary: counts from WTC rows only; CT/AdjExp/AdjHrs/GT from all non-Iteration rows
         var wtcRows = BaTestCases.Where(r => r.TaskType == "WriteSystemTestCases").ToList();
@@ -1534,6 +1688,13 @@ public partial class DetailedEstimateWindow : Window
         if (BaGrandTotalAdjExp != null)  BaGrandTotalAdjExp.Text  = baGrandTotalAdjExp.ToString("N2");
         if (BaGrandTotalAdjHrs != null)  BaGrandTotalAdjHrs.Text  = baGrandTotalAdjHrs.ToString("N2");
         if (BaGrandTotalText != null) BaGrandTotalText.Text = baGrandTotal.ToString("N2");
+
+        // Row 0: BA Total - use baGrandTotal (MROUND'd) to match BA tab
+        BaSummaryRows[0].StraightHours = baGrandTotalCT;
+        BaSummaryRows[0].AdjustedExpLevel = baGrandTotalAdjExp;
+        BaSummaryRows[0].AdjustedMisc = baGrandTotalAdjHrs;
+        BaSummaryRows[0].GrandTotal = baGrandTotal;
+        BaSummaryGrid?.Items.Refresh();
 
         // Update Collaboration Summary - full calculation matching Excel
         decimal wprCount = ParseDecimal(WprCountTextBox);
@@ -1571,9 +1732,9 @@ public partial class DetailedEstimateWindow : Window
         CollabSummaryRows[0].GrandTotal = collabTotal;
         CollabSummaryGrid?.Items.Refresh();
 
-        // Update header KPIs
+        // Update header KPIs — use baGrandTotal (MROUND'd) to match BA tab
         SeHoursKpi.Text = seTotalGrand.ToString("N2");
-        BaHoursKpi.Text = baTotalAdj.ToString("N2");
+        BaHoursKpi.Text = baGrandTotal.ToString("N2");
         CollabHoursKpi.Text = collabTotal.ToString("N2");
 
         // Map SE/BA/Collab totals to their respective tab total displays
@@ -1581,14 +1742,17 @@ public partial class DetailedEstimateWindow : Window
         CollabTotalText.Text = collabTotal.ToString("N2");
 
         // Total = Actual Hours + SE + BA + Collab + PM Reserve
+        // PM Reserve = 5% of (Actual + SE + BA + Collab) per Excel formula =SUM(E5:E8)*0.05
         decimal actualHours = decimal.TryParse(ActualHoursTextBox?.Text, out var ah) ? ah : 0;
-        decimal grandTotal = seTotalGrand + baTotalAdj + collabTotal;
-        decimal pmPct = decimal.TryParse(PmReserveTextBox?.Text, out var pm) ? pm : 5;
-        decimal pmHours = grandTotal * (pmPct / 100m);
+        decimal sumBeforeReserve = actualHours + seTotalGrand + baGrandTotal + collabTotal;
+        decimal pmPct = 5m; // Hardcoded 5% PM Reserve
+        decimal pmHours = sumBeforeReserve * (pmPct / 100m);
         PmReserveHoursText.Text = pmHours.ToString("N2");
-        decimal totalEstimate = actualHours + grandTotal + pmHours;
-        TotalWithReserveText.Text = totalEstimate.ToString("N2");
-        TotalHoursKpi.Text = $"{totalEstimate:N2} Hrs";
+        decimal totalEstimate = sumBeforeReserve + pmHours;
+        // Round up to nearest 10 (matching Excel ROUNDUP(E10,-1))
+        decimal roundedTotal = Math.Ceiling(totalEstimate / 10m) * 10m;
+        TotalWithReserveText.Text = roundedTotal.ToString("N2");
+        TotalHoursKpi.Text = $"{roundedTotal:N2} Hrs";
 
         // Aggregate Assumptions from each tab
         SummarySeAssumptionText.Text = SeModuleAssumptionsTextBox?.Text ?? string.Empty;

@@ -139,5 +139,13 @@ public class DetailedMiscFieldsEntity
     public string SeAdjustedComment { get; set; } = string.Empty;
     public string BaAdjustedComment { get; set; } = string.Empty;
     public string CollabAdjustedComment { get; set; } = string.Empty;
+    public string SeEstimateBy { get; set; } = string.Empty;
+    public string BaEstimateBy { get; set; } = string.Empty;
+    public string CollabEstimateBy { get; set; } = string.Empty;
+    public string SeAssumptions { get; set; } = string.Empty;
+    public string BaAssumptions { get; set; } = string.Empty;
+    public string CollabAssumptions { get; set; } = string.Empty;
+    public decimal ActualHours { get; set; }
+    public string ActualHoursDate { get; set; } = string.Empty;
     public ProjectEntity? Project { get; set; }
 }
