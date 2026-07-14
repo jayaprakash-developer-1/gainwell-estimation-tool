@@ -956,16 +956,7 @@ public partial class DetailedEstimateWindow : Window
 
     private void OnHomeClick(object sender, RoutedEventArgs e)
     {
-        var welcome = new WelcomeWindow();
-        welcome.WindowStartupLocation = WindowStartupLocation.Manual;
-        welcome.Left = Left;
-        welcome.Top = Top;
-        welcome.Width = Width;
-        welcome.Height = Height;
-        welcome.WindowState = WindowState;
-        welcome.Show();
-        welcome.Activate();
-        Hide();
+        EstimateNavigator.GoHome(this);
     }
 
     private void OnInitialTabClick(object sender, System.Windows.Input.MouseButtonEventArgs e)

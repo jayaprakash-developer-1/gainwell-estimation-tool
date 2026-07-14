@@ -190,23 +190,33 @@ public static class EstimateNavigator
     private static void ApplyDimensions(Window target, Window source)
     {
         target.WindowStartupLocation = WindowStartupLocation.Manual;
-        // Use RestoreBounds to get the position on the correct monitor even when maximized
         var bounds = source.RestoreBounds;
         target.Left = bounds.Left;
         target.Top = bounds.Top;
         target.Width = bounds.Width;
         target.Height = bounds.Height;
+        // Set WindowState LAST — prevents WPF from de-maximizing when bounds are set
         target.WindowState = source.WindowState;
     }
 
     private static void SyncPosition(Window source, Window target)
     {
-        // Always sync restore bounds so the window lands on the correct monitor
+        var state = source.WindowState;
         var bounds = source.RestoreBounds;
-        target.Left = bounds.Left;
-        target.Top = bounds.Top;
-        target.Width = bounds.Width;
-        target.Height = bounds.Height;
-        target.WindowState = source.WindowState;
+
+        // If maximized, only sync the WindowState — don't change Width/Height
+        // which would cause WPF to briefly de-maximize then re-maximize (flicker)
+        if (state == WindowState.Maximized)
+        {
+            target.WindowState = WindowState.Maximized;
+        }
+        else
+        {
+            target.WindowState = WindowState.Normal;
+            target.Left = bounds.Left;
+            target.Top = bounds.Top;
+            target.Width = bounds.Width;
+            target.Height = bounds.Height;
+        }
     }
 }
