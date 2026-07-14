@@ -139,5 +139,8 @@ public class DetailedMiscFieldsEntity
     public string SeAdjustedComment { get; set; } = string.Empty;
     public string BaAdjustedComment { get; set; } = string.Empty;
     public string CollabAdjustedComment { get; set; } = string.Empty;
+    public string SeEstimateBy { get; set; } = string.Empty;
+    public string BaEstimateBy { get; set; } = string.Empty;
+    public string CollabEstimateBy { get; set; } = string.Empty;
     public ProjectEntity? Project { get; set; }
 }

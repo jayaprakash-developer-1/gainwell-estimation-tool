@@ -41,6 +41,10 @@ public static class EstimateNavigator
                 vm.ProjectName = project.ProjectName;
                 vm.ChangeOrderId = project.ChangeOrderId;
                 vm.ProjectDescription = project.ProjectDescription;
+                if (!string.IsNullOrWhiteSpace(project.EstimatedBy))
+                    vm.EstimatedBy = project.EstimatedBy;
+                if (!string.IsNullOrWhiteSpace(project.ReviewedBy))
+                    vm.ReviewedBy = project.ReviewedBy;
             }
         }
 
