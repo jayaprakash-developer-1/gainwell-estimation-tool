@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -451,7 +451,73 @@ public partial class DetailedEstimateWindow : Window
     }
 
     /// <summary>Sync card TextBox values G�� BaTestCases model rows (preserves all calculation logic).</summary>
-    private void SyncCardsToModel()
+    
+    /// <summary>Sync BaTestCases model rows -> card TextBoxes (reverse of SyncCardsToModel). Called after loading from DB.</summary>
+    private void SyncModelToCards()
+    {
+        static void SetTb(System.Windows.Controls.TextBox? tb, decimal v) { if (tb != null) tb.Text = v == 0 ? "0" : v.ToString("G"); }
+
+        SetTb(BaNewUR_Simple, BaTestCases[0].SimpleCount); SetTb(BaNewUR_Moderate, BaTestCases[0].ModerateCount);
+        SetTb(BaNewUR_Complex, BaTestCases[0].ComplexCount); SetTb(BaNewUR_VComplex, BaTestCases[0].VeryComplexCount);
+        SetTb(BaNewUR_AdjHrs, BaTestCases[0].ManualAdjHours);
+        SetTb(BaNewWTC_Simple, BaTestCases[1].SimpleCount); SetTb(BaNewWTC_Moderate, BaTestCases[1].ModerateCount);
+        SetTb(BaNewWTC_Complex, BaTestCases[1].ComplexCount); SetTb(BaNewWTC_VComplex, BaTestCases[1].VeryComplexCount);
+        SetTb(BaNewWTC_AdjHrs, BaTestCases[1].ManualAdjHours);
+        SetTb(BaNewIter_Simple, BaTestCases[2].SimpleCount); SetTb(BaNewIter_Moderate, BaTestCases[2].ModerateCount);
+        SetTb(BaNewIter_Complex, BaTestCases[2].ComplexCount); SetTb(BaNewIter_VComplex, BaTestCases[2].VeryComplexCount);
+        SetTb(BaNewDP_AdjHrs, BaTestCases[3].ManualAdjHours); SetTb(BaNewALM_AdjHrs, BaTestCases[4].ManualAdjHours);
+        SetTb(BaNewSTE_AdjHrs, BaTestCases[5].ManualAdjHours); SetTb(BaNewPRD_AdjHrs, BaTestCases[6].ManualAdjHours);
+
+        SetTb(BaProfUR_Simple, BaTestCases[7].SimpleCount); SetTb(BaProfUR_Moderate, BaTestCases[7].ModerateCount);
+        SetTb(BaProfUR_Complex, BaTestCases[7].ComplexCount); SetTb(BaProfUR_VComplex, BaTestCases[7].VeryComplexCount);
+        SetTb(BaProfUR_AdjHrs, BaTestCases[7].ManualAdjHours);
+        SetTb(BaProfWTC_Simple, BaTestCases[8].SimpleCount); SetTb(BaProfWTC_Moderate, BaTestCases[8].ModerateCount);
+        SetTb(BaProfWTC_Complex, BaTestCases[8].ComplexCount); SetTb(BaProfWTC_VComplex, BaTestCases[8].VeryComplexCount);
+        SetTb(BaProfWTC_AdjHrs, BaTestCases[8].ManualAdjHours);
+        SetTb(BaProfIter_Simple, BaTestCases[9].SimpleCount); SetTb(BaProfIter_Moderate, BaTestCases[9].ModerateCount);
+        SetTb(BaProfIter_Complex, BaTestCases[9].ComplexCount); SetTb(BaProfIter_VComplex, BaTestCases[9].VeryComplexCount);
+        SetTb(BaProfDP_AdjHrs, BaTestCases[10].ManualAdjHours); SetTb(BaProfALM_AdjHrs, BaTestCases[11].ManualAdjHours);
+        SetTb(BaProfSTE_AdjHrs, BaTestCases[12].ManualAdjHours); SetTb(BaProfPRD_AdjHrs, BaTestCases[13].ManualAdjHours);
+
+        SetTb(BaExpUR_Simple, BaTestCases[14].SimpleCount); SetTb(BaExpUR_Moderate, BaTestCases[14].ModerateCount);
+        SetTb(BaExpUR_Complex, BaTestCases[14].ComplexCount); SetTb(BaExpUR_VComplex, BaTestCases[14].VeryComplexCount);
+        SetTb(BaExpUR_AdjHrs, BaTestCases[14].ManualAdjHours);
+        SetTb(BaExpWTC_Simple, BaTestCases[15].SimpleCount); SetTb(BaExpWTC_Moderate, BaTestCases[15].ModerateCount);
+        SetTb(BaExpWTC_Complex, BaTestCases[15].ComplexCount); SetTb(BaExpWTC_VComplex, BaTestCases[15].VeryComplexCount);
+        SetTb(BaExpWTC_AdjHrs, BaTestCases[15].ManualAdjHours);
+        SetTb(BaExpIter_Simple, BaTestCases[16].SimpleCount); SetTb(BaExpIter_Moderate, BaTestCases[16].ModerateCount);
+        SetTb(BaExpIter_Complex, BaTestCases[16].ComplexCount); SetTb(BaExpIter_VComplex, BaTestCases[16].VeryComplexCount);
+        SetTb(BaExpDP_AdjHrs, BaTestCases[17].ManualAdjHours); SetTb(BaExpALM_AdjHrs, BaTestCases[18].ManualAdjHours);
+        SetTb(BaExpSTE_AdjHrs, BaTestCases[19].ManualAdjHours); SetTb(BaExpPRD_AdjHrs, BaTestCases[20].ManualAdjHours);
+    }
+
+    /// <summary>Restore PV radio button selections and AdjHrs from BaValidationItems (reverse of SyncPvRadiosToModel).</summary>
+    private void SyncModelToPvRadios()
+    {
+        static void SetRadio(System.Windows.Controls.RadioButton? none,
+            System.Windows.Controls.RadioButton? simple, System.Windows.Controls.RadioButton? moderate,
+            System.Windows.Controls.RadioButton? complex, System.Windows.Controls.RadioButton? vcomplex,
+            BaValidationRow row)
+        {
+            if      (row.VeryComplexCount == 1) { if (vcomplex != null) vcomplex.IsChecked = true; }
+            else if (row.ComplexCount == 1)     { if (complex != null)  complex.IsChecked  = true; }
+            else if (row.ModerateCount == 1)    { if (moderate != null) moderate.IsChecked = true; }
+            else if (row.SimpleCount == 1)      { if (simple != null)   simple.IsChecked   = true; }
+            else                                { if (none != null)     none.IsChecked     = true; }
+        }
+        static void SetTb(System.Windows.Controls.TextBox? tb, decimal v) { if (tb != null) tb.Text = v == 0 ? "0" : v.ToString("G"); }
+
+        SetRadio(BaPvNewGV_None,  BaPvNewGV_Simple,  BaPvNewGV_Moderate,  BaPvNewGV_Complex,  BaPvNewGV_VComplex,  BaValidationItems[0]); SetTb(BaPvNewGV_Adj,  BaValidationItems[0].ManualAdjHours);
+        SetRadio(BaPvNewPC_None,  BaPvNewPC_Simple,  BaPvNewPC_Moderate,  BaPvNewPC_Complex,  BaPvNewPC_VComplex,  BaValidationItems[1]); SetTb(BaPvNewPC_Adj,  BaValidationItems[1].ManualAdjHours);
+        SetRadio(BaPvNewRC_None,  BaPvNewRC_Simple,  BaPvNewRC_Moderate,  BaPvNewRC_Complex,  BaPvNewRC_VComplex,  BaValidationItems[2]); SetTb(BaPvNewRC_Adj,  BaValidationItems[2].ManualAdjHours);
+        SetRadio(BaPvProfGV_None, BaPvProfGV_Simple, BaPvProfGV_Moderate, BaPvProfGV_Complex, BaPvProfGV_VComplex, BaValidationItems[3]); SetTb(BaPvProfGV_Adj, BaValidationItems[3].ManualAdjHours);
+        SetRadio(BaPvProfPC_None, BaPvProfPC_Simple, BaPvProfPC_Moderate, BaPvProfPC_Complex, BaPvProfPC_VComplex, BaValidationItems[4]); SetTb(BaPvProfPC_Adj, BaValidationItems[4].ManualAdjHours);
+        SetRadio(BaPvProfRC_None, BaPvProfRC_Simple, BaPvProfRC_Moderate, BaPvProfRC_Complex, BaPvProfRC_VComplex, BaValidationItems[5]); SetTb(BaPvProfRC_Adj, BaValidationItems[5].ManualAdjHours);
+        SetRadio(BaPvExpGV_None,  BaPvExpGV_Simple,  BaPvExpGV_Moderate,  BaPvExpGV_Complex,  BaPvExpGV_VComplex,  BaValidationItems[6]); SetTb(BaPvExpGV_Adj,  BaValidationItems[6].ManualAdjHours);
+        SetRadio(BaPvExpPC_None,  BaPvExpPC_Simple,  BaPvExpPC_Moderate,  BaPvExpPC_Complex,  BaPvExpPC_VComplex,  BaValidationItems[7]); SetTb(BaPvExpPC_Adj,  BaValidationItems[7].ManualAdjHours);
+        SetRadio(BaPvExpRC_None,  BaPvExpRC_Simple,  BaPvExpRC_Moderate,  BaPvExpRC_Complex,  BaPvExpRC_VComplex,  BaValidationItems[8]); SetTb(BaPvExpRC_Adj,  BaValidationItems[8].ManualAdjHours);
+    }
+private void SyncCardsToModel()
     {
         // New to Area group (indices 0-6)
         BaTestCases[0].SimpleCount = ParseDecimal(BaNewUR_Simple?.Text);
@@ -465,6 +531,7 @@ public partial class DetailedEstimateWindow : Window
         BaTestCases[1].ModerateCount = ParseDecimal(BaNewWTC_Moderate?.Text);
         BaTestCases[1].ComplexCount = ParseDecimal(BaNewWTC_Complex?.Text);
         BaTestCases[1].VeryComplexCount = ParseDecimal(BaNewWTC_VComplex?.Text);
+        BaTestCases[1].ManualAdjHours = ParseDecimal(BaNewWTC_AdjHrs?.Text);
         BaTestCases[1].Notes = BaNewWTC_Notes?.Text ?? string.Empty;
 
         BaTestCases[2].SimpleCount = ParseDecimal(BaNewIter_Simple?.Text);
@@ -493,6 +560,7 @@ public partial class DetailedEstimateWindow : Window
         BaTestCases[8].ModerateCount = ParseDecimal(BaProfWTC_Moderate?.Text);
         BaTestCases[8].ComplexCount = ParseDecimal(BaProfWTC_Complex?.Text);
         BaTestCases[8].VeryComplexCount = ParseDecimal(BaProfWTC_VComplex?.Text);
+        BaTestCases[8].ManualAdjHours = ParseDecimal(BaProfWTC_AdjHrs?.Text);
         BaTestCases[8].Notes = BaProfWTC_Notes?.Text ?? string.Empty;
 
         BaTestCases[9].SimpleCount = ParseDecimal(BaProfIter_Simple?.Text);
@@ -521,6 +589,7 @@ public partial class DetailedEstimateWindow : Window
         BaTestCases[15].ModerateCount = ParseDecimal(BaExpWTC_Moderate?.Text);
         BaTestCases[15].ComplexCount = ParseDecimal(BaExpWTC_Complex?.Text);
         BaTestCases[15].VeryComplexCount = ParseDecimal(BaExpWTC_VComplex?.Text);
+        BaTestCases[15].ManualAdjHours = ParseDecimal(BaExpWTC_AdjHrs?.Text);
         BaTestCases[15].Notes = BaExpWTC_Notes?.Text ?? string.Empty;
 
         BaTestCases[16].SimpleCount = ParseDecimal(BaExpIter_Simple?.Text);
@@ -1493,6 +1562,24 @@ public partial class DetailedEstimateWindow : Window
             if (ActualHoursDateTextBox != null && !string.IsNullOrEmpty(misc.ActualHoursDate))
                 ActualHoursDateTextBox.Text = misc.ActualHoursDate;
         }
+
+        // 8) Load project-level text fields (Assumptions, Estimate By)
+        var proj = db.Projects.FirstOrDefault(p => p.ProjectId == pid);
+        if (proj != null)
+        {
+            if (SeModuleAssumptionsTextBox != null && !string.IsNullOrEmpty(proj.SeAssumptions))
+                SeModuleAssumptionsTextBox.Text = proj.SeAssumptions;
+            if (BaAssumptionsDetailTextBox != null && !string.IsNullOrEmpty(proj.BaAssumptions))
+                BaAssumptionsDetailTextBox.Text = proj.BaAssumptions;
+            if (CollabAssumptionsDetailTextBox != null && !string.IsNullOrEmpty(proj.CollaborationAssumptions))
+                CollabAssumptionsDetailTextBox.Text = proj.CollaborationAssumptions;
+        }
+
+        // 9) Sync model values back to card UI controls (TextBoxes, Iteration inputs, AdjHrs)
+        SyncModelToCards();
+
+        // 10) Restore PV radio button selections from model
+        SyncModelToPvRadios();
 
         UpdateSeTotals();
         SyncModelToCards();

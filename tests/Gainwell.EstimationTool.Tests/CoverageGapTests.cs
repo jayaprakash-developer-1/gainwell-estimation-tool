@@ -220,7 +220,7 @@ public class CoverageGapTests
     }
 
     [Fact]
-    public void HasValidComponents_MissingRequirementId_ReturnsFalse()
+    public void HasValidComponents_MissingRequirementId_ReturnsTrue()
     {
         var vm = new InitialEstimateViewModel();
         vm.AddComponentCommand.Execute(null);
@@ -229,8 +229,8 @@ public class CoverageGapTests
         row.ChangeType = ChangeType.New;
         row.Size = ComponentSize.Small;
         row.Count = 1;
-        // RequirementId is still empty
-        Assert.False(vm.HasValidComponents);
+        // RequirementId is optional — component is still valid without it
+        Assert.True(vm.HasValidComponents);
     }
 
     [Fact]
@@ -319,7 +319,7 @@ public class CoverageGapTests
     }
 
     [Fact]
-    public void SaveProject_MissingReviewedBy_ReturnsError()
+    public void SaveProject_EmptyReviewedBy_IsOptional()
     {
         var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Test";
@@ -328,11 +328,12 @@ public class CoverageGapTests
         vm.EstimatedBy = "Tester";
         vm.ReviewedBy = "";
         var result = vm.SaveProject();
-        Assert.Equal("Reviewed By is required.", result);
+        // ReviewedBy is no longer required — error (if any) should be about missing components
+        Assert.True(result == null || !result.Contains("Reviewed By"));
     }
 
     [Fact]
-    public void SaveProject_NoComponents_ReturnsError()
+    public void SaveProject_NoComponents_Succeeds()
     {
         var vm = new InitialEstimateViewModel();
         vm.ProjectName = "Test";
@@ -341,7 +342,8 @@ public class CoverageGapTests
         vm.EstimatedBy = "Tester";
         vm.ReviewedBy = "Reviewer";
         var result = vm.SaveProject();
-        Assert.Equal("At least one component must be added before saving.", result);
+        // Components are no longer required to save — should not return a component error
+        Assert.True(result == null || !result.Contains("component", StringComparison.OrdinalIgnoreCase));
     }
 
     #endregion

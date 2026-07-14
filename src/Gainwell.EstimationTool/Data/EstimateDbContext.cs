@@ -95,6 +95,10 @@ public class EstimateDbContext : DbContext
         // Notes columns added after initial schema
         AddColumnIfMissing("DETAILED_BA_TEST_CASES", "Notes", "TEXT", "''");
         AddColumnIfMissing("DETAILED_BA_VALIDATIONS", "Notes", "TEXT", "''");
+
+        // Estimated/Reviewed By columns — safety net for databases created before these were added
+        AddColumnIfMissing("PROJECT_ESTIMATES", "ESTIMATED_BY", "TEXT", "''");
+        AddColumnIfMissing("PROJECT_ESTIMATES", "REVIEWED_BY", "TEXT", "''");
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
