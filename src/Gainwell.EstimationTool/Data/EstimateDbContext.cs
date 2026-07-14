@@ -371,6 +371,14 @@ public class EstimateDbContext : DbContext
             entity.Property(e => e.SeAdjustedComment).HasMaxLength(2000);
             entity.Property(e => e.BaAdjustedComment).HasMaxLength(2000);
             entity.Property(e => e.CollabAdjustedComment).HasMaxLength(2000);
+            entity.Property(e => e.SeEstimateBy).HasMaxLength(200);
+            entity.Property(e => e.BaEstimateBy).HasMaxLength(200);
+            entity.Property(e => e.CollabEstimateBy).HasMaxLength(200);
+            entity.Property(e => e.SeAssumptions).HasMaxLength(4000);
+            entity.Property(e => e.BaAssumptions).HasMaxLength(4000);
+            entity.Property(e => e.CollabAssumptions).HasMaxLength(4000);
+            entity.Property(e => e.ActualHours).HasColumnType("REAL");
+            entity.Property(e => e.ActualHoursDate).HasMaxLength(20);
             entity.HasOne(e => e.Project).WithMany().HasForeignKey(e => e.ProjectId).OnDelete(DeleteBehavior.Cascade);
         });
     }

@@ -147,6 +147,16 @@ public static class DetailedDatabaseSeeder
         try { db.Database.ExecuteSqlRaw("ALTER TABLE DETAILED_MISC_FIELDS ADD COLUMN BaEstimateBy TEXT DEFAULT ''"); } catch { /* column already exists */ }
         try { db.Database.ExecuteSqlRaw("ALTER TABLE DETAILED_MISC_FIELDS ADD COLUMN CollabEstimateBy TEXT DEFAULT ''"); } catch { /* column already exists */ }
 
+        // Add new columns to DETAILED_MISC_FIELDS for EstimateBy, Assumptions, ActualHours
+        try { db.Database.ExecuteSqlRaw("ALTER TABLE DETAILED_MISC_FIELDS ADD COLUMN SeEstimateBy TEXT DEFAULT ''"); } catch { /* column already exists */ }
+        try { db.Database.ExecuteSqlRaw("ALTER TABLE DETAILED_MISC_FIELDS ADD COLUMN BaEstimateBy TEXT DEFAULT ''"); } catch { /* column already exists */ }
+        try { db.Database.ExecuteSqlRaw("ALTER TABLE DETAILED_MISC_FIELDS ADD COLUMN CollabEstimateBy TEXT DEFAULT ''"); } catch { /* column already exists */ }
+        try { db.Database.ExecuteSqlRaw("ALTER TABLE DETAILED_MISC_FIELDS ADD COLUMN SeAssumptions TEXT DEFAULT ''"); } catch { /* column already exists */ }
+        try { db.Database.ExecuteSqlRaw("ALTER TABLE DETAILED_MISC_FIELDS ADD COLUMN BaAssumptions TEXT DEFAULT ''"); } catch { /* column already exists */ }
+        try { db.Database.ExecuteSqlRaw("ALTER TABLE DETAILED_MISC_FIELDS ADD COLUMN CollabAssumptions TEXT DEFAULT ''"); } catch { /* column already exists */ }
+        try { db.Database.ExecuteSqlRaw("ALTER TABLE DETAILED_MISC_FIELDS ADD COLUMN ActualHours REAL NOT NULL DEFAULT 0"); } catch { /* column already exists */ }
+        try { db.Database.ExecuteSqlRaw("ALTER TABLE DETAILED_MISC_FIELDS ADD COLUMN ActualHoursDate TEXT DEFAULT ''"); } catch { /* column already exists */ }
+
 
         db.Database.ExecuteSqlRaw(@"
             CREATE TABLE IF NOT EXISTS DETAILED_CONSULTANTS (
@@ -190,6 +200,14 @@ public static class DetailedDatabaseSeeder
                 SeAdjustedComment TEXT,
                 BaAdjustedComment TEXT,
                 CollabAdjustedComment TEXT,
+                SeEstimateBy TEXT,
+                BaEstimateBy TEXT,
+                CollabEstimateBy TEXT,
+                SeAssumptions TEXT,
+                BaAssumptions TEXT,
+                CollabAssumptions TEXT,
+                ActualHours REAL NOT NULL DEFAULT 0,
+                ActualHoursDate TEXT,
                 FOREIGN KEY (ProjectId) REFERENCES PROJECT_ESTIMATES(PROJECT_ID) ON DELETE CASCADE
             )");
 

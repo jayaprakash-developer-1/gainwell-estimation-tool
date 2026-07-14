@@ -42,7 +42,9 @@ public static class ProjectMapper
         entity.AutomationTestCollabAdjustedHours = vm.AutomationTestCollabAdjustedHours;
         entity.ConsultantMentorAdjustedHours = vm.ConsultantMentorAdjustedHours;
         entity.SeAdjustedHours = vm.DevelopmentAdjustedHours; // backward compat
-        entity.BaAdjustedHours = vm.AnalysisAdjustedHours; // backward compat
+        // Only write BaAdjustedHours from Initial Estimate if Detailed Estimate hasn't set it
+        if (entity.BaAdjustedHours == 0)
+            entity.BaAdjustedHours = vm.AnalysisAdjustedHours;
 
         // Assumptions & notes
         entity.SeAssumptions = vm.SeAssumptions;
@@ -64,7 +66,7 @@ public static class ProjectMapper
         entity.AutomationTestCollabNotes = vm.AutomationTestCollabNotes;
         entity.ConsultantMentorNotes = vm.ConsultantMentorNotes;
 
-        // Actual hours & test cases
+        // Actual hours — Initial Estimate uses ProjectEntity.TotalActualHours (separate from Detailed Estimate's DetailedMiscFields.ActualHours)
         entity.TotalActualHours = vm.TotalActualHours;
         entity.ActualHoursAsOfDate = vm.ActualHoursAsOfDate;
         entity.TimeForEstimates = vm.TimeForEstimates;
@@ -88,9 +90,9 @@ public static class ProjectMapper
         vm.ReviewedBy = entity.ReviewedBy ?? string.Empty;
         vm.PmEffortPercentage = entity.PmEffortPercentage;
 
-        // Per-task adjusted hours (with backward compat fallback)
+        // Per-task adjusted hours (Initial Estimate's own fields — don't read BaAdjustedHours which Detailed Estimate owns)
         vm.DevelopmentAdjustedHours = entity.DevelopmentAdjustedHours != 0 ? entity.DevelopmentAdjustedHours : entity.SeAdjustedHours;
-        vm.AnalysisAdjustedHours = entity.AnalysisAdjustedHours != 0 ? entity.AnalysisAdjustedHours : entity.BaAdjustedHours;
+        vm.AnalysisAdjustedHours = entity.AnalysisAdjustedHours;
         vm.BusinessDesignAdjustedHours = entity.BusinessDesignAdjustedHours;
         vm.SystemTestingAdjustedHours = entity.SystemTestingAdjustedHours;
         vm.PromotionAdjustedHours = entity.PromotionAdjustedHours;
