@@ -323,11 +323,10 @@ public partial class InitialEstimateViewModel : ObservableObject
 
     /// <summary>
     /// True when at least one component row has all required columns filled:
-    /// Req#, Component Type, New/Change, Size, and Count > 0.
+    /// Component Type, New/Change, Size, and Count > 0.
     /// Used to enable the Collaboration tab.
     /// </summary>
     public bool HasValidComponents => Components.Any(c =>
-        !string.IsNullOrWhiteSpace(c.RequirementId) &&
         c.ComponentType != ComponentType.None &&
         c.ChangeType != ChangeType.None &&
         c.Size != ComponentSize.None &&
@@ -687,10 +686,6 @@ public partial class InitialEstimateViewModel : ObservableObject
             return "Description is required.";
         if (string.IsNullOrWhiteSpace(EstimatedBy))
             return "Estimated By is required.";
-        if (string.IsNullOrWhiteSpace(ReviewedBy))
-            return "Reviewed By is required.";
-        if (!Components.Any(c => c.ComponentType != ComponentType.None))
-            return "At least one component must be added before saving.";
 
         using var db = new EstimateDbContext();
         db.EnsureSchema();
