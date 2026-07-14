@@ -137,8 +137,27 @@ public static class EstimateNavigator
     {
         var welcome = new WelcomeWindow();
         welcome.WindowStartupLocation = WindowStartupLocation.Manual;
-        welcome.Left = source.RestoreBounds.Left + (source.RestoreBounds.Width - 900) / 2;
-        welcome.Top = source.RestoreBounds.Top + (source.RestoreBounds.Height - 700) / 2;
+
+        if (source.WindowState == WindowState.Maximized)
+        {
+            // Keep maximized — set restore bounds for if user un-maximizes later
+            var bounds = source.RestoreBounds;
+            welcome.Left = bounds.Left;
+            welcome.Top = bounds.Top;
+            welcome.Width = bounds.Width;
+            welcome.Height = bounds.Height;
+            welcome.WindowState = WindowState.Maximized;
+        }
+        else
+        {
+            // Normal state — center on same position
+            var bounds = source.RestoreBounds;
+            welcome.Left = bounds.Left;
+            welcome.Top = bounds.Top;
+            welcome.Width = bounds.Width;
+            welcome.Height = bounds.Height;
+        }
+
         welcome.Show();
 
         // Close all estimate windows
