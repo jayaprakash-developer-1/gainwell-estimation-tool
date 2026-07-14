@@ -607,70 +607,6 @@ private void SyncCardsToModel()
         BaTestCases[20].Notes = BaExpPRD_Notes?.Text ?? string.Empty;
     }
 
-    /// <summary>Push model data back to BA card TextBoxes (reverse of SyncCardsToModel, used after loading).</summary>
-    private void SyncModelToCards()
-    {
-        void Set(TextBox? tb, decimal v) { if (tb != null) tb.Text = v == 0 ? "0" : v.ToString("G"); }
-
-        // New to Area (indices 0-6)
-        Set(BaNewUR_Simple, BaTestCases[0].SimpleCount); Set(BaNewUR_Moderate, BaTestCases[0].ModerateCount);
-        Set(BaNewUR_Complex, BaTestCases[0].ComplexCount); Set(BaNewUR_VComplex, BaTestCases[0].VeryComplexCount);
-        Set(BaNewUR_AdjHrs, BaTestCases[0].ManualAdjHours);
-        Set(BaNewWTC_Simple, BaTestCases[1].SimpleCount); Set(BaNewWTC_Moderate, BaTestCases[1].ModerateCount);
-        Set(BaNewWTC_Complex, BaTestCases[1].ComplexCount); Set(BaNewWTC_VComplex, BaTestCases[1].VeryComplexCount);
-        Set(BaNewIter_Simple, BaTestCases[2].SimpleCount); Set(BaNewIter_Moderate, BaTestCases[2].ModerateCount);
-        Set(BaNewIter_Complex, BaTestCases[2].ComplexCount); Set(BaNewIter_VComplex, BaTestCases[2].VeryComplexCount);
-        Set(BaNewDP_AdjHrs, BaTestCases[3].ManualAdjHours); Set(BaNewALM_AdjHrs, BaTestCases[4].ManualAdjHours);
-        Set(BaNewSTE_AdjHrs, BaTestCases[5].ManualAdjHours); Set(BaNewPRD_AdjHrs, BaTestCases[6].ManualAdjHours);
-
-        // Proficient (indices 7-13)
-        Set(BaProfUR_Simple, BaTestCases[7].SimpleCount); Set(BaProfUR_Moderate, BaTestCases[7].ModerateCount);
-        Set(BaProfUR_Complex, BaTestCases[7].ComplexCount); Set(BaProfUR_VComplex, BaTestCases[7].VeryComplexCount);
-        Set(BaProfUR_AdjHrs, BaTestCases[7].ManualAdjHours);
-        Set(BaProfWTC_Simple, BaTestCases[8].SimpleCount); Set(BaProfWTC_Moderate, BaTestCases[8].ModerateCount);
-        Set(BaProfWTC_Complex, BaTestCases[8].ComplexCount); Set(BaProfWTC_VComplex, BaTestCases[8].VeryComplexCount);
-        Set(BaProfIter_Simple, BaTestCases[9].SimpleCount); Set(BaProfIter_Moderate, BaTestCases[9].ModerateCount);
-        Set(BaProfIter_Complex, BaTestCases[9].ComplexCount); Set(BaProfIter_VComplex, BaTestCases[9].VeryComplexCount);
-        Set(BaProfDP_AdjHrs, BaTestCases[10].ManualAdjHours); Set(BaProfALM_AdjHrs, BaTestCases[11].ManualAdjHours);
-        Set(BaProfSTE_AdjHrs, BaTestCases[12].ManualAdjHours); Set(BaProfPRD_AdjHrs, BaTestCases[13].ManualAdjHours);
-
-        // Expert (indices 14-20)
-        Set(BaExpUR_Simple, BaTestCases[14].SimpleCount); Set(BaExpUR_Moderate, BaTestCases[14].ModerateCount);
-        Set(BaExpUR_Complex, BaTestCases[14].ComplexCount); Set(BaExpUR_VComplex, BaTestCases[14].VeryComplexCount);
-        Set(BaExpUR_AdjHrs, BaTestCases[14].ManualAdjHours);
-        Set(BaExpWTC_Simple, BaTestCases[15].SimpleCount); Set(BaExpWTC_Moderate, BaTestCases[15].ModerateCount);
-        Set(BaExpWTC_Complex, BaTestCases[15].ComplexCount); Set(BaExpWTC_VComplex, BaTestCases[15].VeryComplexCount);
-        Set(BaExpIter_Simple, BaTestCases[16].SimpleCount); Set(BaExpIter_Moderate, BaTestCases[16].ModerateCount);
-        Set(BaExpIter_Complex, BaTestCases[16].ComplexCount); Set(BaExpIter_VComplex, BaTestCases[16].VeryComplexCount);
-        Set(BaExpDP_AdjHrs, BaTestCases[17].ManualAdjHours); Set(BaExpALM_AdjHrs, BaTestCases[18].ManualAdjHours);
-        Set(BaExpSTE_AdjHrs, BaTestCases[19].ManualAdjHours); Set(BaExpPRD_AdjHrs, BaTestCases[20].ManualAdjHours);
-    }
-
-    /// <summary>Push BaValidationItems model back to PV radio buttons (reverse of SyncPvRadiosToModel).</summary>
-    private void SyncModelToPvRadios()
-    {
-        void SetRadio(RadioButton? none, RadioButton? simple, RadioButton? moderate, RadioButton? complex, RadioButton? vcomplex, TextBox? adj, int idx)
-        {
-            var item = BaValidationItems[idx];
-            if (item.VeryComplexCount > 0 && vcomplex != null) vcomplex.IsChecked = true;
-            else if (item.ComplexCount > 0 && complex != null) complex.IsChecked = true;
-            else if (item.ModerateCount > 0 && moderate != null) moderate.IsChecked = true;
-            else if (item.SimpleCount > 0 && simple != null) simple.IsChecked = true;
-            else if (none != null) none.IsChecked = true;
-            if (adj != null) adj.Text = item.ManualAdjHours == 0 ? "0" : item.ManualAdjHours.ToString("G");
-        }
-
-        SetRadio(BaPvNewGV_None, BaPvNewGV_Simple, BaPvNewGV_Moderate, BaPvNewGV_Complex, BaPvNewGV_VComplex, BaPvNewGV_Adj, 0);
-        SetRadio(BaPvNewPC_None, BaPvNewPC_Simple, BaPvNewPC_Moderate, BaPvNewPC_Complex, BaPvNewPC_VComplex, BaPvNewPC_Adj, 1);
-        SetRadio(BaPvNewRC_None, BaPvNewRC_Simple, BaPvNewRC_Moderate, BaPvNewRC_Complex, BaPvNewRC_VComplex, BaPvNewRC_Adj, 2);
-        SetRadio(BaPvProfGV_None, BaPvProfGV_Simple, BaPvProfGV_Moderate, BaPvProfGV_Complex, BaPvProfGV_VComplex, BaPvProfGV_Adj, 3);
-        SetRadio(BaPvProfPC_None, BaPvProfPC_Simple, BaPvProfPC_Moderate, BaPvProfPC_Complex, BaPvProfPC_VComplex, BaPvProfPC_Adj, 4);
-        SetRadio(BaPvProfRC_None, BaPvProfRC_Simple, BaPvProfRC_Moderate, BaPvProfRC_Complex, BaPvProfRC_VComplex, BaPvProfRC_Adj, 5);
-        SetRadio(BaPvExpGV_None, BaPvExpGV_Simple, BaPvExpGV_Moderate, BaPvExpGV_Complex, BaPvExpGV_VComplex, BaPvExpGV_Adj, 6);
-        SetRadio(BaPvExpPC_None, BaPvExpPC_Simple, BaPvExpPC_Moderate, BaPvExpPC_Complex, BaPvExpPC_VComplex, BaPvExpPC_Adj, 7);
-        SetRadio(BaPvExpRC_None, BaPvExpRC_Simple, BaPvExpRC_Moderate, BaPvExpRC_Complex, BaPvExpRC_VComplex, BaPvExpRC_Adj, 8);
-    }
-
     /// <summary>Sync PV radio button selections -> BaValidationItems model (0=none, 1=selected).</summary>
     private void SyncPvRadiosToModel()
     {
@@ -1221,7 +1157,7 @@ private void SyncCardsToModel()
             existing.CollaborationHours = collabTotal;
 
             decimal actualHours = ParseDecimal(ActualHoursTextBox);
-            existing.TotalActualHours = actualHours;
+            // Detailed Estimate stores its own ActualHours in DetailedMiscFields (not ProjectEntity.TotalActualHours which belongs to Initial Estimate)
             decimal pmPct = 5m; // Hardcoded 5% PM Reserve
             decimal totalBeforeReserve = actualHours + devTotal + promotion + doc + baTotal + collabTotal;
             existing.GrandTotalHours = totalBeforeReserve + (totalBeforeReserve * pmPct / 100m);
