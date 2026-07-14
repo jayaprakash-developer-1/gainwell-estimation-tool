@@ -158,7 +158,7 @@
                     </Border>
                 </StackPanel>
 
-                <!-- Save & Settings Buttons (Right) -->
+                <!-- Save Button (Right) -->
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                     <Border Width="1" Background="#D4D7E0" Margin="8,4" />
                     <Button Style="{StaticResource GhostButton}" 
@@ -168,8 +168,6 @@
                             <TextBlock Text="Save" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
-                    <Button Content="Settings" Style="{StaticResource GhostButton}" 
-                            Click="OnSettingsClick" Margin="4,0" />
                 </StackPanel>
             </Grid>
         </Border>
